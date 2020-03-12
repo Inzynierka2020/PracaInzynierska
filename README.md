@@ -1,6 +1,7 @@
 # Praca Inżynierska 2020
 
 ## Aplikacja do komunikacji z centralną bazą danych zawodów w modelarstwie lotniczym
+- [dokumentacja projektu](https://inzynierka2020.github.io/PracaInzynierska/)
 
 ## Użyte technologie:
 - Angular 7
@@ -18,6 +19,5 @@ W celu uruchomienia lokalnie UI aplikacji należy:
 ## Docker
 
 ## Linki
-- [dokumentacja projektu](https://inzynierka2020.github.io/PracaInzynierska/)
 - [dokumentacja Angulara](https://angular.io/docs)
 - [baza danych zawodów w modelarstwie lotniczym](https://www.f3xvault.com/) i jej [api](https://www.f3xvault.com/?action=api_docs)
