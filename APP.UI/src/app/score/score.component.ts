@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 export interface PeriodicElement {
   name: string;
@@ -29,6 +29,9 @@ export class ScoreComponent implements OnInit {
   
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
+
+  @Input()
+  title: string;
 
   constructor() { }
   
