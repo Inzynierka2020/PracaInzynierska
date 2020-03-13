@@ -1,0 +1,25 @@
+.mat-tab-labels {
+    display: flex;
+    justify-content: space-around !important;
+    align-items: stretch !important;
+}
+
+.mat-tab-label {
+    font-size: 25px;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    width: 100%;
+}
+
+.mat-tab-header {
+    position: sticky !important;
+    top: 128px;
+    background-color: white;
+    z-index: 1000;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+.tab-content {
+    margin-top: 150px;
+}

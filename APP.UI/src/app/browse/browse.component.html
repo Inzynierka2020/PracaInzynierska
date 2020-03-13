@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="nav-panel mb-4">
+        <button mat-raised-button color="primary" (click)="prevRound()">Previous round</button>
+        <span>
+          {{roundNumber}}
+        </span>
+        <button mat-raised-button color="primary" (click)="nextRound()">Next round</button>
+    </div>
+    <app-score></app-score>
+    <br>
+</div>

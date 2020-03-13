@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <div class="date">
+            <p class="days">{{ now | date:'dd.MM.yyyy'}}</p>
+            <p class="time">{{ now | date:'HH:mm:ss'}}
+            </p>
+        </div>
+        <div (click)="openSettings()" class="cog">
+            <i class="material-icons">
+            settings
+          </i>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>

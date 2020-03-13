@@ -1,0 +1,49 @@
+.time {
+    font-size: 64px;
+    margin-bottom: 0;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.days {
+    margin-bottom: 8px;
+}
+
+.cog {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.cog:hover {
+    color: #ffd740;
+    cursor: pointer;
+}
+
+mat-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 128px;
+    padding-right: 0;
+}
+
+i {
+    font-size: 64px;
+}
+
+i:hover {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .87);
+}
+
+mat-toolbar {
+    position: fixed !important;
+    top: 0px !important;
+    z-index: 1000;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}

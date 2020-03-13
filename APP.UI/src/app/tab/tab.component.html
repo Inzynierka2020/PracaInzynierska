@@ -1,0 +1,20 @@
+<mat-tab-group (selectedTabChange)="onChangeTab($event)" #matTabGroup>
+    <mat-tab label="Score">
+        <div class="tab-content">
+            <app-score></app-score>
+        </div>
+    </mat-tab>
+    <mat-tab label="Browse rounds">
+        <div class="tab-content">
+            <app-browse></app-browse>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="started" label="Round no. 1">
+        <div class="tab-content">
+            <app-round (finished)="finishRound($event, matTabGroup)"></app-round>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="!started" label="[Start new round]">
+        <app-score></app-score>
+    </mat-tab>
+</mat-tab-group>
