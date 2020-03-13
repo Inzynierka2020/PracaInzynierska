@@ -22,7 +22,9 @@ export class ToolbarComponent implements OnInit {
 
   openSettings(){
     const dialogRef = this.dialog.open(SettingsComponent, {
-      width: '250px',
+      width: '2500px',
+      height: '800px',
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

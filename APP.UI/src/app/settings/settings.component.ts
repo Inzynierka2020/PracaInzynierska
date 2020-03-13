@@ -13,7 +13,7 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
   }
 
-  onNoClick(){
+  close(){
     this.dialogRef.close();
   }
 

@@ -37,7 +37,7 @@ i {
 }
 
 i:hover {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, .87);
+    text-shadow: 2px 2px 25px rgba(0, 0, 0, .87);
 }
 
 mat-toolbar {

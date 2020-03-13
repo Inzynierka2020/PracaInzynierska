@@ -1,4 +1,30 @@
-<p>
-    settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works!
-    settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works! settings works!
-</p>
+<div class="content">
+    <div class="settings">
+        <mat-button-toggle-group #group="matButtonToggleGroup">
+            <mat-button-toggle value="left" checked>
+                Connection
+            </mat-button-toggle>
+            <mat-button-toggle value="center">
+                Application
+            </mat-button-toggle>
+            <mat-button-toggle value="right">
+                Visuals
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+        <div class="settings-text">
+            <div *ngIf="group.value=='left'">
+                Connection options
+            </div>
+            <div *ngIf="group.value=='center'">
+                Application options
+            </div>
+            <div *ngIf="group.value=='right'">
+                Visual options
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button mat-raised-button color="accent" (click)="save()">Save</button>
+        <button mat-raised-button color="warn" (click)="close()">Close</button>
+    </div>
+</div>

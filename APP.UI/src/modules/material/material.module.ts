@@ -7,6 +7,11 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
+
 
 @NgModule({
   declarations: [],
@@ -19,7 +24,10 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatTabsModule,
     MatTableModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonToggleModule
   ]
 })
 export class MaterialModule { }
