@@ -10,7 +10,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatDialogModule,
     MatSidenavModule,
     MatListModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule { }

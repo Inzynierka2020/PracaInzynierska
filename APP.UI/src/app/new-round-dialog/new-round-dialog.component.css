@@ -1,0 +1,22 @@
+button {
+    width: 40%;
+    height: 50%;
+    font-size: 150%;
+    min-height: 50px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 15%;
+}
+
+.content {
+    font-size: 50px;
+    text-align: center;
+}
+
+.mat-checkbox-label {
+    text-align: center;
+}

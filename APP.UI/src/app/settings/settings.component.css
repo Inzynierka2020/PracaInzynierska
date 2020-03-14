@@ -11,16 +11,17 @@ p {
 
 button {
     width: 40%;
-    height: 50%;
+    height: 75%;
     font-size: 150%;
-    min-height: 50px;
+    min-height: 60px;
+    min-width: 128px;
 }
 
 .buttons {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 15%;
+    height: 10%;
 }
 
 .content {

@@ -17,11 +17,12 @@
     padding: 20px;
     display: flex;
     align-items: center;
+    transition: ease-out 0.4s;
 }
 
 .cog:hover {
-    color: #ffd740;
     cursor: pointer;
+    transform: rotate(180deg) scale(1.2);
 }
 
 mat-toolbar-row {
@@ -30,13 +31,12 @@ mat-toolbar-row {
     align-items: center;
     height: 128px;
     padding-right: 0;
+    max-width: 1200px;
 }
 
 i {
+    color: #ffd740;
     font-size: 64px;
-}
-
-i:hover {
     text-shadow: 2px 2px 25px rgba(0, 0, 0, .87);
 }
 
@@ -46,4 +46,6 @@ mat-toolbar {
     z-index: 1000;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+    display: flex;
+    align-items: center;
 }

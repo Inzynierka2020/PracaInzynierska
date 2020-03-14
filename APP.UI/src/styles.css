@@ -24,4 +24,13 @@ body {
 
 mat-dialog-container {
     background: linear-gradient(to bottom, #FFFFFF, #ECE9E6) !important;
+    border-radius: 20px !important;
+}
+
+button {
+    border-radius: 20px !important;
+}
+
+button:focus {
+    outline: none !important;
 }

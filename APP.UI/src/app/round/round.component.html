@@ -1,3 +1,7 @@
-<app-score [title]="'Finished players'"></app-score>
-<app-score [title]="'Yet to start'" class="mb-5"></app-score>
+<div class="content">
+    <div class="mb-5">
+        <app-score [title]="'FINISHED PLAYERS'"></app-score>
+    </div>
+    <app-score [title]="'YET TO START'"></app-score>
+</div>
 <button mat-raised-button color="accent" (click)="finishRound()">Finish round</button>

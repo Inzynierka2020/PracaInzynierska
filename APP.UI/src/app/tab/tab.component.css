@@ -18,6 +18,15 @@
     z-index: 1000;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+    justify-content: center;
+}
+
+.mat-tab-list {
+    max-width: 1200px;
+}
+
+.mat-tab-label-container {
+    justify-content: center;
 }
 
 .tab-content {

@@ -10,6 +10,9 @@ import { ScoreComponent } from './score/score.component';
 import { RoundComponent } from './round/round.component';
 import { BrowseComponent } from './browse/browse.component';
 import { SettingsComponent } from './settings/settings.component';
+import { NewRoundDialogComponent } from './new-round-dialog/new-round-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 const appRoutes: Routes = [
   { path: '', component:  TabComponent},
@@ -25,11 +28,14 @@ const appRoutes: Routes = [
     ScoreComponent,
     RoundComponent,
     BrowseComponent,
-    SettingsComponent
+    SettingsComponent,
+    NewRoundDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
     MaterialModule,
+    FormsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
@@ -37,6 +43,6 @@ const appRoutes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SettingsComponent]
+  entryComponents: [SettingsComponent, NewRoundDialogComponent, ConfirmDialogComponent]
 })
 export class AppModule { }

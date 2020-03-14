@@ -20,5 +20,6 @@ export class BrowseComponent implements OnInit {
 
   prevRound() {
     this.roundNumber--;
+
   }
 }

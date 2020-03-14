@@ -1,0 +1,20 @@
+<div class="content mb-5">
+    <div class="d-flex justify-content-center">
+        <mat-checkbox [(ngModel)]="groups">
+            Enable groups
+        </mat-checkbox>
+    </div>
+    <div *ngIf="groups">
+        <h1>How many groups?</h1>
+        <h1>
+            - 5 +
+        </h1>
+    </div>
+    <div>
+        Round number<br> - 1 +
+    </div>
+</div>
+<div class="buttons">
+    <button mat-raised-button color="accent" [mat-dialog-close]="true">Start</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+</div>
