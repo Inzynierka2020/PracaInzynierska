@@ -13,10 +13,14 @@ button {
 }
 
 .content {
-    font-size: 50px;
     text-align: center;
 }
 
-.mat-checkbox-label {
-    text-align: center;
+.mat-slide-toggle-bar {
+    height: 50px !important;
+}
+
+.mat-slide-toggle-thumb {
+    height: 20px !important;
+    width: 20px !important;
 }

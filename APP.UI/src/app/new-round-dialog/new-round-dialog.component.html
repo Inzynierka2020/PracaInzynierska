@@ -1,17 +1,20 @@
 <div class="content mb-5">
-    <div class="d-flex justify-content-center">
-        <mat-checkbox [(ngModel)]="groups">
-            Enable groups
-        </mat-checkbox>
-    </div>
-    <div *ngIf="groups">
-        <h1>How many groups?</h1>
+    <div>
+        <h1>Round number</h1>
         <h1>
-            - 5 +
+            1
         </h1>
     </div>
-    <div>
-        Round number<br> - 1 +
+    <div class="mt-5">
+        <mat-slide-toggle [(ngModel)]="groups" [disabled]="disabled">
+            <h1>Enable groups</h1>
+        </mat-slide-toggle>
+        <div *ngIf="groups" class="mt-3">
+            <h2>How many groups?</h2>
+            <h2>
+                3
+            </h2>
+        </div>
     </div>
 </div>
 <div class="buttons">

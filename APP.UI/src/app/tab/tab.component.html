@@ -1,7 +1,7 @@
 <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onChangeTab($event, matTabGroup)" animationDuration="0" #matTabGroup>
     <mat-tab label="Score">
         <div class="tab-content">
-            <app-score [title]="'GENERAL SCORE'"></app-score>
+            <app-score [title]="'GENERAL SCORE'" [selectPlayers]=false></app-score>
         </div>
     </mat-tab>
     <mat-tab label="Browse rounds">

@@ -13,10 +13,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { NewRoundDialogComponent } from './new-round-dialog/new-round-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { PlayerComponent } from './player/player.component';
 
 const appRoutes: Routes = [
-  { path: '', component:  TabComponent},
-  { path: 'score', component:  ScoreComponent},
+  { path: '', component: TabComponent },
+  { path: 'score', component: ScoreComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
     BrowseComponent,
     SettingsComponent,
     NewRoundDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,6 @@ const appRoutes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SettingsComponent, NewRoundDialogComponent, ConfirmDialogComponent]
+  entryComponents: [SettingsComponent, NewRoundDialogComponent, ConfirmDialogComponent, PlayerComponent]
 })
 export class AppModule { }
