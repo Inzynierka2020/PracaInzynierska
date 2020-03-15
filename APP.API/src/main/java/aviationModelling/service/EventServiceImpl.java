@@ -1,11 +1,10 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.converter.Parser;
-import aviationModellingApp.converter.UrlWizard;
-import aviationModellingApp.entity.Event;
-import aviationModellingApp.entity.Pilot;
-import aviationModellingApp.repository.EventRepository;
-import aviationModellingApp.repository.PilotRepository;
+import aviationModelling.converter.Parser;
+import aviationModelling.converter.UrlWizard;
+import aviationModelling.entity.Event;
+import aviationModelling.entity.Pilot;
+import aviationModelling.repository.EventRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,7 +53,7 @@ public class EventServiceImpl implements EventService {
             String pilotStringList = restTemplate.getForObject(url, String.class);
 
 //        parsuj Stringa, aby otrzymac obiekt event i zapisz go do bazy
-            Event event = Parser.getEventInfo(pilotStringList, eventId);
+            Event event = Parser.getEventInfo(pilotStringList);
             eventRepository.save(event);
 
 //        parsuj Stringa, aby otrzymac liste pilotow z zawodow i zapisz ich do bazy

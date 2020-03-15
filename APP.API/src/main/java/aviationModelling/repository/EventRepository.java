@@ -1,6 +1,6 @@
-package aviationModellingApp.repository;
+package aviationModelling.repository;
 
-import aviationModellingApp.entity.Event;
+import aviationModelling.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

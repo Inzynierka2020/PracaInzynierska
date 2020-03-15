@@ -1,8 +1,7 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.entity.Pilot;
+import aviationModelling.entity.Pilot;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface PilotService {
@@ -10,5 +9,4 @@ public interface PilotService {
     List<Pilot> findAll();
     void savePilots(List<Pilot> pilots);
     void save(Pilot pilot);
-
 }

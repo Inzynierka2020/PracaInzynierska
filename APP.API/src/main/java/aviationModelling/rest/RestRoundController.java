@@ -1,7 +1,7 @@
-package aviationModellingApp.rest;
+package aviationModelling.rest;
 
-import aviationModellingApp.entity.Round;
-import aviationModellingApp.service.RoundService;
+import aviationModelling.entity.Round;
+import aviationModelling.service.RoundService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

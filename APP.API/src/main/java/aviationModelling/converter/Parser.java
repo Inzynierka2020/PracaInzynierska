@@ -1,7 +1,7 @@
-package aviationModellingApp.converter;
+package aviationModelling.converter;
 
-import aviationModellingApp.entity.Event;
-import aviationModellingApp.entity.Pilot;
+import aviationModelling.entity.Event;
+import aviationModelling.entity.Pilot;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class Parser {
         return pilotList;
     }
 
-    public static Event getEventInfo(String stringList, int eventId) {
+    public static Event getEventInfo(String stringList) {
         List<String> lines = readFileAsLines(stringList);
         Event event = new Event();
         if (lines.get(0).equals("0")) {
@@ -54,11 +54,9 @@ public class Parser {
         return event;
     }
 
-
     public static List<String> readFileAsLines(String list) {
 
         return Arrays.asList(list.replace("\"\"", " ")
                 .replace("\"", "").split("\n"));
     }
-
 }

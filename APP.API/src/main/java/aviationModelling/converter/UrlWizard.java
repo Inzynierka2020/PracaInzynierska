@@ -1,4 +1,4 @@
-package aviationModellingApp.converter;
+package aviationModelling.converter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class UrlWizard {
     private String password;
 
     public String getEventPilots(Integer event_id) {
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("login", login);
         params.put("password", password);
         params.put("function", "getEventPilots");
@@ -25,7 +25,7 @@ public class UrlWizard {
     }
 
     public String getEventInfo(Integer event_id) {
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("login", login);
         params.put("password", password);
         params.put("function", "getEventInfo");
@@ -47,6 +47,6 @@ public class UrlWizard {
         String stringResult = result.toString();
 
         // usun & na koncu Stringa
-        return stringResult.substring(0,stringResult.length()-1);
+        return stringResult.substring(0, stringResult.length() - 1);
     }
 }

@@ -1,10 +1,9 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.entity.Round;
-import aviationModellingApp.repository.RoundRepository;
+import aviationModelling.entity.Round;
+import aviationModelling.repository.RoundRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -25,5 +24,4 @@ public class RoundServiceImpl implements RoundService {
     public List<Round> findByRoundIdRoundNum(int roundNumber) {
         return roundRepository.findByRoundIdRoundNum(roundNumber);
     }
-
 }

@@ -1,6 +1,6 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.entity.Event;
+import aviationModelling.entity.Event;
 
 public interface EventService {
     Event findById(int id);

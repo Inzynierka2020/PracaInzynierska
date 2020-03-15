@@ -1,11 +1,10 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.converter.Parser;
-import aviationModellingApp.entity.Pilot;
-import aviationModellingApp.repository.PilotRepository;
+import aviationModelling.converter.Parser;
+import aviationModelling.entity.Pilot;
+import aviationModelling.repository.PilotRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -32,5 +31,4 @@ public class PilotServiceImpl implements PilotService {
     public void savePilots(List<Pilot> pilots) {
         pilots.stream().forEach(pilot -> pilotRepository.save(pilot));
     }
-
 }

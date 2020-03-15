@@ -1,6 +1,6 @@
-package aviationModellingApp.service;
+package aviationModelling.service;
 
-import aviationModellingApp.entity.Round;
+import aviationModelling.entity.Round;
 
 import java.util.List;
 
@@ -8,5 +8,4 @@ public interface RoundService {
 
     List<Round> findByRoundIdPilotId(int pilotId);
     List<Round> findByRoundIdRoundNum(int roundNumber);
-
 }
