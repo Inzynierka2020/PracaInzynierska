@@ -10,9 +10,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class EventServiceImpl implements EventService {
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     private EventRepository eventRepository;
     private PilotService pilotService;
@@ -39,8 +42,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void save(Event event) {
-        eventRepository.save(event);
+    public boolean save(Event event) {
+        try {
+            eventRepository.save(event);
+        } catch (Exception ex) {
+            logger.warning("====> ERROR saving an event");
+            return false;
+        }
+        return true;
     }
 
     public boolean saveEventAndPilots(int eventId) {

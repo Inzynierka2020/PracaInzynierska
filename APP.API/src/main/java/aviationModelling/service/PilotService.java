@@ -9,4 +9,5 @@ public interface PilotService {
     List<Pilot> findAll();
     void savePilots(List<Pilot> pilots);
     void save(Pilot pilot);
+    Pilot findById(int id);
 }

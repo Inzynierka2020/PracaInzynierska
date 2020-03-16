@@ -22,6 +22,18 @@ public class RestPilotController {
         return pilotService.findAll();
     }
 
+    @GetMapping("/{pilotId}")
+    public Pilot getPilotById(@PathVariable int pilotId) {
+        return pilotService.findById(pilotId);
+    }
+
+    @PutMapping
+    public Pilot updatePilot(@RequestBody Pilot pilot) {
+        pilotService.save(pilot);
+        return pilot;
+    }
+
+
 
 
 

@@ -11,6 +11,8 @@ import java.util.List;
 @Component
 public class Parser {
 
+//      getEventInfo function
+//      Pilot ID, Pilot Bib, Pilot First Name, Pilot Last Name, Class, AMA, FAI, FAI License, Team Name
     public static List<Pilot> getPilotList(String stringList, int eventId) {
         List<String> lines = readFileAsLines(stringList);
         List<Pilot> pilotList = new ArrayList<>();
@@ -30,11 +32,13 @@ public class Parser {
             tmpPilot.setFaiLicence(line[7]);
             tmpPilot.setTeamName(line[8]);
             tmpPilot.setEventId(eventId);
+            tmpPilot.setRounds(null);
             pilotList.add(tmpPilot);
         }
         return pilotList;
     }
-
+//      getEventInfo function
+//      Event ID, Event Name, Event_location, Event Start Date, Event End Date, Event Type, Number of Rounds
     public static Event getEventInfo(String stringList) {
         List<String> lines = readFileAsLines(stringList);
         Event event = new Event();
@@ -50,6 +54,7 @@ public class Parser {
         event.setEventEndDate(cols[4]);
         event.setEventType(cols[5]);
         event.setNumberOfRounds(Integer.parseInt(cols[6]));
+        event.setPilots(null);
 
         return event;
     }

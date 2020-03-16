@@ -1,9 +1,12 @@
 package aviationModelling.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -24,8 +27,10 @@ public class Round implements Serializable {
     @Column(name="group_num")
     private String group;
 
+//    auto-generated in db using hibernate
+    @CreationTimestamp
     @Column(name = "flight_time")
-    private Float flightTime;
+    private LocalDateTime flightTime;
 
     @Column(name = "wind_avg")
     private Float windAvg;
@@ -47,8 +52,13 @@ public class Round implements Serializable {
     private Float sub10;
     private Float sub11;
 
-    private boolean dns;
-    private boolean dnf;
+    private Boolean dns;
+    private Boolean dnf;
+
+//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @MapsId("pilotId")
+//    @JoinColumn(name = "pilot_id")
+//    private Pilot pilot;
 
     @Embeddable
     @Data
