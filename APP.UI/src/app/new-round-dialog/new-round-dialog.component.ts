@@ -9,10 +9,19 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class NewRoundDialogComponent implements OnInit {
 
   groups=false;
+  disabled=false;
+  roundNumber = 1;
 
   constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>) { }
 
   ngOnInit() {
+  }
+
+  increment(){
+    this.roundNumber++;
+  }
+  decrement(){
+    this.roundNumber--;
   }
 
 }

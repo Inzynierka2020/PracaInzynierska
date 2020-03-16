@@ -1,23 +1,27 @@
-<div class="content mb-5">
-    <div>
-        <h1>Round number</h1>
-        <h1>
-            1
-        </h1>
-    </div>
-    <div class="mt-5">
-        <mat-slide-toggle [(ngModel)]="groups" [disabled]="disabled">
-            <h1>Enable groups</h1>
-        </mat-slide-toggle>
-        <div *ngIf="groups" class="mt-3">
-            <h2>How many groups?</h2>
-            <h2>
-                3
-            </h2>
-        </div>
-    </div>
+<h1 mat-dialog-title class="text-center mb-0">New round</h1>
+<!-- <mat-divider></mat-divider> -->
+<h1 class="text-center mt-5">Group count</h1>
+<h5 class="text-center">(any above 1 activates group division durign this round)</h5>
+<div mat-dialog-content class="mb-5 px-0">
+    <i (click)="decrement()" class="material-icons">
+        remove
+    </i>
+    <h1 class="number">{{roundNumber}}</h1>
+    <i (click)="increment()" class="material-icons "> add
+    </i>
 </div>
-<div class="buttons">
+<mat-divider></mat-divider>
+<h1 class="text-center mt-5">Round number</h1>
+<div mat-dialog-content class="mb-5 px-0">
+    <i (click)="decrement()" class="material-icons">
+        remove
+    </i>
+    <h1 class="number">{{roundNumber}}</h1>
+    <i (click)="increment()" class="material-icons "> add
+    </i>
+</div>
+<!-- <mat-divider></mat-divider> -->
+<div class="buttons mt-4">
     <button mat-raised-button color="accent" [mat-dialog-close]="true">Start</button>
     <button mat-raised-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
 </div>

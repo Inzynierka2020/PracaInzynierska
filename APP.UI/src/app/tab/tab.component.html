@@ -9,7 +9,7 @@
             <app-browse></app-browse>
         </div>
     </mat-tab>
-    <mat-tab *ngIf="started" label="Round no. 1">
+    <mat-tab *ngIf="started" label="Round no. X">
         <div class="tab-content">
             <app-round (finished)="finishRound($event, matTabGroup)"></app-round>
         </div>

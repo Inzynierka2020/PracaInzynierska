@@ -1,12 +1,26 @@
 .nav-panel {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    font-size: 55px;
+    justify-content: space-around;
+    font-size: 40px;
+    width: 100%;
+    max-width: 800px;
+}
+
+mat-toolbar {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    justify-content: center;
 }
 
 i {
     font-size: 80px;
+    user-select: none;
+}
+
+i:hover {
+    cursor: pointer;
 }
 
 span {
@@ -18,4 +32,8 @@ button {
     height: 60px;
     width: 250px;
     font-size: 30px;
+}
+
+.content {
+    margin-bottom: 100px;
 }

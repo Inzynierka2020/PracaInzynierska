@@ -2,6 +2,8 @@ table {
     width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    margin-right: 0;
+    justify-content: center;
 }
 
 th,
@@ -14,4 +16,9 @@ td,
 mat-cell {
     font-size: 20px;
     text-align: center !important;
+}
+
+mat-row:hover {
+    background-color: rgb(255, 244, 180);
+    cursor: pointer;
 }

@@ -46,10 +46,13 @@ export class ScoreComponent implements OnInit {
 
   openPlayer(event) {
     console.log(event);
-    this.dialog.open(PlayerComponent, {
+    var dialogRef = this.dialog.open(PlayerComponent, {
       width: '90%',
       maxWidth: '800px',
-      disableClose: true
+      disableClose: true,
     })
+    if(this.title=="SCORE"){
+      dialogRef.componentInstance.editMode=false;
+    }
   }
 }

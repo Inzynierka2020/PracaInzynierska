@@ -10,7 +10,6 @@ button {
     justify-content: space-evenly;
     align-items: center;
     height: 15%;
-    padding-top: 5%;
 }
 
 .content {
@@ -22,6 +21,10 @@ button {
 
 .radio-button {
     font-size: 24px !important
+}
+
+table {
+    border-radius: 20px !important;
 }
 
 table,
@@ -39,4 +42,8 @@ tr:nth-child(even) {
 th {
     background-color: #673ab7;
     color: white;
+}
+
+.table-div {
+    display: contents;
 }

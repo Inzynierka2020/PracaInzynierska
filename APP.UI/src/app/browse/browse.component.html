@@ -1,11 +1,16 @@
-<div class="container">
-    <div class="nav-panel mb-4">
-        <button mat-raised-button color="accent" (click)="prevRound()">PREV</button>
+<mat-toolbar color="primary">
+    <div class="nav-panel">
+        <i class="material-icons" (click)=prevRound()>
+      keyboard_arrow_left
+    </i>
         <span>
-          {{roundNumber}}
-        </span>
-        <button mat-raised-button color="accent" (click)="nextRound()">NEXT</button>
+      ROUND {{roundNumber}}
+    </span>
+        <i class="material-icons" (click)=nextRound()>
+      keyboard_arrow_right
+    </i>
     </div>
+</mat-toolbar>
+<div class="content">
+    <app-score [title]="'SCORE'"></app-score>
 </div>
-<app-score [title]="'SCORE'"></app-score>
-<br>

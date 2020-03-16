@@ -17,4 +17,7 @@ export class SettingsComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  save(){
+    
+  }
 }
