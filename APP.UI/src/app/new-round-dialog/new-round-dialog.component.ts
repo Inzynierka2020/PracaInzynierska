@@ -11,6 +11,7 @@ export class NewRoundDialogComponent implements OnInit {
   groups=false;
   disabled=false;
   roundNumber = 1;
+  groupsNumber = 1;
 
   constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>) { }
 
@@ -22,6 +23,13 @@ export class NewRoundDialogComponent implements OnInit {
   }
   decrement(){
     this.roundNumber--;
+  }
+
+  incrementGroups(){
+    this.groupsNumber++;
+  }
+  decrementGroups(){
+    this.groupsNumber--;
   }
 
 }

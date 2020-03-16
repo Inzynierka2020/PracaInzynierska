@@ -47,3 +47,11 @@ th {
 .table-div {
     display: contents;
 }
+
+.form {
+    font-size: 20px;
+}
+
+mat-label {
+    color: red !important;
+}

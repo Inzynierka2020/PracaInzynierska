@@ -13,6 +13,8 @@ export class RoundComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
 
+  canceled = false;
+
   ngOnInit() {
   }
 

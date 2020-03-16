@@ -50,8 +50,21 @@ export class PlayerComponent implements OnInit {
     })
   }
 
+  back(){
+    this.dialogRef.close("true")
+  }
+
   switchEditMode(){
-    this.editMode=!this.editMode;
+    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent,{
+      width: '70%',
+      maxWidth: '500px',
+      disableClose: true
+    });
+    confirmDialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.editMode=!this.editMode;
+      }
+    })
   }
 
 }

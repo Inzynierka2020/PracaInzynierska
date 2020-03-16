@@ -28,7 +28,7 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <ng-container *ngIf="selectPlayers">
-            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple (click)="openPlayer(row)"></mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple (click)="openPlayer(row)" class="rippled-row"></mat-row>
         </ng-container>
         <ng-container *ngIf="!selectPlayers">
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

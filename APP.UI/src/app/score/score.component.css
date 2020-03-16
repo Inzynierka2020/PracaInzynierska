@@ -18,7 +18,14 @@ mat-cell {
     text-align: center !important;
 }
 
-mat-row:hover {
-    background-color: rgb(255, 244, 180);
+.rippled-row {
+    transition: 0.2s ease-out;
+}
+
+.rippled-row:hover {
     cursor: pointer;
+    transform: scale(1.05);
+    border-radius: 20px;
+    background-color: rgb(255, 234, 115);
+    z-index: 1000;
 }

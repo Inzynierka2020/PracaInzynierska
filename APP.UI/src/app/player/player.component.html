@@ -11,13 +11,17 @@
             <h4>TEAM: ---</h4>
         </div>
 
-        <div class="ml-5 mt-3">
+        <div class="ml-5 mt-1">
             <h3>GROUP </h3>
-            <mat-radio-group class="d-flex flex-column">
+            <mat-radio-group class="d-flex flex-column justify-content-end">
                 <mat-radio-button class="radio-button" *ngFor="let i of [0, 1, 2];" [value]="i" [disabled]="!editMode">
                     {{i+1}}
                 </mat-radio-button>
             </mat-radio-group>
+            <mat-form-field class="d-flex flex-column form my-3" color="warn">
+                <mat-label>Penalty (in points)</mat-label>
+                <input matInput color="warn" [readonly]="!editMode" value="300">
+            </mat-form-field>
         </div>
     </div>
     <mat-divider></mat-divider>
@@ -78,6 +82,6 @@
         <button *ngIf="editMode" mat-raised-button color="accent" (click)="savePlayer() ">Save</button>
         <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode() ">Edit</button>
         <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode() ">Cancel</button>
-        <button *ngIf="!editMode" mat-raised-button color="warn" (click)="savePlayer() ">Back</button>
+        <button *ngIf="!editMode" mat-raised-button color="warn" (click)="back() ">Back</button>
     </div>
 </div>
