@@ -1,7 +1,5 @@
 package aviationModelling.service;
 
-import aviationModelling.converter.Parser;
-import aviationModelling.entity.Event;
 import aviationModelling.entity.Pilot;
 import aviationModelling.repository.PilotRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class PilotServiceImpl implements PilotService {
 
     @Override
     public List<Pilot> findAll() {
-        return pilotRepository.findAll();
+        return pilotRepository.findAllByOrderByLastName();
     }
 
     @Override
@@ -37,6 +35,26 @@ public class PilotServiceImpl implements PilotService {
             pilot=result.get();
         }
         return pilot;
+    }
+
+    @Override
+    public List<Pilot> findPilotsWithFinishedFlight(Integer roundNum) {
+        return pilotRepository.findPilotsWithFinishedFlight(roundNum);
+    }
+
+    @Override
+    public List<Pilot> findPilotsWithUnfinishedFlight(Integer roundNum) {
+        return pilotRepository.findPilotsWithUnfinishedFlight(roundNum);
+    }
+
+//    @Override
+//    public List<Pilot> findPilotsByGroup(Integer round) {
+//        return pilotRepository.findPilotsByGroup(round);
+//    }
+
+    @Override
+    public List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group) {
+        return pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(round, group);
     }
 
     @Override

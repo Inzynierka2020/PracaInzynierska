@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RoundService {
 
-    List<Round> findByRoundIdPilotId(int pilotId);
-    List<Round> findByRoundIdRoundNum(int roundNumber);
+    List<Round> findByPilotId(int pilotId);
+    List<Round> findByRoundNum(int roundNumber);
     Round save(Round round);
 }

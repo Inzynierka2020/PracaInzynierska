@@ -4,10 +4,6 @@ import aviationModelling.entity.Round;
 import aviationModelling.service.RoundService;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -20,16 +16,17 @@ public class RestRoundController {
         this.roundService = roundService;
     }
 
+//    wyswietl wszystkie loty w danej rundzie
     @GetMapping("/event-round/{round}")
     public List<Round> getSpecificRound(@PathVariable int round) {
-        List<Round> roundList = roundService.findByRoundIdRoundNum(round);
+        List<Round> roundList = roundService.findByRoundNum(round);
         return roundList;
     }
 
-
+//      wyswietl wszystkie rundy danego pilota
     @GetMapping("/pilot-rounds/{pilot_id}")
     public List<Round> getPilotRounds(@PathVariable int pilot_id) {
-        List<Round> roundList = roundService.findByRoundIdPilotId(pilot_id);
+        List<Round> roundList = roundService.findByPilotId(pilot_id);
         return roundList;
     }
 
@@ -37,6 +34,7 @@ public class RestRoundController {
     public Round saveRound(@RequestBody Round round) {
         return roundService.save(round);
     }
+
 
 
 }

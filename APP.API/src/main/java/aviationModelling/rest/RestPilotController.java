@@ -17,7 +17,8 @@ public class RestPilotController {
         this.pilotService = pilotService;
     }
 
-    @GetMapping("/list")
+//    wyswietl wszystkich pilotw (kolejnosc alfabetyczna)
+    @GetMapping
     public List<Pilot> getPilots() {
         return pilotService.findAll();
     }
@@ -32,6 +33,28 @@ public class RestPilotController {
         pilotService.save(pilot);
         return pilot;
     }
+
+    @GetMapping("finished-flight/{round}")
+    public List<Pilot> getPilotsWithFinishedFlight(@PathVariable Integer round) {
+        return pilotService.findPilotsWithFinishedFlight(round);
+    }
+
+    @GetMapping("unfinished-flight/{round}")
+    public List<Pilot> getPilotsWithUnfinishedFlight(@PathVariable Integer round) {
+        return pilotService.findPilotsWithUnfinishedFlight(round);
+    }
+
+//    @GetMapping("/listByGroups/{round}")
+//    public List<Pilot> getPilotsOrderedByGroups(@PathVariable Integer round) {
+//        return pilotService.findPilotsByGroup(round);
+//    }
+
+    @GetMapping("/finished-flight-group-by-group/round={round}&group={group}")
+    public List<Pilot> getPilotsFromGroup(@PathVariable Integer round, @PathVariable String group) {
+        return pilotService.findPilotsWithFinishedFlightGroupedByGroup(round,group);
+    }
+
+
 
 
 

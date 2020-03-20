@@ -23,7 +23,7 @@ public class RestEventController {
     }
 
 //     zapisz informacje o evencie oraz pilotow do bazy danych
-    @GetMapping("/saveEvent/{eventId}")
+    @GetMapping("/save-event/{eventId}")
     public boolean saveEventAndPilots(@PathVariable int eventId) {
         return eventService.saveEventAndPilots(eventId);
     }

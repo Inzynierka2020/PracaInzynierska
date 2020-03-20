@@ -1,11 +1,12 @@
 package aviationModelling.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -61,7 +62,7 @@ public class Round implements Serializable {
 //    private Pilot pilot;
 
     @Embeddable
-    @Data
+    @Getter @Setter
     public static class RoundId implements Serializable {
 
         @Column(name = "pilot_id")

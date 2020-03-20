@@ -1,12 +1,12 @@
-package aviationModelling.converter;
+package aviationModelling.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Service
 public class UrlWizard {
 
     @Value("${vault.login}")
@@ -14,6 +14,9 @@ public class UrlWizard {
 
     @Value("${vault.password}")
     private String password;
+
+    @Value("${vault.url}")
+    private String url;
 
     public String getEventPilots(Integer event_id) {
         Map<String, String> params = new HashMap<>();
@@ -35,7 +38,7 @@ public class UrlWizard {
 
     private String urlBuilder(Map<String, String> params) {
         StringBuilder result = new StringBuilder();
-        result.append("http://www.f3xvault.com/api.php?");
+        result.append(url);
 
 //        zbuduj URL ze wszystkich parametrow
         for (Map.Entry<String, String> entry : params.entrySet()) {

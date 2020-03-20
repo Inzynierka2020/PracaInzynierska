@@ -17,13 +17,13 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public List<Round> findByRoundIdPilotId(int pilotId) {
-        return roundRepository.findByRoundIdPilotId(pilotId);
+    public List<Round> findByPilotId(int pilotId) {
+        return roundRepository.findByRoundIdPilotIdOrderByRoundIdRoundNum(pilotId);
     }
 
     @Override
-    public List<Round> findByRoundIdRoundNum(int roundNumber) {
-        return roundRepository.findByRoundIdRoundNum(roundNumber);
+    public List<Round> findByRoundNum(int roundNumber) {
+        return roundRepository.findByRoundIdRoundNumOrderBySeconds(roundNumber);
     }
 
     @Override
@@ -31,4 +31,6 @@ public class RoundServiceImpl implements RoundService {
 //        round.setFlightTime(LocalDateTime.now());
         return roundRepository.save(round);
     }
+
+
 }

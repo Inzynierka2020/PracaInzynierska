@@ -12,7 +12,7 @@ public class Event {
 
     @Id
     @Column(name = "event_id")
-    private int eventId;
+    private Integer eventId;
 
     @Column(name = "event_name")
     private String eventName;
@@ -30,7 +30,7 @@ public class Event {
     private String eventType;
 
     @Column(name = "number_of_rounds")
-    private int numberOfRounds;
+    private Integer numberOfRounds;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")

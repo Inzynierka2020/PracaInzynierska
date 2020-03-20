@@ -12,10 +12,10 @@ public class Pilot {
 
     @Id
     @Column(name = "pilot_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "event_id")
-    private int eventId;
+    private Integer eventId;
 
     @Column(name = "pilot_bib")
     private String pilotBib;
