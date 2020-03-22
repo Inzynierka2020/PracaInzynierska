@@ -1,0 +1,21 @@
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="container">
+        <i class="material-icons mr-3" (click)="changeMode()">
+            <span *ngIf="!editMode">lock</span>
+            <span *ngIf="editMode"> lock_open</span>
+        </i>
+        <mat-checkbox [disabled]="!editMode" color="warn">
+            ROUND CANCELED
+        </mat-checkbox>
+    </div>
+    <div ngClass="!browse ? 'content' : ''" class="w-100">
+        <app-score [mode]="'browse'" [group]="group"></app-score>
+    </div>
+    <div class="data my-4">
+        <button mat-raised-button [color]="group =='A' ? 'primary' : 'accent'" (click)="changeGroup('A')">A</button>
+        <button mat-raised-button [color]="group =='B' ? 'primary' : 'accent'" (click)="changeGroup('B')">B</button>
+        <button mat-raised-button [color]="group =='C' ? 'primary' : 'accent'" (click)="changeGroup('C')">C</button>
+        <button mat-raised-button [color]="group =='D' ? 'primary' : 'accent'" (click)="changeGroup('D')">D</button>
+        <button mat-raised-button [color]="group =='E' ? 'primary' : 'accent'" (click)="changeGroup('E')">E</button>
+    </div>
+</div>

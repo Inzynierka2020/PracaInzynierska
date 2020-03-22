@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+    background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed !important;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+mat-dialog-container {
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9E6) !important;
+    border-radius: 20px !important;
+}
+
+button {
+    border-radius: 20px !important;
+}
+
+button:focus {
+    outline: none !important;
+}
