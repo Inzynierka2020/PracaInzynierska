@@ -48,6 +48,8 @@ export class ScoreComponent implements OnInit {
       var dialogRef = this.dialog.open(PlayerComponent, {
         width: '90%',
         maxWidth: '800px',
+        height: '95%',
+        maxHeight: '1000px',
         disableClose: true,
       })
       if (this.mode == "browse") {
