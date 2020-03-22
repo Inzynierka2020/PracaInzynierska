@@ -20,6 +20,19 @@
         </div>
     </div>
     <mat-divider></mat-divider>
+    <div *ngIf="editMode">
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <h1 class="text-center w-100">
+                    NEW PLAYER
+                </h1>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="display-1 text-center mb-3">
+            99
+        </div>
+    </div>
+    <mat-divider></mat-divider>
     <div class="groups my-2">
         <div class="data">
             <button mat-raised-button class="group-button" [color]="group =='A' ? 'primary' : 'accent'" (click)="changeGroup('A')" *ngIf="editMode || group == 'A'">A</button>
