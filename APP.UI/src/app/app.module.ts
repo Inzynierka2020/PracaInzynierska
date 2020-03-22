@@ -14,6 +14,7 @@ import { NewRoundDialogComponent } from './new-round-dialog/new-round-dialog.com
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { PlayerComponent } from './player/player.component';
+import { WindComponent } from './wind/wind.component';
 
 const appRoutes: Routes = [
   { path: '', component: TabComponent },
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
     SettingsComponent,
     NewRoundDialogComponent,
     ConfirmDialogComponent,
-    PlayerComponent
+    PlayerComponent,
+    WindComponent,
   ],
   imports: [
     BrowserModule,

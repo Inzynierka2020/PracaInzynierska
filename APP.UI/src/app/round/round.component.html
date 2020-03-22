@@ -1,13 +1,22 @@
-<div class="container mt-5">
-    <mat-checkbox [(ngModel)]="canceled" color="warn">
-        ROUND CANCELED
-    </mat-checkbox>
-</div>
-
-<div class="content">
-    <div class="mb-5">
-        <app-score [title]="'FINISHED PLAYERS'"></app-score>
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="container">
+        <mat-checkbox [(ngModel)]="canceled" color="warn">
+            ROUND CANCELED
+        </mat-checkbox>
     </div>
-    <app-score [title]="'YET TO START'"></app-score>
+
+    <div class="content w-100">
+        <div class="w-100">
+            <app-score></app-score>
+        </div>
+        <mat-toolbar color="primary">
+            <mat-toolbar-row class="to-start my-3">
+                <div class="display-4">YET TO START</div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="to-start-score w-100">
+            <app-score [mode]="'yetToStart'" class="w-100"></app-score>
+        </div>
+    </div>
+    <button mat-raised-button color="accent" (click)="finishRound()">Finish round</button>
 </div>
-<button mat-raised-button color="accent" (click)="finishRound()">Finish round</button>

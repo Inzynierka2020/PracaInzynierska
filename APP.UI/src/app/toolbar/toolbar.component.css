@@ -1,16 +1,26 @@
 .time {
-    font-size: 64px;
+    font-size: 36px;
     margin-bottom: 0;
 }
 
 .date {
     display: flex;
     flex-direction: column;
-    margin-bottom: 24px;
+    margin-bottom: 0px;
+    padding-right: 20px;
 }
 
 .days {
+    margin-bottom: 0px;
+}
+
+.title {
+    font-size: 48px;
     margin-bottom: 8px;
+    /* color: #ffd740; */
+    color: #ffd740;
+    text-shadow: 2px 2px 25px black !important;
+    font-weight: bold;
 }
 
 .cog {
@@ -34,10 +44,10 @@ mat-toolbar-row {
     max-width: 1200px;
 }
 
-i {
+.material-icons {
     color: #ffd740;
     font-size: 64px;
-    text-shadow: 2px 2px 25px rgba(0, 0, 0, .87);
+    text-shadow: 2px 2px 25px rgba(0, 0, 0, .87) !important;
 }
 
 mat-toolbar {
@@ -48,4 +58,18 @@ mat-toolbar {
     -webkit-transform: translateZ(0);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+mat-toolbar-row {
+    max-width: 1000px;
+}
+
+.wind {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 32px;
 }

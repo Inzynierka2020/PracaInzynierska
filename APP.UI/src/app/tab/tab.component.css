@@ -5,7 +5,8 @@
 }
 
 .mat-tab-label {
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: bolder;
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;
     width: 100%;
@@ -30,5 +31,27 @@
 }
 
 .tab-content {
-    margin-top: 150px;
+    margin-top: 128px;
+}
+
+.grey {
+    color: grey !important;
+    cursor: pointer;
+}
+
+.gold {
+    color: gold !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .87) !important;
+    transition: 0.1s ease-in-out;
+    user-select: none;
+    cursor: pointer;
+}
+
+.gold:active {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.black {
+    color: black;
 }

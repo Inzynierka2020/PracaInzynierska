@@ -38,4 +38,6 @@ button {
 
 i {
     font-size: 70px;
+    cursor: pointer;
+    user-select: none;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-browse',
@@ -7,19 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrowseComponent implements OnInit {
 
+  @Input()
   roundNumber = 0;
+
+  editMode=false;
+  group='A';
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  nextRound() {
-    this.roundNumber++;
+  changeGroup(group){
+    this.group=group;
   }
 
-  prevRound() {
-    this.roundNumber--;
-
+  changeMode(){
+    this.editMode=!this.editMode;
   }
 }

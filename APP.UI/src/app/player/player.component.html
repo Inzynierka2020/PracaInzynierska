@@ -1,87 +1,134 @@
+<!-- <h1 mat-dialog-title class="text-center mb-0 text-danger display-4" *ngIf="editMode ">EDIT MODE</h1> -->
 <div class="content px-3">
     <div class="d-flex justify-content-between mb-3 pt-2">
-        <div>
+        <div class="d-flex align-items-center">
+            <div class="number">
+                99
+            </div>
             <h2>
-                LASTNAMOWICZ Firstnam
+                WYRZYKOWSKI <br>Damian
             </h2>
-            <h4> Class: OPEN</h4>
-            <h4>AMA: 123456</h4>
-            <h4>FAI: ---</h4>
-            <h4>FAI License: ---</h4>
-            <h4>TEAM: ---</h4>
+            <!-- <h1> Class: OPEN</h1>
+            <h1>AMA: 123456</h1>
+            <h1>FAI: ---</h1>
+            <h1>FAI License: ---</h1>
+            <h1>TEAM: ---</h1> -->
         </div>
-
-        <div class="ml-5 mt-1">
-            <h3>GROUP </h3>
-            <mat-radio-group class="d-flex flex-column justify-content-end">
-                <mat-radio-button class="radio-button" *ngFor="let i of [0, 1, 2];" [value]="i" [disabled]="!editMode">
-                    {{i+1}}
-                </mat-radio-button>
-            </mat-radio-group>
-            <mat-form-field class="d-flex flex-column form my-3" color="warn">
-                <mat-label>Penalty (in points)</mat-label>
-                <input matInput color="warn" [readonly]="!editMode" value="300">
-            </mat-form-field>
+        <div class="headerDivider"></div>
+        <div class="pl-3 flag">
+            <app-wind class="wind"></app-wind>
         </div>
     </div>
     <mat-divider></mat-divider>
-    <div class="table-div mt-3">
-        <table class="mt-4">
-            <tr>
-                <th>Base</th>
-                <th>Time</th>
-                <th>Base</th>
-                <th>Time</th>
-            </tr>
-            <tr>
-                <td>1.</td>
-                <td>5s</td>
-                <td>6.</td>
-                <td>5s</td>
-            </tr>
-            <tr>
-                <td>2.</td>
-                <td>5s</td>
-                <td>7.</td>
-                <td>5s</td>
-            </tr>
-            <tr>
-                <td>3.</td>
-                <td>5s</td>
-                <td>8.</td>
-                <td>5s</td>
-            </tr>
-            <tr>
-                <td>4.</td>
-                <td>5s</td>
-                <td>9.</td>
-                <td>5s</td>
-            </tr>
-            <tr>
-                <td>5.</td>
-                <td>5s</td>
-                <td>10.</td>
-                <td>5s</td>
-            </tr>
-        </table>
+    <div class="groups my-2">
+        <div class="data">
+            <button mat-raised-button class="group-button" [color]="group =='A' ? 'primary' : 'accent'" (click)="changeGroup('A')" *ngIf="editMode || group == 'A'">A</button>
+            <button mat-raised-button class="group-button" [color]="group =='B' ? 'primary' : 'accent'" (click)="changeGroup('B')" *ngIf="editMode || group == 'B'">B</button>
+            <button mat-raised-button class="group-button" [color]="group =='C' ? 'primary' : 'accent'" (click)="changeGroup('C')" *ngIf="editMode || group == 'C'">C</button>
+            <button mat-raised-button class="group-button" [color]="group =='D' ? 'primary' : 'accent'" (click)="changeGroup('D')" *ngIf="editMode || group == 'D'">D</button>
+            <button mat-raised-button class="group-button" [color]="group =='E' ? 'primary' : 'accent'" (click)="changeGroup('E')" *ngIf="editMode || group == 'E'">E</button>
+        </div>
     </div>
-    <div *ngIf="editMode" class="buttons my-4">
-        <button mat-raised-button *ngIf="dNF" color="primary" (click)="didNotFinish()">DNF</button>
-        <button mat-stroked-button *ngIf="!dNF" color="accent" (click)="didNotFinish()">DNF</button>
-        <button mat-raised-button *ngIf="dNS" color="primary" (click)="didNotStart()">DNS</button>
-        <button mat-stroked-button *ngIf="!dNS" color="accent" (click)="didNotStart()">DNS</button>
-        <!-- <button mat-raised-button color="warn " [mat-dialog-close]="true ">SNF</button> -->
+    <mat-divider></mat-divider>
+    <div class="second-div mt-4">
+        <div class="bar1">
+            <table>
+                <tr>
+                    <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0);">
+                    </th>
+                    <td>BEST</td>
+                </tr>
+                <tr>
+                    <th>CT</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B1</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B2</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B3</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B4</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B5</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B6</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B7</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B8</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B9</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+                <tr>
+                    <th>B10</th>
+                    <td>99.99</td>
+                    <td>99.99</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="bar2">
+            <div class="penalty mb-5" *ngIf="!editMode">
+                <h3 class="text-center text-danger">PENALTY</h3>
+                <mat-divider></mat-divider>
+                <h1 class="text-center text-danger">300</h1>
+                <h3 class="text-center mt-5">STATUS</h3>
+                <mat-divider></mat-divider>
+                <h1 class="text-center">FINISHED</h1>
+            </div>
+            <div class="input">
+                <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode">
+                    <mat-label>PENALTY</mat-label>
+                    <input matInput color="warn" [readonly]="!editMode" value="300">
+                </mat-form-field>
+            </div>
+            <div class="buttons" *ngIf="editMode">
+                <button mat-raised-button *ngIf="dNF" color="primary" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="!dNF" color="accent" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="dNS" color="primary" (click)="didNotStart()">DNS</button>
+                <button mat-raised-button *ngIf="!dNS" color="accent" (click)="didNotStart()">DNS</button>
+            </div>
+            <div class="buttons">
+                <button *ngIf="!editMode" mat-raised-button color="warn" (click)="back() ">Back</button>
+                <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode() ">Cancel</button>
+                <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode() ">Edit</button>
+                <button *ngIf="editMode" class="bg-success text-white" mat-raised-button (click)="savePlayer() " cdkFocusInitial>Save</button>
+            </div>
+        </div>
     </div>
-    <div *ngIf="!editMode">
+    <!-- <div *ngIf="!editMode">
         <div class="buttons my-4">
             <h2>Did not start.</h2>
         </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="buttons mt-4">
-        <button *ngIf="editMode" mat-raised-button color="accent" (click)="savePlayer() ">Save</button>
-        <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode() ">Edit</button>
-        <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode() ">Cancel</button>
-        <button *ngIf="!editMode" mat-raised-button color="warn" (click)="back() ">Back</button>
-    </div>
+    </div> -->
+
 </div>

@@ -1,5 +1,5 @@
-<h1 mat-dialog-title class="text-center mb-0">New round</h1>
-<!-- <mat-divider></mat-divider> -->
+<h1 mat-dialog-title class="text-center mb-3">New round</h1>
+<mat-divider class="w-50 mx-auto"></mat-divider>
 <h1 class="text-center mt-5">Group count</h1>
 <h5 class="text-center">(any above 1 activates group division during this round)</h5>
 <div mat-dialog-content class="mb-5 px-0">
@@ -20,7 +20,6 @@
     <i (click)="increment()" class="material-icons "> add
     </i>
 </div>
-<!-- <mat-divider></mat-divider> -->
 <div class="buttons mt-4">
     <button mat-raised-button color="accent" [mat-dialog-close]="true">Start</button>
     <button mat-raised-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>

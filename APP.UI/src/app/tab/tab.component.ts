@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.component';
@@ -11,11 +11,12 @@ import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.co
   encapsulation: ViewEncapsulation.None
 })
 export class TabComponent implements OnInit {
-  
+
   started = false;
   switch = false; //temporary workaround for a bug
   previousTabIndex = 0;
-
+  browsing = false;
+  roundNumber = 1;
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -23,6 +24,7 @@ export class TabComponent implements OnInit {
 
   onChangeTab(event: MatTabChangeEvent, tab: MatTabGroup) {
     if (event.index == 2 && !this.started) {
+      this.browsing = false;
       const dialogRef = this.dialog.open(NewRoundDialogComponent, {
         width: '75%',
         maxWidth: '800px',
@@ -36,11 +38,15 @@ export class TabComponent implements OnInit {
           this.createNewRound();
         } else {
           tab.selectedIndex = this.previousTabIndex;
-          this.switch=!this.switch;
+          this.switch = !this.switch;
         }
       })
-    }else{
-      this.previousTabIndex=event.index;
+    } else if (event.index == 1) {
+      this.browsing = true;
+      this.previousTabIndex = event.index;
+    } else {
+      this.previousTabIndex = event.index;
+      this.browsing = false;
     }
   }
 
@@ -53,4 +59,16 @@ export class TabComponent implements OnInit {
     tab.selectedIndex = 0;
   }
 
+
+  nextRound() {
+    if (this.browsing)
+      this.roundNumber++;
+  }
+
+  prevRound() {
+    if (this.browsing)
+      this.roundNumber--;
+      if(this.roundNumber<0)
+        this.roundNumber=0;
+  }
 }

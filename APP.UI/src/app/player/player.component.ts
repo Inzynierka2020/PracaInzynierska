@@ -12,59 +12,72 @@ export class PlayerComponent implements OnInit {
   constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<PlayerComponent>) { }
 
   @Input()
-  editMode=true;
+  editMode = true;
+
+  @Input()
+  returnDirectly = false;
 
   ngOnInit() {
   }
 
+  group='A';
+
   dNS = false;
   dNF = false;
 
-  didNotFinish(){
-    if(this.dNF){
-      this.dNF= false;
-    }else{
-      this.dNF=true;
-      this.dNS=false;
+  didNotFinish() {
+    if (this.dNF) {
+      this.dNF = false;
+    } else {
+      this.dNF = true;
+      this.dNS = false;
     }
   }
 
-  didNotStart(){
-    if(this.dNS){
-      this.dNS= false;
-    }else{
-      this.dNS=true;
-      this.dNF=false;
+  didNotStart() {
+    if (this.dNS) {
+      this.dNS = false;
+    } else {
+      this.dNS = true;
+      this.dNF = false;
     }
   }
-  savePlayer(){
-    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent,{
+  savePlayer() {
+    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '70%',
       maxWidth: '500px',
       disableClose: true
     });
-    confirmDialogRef.afterClosed().subscribe(result=>{
-      if(result){
-        this.dialogRef.close("true")
+    confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.editMode = false;
+        if (this.returnDirectly)
+          this.dialogRef.close("true")
       }
     })
   }
 
-  back(){
+  back() {
     this.dialogRef.close("true")
   }
 
-  switchEditMode(){
-    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent,{
+  switchEditMode() {
+    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '70%',
       maxWidth: '500px',
       disableClose: true
     });
-    confirmDialogRef.afterClosed().subscribe(result=>{
-      if(result){
-        this.editMode=!this.editMode;
+    confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (this.returnDirectly)
+          this.dialogRef.close("true")
+        this.editMode = !this.editMode;
       }
+
     })
+  }
+  changeGroup(group){
+    this.group=group;
   }
 
 }
