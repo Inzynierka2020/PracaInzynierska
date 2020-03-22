@@ -13,6 +13,6 @@ public interface RoundRepository extends JpaRepository<Round, Round.RoundId> {
 
     List<Round> findByRoundIdPilotIdOrderByRoundIdRoundNum(int pilotId);
     List<Round> findByRoundIdRoundNumOrderBySeconds(int roundNumber);
-    List<Double> find();
+
 
 }

@@ -56,6 +56,8 @@ public class Round implements Serializable {
     private Boolean dns;
     private Boolean dnf;
 
+    private Float score;
+
 //    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @MapsId("pilotId")
 //    @JoinColumn(name = "pilot_id")

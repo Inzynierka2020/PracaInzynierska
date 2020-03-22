@@ -3,6 +3,8 @@ package aviationModelling.service;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Pilot;
 import aviationModelling.repository.EventRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,18 +41,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean save(Event event) {
+    public ResponseEntity<String> save(Event event) {
         try {
             eventRepository.save(event);
         } catch (Exception ex) {
-            logger.warning("====> ERROR saving an event");
-            return false;
+            return new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
         }
-        return true;
+        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
     }
 
     @Override
-    public boolean saveEventAndPilots(int eventId) {
+    public void saveEventAndPilots(int eventId) {
 
         try {
             Event event = parser.getEventInfo();
@@ -59,8 +60,7 @@ public class EventServiceImpl implements EventService {
             List<Pilot> pilotList = parser.getPilotList(eventId);
             pilotService.savePilots(pilotList);
         } catch (Exception ex) {
-            return false;
+            new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
         }
-        return true;
     }
 }

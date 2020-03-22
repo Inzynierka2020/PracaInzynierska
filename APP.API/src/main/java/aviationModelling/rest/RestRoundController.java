@@ -2,6 +2,8 @@ package aviationModelling.rest;
 
 import aviationModelling.entity.Round;
 import aviationModelling.service.RoundService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,25 @@ public class RestRoundController {
     }
 
     @PostMapping
-    public Round saveRound(@RequestBody Round round) {
+    public ResponseEntity<String> saveRound(@RequestBody Round round) {
         return roundService.save(round);
     }
+
+    @PutMapping
+    public ResponseEntity<String> updateRound(@RequestBody Round round) {
+        return roundService.save(round);
+    }
+
+    @PutMapping("/finish/{roundId}")
+    public ResponseEntity<String> finishRound(@PathVariable Integer roundId) {
+        return roundService.recalculateTotalScores(roundId);
+    }
+
+    @GetMapping("/best/{pilotId}")
+    public Round getBest(@PathVariable Integer pilotId) {
+        return roundService.getBest(pilotId);
+    }
+
 
 
 

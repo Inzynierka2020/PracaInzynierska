@@ -2,6 +2,7 @@ package aviationModelling.rest;
 
 import aviationModelling.entity.Pilot;
 import aviationModelling.service.PilotService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +30,8 @@ public class RestPilotController {
     }
 
     @PutMapping
-    public Pilot updatePilot(@RequestBody Pilot pilot) {
-        pilotService.save(pilot);
-        return pilot;
+    public ResponseEntity<String> updatePilot(@RequestBody Pilot pilot) {
+        return pilotService.save(pilot);
     }
 
     @GetMapping("finished-flight/{round}")
@@ -44,21 +44,10 @@ public class RestPilotController {
         return pilotService.findPilotsWithUnfinishedFlight(round);
     }
 
-//    @GetMapping("/listByGroups/{round}")
-//    public List<Pilot> getPilotsOrderedByGroups(@PathVariable Integer round) {
-//        return pilotService.findPilotsByGroup(round);
-//    }
 
     @GetMapping("/finished-flight-group-by-group/round={round}&group={group}")
     public List<Pilot> getPilotsFromGroup(@PathVariable Integer round, @PathVariable String group) {
         return pilotService.findPilotsWithFinishedFlightGroupedByGroup(round,group);
     }
-
-
-
-
-
-
-
 
 }

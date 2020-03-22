@@ -2,6 +2,8 @@ package aviationModelling.service;
 
 import aviationModelling.entity.Pilot;
 import aviationModelling.repository.PilotRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,15 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public void save(Pilot pilot) {
+    public ResponseEntity<String> save(Pilot pilot) {
         pilotRepository.save(pilot);
+        return new ResponseEntity<>("Pilot save successfully", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> saveAll(List<Pilot> pilotList) {
+        pilotRepository.saveAll(pilotList);
+        return new ResponseEntity<>("Pilot list saved successfully", HttpStatus.OK);
     }
 
     @Override

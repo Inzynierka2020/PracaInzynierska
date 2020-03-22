@@ -38,6 +38,8 @@ public class Pilot {
     @Column(name = "team_name")
     private String teamName;
 
+    private Float score;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pilot_id")
     private List<Round> rounds;

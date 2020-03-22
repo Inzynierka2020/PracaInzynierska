@@ -1,9 +1,11 @@
 package aviationModelling.service;
 
 import aviationModelling.entity.Event;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public interface EventService {
     Event findById(int id);
-    boolean save(Event event);
-    boolean saveEventAndPilots(int eventId);
+    ResponseEntity<String> save(Event event);
+    void saveEventAndPilots(int eventId);
 }
