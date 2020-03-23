@@ -1,7 +1,6 @@
 package aviationModelling.repository;
 
 import aviationModelling.entity.Pilot;
-import aviationModelling.entity.Round;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,25 +14,20 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
     List<Pilot> findAllByOrderByLastName();
 
     @Query("SELECT p FROM Pilot p " +
-            "JOIN Round r ON p.id = r.roundId.pilotId " +
-            "WHERE r.roundId.roundNum = :roundNum " +
-            "ORDER BY r.seconds DESC")
+            "JOIN Flight f ON p.id = f.flightId.pilotId " +
+            "WHERE f.flightId.roundNum = :roundNum " +
+            "ORDER BY f.seconds DESC")
     List<Pilot> findPilotsWithFinishedFlight(@Param("roundNum") Integer roundNum);
 
     @Query("SELECT pil FROM Pilot pil WHERE pil.id NOT IN " +
-            "(SELECT p.id FROM Pilot p JOIN Round r ON p.id = r.roundId.pilotId WHERE r.roundId.roundNum = :round)" +
+            "(SELECT p.id FROM Pilot p JOIN Flight f ON p.id = f.flightId.pilotId WHERE f.flightId.roundNum = :roundNum)" +
             "ORDER BY pil.lastName")
-    List<Pilot> findPilotsWithUnfinishedFlight(@Param("round") Integer round);
+    List<Pilot> findPilotsWithUnfinishedFlight(@Param("roundNum") Integer roundNum);
 
     @Query("SELECT p FROM Pilot p " +
-            "JOIN Round r ON p.id = r.roundId.pilotId " +
-            "WHERE r.roundId.roundNum = :round AND r.group = :group " +
-            "ORDER BY r.seconds, p.lastName")
+            "JOIN Flight f ON p.id = f.flightId.pilotId " +
+            "WHERE f.flightId.roundNum = :round AND f.group = :group " +
+            "ORDER BY f.seconds, p.lastName")
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(@Param("round") Integer round, @Param("group") String group);
 
-//    @Query("SELECT p FROM Pilot p " +
-//            "JOIN Round r ON p.id = r.roundId.pilotId " +
-//            "WHERE r.roundId.roundNum = :round " +
-//            "ORDER BY r.group, r.seconds, p.lastName")
-//    List<Pilot> findPilotsByGroup(@Param("round") Integer round);
 }

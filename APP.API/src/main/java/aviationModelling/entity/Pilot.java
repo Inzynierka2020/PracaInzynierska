@@ -42,7 +42,7 @@ public class Pilot {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pilot_id")
-    private List<Round> rounds;
+    private List<Flight> flights;
 
 //    dla komunikacja dwukierunkowej:
 
@@ -53,6 +53,6 @@ public class Pilot {
 
 //    @OneToMany(mappedBy = "pilot",
 //            cascade = CascadeType.ALL)
-//    private List<Round> rounds;
+//    private List<Flight> flights;
 
 }

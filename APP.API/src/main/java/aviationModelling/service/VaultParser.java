@@ -44,7 +44,7 @@ public class VaultParser {
             pilot.setTeamName(line[8].trim());
             pilot.setEventId(eventId);
             pilot.setScore((float) 0);
-            pilot.setRounds(null);
+            pilot.setFlights(null);
             pilotList.add(pilot);
         }
         return pilotList;

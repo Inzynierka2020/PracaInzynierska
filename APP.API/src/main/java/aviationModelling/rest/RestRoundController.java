@@ -2,11 +2,8 @@ package aviationModelling.rest;
 
 import aviationModelling.entity.Round;
 import aviationModelling.service.RoundService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/rounds")
@@ -18,46 +15,13 @@ public class RestRoundController {
         this.roundService = roundService;
     }
 
-//    wyswietl wszystkie loty w danej rundzie
-    @GetMapping("/event-round/{round}")
-    public List<Round> getSpecificRound(@PathVariable int round) {
-        List<Round> roundList = roundService.findByRoundNum(round);
-        return roundList;
+    @GetMapping("/{roundNum}")
+    public Round getRound(@PathVariable Integer roundNum) {
+        return roundService.findByRoundNum(roundNum);
     }
 
-//      wyswietl wszystkie rundy danego pilota
-    @GetMapping("/pilot-rounds/{pilot_id}")
-    public List<Round> getPilotRounds(@PathVariable int pilot_id) {
-        List<Round> roundList = roundService.findByPilotId(pilot_id);
-        return roundList;
+    @PostMapping("/create/{roundNum}")
+    public ResponseEntity<String> createRound(@PathVariable Integer roundNum) {
+        return roundService.create(roundNum);
     }
-
-    @PostMapping
-    public ResponseEntity<String> saveRound(@RequestBody Round round) {
-        return roundService.save(round);
-    }
-
-    @PutMapping
-    public ResponseEntity<String> updateRound(@RequestBody Round round) {
-        return roundService.save(round);
-    }
-
-    @PutMapping("/finish/{round}")
-    public ResponseEntity<String> finishRound(@PathVariable Integer round) {
-        return roundService.recalculateTotalScores(round);
-    }
-
-    @GetMapping("/best/{pilotId}")
-    public Round getBest(@PathVariable Integer pilotId) {
-        return roundService.getBest(pilotId);
-    }
-
-    @PutMapping("/cancel/{round}")
-    public ResponseEntity<String> cancelRound(@PathVariable Integer round) {
-        return roundService.cancelRound(round);
-    }
-
-
-
-
 }

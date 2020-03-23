@@ -34,20 +34,20 @@ public class RestPilotController {
         return pilotService.save(pilot);
     }
 
-    @GetMapping("finished-flight/{round}")
-    public List<Pilot> getPilotsWithFinishedFlight(@PathVariable Integer round) {
-        return pilotService.findPilotsWithFinishedFlight(round);
+    @GetMapping("finished-flight/{roundNum}")
+    public List<Pilot> getPilotsWithFinishedFlight(@PathVariable Integer roundNum) {
+        return pilotService.findPilotsWithFinishedFlight(roundNum);
     }
 
-    @GetMapping("unfinished-flight/{round}")
-    public List<Pilot> getPilotsWithUnfinishedFlight(@PathVariable Integer round) {
-        return pilotService.findPilotsWithUnfinishedFlight(round);
+    @GetMapping("unfinished-flight/{roundNum}")
+    public List<Pilot> getPilotsWithUnfinishedFlight(@PathVariable Integer roundNum) {
+        return pilotService.findPilotsWithUnfinishedFlight(roundNum);
     }
 
 
-    @GetMapping("/finished-flight-group-by-group/round={round}&group={group}")
-    public List<Pilot> getPilotsFromGroup(@PathVariable Integer round, @PathVariable String group) {
-        return pilotService.findPilotsWithFinishedFlightGroupedByGroup(round,group);
+    @GetMapping("/finished-flight-group-by-group/round={roundNum}&group={group}")
+    public List<Pilot> getPilotsFromGroup(@PathVariable Integer roundNum, @PathVariable String group) {
+        return pilotService.findPilotsWithFinishedFlightGroupedByGroup(roundNum,group);
     }
 
 }
