@@ -36,41 +36,84 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    public ResponseEntity<String> saveAll(List<Round> roundList) {
+        roundRepository.saveAll(roundList);
+        return new ResponseEntity<>("Round list saved successfully", HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<String> save(Round round) {
         List<Round> rounds = findByRoundNum(round.getRoundId().getRoundNum());
         if (rounds.size() == 0) {
             roundRepository.save(round);
             return new ResponseEntity("Round saved!", HttpStatus.OK);
         }
-        rounds.add(round);
-        rounds = countResults(rounds);
+        rounds = updateScore(round, rounds);
         roundRepository.saveAll(rounds);
-//            rounds.forEach(tempRound -> roundRepository.save(tempRound));
-
         return new ResponseEntity("Round saved, all scores recalculated", HttpStatus.OK);
     }
 
-    @Override
-    public List<Round> countResults(List<Round> rounds) {
-
+    private List<Round> updateScore(Round round, List<Round> rounds) {
+        rounds.add(round);
         Float best = rounds.stream().min(Comparator.comparingDouble(Round::getSeconds)).get().getSeconds();
         rounds.forEach(tempRound -> tempRound.setScore(best / tempRound.getSeconds() * 1000));
         return rounds;
+
     }
 
     @Override
     public ResponseEntity<String> recalculateTotalScores(Integer roundId) {
         List<Pilot> pilotList = pilotService.findAll();
-        List<Round> roundList = findByRoundNum(roundId);
-        Map<Integer, Float> results = new HashMap<>();
-        roundList.forEach(round -> results.put(round.getRoundId().getPilotId(), round.getScore()));
-        pilotList.stream().filter(pilot -> results.containsKey(pilot.getId()))
-                .forEach(pilot -> pilot.setScore(pilot.getScore() + results.entrySet().stream()
-                        .filter(result ->
-                                result.getKey().equals(pilot.getId()))
-                        .findFirst().get().getValue()));
+        if (!roundId.equals(4) && !roundId.equals(15)) {
+            pilotList = recalculateNormal(roundId, pilotList);
+        } else {
+            pilotList = recalculateAfter4Or15Round(pilotList);
+        }
         pilotService.saveAll(pilotList);
         return new ResponseEntity<>("Scores recalculated successfully", HttpStatus.OK);
+    }
+
+    private List<Pilot> recalculateAfter4Or15Round(List<Pilot> pilotList) {
+
+        for (Pilot pilot : pilotList) {
+            List<Round> pilotsRounds = findByPilotId(pilot.getId());
+            if (pilotsRounds.size() == 0) {
+                pilot.setScore(0F);
+                continue;
+            }
+//            wybierz najgorszy wynik sposrod nieodrzuconych
+            pilotsRounds.stream()
+                    .filter(round -> !round.isDiscarded() && !round.isCancelled())
+                    .min(Comparator.comparingDouble(Round::getScore))
+                    .get()
+                    .setDiscarded(true);
+//
+            Float totalScore = 0F;
+            for (Round round : pilotsRounds) {
+                if (round.isDiscarded() == false) {
+                    totalScore += round.getScore();
+                }
+            }
+            pilot.setScore(totalScore);
+        }
+        return pilotList;
+    }
+
+    private List<Pilot> recalculateNormal(Integer roundId, List<Pilot> pilotList) {
+        List<Round> roundList = findByRoundNum(roundId);
+        Map<Integer, Float> results = new HashMap<>();
+//        utwórz mapę z id_pilota i ich wynikami z ostatniej rundy
+        roundList.stream()
+                .filter(round -> round.isDiscarded() == false)  //wez nieodrzucone wyniki
+                .forEach(round -> results.put(round.getRoundId().getPilotId(), round.getScore() - round.getPenalty()));
+//        if (w results key == id_pilota) => pilot.setScore(wynik - kara)
+        pilotList.stream()
+                .filter(pilot -> results.containsKey(pilot.getId()))    //
+                .forEach(pilot -> pilot.setScore(pilot.getScore() +
+                        results.entrySet().stream()
+                                .filter(result -> result.getKey().equals(pilot.getId()))
+                                .findFirst().get().getValue()));
+        return pilotList;
     }
 
     @Override
@@ -79,5 +122,13 @@ public class RoundServiceImpl implements RoundService {
         if (rounds.size() != 0) {
             return rounds.stream().max(Comparator.comparingDouble(Round::getScore)).get();
         } else return null;
+    }
+
+    @Override
+    public ResponseEntity<String> cancelRound(Integer round) {
+        List<Round> rounds = findByRoundNum(round);
+        rounds.forEach(tempRound -> tempRound.setCancelled(true));
+        saveAll(rounds);
+        return new ResponseEntity<>("Round "+round+" was cancelled", HttpStatus.OK);
     }
 }

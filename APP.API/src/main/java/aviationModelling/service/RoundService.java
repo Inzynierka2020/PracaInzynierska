@@ -10,9 +10,11 @@ public interface RoundService {
     List<Round> findByPilotId(int pilotId);
     List<Round> findByRoundNum(int roundNumber);
     ResponseEntity<String> save(Round round);
-    List<Round> countResults(List<Round> rounds);
+    ResponseEntity<String> saveAll(List<Round> roundList);
 
     ResponseEntity<String> recalculateTotalScores(Integer roundId);
 
     Round getBest(Integer pilotId);
+
+    ResponseEntity<String> cancelRound(Integer round);
 }

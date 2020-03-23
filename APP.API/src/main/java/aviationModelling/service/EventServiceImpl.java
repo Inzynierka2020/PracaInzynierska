@@ -51,7 +51,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void saveEventAndPilots(int eventId) {
+    public ResponseEntity<String> saveEventAndPilots(int eventId) {
 
         try {
             Event event = parser.getEventInfo();
@@ -62,5 +62,6 @@ public class EventServiceImpl implements EventService {
         } catch (Exception ex) {
             new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Event and pilots saved successfully", HttpStatus.OK);
     }
 }

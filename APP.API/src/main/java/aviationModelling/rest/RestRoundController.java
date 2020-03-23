@@ -42,14 +42,19 @@ public class RestRoundController {
         return roundService.save(round);
     }
 
-    @PutMapping("/finish/{roundId}")
-    public ResponseEntity<String> finishRound(@PathVariable Integer roundId) {
-        return roundService.recalculateTotalScores(roundId);
+    @PutMapping("/finish/{round}")
+    public ResponseEntity<String> finishRound(@PathVariable Integer round) {
+        return roundService.recalculateTotalScores(round);
     }
 
     @GetMapping("/best/{pilotId}")
     public Round getBest(@PathVariable Integer pilotId) {
         return roundService.getBest(pilotId);
+    }
+
+    @PutMapping("/cancel/{round}")
+    public ResponseEntity<String> cancelRound(@PathVariable Integer round) {
+        return roundService.cancelRound(round);
     }
 
 

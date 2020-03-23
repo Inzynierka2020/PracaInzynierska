@@ -58,6 +58,12 @@ public class Round implements Serializable {
 
     private Float score;
 
+    @Column(name = "is_discarded")
+    private boolean isDiscarded;
+
+    @Column(name = "is_cancelled")
+    private boolean isCancelled;
+
 //    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @MapsId("pilotId")
 //    @JoinColumn(name = "pilot_id")
