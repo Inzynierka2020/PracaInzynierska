@@ -1,0 +1,78 @@
+.nav-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 40px;
+    width: 100%;
+    max-width: 800px;
+}
+
+mat-toolbar {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    justify-content: center;
+}
+
+i {
+    user-select: none;
+    cursor: pointer;
+    font-size: 48px;
+    padding-bottom: 8px;
+    color: gold;
+    text-shadow: 3px 3px 5px black !important;
+    transition: 0.2s ease-in-out;
+}
+
+i:active {
+    cursor: pointer;
+    transform: scale(1.3);
+    transition: 0.2s ease-in-out;
+}
+
+span {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+button {
+    height: 60px;
+    width: 250px;
+    font-size: 30px;
+}
+
+.content {
+    margin-bottom: 100px;
+}
+
+button {
+    max-width: 125px;
+}
+
+.group-button {
+    height: 60px;
+    width: 250px;
+    font-size: 30px;
+}
+
+.data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    max-width: 800px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    max-width: 800px;
+}
+
+mat-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}

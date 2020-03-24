@@ -1,0 +1,32 @@
+<mat-tab-group mat-align-tabs="center" (selectedTabChange)="onChangeTab($event, matTabGroup)" animationDuration="0" #matTabGroup>
+    <mat-tab label="GENERAL SCORE">
+        <div class="tab-content">
+            <app-score [mode]="'general'" [selectPlayers]=false></app-score>
+        </div>
+    </mat-tab>
+    <mat-tab [disabled]="browsing">
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            <i class="material-icons mr-2 display-3" [ngClass]="!browsing ? 'grey' : 'gold'" (click)="prevRound()">
+               keyboard_arrow_left </i>
+            <span [ngClass]="browsing ? 'black' : ''">ROUND {{roundNumber}}</span>
+            <i class="material-icons ml-2 display-3" [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound()">
+                keyboard_arrow_right</i>
+        </ng-template>
+        <div class="tab-content">
+            <app-browse [roundNumber]="roundNumber"></app-browse>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="started " label="ROUND 99">
+        <div class="tab-content ">
+            <app-round (finished)="finishRound($event, matTabGroup) "></app-round>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="!started && switch " label="[START NEW ROUND] ">
+        <div class="tab-content ">
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="!started && !switch " label="[START NEW ROUND] ">
+        <div class="tab-content ">
+        </div>
+    </mat-tab>
+</mat-tab-group>

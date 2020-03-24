@@ -1,0 +1,13 @@
+button {
+    width: 40%;
+    height: 50%;
+    font-size: 150%;
+    min-height: 50px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 15%;
+}
