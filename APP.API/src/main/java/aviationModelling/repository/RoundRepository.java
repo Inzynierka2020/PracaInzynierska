@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface RoundRepository extends JpaRepository<Round, Integer> {
 
     Round findByRoundNum(Integer roundNum);
+
+    Integer countRoundsByIsCancelledFalse();
 }

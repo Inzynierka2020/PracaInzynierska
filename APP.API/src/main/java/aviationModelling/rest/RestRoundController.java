@@ -22,6 +22,16 @@ public class RestRoundController {
 
     @PostMapping("/create/{roundNum}")
     public ResponseEntity<String> createRound(@PathVariable Integer roundNum) {
-        return roundService.create(roundNum);
+        return roundService.createRound(roundNum);
+    }
+
+    @PutMapping("/cancel/{roundNum}")
+    public ResponseEntity<String> cancelRound(@PathVariable Integer roundNum) {
+        return roundService.cancelRound(roundNum);
+    }
+
+    @PutMapping("/finish/{roundNum}")
+    public ResponseEntity<String> finishRound(@PathVariable Integer roundNum) {
+        return roundService.updateGeneralScore(roundNum);
     }
 }

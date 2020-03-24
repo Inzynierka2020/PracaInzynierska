@@ -1,7 +1,9 @@
 package aviationModelling.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -10,7 +12,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter @Setter
+@NoArgsConstructor
 @Table(name = "flight")
 public class Flight implements Serializable {
 
@@ -63,6 +66,18 @@ public class Flight implements Serializable {
 
     @Column(name = "is_cancelled")
     private boolean cancelled;
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "round_num", insertable=false, updatable=false)
+    private Round round;
+
+
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "pilot_id", insertable=false, updatable=false)
+    private Pilot pilot;
 
 //    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @MapsId("pilotId")

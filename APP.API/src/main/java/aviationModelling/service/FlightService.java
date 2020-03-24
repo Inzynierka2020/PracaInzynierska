@@ -16,5 +16,4 @@ public interface FlightService {
 
     Flight getBest(Integer pilotId);
 
-    ResponseEntity<String> cancelRound(Integer roundNum);
 }

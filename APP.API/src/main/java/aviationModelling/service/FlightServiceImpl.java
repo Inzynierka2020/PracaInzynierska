@@ -17,10 +17,12 @@ public class FlightServiceImpl implements FlightService {
 
     private FlightRepository flightRepository;
     private PilotService pilotService;
+    private RoundService roundService;
 
-    public FlightServiceImpl(FlightRepository flightRepository, PilotService pilotService) {
+    public FlightServiceImpl(FlightRepository flightRepository, PilotService pilotService, RoundService roundService) {
         this.flightRepository = flightRepository;
         this.pilotService = pilotService;
+        this.roundService = roundService;
     }
 
     @Override
@@ -39,25 +41,11 @@ public class FlightServiceImpl implements FlightService {
         return new ResponseEntity<>("Flight list saved successfully", HttpStatus.OK);
     }
 
+
     @Override
     public ResponseEntity<String> save(Flight flight) {
-        List<Flight> flights = findByRoundNum(flight.getFlightId().getRoundNum());
-        if (flights.size() == 0) {
-            flight.setScore(1000F);
-            flightRepository.save(flight);
-            return new ResponseEntity("Flight saved!", HttpStatus.OK);
-        }
-        flights = updateScore(flight, flights);
-        flightRepository.saveAll(flights);
-        return new ResponseEntity("Flight saved, all scores recalculated", HttpStatus.OK);
-    }
-
-    private List<Flight> updateScore(Flight flight, List<Flight> flights) {
-        flights.add(flight);
-        Float best = flights.stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
-        flights.forEach(tempRound -> tempRound.setScore(best / tempRound.getSeconds() * 1000));
-        return flights;
-
+        flightRepository.save(flight);
+        return roundService.updateScore(flight.getFlightId().getRoundNum());
     }
 
     @Override
@@ -77,7 +65,6 @@ public class FlightServiceImpl implements FlightService {
         for (Pilot pilot : pilotList) {
             List<Flight> pilotsFlights = findByPilotId(pilot.getId());
             if (pilotsFlights.size() == 0) {
-                pilot.setScore(0F);
                 continue;
             }
 //            wybierz najgorszy wynik sposrod nieodrzuconych
@@ -123,11 +110,5 @@ public class FlightServiceImpl implements FlightService {
         } else return null;
     }
 
-    @Override
-    public ResponseEntity<String> cancelRound(Integer roundNum) {
-        List<Flight> flights = findByRoundNum(roundNum);
-        flights.forEach(tempRound -> tempRound.setCancelled(true));
-        saveAll(flights);
-        return new ResponseEntity<>("Flight "+roundNum+" was cancelled", HttpStatus.OK);
-    }
+
 }

@@ -44,7 +44,6 @@ public class RestPilotController {
         return pilotService.findPilotsWithUnfinishedFlight(roundNum);
     }
 
-
     @GetMapping("/finished-flight-group-by-group/round={roundNum}&group={group}")
     public List<Pilot> getPilotsFromGroup(@PathVariable Integer roundNum, @PathVariable String group) {
         return pilotService.findPilotsWithFinishedFlightGroupedByGroup(roundNum,group);

@@ -17,10 +17,13 @@ public class Round {
     private Integer roundNum;
 
     @Column(name = "is_cancelled")
-    private Boolean isCancelled;
+    private boolean isCancelled;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_num")
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "round_num")
+//    private List<Flight> flights;
+
+    @OneToMany(mappedBy = "round", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Flight> flights;
 
 

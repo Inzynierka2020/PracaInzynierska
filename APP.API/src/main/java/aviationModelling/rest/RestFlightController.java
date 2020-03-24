@@ -42,7 +42,7 @@ public class RestFlightController {
     }
 
     @PutMapping("/finish/{roundNum}")
-    public ResponseEntity<String> finishFlight(@PathVariable Integer roundNum) {
+    public ResponseEntity<String> finishRound(@PathVariable Integer roundNum) {
         return flightService.recalculateTotalScores(roundNum);
     }
 
@@ -51,10 +51,6 @@ public class RestFlightController {
         return flightService.getBest(pilotId);
     }
 
-    @PutMapping("/cancel/{roundNum}")
-    public ResponseEntity<String> cancelRound(@PathVariable Integer roundNum) {
-        return flightService.cancelRound(roundNum);
-    }
 
 
 
