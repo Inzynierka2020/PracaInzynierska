@@ -7,5 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface EventService {
     Event findById(int id);
     ResponseEntity<String> save(Event event);
-    ResponseEntity<String> saveEventAndPilots(int eventId);
+    ResponseEntity<String> saveEventAndPilotsFromVault(int eventId);
 }

@@ -35,6 +35,11 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    public List<Flight> findRoundFlights(Integer roundNum) {
+        return roundRepository.findRoundFlights(roundNum);
+    }
+
+    @Override
     public ResponseEntity<String> createRound(Integer roundNum) {
         Round round = new Round();
         round.setRoundNum(roundNum);
@@ -117,7 +122,6 @@ public class RoundServiceImpl implements RoundService {
             pilot.setScore(totalScore);
         }
         pilotService.saveAll(pilotList);
-
 
         return new ResponseEntity<>("General score updated with the worst flight discard", HttpStatus.OK);
     }

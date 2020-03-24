@@ -15,8 +15,6 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
     List<Flight> findByFlightIdRoundNumOrderBySeconds(int roundNumber);
 
 
-    Flight findTopByFlightIdPilotIdOrderByScoreDesc(int pilotId);
-    Flight findTopByFlightIdPilotIdOrderBySecondsAsc(int pilotId);
 
 
 }

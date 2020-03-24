@@ -1,6 +1,8 @@
 package aviationModelling.service;
 
+import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
+import aviationModelling.entity.Round;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -8,7 +10,6 @@ import java.util.List;
 public interface PilotService {
 
     List<Pilot> findAll();
-    void savePilots(List<Pilot> pilots);
     ResponseEntity<String> save(Pilot pilot);
     ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
@@ -16,5 +17,11 @@ public interface PilotService {
     List<Pilot> findPilotsWithFinishedFlight(Integer roundNum);
     List<Pilot> findPilotsWithUnfinishedFlight(Integer roundNum);
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
+
+    List<Float> findDiscardedFlights(Integer pilotId);
+    Float findBestScore(Integer pilotId);
+    Float findBestTime(Integer pilotId);
+
+    List<Flight> findPilotFlights(Integer pilotId);
 
 }

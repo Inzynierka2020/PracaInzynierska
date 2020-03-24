@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
 import aviationModelling.repository.PilotRepository;
 import org.springframework.http.HttpStatus;
@@ -56,18 +57,28 @@ public class PilotServiceImpl implements PilotService {
         return pilotRepository.findPilotsWithUnfinishedFlight(roundNum);
     }
 
-//    @Override
-//    public List<Pilot> findPilotsByGroup(Integer round) {
-//        return pilotRepository.findPilotsByGroup(round);
-//    }
-
     @Override
     public List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group) {
         return pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(round, group);
     }
 
     @Override
-    public void savePilots(List<Pilot> pilots) {
-        pilots.stream().forEach(pilot -> pilotRepository.save(pilot));
+    public List<Float> findDiscardedFlights(Integer pilotId) {
+        return pilotRepository.findDiscardedFlights(pilotId);
+    }
+
+    @Override
+    public Float findBestScore(Integer pilotId) {
+        return pilotRepository.findBestScore(pilotId);
+    }
+
+    @Override
+    public Float findBestTime(Integer pilotId) {
+        return pilotRepository.findBestTime(pilotId);
+    }
+
+    @Override
+    public List<Flight> findPilotFlights(Integer pilotId) {
+        return pilotRepository.findPilotFlights(pilotId);
     }
 }

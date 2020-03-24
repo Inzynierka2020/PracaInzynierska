@@ -17,41 +17,17 @@ public class RestFlightController {
         this.flightService = flightService;
     }
 
-//    wyswietl wszystkie loty w danej rundzie
-    @GetMapping("/rounds/{roundNum}")
-    public List<Flight> getSpecificRound(@PathVariable int roundNum) {
-        List<Flight> flightList = flightService.findByRoundNum(roundNum);
-        return flightList;
-    }
-
-//      wyswietl wszystkie rundy danego pilota
-    @GetMapping("/pilots/{pilot_id}")
-    public List<Flight> getPilotRounds(@PathVariable int pilot_id) {
-        List<Flight> flightList = flightService.findByPilotId(pilot_id);
-        return flightList;
-    }
-
+//    zapisz przelot i przelicz aktualny score kazdego pilota
     @PostMapping
     public ResponseEntity<String> saveFlight(@RequestBody Flight flight) {
         return flightService.save(flight);
     }
 
+//    uaktualnij przelot
     @PutMapping
     public ResponseEntity<String> updateFlight(@RequestBody Flight flight) {
         return flightService.save(flight);
     }
-
-
-    @GetMapping("/bestScore/{pilotId}")
-    public Float getBestScore(@PathVariable Integer pilotId) {
-        return flightService.getBestScore(pilotId);
-    }
-
-    @GetMapping("/bestTime/{pilotId}")
-    public Float getBestTime(@PathVariable Integer pilotId) {
-        return flightService.getBestTime(pilotId);
-    }
-
 
 
 

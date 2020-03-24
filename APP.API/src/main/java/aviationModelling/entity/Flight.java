@@ -64,25 +64,16 @@ public class Flight implements Serializable {
     @Column(name = "is_discarded")
     private boolean discarded;
 
-    @Column(name = "is_cancelled")
-    private boolean cancelled;
-
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "round_num", insertable=false, updatable=false)
     private Round round;
-
-
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "pilot_id", insertable=false, updatable=false)
     private Pilot pilot;
 
-//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @MapsId("pilotId")
-//    @JoinColumn(name = "pilot_id")
-//    private Pilot pilot;
 
     @Embeddable
     @Getter @Setter

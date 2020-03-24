@@ -1,5 +1,6 @@
 package aviationModelling.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,7 @@ public class Pilot {
 
     private Float score;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pilot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Flight> flights;
 

@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class EventServiceImpl implements EventService {
-
-    Logger logger = Logger.getLogger(getClass().getName());
 
     private EventRepository eventRepository;
     private PilotService pilotService;
@@ -51,14 +48,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ResponseEntity<String> saveEventAndPilots(int eventId) {
+    public ResponseEntity<String> saveEventAndPilotsFromVault(int eventId) {
 
         try {
             Event event = parser.getEventInfo();
             eventRepository.save(event);
 
             List<Pilot> pilotList = parser.getPilotList(eventId);
-            pilotService.savePilots(pilotList);
+            pilotService.saveAll(pilotList);
         } catch (Exception ex) {
             new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
         }
