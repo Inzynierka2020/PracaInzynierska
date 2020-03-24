@@ -1,12 +1,17 @@
 package aviationModelling.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter @Setter
+@NoArgsConstructor
 @Table(name = "pilot")
 public class Pilot {
 
@@ -40,19 +45,9 @@ public class Pilot {
 
     private Float score;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pilot_id")
-    private List<Round> rounds;
+    @JsonIgnore
+    @OneToMany(mappedBy = "pilot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Flight> flights;
 
-//    dla komunikacja dwukierunkowej:
-
-//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @MapsId("eventId")
-//    @JoinColumn(name = "event_id")
-//    private Event event;
-
-//    @OneToMany(mappedBy = "pilot",
-//            cascade = CascadeType.ALL)
-//    private List<Round> rounds;
 
 }

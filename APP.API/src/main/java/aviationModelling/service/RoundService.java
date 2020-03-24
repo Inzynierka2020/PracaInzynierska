@@ -1,18 +1,28 @@
 package aviationModelling.service;
 
+import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface RoundService {
 
-    List<Round> findByPilotId(int pilotId);
-    List<Round> findByRoundNum(int roundNumber);
-    ResponseEntity<String> save(Round round);
-    List<Round> countResults(List<Round> rounds);
+    void save(Round round);
 
-    ResponseEntity<String> recalculateTotalScores(Integer roundId);
+    Round findByRoundNum(Integer roundNum);
 
-    Round getBest(Integer pilotId);
+    ResponseEntity<String> createRound(Integer roundNum);
+
+    ResponseEntity<String> updateScore(Integer roundNum);
+
+    Integer countRounds();
+
+    ResponseEntity<String> cancelRound(Integer roundNum);
+
+    ResponseEntity<String> updateGeneralScore(Integer roundNum);
+
+    List<Flight> findRoundFlights(Integer roundNum);
+
 }
