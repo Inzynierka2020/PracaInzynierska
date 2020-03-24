@@ -41,15 +41,17 @@ public class RestFlightController {
         return flightService.save(flight);
     }
 
-    @PutMapping("/finish/{roundNum}")
-    public ResponseEntity<String> finishRound(@PathVariable Integer roundNum) {
-        return flightService.recalculateTotalScores(roundNum);
+
+    @GetMapping("/bestScore/{pilotId}")
+    public Float getBestScore(@PathVariable Integer pilotId) {
+        return flightService.getBestScore(pilotId);
     }
 
-    @GetMapping("/best/{pilotId}")
-    public Flight getBest(@PathVariable Integer pilotId) {
-        return flightService.getBest(pilotId);
+    @GetMapping("/bestTime/{pilotId}")
+    public Float getBestTime(@PathVariable Integer pilotId) {
+        return flightService.getBestTime(pilotId);
     }
+
 
 
 

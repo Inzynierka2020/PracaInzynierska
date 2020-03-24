@@ -12,8 +12,9 @@ public interface FlightService {
     ResponseEntity<String> save(Flight flight);
     ResponseEntity<String> saveAll(List<Flight> flightList);
 
-    ResponseEntity<String> recalculateTotalScores(Integer roundNum);
 
-    Flight getBest(Integer pilotId);
+    Float getBestScore(Integer pilotId);
+    Float getBestTime(Integer pilotId);
+
 
 }

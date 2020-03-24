@@ -107,7 +107,17 @@ public class RoundServiceImpl implements RoundService {
                     .min(Comparator.comparingDouble(Flight::getScore))
                     .get()
                     .setDiscarded(true);
+
+            Float totalScore = 0F;
+            for(Flight flight:pilot.getFlights()) {
+                if(flight.isDiscarded()==false && flight.getRound().isCancelled()==false) {
+                    totalScore+=flight.getScore();
+                }
+            }
+            pilot.setScore(totalScore);
         }
+        pilotService.saveAll(pilotList);
+
 
         return new ResponseEntity<>("General score updated with the worst flight discard", HttpStatus.OK);
     }
