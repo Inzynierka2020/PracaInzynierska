@@ -1,21 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { Pilot } from '../models/pilot';
-
-const pilotData: Pilot[] = [
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-  { number: 99, lastName: "Laskowski", firstName: "Aleksander", total: 99999.99, result: 1999.99, penalty: 999, discard1: 999.99, discard2: 999.99, status: "XXXXXXXXXX" },
-];
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-score',
@@ -24,7 +12,7 @@ const pilotData: Pilot[] = [
 })
 export class ScoreComponent implements OnInit {
 
-  dataSource = pilotData;
+  dataSource: Pilot[];
 
   @Input()
   mode = "";
@@ -33,14 +21,16 @@ export class ScoreComponent implements OnInit {
   selectPlayers = true;
 
   @Input()
-  group='A';
+  group = 'A';
 
   @Input()
   title: string;
 
-  constructor(public dialog: MatDialog) { }
-
+  constructor(public dialog: MatDialog, private _http: HttpClient, @Inject("BASE_URL") private _baseUrl: string ) {
+  }
+  
   ngOnInit() {
+     this._http.get<Pilot[]>(this._baseUrl + 'pilots').subscribe(result=>this.dataSource=result);
   }
 
   openPlayer(event) {
@@ -55,7 +45,11 @@ export class ScoreComponent implements OnInit {
       if (this.mode == "browse") {
         dialogRef.componentInstance.editMode = false;
       }
-      dialogRef.componentInstance.returnDirectly = this.mode!="browse";
+      dialogRef.componentInstance.returnDirectly = this.mode != "browse";
     }
+  }
+
+  getPilots() {
+
   }
 }

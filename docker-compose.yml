@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: mssql_db
+    build:
+      context: ./mssql/
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: Password@123
+      ACCEPT_EULA: "Y"
+    volumes:
+      - ./mssql/data:/var/opt/mssql/data
+
+  api:
+    container_name: api
+    build:
+      context: ./APP.API/
+    ports: #comment ports section out for local API developement
+      - "8080:8080" 
+    expose:
+      - "8080"
+    depends_on: 
+      - db
+
+  ui:
+    container_name: ui
+    build: 
+      context: ./APP.UI/
+    ports: 
+      - "80:80"
+      - "9090:9090"
+    volumes:
+      - ./nginx:/etc/nginx
+    depends_on: 
+      - api
