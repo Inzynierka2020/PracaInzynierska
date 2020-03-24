@@ -1,7 +1,9 @@
 export interface Pilot {
     number: number;
-    lastName: string;
+    pilotBib: number;
     firstName: string;
+    lastName: string;
+    score: string;
     total: number;
     result: number;
     penalty: number;
