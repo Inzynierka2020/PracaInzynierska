@@ -38,12 +38,6 @@ public class RestPilotController {
         return pilotService.findPilotFlights(pilotId);
     }
 
-//    uaktualnij pilota
-    @PutMapping
-    public ResponseEntity<String> updatePilot(@RequestBody Pilot pilot) {
-        return pilotService.save(pilot);
-    }
-
 //    zwroc liste pilotow, ktorzy odbyli swoj lot w danej rundzie (sortuj wg wyniku malejaco, potem wg nazwiska)
     @GetMapping("finished-flight/{roundNum}")
     public List<Pilot> getPilotsWithFinishedFlight(@PathVariable Integer roundNum) {
@@ -78,6 +72,12 @@ public class RestPilotController {
     @GetMapping("/best-time/{pilotId}")
     public Float getBestTime(@PathVariable Integer pilotId) {
         return pilotService.findBestTime(pilotId);
+    }
+
+//    uaktualnij pilota
+    @PutMapping
+    public ResponseEntity<String> updatePilot(@RequestBody Pilot pilot) {
+        return pilotService.save(pilot);
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/events")
+@CrossOrigin(origins = "*")
 public class RestEventController {
 
     private EventService eventService;
