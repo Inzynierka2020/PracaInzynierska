@@ -1,6 +1,10 @@
 .time {
-    font-size: 36px;
+    font-size: 200%;
     margin-bottom: 0;
+}
+
+.small {
+    display: none !important;
 }
 
 .date {
@@ -15,7 +19,7 @@
 }
 
 .title {
-    font-size: 48px;
+    font-size: 240%;
     margin-bottom: 8px;
     /* color: #ffd740; */
     color: #ffd740;
@@ -40,9 +44,70 @@ mat-toolbar-row {
     justify-content: space-between;
     align-items: center;
     height: 128px;
-    padding-right: 0;
+    padding-right: 8px;
+    padding-left: 8px;
     max-width: 1200px;
 }
+
+@media screen and (max-width: 750px) {
+    mat-toolbar-row {
+        font-size: 80%;
+        /* flex-direction: column;  */
+        /* height: 256px; */
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .material-icons {
+        font-size: 36px !important;
+    }
+    .cog {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    mat-toolbar-row {
+        font-size: 75% !important;
+        align-items: center;
+        flex-direction: column;
+    }
+    .material-icons {
+        font-size: 36px !important;
+    }
+    .title {
+        /* font-size: 200%; */
+    }
+    .cog {
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .date {
+        margin-top: 8px;
+        padding-right: 0;
+        width: 100%;
+    }
+    .time {
+        font-size: 32px;
+    }
+    .wind {
+        font-size: 150% !important;
+        display: flex !important;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start !important;
+        padding: 0 !important
+    }
+    .large {
+        display: none !important;
+    }
+    .small {
+        display: flex !important;
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 520px) {}
 
 .material-icons {
     color: #ffd740;
@@ -71,5 +136,5 @@ mat-toolbar-row {
     height: 100%;
     display: flex;
     align-items: center;
-    font-size: 32px;
+    font-size: 180%;
 }

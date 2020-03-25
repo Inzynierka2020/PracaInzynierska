@@ -1,14 +1,26 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
         <div class="date">
-            <p class="title"><i>COMPETITION</i></p>
-            <div>
+            <div class="d-flex justify-content-between align-content-center">
+                <p class="title"><i>COMPETITION</i></p>
+                <div (click)="openSettings()" class="cog small">
+
+                    <i class="material-icons">
+                           settings
+                        </i>
+                </div>
+            </div>
+            <p class="days large">{{ now | date:'dd.MM.yyyy'}}</p>
+            <p class="time large">{{ now | date:'HH:mm:ss'}}</p>
+        </div>
+        <div class="wind">
+            <div class="small d-flex flex-column">
                 <p class="days">{{ now | date:'dd.MM.yyyy'}}</p>
                 <p class="time">{{ now | date:'HH:mm:ss'}}</p>
             </div>
+            <app-wind></app-wind>
         </div>
-        <app-wind class="wind"></app-wind>
-        <div (click)="openSettings()" class="cog">
+        <div (click)="openSettings()" class="cog large">
             <i class="material-icons">
                     settings
                 </i>

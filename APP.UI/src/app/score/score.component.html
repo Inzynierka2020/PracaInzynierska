@@ -5,38 +5,40 @@
             <div class="number">
                 {{pilot.pilotBib}}
             </div>
-            <div class="d-flex flex-column">
-                <h1>{{pilot.number}} {{pilot.lastName | uppercase}} {{pilot.firstName}}</h1>
+            <div class="d-flex flex-column w-100">
+                <div class="title">{{pilot.number}} {{pilot.lastName | uppercase}} {{pilot.firstName}}</div>
                 <div class="data" *ngIf="mode != 'yetToStart'">
-                    <div class="data-field">
-                        <h6>TOTAL</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.score}}</h3>
-                    </div>
-                    <div class="data-field">
-                        <h6>RESULT</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.result}}</h3>
-                    </div>
-                    <div class="data-field">
-                        <h6>PENALTY</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.penalty}}</h3>
-                    </div>
-                    <div class="data-field" *ngIf="mode == 'general'">
-                        <h6>DISCARD 1</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.discard1}}</h3>
-                    </div>
-                    <div class="data-field" *ngIf="mode == 'general'">
-                        <h6>DISCARD 2</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.discard2}}</h3>
-                    </div>
-                    <div class="data-field" *ngIf="mode != 'general'">
-                        <h6>STATUS</h6>
-                        <mat-divider></mat-divider>
-                        <h3>{{pilot.status}}</h3>
+                    <div class="d-flex w-100 justify-content-around">
+                        <div class="data-field">
+                            <div class="semi-title">TOTAL</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
+                        <div class="data-field">
+                            <div class="semi-title">RESULT</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
+                        <div class="data-field">
+                            <div class="semi-title">PENALTY</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
+                        <div class="data-field" *ngIf="mode == 'general'">
+                            <div class="semi-title">DISCARD 1</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
+                        <div class="data-field" *ngIf="mode == 'general'">
+                            <div class="semi-title">DISCARD 2</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
+                        <div class="data-field" *ngIf="mode != 'general'">
+                            <div class="semi-title">STATUS</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">9999</div>
+                        </div>
                     </div>
                 </div>
             </div>

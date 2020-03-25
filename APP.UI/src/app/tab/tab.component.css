@@ -4,6 +4,12 @@
     align-items: stretch !important;
 }
 
+@media screen and (max-width: 750px) {
+    .mat-tab-labels {
+        flex-direction: column;
+    }
+}
+
 .mat-tab-label {
     font-size: 20px;
     font-weight: bolder;
