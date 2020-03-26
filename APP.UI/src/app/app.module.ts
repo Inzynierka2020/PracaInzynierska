@@ -17,9 +17,11 @@ import { PlayerComponent } from './player/player.component';
 import { WindComponent } from './wind/wind.component';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { EventComponent } from './event/event.component';
 
 const appRoutes: Routes = [
-  { path: '', component: TabComponent },
+  { path: '', component: EventComponent },
+  { path: 'tab', component: TabComponent },
   { path: 'score', component: ScoreComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -44,6 +46,7 @@ export function getBaseUrl() {
     ConfirmDialogComponent,
     PlayerComponent,
     WindComponent,
+    EventComponent,
   ],
   imports: [
     BrowserModule,

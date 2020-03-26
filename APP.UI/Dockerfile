@@ -8,7 +8,7 @@ COPY package.json ./
 RUN npm install
 COPY . .
 RUN echo ${PROFILE}
-RUN npm run "build ${PROFILE}"
+RUN npm run "build-${PROFILE}"
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
