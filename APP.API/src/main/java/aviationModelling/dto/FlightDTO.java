@@ -24,17 +24,17 @@ public class FlightDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    private class Sub {
-        private Float sub1;
-        private Float sub2;
-        private Float sub3;
-        private Float sub4;
-        private Float sub5;
-        private Float sub6;
-        private Float sub7;
-        private Float sub8;
-        private Float sub9;
-        private Float sub10;
-        private Float sub11;
+    class Sub {
+        Float sub1;
+        Float sub2;
+        Float sub3;
+        Float sub4;
+        Float sub5;
+        Float sub6;
+        Float sub7;
+        Float sub8;
+        Float sub9;
+        Float sub10;
+        Float sub11;
     }
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class EventDataDTO {
-    private int response_code;
+    private Integer response_code;
     private String error_string;
     private EventDTO event;
 }

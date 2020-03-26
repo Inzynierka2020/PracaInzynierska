@@ -25,7 +25,7 @@ public class EventDTO {
     @Getter @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    private class Task {
+    class Task {
         private Integer round_number;
         private String task_code;
     }
