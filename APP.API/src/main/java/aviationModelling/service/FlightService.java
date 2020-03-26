@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FlightService {
     ResponseEntity<String> save(Flight flight);
+    Flight findBestTime();
 }
