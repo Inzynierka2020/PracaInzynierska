@@ -29,6 +29,11 @@ public class RestFlightController {
         return flightService.save(flight);
     }
 
+//    zwroc najszybszy lot
+    @GetMapping("/best")
+    public Flight getBestFlight() {
+        return flightService.findBestTime();
+    }
 
 
 

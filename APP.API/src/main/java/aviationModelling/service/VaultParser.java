@@ -1,7 +1,9 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.EventDataDTO;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Pilot;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,23 +15,24 @@ import java.util.List;
 public class VaultParser {
 
     private UrlWizard urlWizard;
-    private List<String> eventInfo;
 
     public VaultParser(UrlWizard urlWizard) {
         this.urlWizard = urlWizard;
-        RestTemplate restTemplate = new RestTemplate();
-        String text = restTemplate.getForObject(urlWizard.getEventInfo(1809), String.class);
-        eventInfo = readFileAsLines(text);
     }
 
 //      Pilot ID, Pilot Bib, Pilot First Name, Pilot Last Name, Class, AMA, FAI, FAI License, Team Name
 
-    public List<Pilot> getPilotList(int eventId) {
-        List<Pilot> pilotList = new ArrayList<>();
+    public List<Pilot> retrievePilotList(int eventId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String text = restTemplate.getForObject(urlWizard.getEventInfo(eventId), String.class);
+        List<String> eventInfo = readFileAsLines(text);
 
         if (eventInfo.get(0).equals("0")) {
             return null;
         }
+
+        List<Pilot> pilotList = new ArrayList<>();
+
         for (int i = 3; i < eventInfo.size(); i++) {
             Pilot pilot = new Pilot();
             String[] line = eventInfo.get(i).split(",");
@@ -43,19 +46,24 @@ public class VaultParser {
             pilot.setFaiLicence(line[7].trim());
             pilot.setTeamName(line[8].trim());
             pilot.setEventId(eventId);
-            pilot.setScore((float) 0);
-            pilot.setFlights(null);
             pilotList.add(pilot);
         }
         return pilotList;
     }
+
 //      Event ID, Event Name, Event_location, Event Start Date, Event End Date, Event Type, Number of Rounds
 
-    public Event getEventInfo() {
-        Event event = new Event();
+    public Event retrieveEventInfo(int eventId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String text = restTemplate.getForObject(urlWizard.getEventInfo(eventId), String.class);
+
+        List<String> eventInfo = readFileAsLines(text);
+
         if (eventInfo.get(0).equals("0")) {
             return null;
         }
+
+        Event event = new Event();
 
         String[] cols = eventInfo.get(1).split(",");
         event.setEventId(Integer.parseInt(cols[0].trim()));
@@ -65,7 +73,6 @@ public class VaultParser {
         event.setEventEndDate(cols[4].trim());
         event.setEventType(cols[5].trim());
         event.setNumberOfRounds(Integer.parseInt(cols[6].trim()));
-        event.setPilots(null);
 
         return event;
     }

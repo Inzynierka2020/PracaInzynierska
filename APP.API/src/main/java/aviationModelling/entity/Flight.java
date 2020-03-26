@@ -61,9 +61,6 @@ public class Flight implements Serializable {
 
     private Float score;
 
-    @Column(name = "is_discarded")
-    private boolean discarded;
-
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "round_num", insertable=false, updatable=false)

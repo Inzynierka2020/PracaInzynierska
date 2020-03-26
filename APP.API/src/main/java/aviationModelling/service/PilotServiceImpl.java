@@ -62,10 +62,6 @@ public class PilotServiceImpl implements PilotService {
         return pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(round, group);
     }
 
-    @Override
-    public List<Float> findDiscardedFlights(Integer pilotId) {
-        return pilotRepository.findDiscardedFlights(pilotId);
-    }
 
     @Override
     public Float findBestScore(Integer pilotId) {
@@ -75,6 +71,11 @@ public class PilotServiceImpl implements PilotService {
     @Override
     public Float findBestTime(Integer pilotId) {
         return pilotRepository.findBestTime(pilotId);
+    }
+
+    @Override
+    public List<Flight> findUncancelledAndFinishedPilotFlights(Integer pilotId) {
+        return pilotRepository.findUncancelledAndFinishedPilotFlights(pilotId);
     }
 
     @Override
