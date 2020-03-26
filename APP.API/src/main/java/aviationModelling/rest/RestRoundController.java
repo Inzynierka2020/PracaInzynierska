@@ -30,6 +30,12 @@ public class RestRoundController {
         return roundService.findRoundFlights(roundNum);
     }
 
+//    zwroc liste nieanulowanych przelotow w danej rundzie
+    @GetMapping("/round-uncancelled-flights/{roundNum}")
+    public List<Flight> getUncancelledRoundFlights(@PathVariable Integer roundNum) {
+        return roundService.findUncancelledRoundFlights(roundNum);
+    }
+
 //    stworz nowa runde
     @PostMapping("/create/{roundNum}")
     public ResponseEntity<String> createRound(@PathVariable Integer roundNum) {
@@ -42,10 +48,15 @@ public class RestRoundController {
         return roundService.cancelRound(roundNum);
     }
 
+    @PutMapping("/update-local-score/{roundNum}")
+    public ResponseEntity<String> updateLocalScore(@PathVariable Integer roundNum) {
+        return roundService.updateLocalScore(roundNum);
+    }
+
 //    zakoncz dana runde i przelicz total score
     @PutMapping("/finish/{roundNum}")
-    public ResponseEntity<String> finishRound(@PathVariable Integer roundNum) {
-        return roundService.updateGeneralScore(roundNum);
+    public ResponseEntity<String>  finishRound(@PathVariable Integer roundNum) {
+        return roundService.finishRound(roundNum);
     }
 
 

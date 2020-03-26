@@ -20,6 +20,16 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
             "WHERE p.id = :pilotId")
     List<Flight> findPilotFlights(@Param("pilotId") Integer pilotId);
 
+    @Query("SELECT f FROM Pilot p " +
+            "JOIN Flight f ON p.id = f.flightId.pilotId " +
+            "WHERE p.id = :pilotId AND f.round.isCancelled = false " +
+            "AND f.round.isFinished = true " +
+            "ORDER BY f.flightId.roundNum")
+    List<Flight> findUncancelledAndFinishedPilotFlights(@Param("pilotId") Integer pilotId);
+
+//    DO ZMIANY
+//    --------------------------------------------------------------------------
+
     @Query("SELECT p FROM Pilot p " +
             "JOIN Flight f ON p.id = f.flightId.pilotId " +
             "WHERE f.flightId.roundNum = :roundNum " +
@@ -37,11 +47,7 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
             "ORDER BY f.score DESC, p.lastName")
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(@Param("round") Integer round, @Param("group") String group);
 
-    @Query("SELECT f.score FROM Pilot p " +
-            "JOIN Flight f ON p.id = f.flightId.pilotId " +
-            "WHERE p.id = :pilotId AND f.discarded = true " +
-            "ORDER BY f.flightId.roundNum")
-    List<Float> findDiscardedFlights(@Param("pilotId") Integer pilotId);
+//    --------------------------------------------------------------------------
 
     @Query("SELECT max(f.score) FROM Pilot p " +
             "JOIN Flight f ON p.id = f.flightId.pilotId " +
