@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FlightServiceImpl implements FlightService {
 
@@ -21,6 +23,12 @@ public class FlightServiceImpl implements FlightService {
     public ResponseEntity<String> save(Flight flight) {
         flightRepository.save(flight);
         return new ResponseEntity<>("Flight saved successfully!", HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<String> saveAll(List<Flight> flightList) {
+        flightRepository.saveAll(flightList);
+        return new ResponseEntity<>("All flights saved successfully", HttpStatus.CREATED);
     }
 
     @Override

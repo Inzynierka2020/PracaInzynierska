@@ -13,6 +13,7 @@ import java.util.List;
 public class VaultPilotDTO {
     private Integer pilot_id;
     private Integer pilot_bib;
+    private Integer event_id;
     private String pilot_first_name;
     private String pilot_last_name;
     private String pilot_class;

@@ -2,6 +2,7 @@ package aviationModelling.rest;
 
 import aviationModelling.entity.Event;
 import aviationModelling.service.EventService;
+import aviationModelling.service.VaultService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class RestEventController {
         this.eventService = eventService;
     }
 
-//    pobierz z lokalnej bazy event o podanym id
+    //    pobierz z lokalnej bazy event o podanym id
     @GetMapping("/{eventId}")
     public Event getEvent(@PathVariable int eventId) {
         return eventService.findById(eventId);
@@ -25,7 +26,7 @@ public class RestEventController {
 //     zapisz informacje o evencie do bazy danych
     @PostMapping("/event-data/{eventId}")
     public ResponseEntity<String> saveEventFromVault(@PathVariable int eventId) {
-        return eventService.saveEventDataFromVault(eventId);
+        return eventService.initializeDbWithDataFromVault(eventId);
     }
 
 //    //     zapisz informacje o pilotach do bazy danych
@@ -40,8 +41,8 @@ public class RestEventController {
         return eventService.updateTotalScore();
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
-        return eventService.delete(event);
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<String> deleteEvent(@PathVariable int eventId) {
+        return eventService.delete(eventId);
     }
 }

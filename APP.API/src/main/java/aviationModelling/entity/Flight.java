@@ -12,8 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
+@Data
 @Table(name = "flight")
 public class Flight implements Serializable {
 
@@ -73,7 +72,7 @@ public class Flight implements Serializable {
 
 
     @Embeddable
-    @Getter @Setter
+    @Data
     public static class FlightId implements Serializable {
 
         @Column(name = "pilot_id")

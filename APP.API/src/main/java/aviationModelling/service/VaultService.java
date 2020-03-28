@@ -1,19 +1,9 @@
 package aviationModelling.service;
 
-import aviationModelling.dto.EventDTO;
-import aviationModelling.dto.FlightDTO;
-import aviationModelling.dto.PilotDTO;
 import aviationModelling.dto.VaultEventDataDTO;
-import aviationModelling.entity.Event;
-import aviationModelling.mapper.EventMapper;
-import aviationModelling.mapper.FlightMapper;
-import aviationModelling.mapper.PilotMapper;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
-
 
 @Service
 public class VaultService {
@@ -26,25 +16,24 @@ public class VaultService {
         this.restTemplate = new RestTemplate();
     }
 
-
-    public Event retrieveEventData(int eventId) {
+    public VaultEventDataDTO retrieveEventData(int eventId) {
         String text = restTemplate.getForObject(urlWizard.getEventInfo(eventId), String.class);
         text = text.replace("[]", "null").replace("\"\"", "null");
+
         VaultEventDataDTO eventData = new Gson().fromJson(text, VaultEventDataDTO.class);
+        eventData.getEvent().setEvent_id(eventId);
 
-        Event event = EventMapper.MAPPER.toEvent(eventData.getEvent());
-        event.setEventId(eventId);
-        event.setPilots(null);
+//        przypisz ID pilota do przelotow
+        eventData.getEvent().getPilots().forEach(pilot -> {
+            pilot.setEvent_id(eventId);
+            pilot.getFlights().forEach(flight -> {
+                flight.setPilot_id(pilot.getPilot_id());
+                flight.setEvent_id(eventId);
+            });
+        });
 
-
-
-
-
-
-
-        return event;
+        return eventData;
     }
-
 
 
 }

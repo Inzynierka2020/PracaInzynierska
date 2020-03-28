@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface FlightService {
     ResponseEntity<String> save(Flight flight);
+    ResponseEntity<String> saveAll(List<Flight> flightList);
     Flight findBestTime();
     Flight findBestScore();
 

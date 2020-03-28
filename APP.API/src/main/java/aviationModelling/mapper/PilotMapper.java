@@ -18,6 +18,7 @@ public interface PilotMapper {
 
     @Mappings({
             @Mapping(target = "id", source = "pilot_id"),
+            @Mapping(target = "eventId", source = "event_id"),
             @Mapping(target = "pilotBib", source = "pilot_bib"),
             @Mapping(target = "firstName", source = "pilot_first_name"),
             @Mapping(target = "lastName", source = "pilot_last_name"),
@@ -25,7 +26,8 @@ public interface PilotMapper {
             @Mapping(target = "ama", source = "pilot_ama"),
             @Mapping(target = "fai", source = "pilot_fai"),
             @Mapping(target = "faiLicence", source = "pilot_fai_license"),
-            @Mapping(target = "teamName", source = "pilot_team")
+            @Mapping(target = "teamName", source = "pilot_team"),
+            @Mapping(target = "flights", ignore = true)
     })
     Pilot toPilot(VaultPilotDTO source);
 

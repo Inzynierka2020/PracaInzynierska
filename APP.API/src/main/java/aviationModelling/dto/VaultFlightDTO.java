@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class VaultFlightDTO {
     private Integer round_number;
+    private Integer pilot_id;
+    private Integer event_id;
     private String group;
     private Integer order;
     private String minutes;
