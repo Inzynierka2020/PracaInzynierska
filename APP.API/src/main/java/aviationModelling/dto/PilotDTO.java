@@ -1,5 +1,6 @@
 package aviationModelling.dto;
 
+import aviationModelling.entity.Flight;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,18 +8,24 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
-@NoArgsConstructor
+
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PilotDTO {
-    private Integer pilot_id;
-    private Integer pilot_bib;
-    private String pilot_first_name;
-    private String pilot_last_name;
-    private String pilot_class;
-    private String pilot_ama;
-    private String pilot_fai;
-    private String pilot_fai_license;
-    private String pilot_team;
-    private List<FlightDTO> flights;
+    private Integer id;
+    private Integer eventId;
+    private String pilotBib;
+    private String firstName;
+    private String lastName;
+    private String pilotClass;
+    private String ama;
+    private String fai;
+    private String faiLicence;
+    private String teamName;
+    private Float discarded1;
+    private Float discarded2;
+    private Float score;
+    private List<Flight> flights;
 }

@@ -23,20 +23,25 @@ public class RestEventController {
     }
 
 //     zapisz informacje o evencie do bazy danych
-    @PostMapping("/download-event-data/{eventId}")
+    @PostMapping("/event-data/{eventId}")
     public ResponseEntity<String> saveEventFromVault(@PathVariable int eventId) {
         return eventService.saveEventDataFromVault(eventId);
     }
 
-    //     zapisz informacje o pilotach do bazy danych
-    @PostMapping("/download-pilots-data/{eventId}")
-    public ResponseEntity<String> savePilotsFromVault(@PathVariable int eventId) {
-        return eventService.savePilotsDataFromVault(eventId);
-    }
+//    //     zapisz informacje o pilotach do bazy danych
+//    @PostMapping("/pilots-data/{eventId}")
+//    public ResponseEntity<String> savePilotsFromVault(@PathVariable int eventId) {
+//        return eventService.savePilotsDataFromVault(eventId);
+//    }
 
 //    uaktualnij total score
-    @PutMapping("/update-total-score")
+    @PutMapping("/total-score")
     public ResponseEntity<String> updateTotalScore() {
         return eventService.updateTotalScore();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
+        return eventService.delete(event);
     }
 }

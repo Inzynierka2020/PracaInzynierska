@@ -8,4 +8,7 @@ import java.util.List;
 public interface FlightService {
     ResponseEntity<String> save(Flight flight);
     Flight findBestTime();
+    Flight findBestScore();
+
+    Flight findFlight(Integer roundNum, Integer pilotId);
 }

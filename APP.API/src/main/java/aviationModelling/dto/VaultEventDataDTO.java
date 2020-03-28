@@ -9,8 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class EventDataDTO {
-    private Integer response_code;
+public class VaultEventDataDTO {
+    private String response_code;
     private String error_string;
-    private EventDTO event;
+    private VaultEventDTO event;
 }

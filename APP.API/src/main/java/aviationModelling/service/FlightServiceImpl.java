@@ -20,11 +20,21 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public ResponseEntity<String> save(Flight flight) {
         flightRepository.save(flight);
-        return new ResponseEntity<>("Flight saved successfully!", HttpStatus.OK);
+        return new ResponseEntity<>("Flight saved successfully!", HttpStatus.CREATED);
     }
 
     @Override
     public Flight findBestTime() {
         return flightRepository.findBestTime();
+    }
+
+    @Override
+    public Flight findBestScore() {
+        return flightRepository.findBestScore();
+    }
+
+    @Override
+    public Flight findFlight(Integer roundNum, Integer pilotId) {
+        return flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
     }
 }

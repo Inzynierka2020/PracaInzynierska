@@ -17,6 +17,12 @@ public class RestFlightController {
         this.flightService = flightService;
     }
 
+//    znajdz pojedynczy lot
+    @GetMapping("/{roundNum}/{pilotId}")
+    public Flight getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
+        return flightService.findFlight(roundNum, pilotId);
+    }
+
 //    zapisz przelot i przelicz aktualny score kazdego pilota
     @PostMapping
     public ResponseEntity<String> saveFlight(@RequestBody Flight flight) {
@@ -30,9 +36,15 @@ public class RestFlightController {
     }
 
 //    zwroc najszybszy lot
-    @GetMapping("/best")
+    @GetMapping("/best-time")
     public Flight getBestFlight() {
         return flightService.findBestTime();
+    }
+
+//    zwroc najlepiej punktowany lot
+    @GetMapping("/best-score")
+    public Flight getBestScore() {
+        return flightService.findBestScore();
     }
 
 

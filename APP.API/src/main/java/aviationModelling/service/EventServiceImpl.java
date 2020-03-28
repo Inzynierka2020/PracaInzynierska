@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.EventDTO;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
@@ -17,9 +18,9 @@ public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepository;
     private PilotService pilotService;
-    private VaultParser parser;
+    private VaultService parser;
 
-    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, VaultParser parser) {
+    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, VaultService parser) {
         this.eventRepository = eventRepository;
         this.pilotService = pilotService;
         this.parser = parser;
@@ -45,17 +46,17 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ResponseEntity<String> saveEventDataFromVault(int eventId) {
-        Event event = parser.retrieveEventInfo(eventId);
+        Event event = parser.retrieveEventData(eventId);
         eventRepository.save(event);
-        return new ResponseEntity<>("Event data from Vault saved successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Event "+eventId+" data from Vault saved successfully", HttpStatus.CREATED);
     }
-
-    @Override
-    public ResponseEntity<String> savePilotsDataFromVault(int eventId) {
-        List<Pilot> pilotList = parser.retrievePilotList(eventId);
-        pilotService.saveAll(pilotList);
-        return new ResponseEntity<>("Pilots data from Vault saved successfully", HttpStatus.OK);
-    }
+//
+//    @Override
+//    public ResponseEntity<String> savePilotsDataFromVault(int eventId) {
+//        List<Pilot> pilotList = parser.retrievePilotList(eventId);
+//        pilotService.saveAll(pilotList);
+//        return new ResponseEntity<>("Pilots data from Vault saved successfully", HttpStatus.CREATED);
+//    }
 
     @Override
     public ResponseEntity<String> updateTotalScore() {
@@ -84,5 +85,11 @@ public class EventServiceImpl implements EventService {
         pilotService.saveAll(pilotList);
 
         return new ResponseEntity<>("Total score updated successfully!", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> delete(Event event) {
+        eventRepository.delete(event);
+        return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
     }
 }

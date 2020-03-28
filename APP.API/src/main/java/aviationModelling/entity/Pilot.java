@@ -45,7 +45,6 @@ public class Pilot {
 
     private Float discarded1;
     private Float discarded2;
-
     private Float score;
 
     @JsonIgnore

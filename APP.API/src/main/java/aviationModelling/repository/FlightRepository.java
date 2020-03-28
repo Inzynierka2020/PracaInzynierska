@@ -13,4 +13,10 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
     @Query("SELECT f FROM Flight f " +
             "WHERE f.seconds = (SELECT min(seconds) FROM Flight)")
     Flight findBestTime();
+
+    @Query("SELECT f FROM Flight f " +
+            "WHERE f.score = (SELECT max(score) FROM Flight)")
+    Flight findBestScore();
+
+    Flight findByFlightIdRoundNumAndFlightIdPilotId(Integer roundNum, Integer pilotId);
 }

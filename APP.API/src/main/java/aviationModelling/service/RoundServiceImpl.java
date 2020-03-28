@@ -50,7 +50,7 @@ public class RoundServiceImpl implements RoundService {
         round.setRoundNum(roundNum);
         round.setCancelled(false);
         save(round);
-        return new ResponseEntity<>("Round " + roundNum + " created!", HttpStatus.OK);
+        return new ResponseEntity<>("Round " + roundNum + " created!", HttpStatus.CREATED);
     }
 
     @Override

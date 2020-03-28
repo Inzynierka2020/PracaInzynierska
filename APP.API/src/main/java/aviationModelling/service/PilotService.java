@@ -19,8 +19,8 @@ public interface PilotService {
     List<Pilot> findPilotsWithUnfinishedFlight(Integer roundNum);
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
 
-    Float findBestScore(Integer pilotId);
-    Float findBestTime(Integer pilotId);
+    Float findBestPilotScore(Integer pilotId);
+    Float findBestPilotTime(Integer pilotId);
 
     List<Flight> findPilotFlights(Integer pilotId);
     List<Flight> findUncancelledAndFinishedPilotFlights(Integer pilotId);
