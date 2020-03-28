@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RoundServiceImpl implements RoundService {
@@ -56,10 +57,16 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public ResponseEntity<String> updateLocalScore(Integer roundNum) {
         Round round = findByRoundNum(roundNum);
-        Float best = round.getFlights().stream().filter(flight -> flight.getSeconds()!=null).min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
-        round.getFlights().stream().filter(flight -> flight.getSeconds()!=null).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
-        save(round);
-        return new ResponseEntity<>("All scores in round "+roundNum+" updated!", HttpStatus.OK);
+        List<Flight> validFlights = round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
+        if (validFlights.size() != 0) {
+            Float best = validFlights.stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
+            round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
+            save(round);
+        } else {
+            cancelRound(roundNum);
+            return new ResponseEntity<>("The round "+roundNum+" was cancelled because of invalid data!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("All scores in round " + roundNum + " updated!", HttpStatus.OK);
     }
 
     @Override
