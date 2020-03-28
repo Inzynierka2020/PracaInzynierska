@@ -56,8 +56,8 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public ResponseEntity<String> updateLocalScore(Integer roundNum) {
         Round round = findByRoundNum(roundNum);
-        Float best = round.getFlights().stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
-        round.getFlights().forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
+        Float best = round.getFlights().stream().filter(flight -> flight.getSeconds()!=null).min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
+        round.getFlights().stream().filter(flight -> flight.getSeconds()!=null).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
         save(round);
         return new ResponseEntity<>("All scores in round "+roundNum+" updated!", HttpStatus.OK);
     }

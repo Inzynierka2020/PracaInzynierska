@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -42,7 +43,7 @@ public class EventServiceImpl implements EventService {
     public Event findById(int id) {
         Optional<Event> result = eventRepository.findById(id);
 
-        Event event=null;
+        Event event = null;
 
         if (result.isPresent()) {
             event = result.get();
@@ -80,7 +81,7 @@ public class EventServiceImpl implements EventService {
         event.setEventId(eventId);
         eventRepository.save(event);
 
-        for(int i=1; i<=event.getNumberOfRounds(); i++) {
+        for (int i = 1; i <= event.getNumberOfRounds(); i++) {
             roundService.createRound(i);
             roundService.finishRound(i);
         }
@@ -92,8 +93,13 @@ public class EventServiceImpl implements EventService {
         eventData.getEvent().getPilots().forEach(pilot -> flightList.add(FlightMapper.MAPPER.toFlightList(pilot.getFlights())));
 
 //        flightList.forEach(list->flightService.saveAll(list));
-        for(List<Flight> list:flightList) {
+        for (List<Flight> list : flightList) {
             flightService.saveAll(list);
+        }
+
+        for (int i = 1; i <= event.getNumberOfRounds(); i++) {
+            roundService.updateLocalScore(i);
+            updateTotalScore();
         }
 
 
@@ -111,18 +117,27 @@ public class EventServiceImpl implements EventService {
             if (totalRounds == 0) continue;    // aby testy się nie wywalały
 
             if (totalRounds >= 4) {
-                Flight worst = pilotFlights.subList(0, 4).stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-                pilotFlights.remove(worst);
+                List<Flight> first4 = pilotFlights.subList(0, 4).stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
+                if (first4.size()!=0) {
+                    Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                    pilotFlights.remove(worst);
+                } else {
+                    continue;
+                }
             }
 
             if (totalRounds >= 15) {
-                Flight worst = pilotFlights.subList(0, 14).stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-
-                pilotFlights.remove(worst);
+                List<Flight> first15 = pilotFlights.subList(0, 14).stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
+                if (first15.size()!=0) {
+                    Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                    pilotFlights.remove(worst);
+                } else {
+                    continue;
+                }
             }
 
-            float totalScore = (float) pilotFlights.stream().mapToDouble(flight -> flight.getScore()).sum();
-            pilot.setScore(totalScore);
+            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore() != null && flight.getScore() > 0).mapToDouble(flight -> flight.getScore()).sum();
+            if (totalScore != null && totalScore > 0) pilot.setScore(totalScore);
         }
         pilotService.saveAll(pilotList);
 
