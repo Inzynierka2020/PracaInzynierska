@@ -40,14 +40,4 @@ public class RestFlightController {
     public Flight getBestFlight() {
         return flightService.findBestTime();
     }
-
-//    zwroc najlepiej punktowany lot
-    @GetMapping("/best-score")
-    public Flight getBestScore() {
-        return flightService.findBestScore();
-    }
-
-
-
-
 }

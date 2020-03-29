@@ -37,11 +37,6 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight findBestScore() {
-        return flightRepository.findBestScore();
-    }
-
-    @Override
     public Flight findFlight(Integer roundNum, Integer pilotId) {
         return flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
     }

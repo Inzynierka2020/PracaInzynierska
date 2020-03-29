@@ -29,7 +29,6 @@ public class VaultService {
             if (pilot.getFlights() != null) {
                 pilot.getFlights().forEach(flight -> {
                     flight.setPilot_id(pilot.getPilot_id());
-//                    flight.setEvent_id(eventId);
                 });
             }
         });
