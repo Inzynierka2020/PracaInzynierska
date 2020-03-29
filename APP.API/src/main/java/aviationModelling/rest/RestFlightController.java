@@ -1,6 +1,8 @@
 package aviationModelling.rest;
 
+import aviationModelling.dto.FlightDTO;
 import aviationModelling.entity.Flight;
+import aviationModelling.mapper.FlightMapper;
 import aviationModelling.service.FlightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class RestFlightController {
 
 //    znajdz pojedynczy lot
     @GetMapping("/{roundNum}/{pilotId}")
-    public Flight getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
-        return flightService.findFlight(roundNum, pilotId);
+    public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
+        return FlightMapper.MAPPER.toFlightDTO(flightService.findFlight(roundNum, pilotId));
     }
 
 //    zapisz przelot
@@ -37,7 +39,7 @@ public class RestFlightController {
 
 //    zwroc najszybszy lot
     @GetMapping("/best-time")
-    public Flight getBestFlight() {
-        return flightService.findBestTime();
+    public FlightDTO getBestFlight() {
+        return FlightMapper.MAPPER.toFlightDTO(flightService.findBestTime());
     }
 }

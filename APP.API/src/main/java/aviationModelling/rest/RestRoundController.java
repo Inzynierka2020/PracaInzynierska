@@ -1,7 +1,11 @@
 package aviationModelling.rest;
 
+import aviationModelling.dto.FlightDTO;
+import aviationModelling.dto.RoundDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
+import aviationModelling.mapper.FlightMapper;
+import aviationModelling.mapper.RoundMapper;
 import aviationModelling.service.RoundService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +24,8 @@ public class RestRoundController {
 
 //    zwroc runde o danym numerze
     @GetMapping("/{roundNum}")
-    public Round getRound(@PathVariable Integer roundNum) {
-        return roundService.findByRoundNum(roundNum);
+    public RoundDTO getRound(@PathVariable Integer roundNum) {
+        return RoundMapper.MAPPER.toRoundDTO(roundService.findByRoundNum(roundNum));
     }
 
 //    uaktualnij wyniki po przelocie
@@ -43,14 +47,14 @@ public class RestRoundController {
 
 //    zwroc liste przelotow w danej rundzie
     @GetMapping("/all-flights/{roundNum}")
-    public List<Flight> getRoundFlights(@PathVariable Integer roundNum) {
-        return roundService.findRoundFlights(roundNum);
+    public List<FlightDTO> getRoundFlights(@PathVariable Integer roundNum) {
+        return FlightMapper.MAPPER.toFlightDTOList(roundService.findRoundFlights(roundNum));
     }
 
 //    zwroc liste nieanulowanych przelotow w danej rundzie
     @GetMapping("/uncancelled-flights/{roundNum}")
-    public List<Flight> getUncancelledRoundFlights(@PathVariable Integer roundNum) {
-        return roundService.findUncancelledRoundFlights(roundNum);
+    public List<FlightDTO> getUncancelledRoundFlights(@PathVariable Integer roundNum) {
+        return FlightMapper.MAPPER.toFlightDTOList(roundService.findUncancelledRoundFlights(roundNum));
     }
 
 //    anuluj dana runde
@@ -66,8 +70,8 @@ public class RestRoundController {
     }
 
     @GetMapping
-    public List<Round> getRounds() {
-        return roundService.findAll();
+    public List<RoundDTO> getRounds() {
+        return RoundMapper.MAPPER.toRoundDTOList(roundService.findAll());
     }
 
 

@@ -1,6 +1,8 @@
 package aviationModelling.rest;
 
+import aviationModelling.dto.EventDTO;
 import aviationModelling.entity.Event;
+import aviationModelling.mapper.EventMapper;
 import aviationModelling.service.EventService;
 import aviationModelling.service.VaultService;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +21,8 @@ public class RestEventController {
 
     //    pobierz z lokalnej bazy event o podanym id
     @GetMapping("/{eventId}")
-    public Event getEvent(@PathVariable int eventId) {
-        return eventService.findById(eventId);
+    public EventDTO getEvent(@PathVariable int eventId) {
+        return EventMapper.MAPPER.toEventDTO(eventService.findById(eventId));
     }
 
 //     zapisz informacje o evencie do bazy danych
