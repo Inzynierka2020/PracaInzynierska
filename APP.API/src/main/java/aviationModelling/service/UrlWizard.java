@@ -23,7 +23,6 @@ public class UrlWizard {
         params.put("login", login);
         params.put("password", password);
         params.put("function", "getEventPilots");
-//        params.put("output_format", "json");
         params.put("event_id", event_id.toString());
         return urlBuilder(params);
     }
@@ -33,7 +32,6 @@ public class UrlWizard {
         params.put("login", login);
         params.put("password", password);
         params.put("function", "getEventInfo");
-//        params.put("output_format", "json");
         params.put("event_id", event_id.toString());
         return urlBuilder(params);
     }
