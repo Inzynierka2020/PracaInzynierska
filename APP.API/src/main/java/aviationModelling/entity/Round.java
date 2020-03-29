@@ -19,9 +19,6 @@ public class Round {
     @Column(name = "is_cancelled")
     private boolean isCancelled;
 
-    @Column(name = "is_finished")
-    private boolean isFinished;
-
 //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JoinColumn(name = "round_num")
 //    private List<Flight> flights;

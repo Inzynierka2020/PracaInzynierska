@@ -56,6 +56,12 @@ public class RestPilotController {
         return pilotService.findPilotsWithFinishedFlightGroupedByGroup(roundNum,group);
     }
 
+//    zwroc liste odrzuconych wynikow danego pilota (jeden albo dwa)
+    @GetMapping("/discarded-flights/{pilotId}")
+    public List<Float> getDiscardedFlights(@PathVariable Integer pilotId) {
+        return pilotService.findDiscardedFlights(pilotId);
+    }
+
 //    zwroc najlepszy wynik danego pilota
     @GetMapping("/best-score/{pilotId}")
     public Float getBestScore(@PathVariable Integer pilotId) {

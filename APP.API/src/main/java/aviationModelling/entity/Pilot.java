@@ -43,9 +43,6 @@ public class Pilot {
     @Column(name = "team_name")
     private String teamName;
 
-    private Float discarded1;
-    private Float discarded2;
-
     private Float score;
 
     @JsonIgnore

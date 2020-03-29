@@ -2,7 +2,6 @@ package aviationModelling.service;
 
 import aviationModelling.entity.Flight;
 import aviationModelling.repository.FlightRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,8 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public ResponseEntity<String> save(Flight flight) {
         flightRepository.save(flight);
-        return new ResponseEntity<>("Flight saved successfully!", HttpStatus.OK);
+        return roundService.updateScore(flight.getFlightId().getRoundNum());
     }
 
-    @Override
-    public Flight findBestTime() {
-        return flightRepository.findBestTime();
-    }
+
 }

@@ -15,14 +15,14 @@ public interface RoundService {
 
     ResponseEntity<String> createRound(Integer roundNum);
 
-    ResponseEntity<String> updateLocalScore(Integer roundNum);
+    ResponseEntity<String> updateScore(Integer roundNum);
+
+    Integer countRounds();
 
     ResponseEntity<String> cancelRound(Integer roundNum);
 
+    ResponseEntity<String> updateGeneralScore(Integer roundNum);
+
     List<Flight> findRoundFlights(Integer roundNum);
 
-    List<Flight> findUncancelledRoundFlights(Integer roundNum);
-
-
-    ResponseEntity<String> finishRound(Integer roundNum);
 }
