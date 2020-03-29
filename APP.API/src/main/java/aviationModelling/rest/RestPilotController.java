@@ -25,6 +25,12 @@ public class RestPilotController {
         return pilotService.findAll();
     }
 
+    //    zwroc wszystkich pilotow (sortuj po wyniku)
+    @GetMapping("/ranking")
+    public List<Pilot> getPilotRanking() {
+        return pilotService.findAllOrderByScore();
+    }
+
     //    uaktualnij pilota
     @PutMapping
     public ResponseEntity<String> updatePilot(@RequestBody Pilot pilot) {

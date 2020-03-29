@@ -45,4 +45,9 @@ public class FlightServiceImpl implements FlightService {
     public Flight findFlight(Integer roundNum, Integer pilotId) {
         return flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
     }
+
+    @Override
+    public List<Integer> getRoundsNumber() {
+        return flightRepository.getRoundNumbers();
+    }
 }

@@ -26,10 +26,12 @@ public class VaultService {
 //        przypisz ID pilota do przelotow
         eventData.getEvent().getPilots().forEach(pilot -> {
             pilot.setEvent_id(eventId);
-            pilot.getFlights().forEach(flight -> {
-                flight.setPilot_id(pilot.getPilot_id());
-                flight.setEvent_id(eventId);
-            });
+            if (pilot.getFlights() != null) {
+                pilot.getFlights().forEach(flight -> {
+                    flight.setPilot_id(pilot.getPilot_id());
+                    flight.setEvent_id(eventId);
+                });
+            }
         });
 
         return eventData;

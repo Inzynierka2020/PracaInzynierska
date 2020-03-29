@@ -15,6 +15,7 @@ import java.util.List;
 public interface PilotRepository extends JpaRepository<Pilot, Integer> {
 
     List<Pilot> findAllByOrderByLastName();
+    List<Pilot> findAllByOrderByScoreDesc();
 
     @Query("SELECT p.flights FROM Pilot p " +
             "WHERE p.id = :pilotId")

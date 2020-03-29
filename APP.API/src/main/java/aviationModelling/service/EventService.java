@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 public interface EventService {
     Event findById(int id);
     ResponseEntity<String> save(Event event);
-//    ResponseEntity<String> saveEventDataFromVault(int eventId);
-//    ResponseEntity<String> savePilotsDataFromVault(int eventId);
     ResponseEntity<String> updateTotalScore();
     ResponseEntity<String> delete(int eventId);
     ResponseEntity<String> initializeDbWithDataFromVault(int eventId);

@@ -25,9 +25,14 @@ public class RestRoundController {
     }
 
 //    uaktualnij wyniki po przelocie
-    @PutMapping("/{roundNum}")
+    @PutMapping("/update/{roundNum}")
     public ResponseEntity<String> updateLocalScore(@PathVariable Integer roundNum) {
         return roundService.updateLocalScore(roundNum);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateEveryRound() {
+        return roundService.updateAllRounds();
     }
 
 //    stworz nowa runde
@@ -58,6 +63,11 @@ public class RestRoundController {
     @PutMapping("/finish/{roundNum}")
     public ResponseEntity<String>  finishRound(@PathVariable Integer roundNum) {
         return roundService.finishRound(roundNum);
+    }
+
+    @GetMapping
+    public List<Round> getRounds() {
+        return roundService.findAll();
     }
 
 

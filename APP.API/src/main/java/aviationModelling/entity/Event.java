@@ -42,6 +42,7 @@ public class Event {
     @JoinColumn(name = "event_id")
     private List<Pilot> pilots;
 
+
 //    dla komunikacja dwukierunkowej:
 
 //    @OneToMany(mappedBy = "event",

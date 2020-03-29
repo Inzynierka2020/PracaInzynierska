@@ -12,4 +12,6 @@ public interface FlightService {
     Flight findBestScore();
 
     Flight findFlight(Integer roundNum, Integer pilotId);
+
+    List<Integer> getRoundsNumber();
 }

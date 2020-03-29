@@ -25,6 +25,11 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
+    public List<Pilot> findAllOrderByScore() {
+        return pilotRepository.findAllByOrderByScoreDesc();
+    }
+
+    @Override
     public ResponseEntity<String> save(Pilot pilot) {
         pilotRepository.save(pilot);
         return new ResponseEntity<>("Pilot save successfully", HttpStatus.OK);

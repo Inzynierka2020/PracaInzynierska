@@ -25,4 +25,10 @@ public interface RoundService {
 
 
     ResponseEntity<String> finishRound(Integer roundNum);
+
+    List<Integer> getRoundNumbers();
+
+    ResponseEntity<String> updateAllRounds();
+
+    List<Round> findAll();
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface PilotService {
 
     List<Pilot> findAll();
+    List<Pilot> findAllOrderByScore();
     ResponseEntity<String> save(Pilot pilot);
     ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
