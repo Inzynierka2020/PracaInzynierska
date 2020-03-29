@@ -36,9 +36,9 @@ public class RestRoundController {
     }
 
 //    stworz nowa runde
-    @PostMapping("/{roundNum}")
-    public ResponseEntity<String> createRound(@PathVariable Integer roundNum) {
-        return roundService.createRound(roundNum);
+    @PostMapping("/events/{eventId}/new/{roundNum}")
+    public ResponseEntity<String> createRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+        return roundService.createRound(roundNum, eventId);
     }
 
 //    zwroc liste przelotow w danej rundzie

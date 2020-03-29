@@ -19,8 +19,8 @@ public class Flight implements Serializable {
     @EmbeddedId
     private FlightId flightId;
 
-    @Column(name = "event_id")
-    private Integer eventId;
+//    @Column(name = "event_id")
+//    private Integer eventId;
 
     private Integer penalty;
 

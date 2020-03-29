@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
 
         VaultEventDataDTO eventData = vaultService.retrieveEventData(eventId);
         saveEventToDb(eventId, eventData);
-        createRoundsInDb(eventData);
+        createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);
         saveFlightsToDb(eventData);
 //        jak tutaj wrzuce update, to nie dziala
@@ -70,12 +70,15 @@ public class EventServiceImpl implements EventService {
         return new ResponseEntity<>("All event data saved successfully", HttpStatus.CREATED);
     }
 
-    private void createRoundsInDb(VaultEventDataDTO eventData) {
+    private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
+        if (eventData.getEvent().getPilots().get(0).getFlights() == null) {
+            return;
+        }
         List<Integer> roundNumbers = new ArrayList<>();
         eventData.getEvent().getPilots().get(0).getFlights().forEach(flight -> roundNumbers.add(flight.getRound_number()));
 
-        for (Integer number:roundNumbers) {
-            roundService.createRound(number);
+        for (Integer number : roundNumbers) {
+            roundService.createRound(number, eventId);
             roundService.finishRound(number);
         }
     }
@@ -88,7 +91,7 @@ public class EventServiceImpl implements EventService {
                 flightList.add(FlightMapper.MAPPER.toFlightList(pilot.getFlights()));
             }
         });
-        flightList.forEach(list->flightService.saveAll(list));
+        flightList.forEach(list -> flightService.saveAll(list));
     }
 
     private void savePilotsToDb(VaultEventDataDTO eventData) {
@@ -115,32 +118,38 @@ public class EventServiceImpl implements EventService {
             List<Flight> pilotFlights = pilotService.findUncancelledAndFinishedPilotFlights(pilot.getId());
             totalRounds = pilotFlights.size();
 
-            if (totalRounds == 0) continue;    // aby testy się nie wywalały
+//
+            if (totalRounds == 0) continue;
 
+//            po 4 rundach odrzuc najgorszy wynik
             if (totalRounds >= 4) {
-                List<Flight> first4 = pilotFlights.subList(0, 4).stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
-                if (first4.size() != 0) {
-                    Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-                    pilot.setDiscarded1(worst.getScore());
-                    pilotFlights.remove(worst);
-                } else {
-                    continue;
-                }
+                List<Flight> first4 = pilotFlights.subList(0, 4);
+                first4.stream().forEach(flight -> {
+                    if (flight.getScore() == null) {
+                        flight.setScore(0F);
+                    }
+                });
+
+                Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                pilot.setDiscarded1(worst.getScore());
+                pilotFlights.remove(worst);
             }
 
             if (totalRounds >= 15) {
-                List<Flight> first15 = pilotFlights.subList(0, 14).stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
-                if (first15.size() != 0) {
-                    Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-                    pilot.setDiscarded2(worst.getScore());
-                    pilotFlights.remove(worst);
-                } else {
-                    continue;
-                }
+                List<Flight> first15 = pilotFlights.subList(0, 14);
+                first15.stream().forEach(flight -> {
+                    if (flight.getScore() == null) {
+                        flight.setScore(0F);
+                    }
+                });
+                Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                pilot.setDiscarded2(worst.getScore());
+                pilotFlights.remove(worst);
             }
 
-            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore() != null && flight.getScore() > 0).mapToDouble(flight -> flight.getScore()).sum();
-            if (totalScore != null && totalScore > 0) pilot.setScore(totalScore);
+            Float totalScore = (float) pilotFlights.stream().mapToDouble(flight -> flight.getScore()).sum();
+            if (totalScore != null) pilot.setScore(totalScore);
+            else pilot.setScore(0F);
         }
         pilotService.saveAll(pilotList);
 

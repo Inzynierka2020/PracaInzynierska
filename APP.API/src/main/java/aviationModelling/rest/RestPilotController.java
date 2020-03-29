@@ -45,7 +45,7 @@ public class RestPilotController {
 
 //    zwroc wszystkie loty pilota o danym id
     @GetMapping("/{pilotId}/flights")
-    public List<Flight> pilotRounds(@PathVariable int pilotId) {
+    public List<Flight> pilotFlights(@PathVariable int pilotId) {
         return pilotService.findPilotFlights(pilotId);
     }
 

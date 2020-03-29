@@ -16,6 +16,9 @@ public class Round {
     @Column(name = "round_num")
     private Integer roundNum;
 
+    @Column(name = "event_id")
+    private Integer eventId;
+
     @Column(name = "is_cancelled")
     private boolean isCancelled;
 

@@ -51,9 +51,10 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<String> createRound(Integer roundNum) {
+    public ResponseEntity<String> createRound(Integer roundNum, Integer eventId) {
         Round round = new Round();
         round.setRoundNum(roundNum);
+        round.setEventId(eventId);
         round.setCancelled(false);
         save(round);
         return new ResponseEntity<>("Round " + roundNum + " created!", HttpStatus.CREATED);

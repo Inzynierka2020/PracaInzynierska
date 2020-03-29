@@ -13,7 +13,7 @@ public interface RoundService {
 
     Round findByRoundNum(Integer roundNum);
 
-    ResponseEntity<String> createRound(Integer roundNum);
+    ResponseEntity<String> createRound(Integer roundNum, Integer eventId);
 
     ResponseEntity<String> updateLocalScore(Integer roundNum);
 
