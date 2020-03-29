@@ -14,9 +14,15 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
 
     Round findByRoundNum(Integer roundNum);
 
-    Integer countRoundsByIsCancelledFalse();
-
     @Query("SELECT r.flights FROM Round r " +
             "WHERE r.roundNum = :roundNum")
     List<Flight> findRoundFlights(@Param("roundNum") Integer roundNum);
+
+    @Query("SELECT r.flights FROM Round r " +
+            "WHERE r.roundNum = :roundNum AND r.isCancelled = false")
+    List<Flight> findUncancelledRoundFlights(@Param("roundNum") Integer roundNum);
+
+    @Query("SELECT r.roundNum FROM Round r " +
+            "WHERE r.isCancelled = false")
+    List<Integer> getRoundNumbers();
 }

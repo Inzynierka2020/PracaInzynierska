@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RoundServiceImpl implements RoundService {
@@ -35,34 +36,55 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    public List<Round> findAll() {
+        return roundRepository.findAll();
+    }
+
+    @Override
     public List<Flight> findRoundFlights(Integer roundNum) {
         return roundRepository.findRoundFlights(roundNum);
     }
 
     @Override
-    public ResponseEntity<String> createRound(Integer roundNum) {
+    public List<Flight> findUncancelledRoundFlights(Integer roundNum) {
+        return roundRepository.findUncancelledRoundFlights(roundNum);
+    }
+
+    @Override
+    public ResponseEntity<String> createRound(Integer roundNum, Integer eventId) {
         Round round = new Round();
         round.setRoundNum(roundNum);
+        round.setEventId(eventId);
         round.setCancelled(false);
         save(round);
-        return new ResponseEntity<>("Round " + roundNum + " created!", HttpStatus.OK);
+        return new ResponseEntity<>("Round " + roundNum + " created!", HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<String> updateScore(Integer roundNum) {
+    public ResponseEntity<String> updateLocalScore(Integer roundNum) {
         Round round = findByRoundNum(roundNum);
-        if (round.getFlights().size() == 1) {
-            return new ResponseEntity<>("Flight saved!", HttpStatus.OK);
+        if(round.getFlights()==null) {
+            return new ResponseEntity<>("Round "+roundNum+" has no flights!", HttpStatus.BAD_REQUEST);
         }
-        Float best = round.getFlights().stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
-        round.getFlights().forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
-        save(round);
-        return new ResponseEntity<>("Flight saved, all scores recalculated", HttpStatus.OK);
+        List<Flight> validFlights = round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
+        if (validFlights.size() != 0) {
+            Float best = validFlights.stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
+            round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
+            save(round);
+        } else {
+            cancelRound(roundNum);
+            return new ResponseEntity<>("The round "+roundNum+" was cancelled because of invalid data!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("All scores in round " + roundNum + " updated!", HttpStatus.OK);
     }
 
     @Override
-    public Integer countRounds() {
-        return roundRepository.countRoundsByIsCancelledFalse();
+    public ResponseEntity<String> updateAllRounds() {
+        List<Integer> roundNumbers = getRoundNumbers();
+        for(Integer number:roundNumbers) {
+            updateLocalScore(number);
+        }
+        return new ResponseEntity<>("All local scores was updated!", HttpStatus.OK);
     }
 
     @Override
@@ -74,57 +96,15 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<String> updateGeneralScore(Integer roundNum) {
-        if (!countRounds().equals(4) && !countRounds().equals(15)) {
-            return classicUpdate(roundNum);
-        } else {
-            return specialUpdate(roundNum);
-        }
-    }
-
-    private ResponseEntity<String> classicUpdate(Integer roundNum) {
+    public ResponseEntity<String> finishRound(Integer roundNum) {
         Round round = findByRoundNum(roundNum);
-        List<Pilot> pilotList = pilotService.findAll();
-        Map<Integer, Float> results = new HashMap<>();
-        round.getFlights().stream()
-                .filter(flight -> flight.isDiscarded() == false)
-                .forEach(flight -> results.put(flight.getFlightId().getPilotId(), flight.getScore() - flight.getPenalty()));
-
-        pilotList.stream()
-                .filter(pilot -> results.containsKey(pilot.getId()))
-                .forEach(pilot -> pilot.setScore(pilot.getScore() +
-                        results.get(pilot.getId())));
-
-
-        pilotService.saveAll(pilotList);
-        return new ResponseEntity<>("General score updated", HttpStatus.OK);
+        round.setFinished(true);
+        save(round);
+        return new ResponseEntity<>("Round " + roundNum + " is finished now!", HttpStatus.OK);
     }
 
-    private ResponseEntity<String> specialUpdate(Integer roundNum) {
-        List<Pilot> pilotList = pilotService.findAll();
-
-        for(Pilot tmpPilot : pilotList) {
-            Pilot pilot = pilotService.findById(tmpPilot.getId());
-            if(pilot.getFlights().size()==0) continue;
-
-            pilot.getFlights().stream()
-                    .filter(flight -> !flight.isDiscarded() && !flight.getRound().isCancelled())
-                    .min(Comparator.comparingDouble(Flight::getScore))
-                    .get()
-                    .setDiscarded(true);
-
-            Float totalScore = 0F;
-            for(Flight flight:pilot.getFlights()) {
-                if(flight.isDiscarded()==false && flight.getRound().isCancelled()==false) {
-                    totalScore+=flight.getScore();
-                }
-            }
-            pilot.setScore(totalScore);
-        }
-        pilotService.saveAll(pilotList);
-
-        return new ResponseEntity<>("General score updated with the worst flight discard", HttpStatus.OK);
+    @Override
+    public List<Integer> getRoundNumbers() {
+        return roundRepository.getRoundNumbers();
     }
-
-
 }

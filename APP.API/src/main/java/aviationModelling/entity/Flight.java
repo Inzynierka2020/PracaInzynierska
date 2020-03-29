@@ -12,16 +12,15 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
+@Data
 @Table(name = "flight")
 public class Flight implements Serializable {
 
     @EmbeddedId
     private FlightId flightId;
 
-    @Column(name = "event_id")
-    private Integer eventId;
+//    @Column(name = "event_id")
+//    private Integer eventId;
 
     private Integer penalty;
 
@@ -61,9 +60,6 @@ public class Flight implements Serializable {
 
     private Float score;
 
-    @Column(name = "is_discarded")
-    private boolean discarded;
-
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "round_num", insertable=false, updatable=false)
@@ -76,7 +72,7 @@ public class Flight implements Serializable {
 
 
     @Embeddable
-    @Getter @Setter
+    @Data
     public static class FlightId implements Serializable {
 
         @Column(name = "pilot_id")
