@@ -1,6 +1,6 @@
 <div class="d-flex flex-column align-items-center w-100">
     <div class="container">
-        <i class="material-icons mr-3" (click)="changeMode()">
+        <i class="material-icons" (click)="changeMode()">
             <span *ngIf="!editMode">lock</span>
             <span *ngIf="editMode"> lock_open</span>
         </i>
@@ -9,7 +9,7 @@
         </mat-checkbox>
     </div>
     <div ngClass="!browse ? 'content' : ''" class="w-100">
-        <app-score [mode]="'browse'" [group]="group"></app-score>
+        <app-score [mode]="'browse'"></app-score>
     </div>
     <div class="data my-4">
         <button mat-raised-button [color]="group =='A' ? 'primary' : 'accent'" (click)="changeGroup('A')">A</button>

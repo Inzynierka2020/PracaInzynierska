@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Pilot } from '../models/pilot';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PilotService {
 
-  constructor() { }
+  constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
+  getPilots() {
+    return this._http.get<Pilot[]>(this._baseUrl + 'pilots');
+  }
 
-  getPilots(){
-    
+  getPilotsWithFlights(): Observable<Pilot[]>{
+    return this._http.get<Pilot[]>(this._baseUrl + 'pilots');
   }
 }

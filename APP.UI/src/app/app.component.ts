@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { EventService } from './services/event.service';
+import { Event } from '../app/models/event'
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,20 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'App';
+
+  event: Event = {
+    eventId:0,
+    eventEndDate: "",
+    eventLocation: "",
+    eventName: "---",
+    eventStartDate: "",
+    eventType: "",
+    numberOfRounds: 0,
+    started: false
+  }
+
+constructor(private eventService: EventService) {
+
+}
+
 }

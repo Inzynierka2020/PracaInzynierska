@@ -3,6 +3,10 @@ import { MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/t
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.component';
+import { RoundsService } from '../services/rounds.service';
+import { PilotService } from '../services/pilot.service';
+import { Pilot } from '../models/pilot';
+import { group } from '@angular/animations';
 
 @Component({
   selector: 'app-tab',
@@ -12,46 +16,65 @@ import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.co
 })
 export class TabComponent implements OnInit {
 
+  dataSource: Pilot[];
+
   started = false;
   switch = false; //temporary workaround for a bug
   previousTabIndex = 0;
   browsing = false;
   roundNumber = 1;
-  constructor(public dialog: MatDialog) { }
+  newRoundNumber = 1;
+  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService) { }
 
   ngOnInit() {
+    this.getGeneralScoreData();
+    this.getBrowsingData();
   }
 
+  getGeneralScoreData() {
+    this._pilotService.getPilots().subscribe(result => this.dataSource = result);
+  }
+
+  getBrowsingData() {
+    // this._roundsService
+  }
+
+
+
   onChangeTab(event: MatTabChangeEvent, tab: MatTabGroup) {
-    if (event.index == 2 && !this.started) {
+    if (event.index == 1) { 
+      //BROWSE TAB
+      this.browsing = true;
+      this.previousTabIndex = event.index;
+    } else if (event.index == 2 && !this.started) {
+      //NEW ROUND TAB
       this.browsing = false;
       const dialogRef = this.dialog.open(NewRoundDialogComponent, {
-        width: '75%',
+        width: '80%',
         maxWidth: '800px',
         height: 'fitcontent',
         disableClose: true
       });
-
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
+        if (result>0) {
           this.started = true;
-          this.createNewRound();
+          this.startNewRound(result);
+          this.newRoundNumber=result;
         } else {
           tab.selectedIndex = this.previousTabIndex;
           this.switch = !this.switch;
         }
       })
-    } else if (event.index == 1) {
-      this.browsing = true;
-      this.previousTabIndex = event.index;
     } else {
+      //GENERAL SCORE TAB
+      this.getGeneralScoreData();
       this.previousTabIndex = event.index;
       this.browsing = false;
     }
   }
 
-  createNewRound() {
-
+  startNewRound(roundNumber:number) {
+    this._roundsService.startNewRound(roundNumber).subscribe(result=>{});
   }
 
   finishRound(event, tab: MatTabGroup) {
@@ -68,7 +91,7 @@ export class TabComponent implements OnInit {
   prevRound() {
     if (this.browsing)
       this.roundNumber--;
-      if(this.roundNumber<0)
-        this.roundNumber=0;
+    if (this.roundNumber < 0)
+      this.roundNumber = 0;
   }
 }

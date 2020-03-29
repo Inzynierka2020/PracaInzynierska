@@ -1,19 +1,22 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <div class="d-flex flex-column justify-content-between align-content-center w-100">
-            <div>{{ now | date:'dd.MM.yyyy'}} | {{ now | date:'HH:mm:ss'}} </div>
-            <div class="title"><i>'Rusko in Winter 2020 Race 1'</i></div>
-            <!-- <div class="date large">
-                <div class="days">{{ now | date:'dd.MM.yyyy'}}</div>
-                <div class="time">{{ now | date:'HH:mm:ss'}}</div>
-            </div> -->
-        </div>
-        <div class="wind">
-            <app-wind></app-wind>
-            <div (click)="openSettings()" class="cog">
-                <i class="material-icons">
-                    settings
-                </i>
+        <div class="content" [ngClass]="event.eventName=='---' ? 'justify-content-center' : ''">
+            <div class="title" *ngIf="event.eventName!='---'"><i>'{{event.eventName}}'</i></div>
+            <div class="wind">
+                <div class="date">
+                    <div>
+                        {{ now | date:'dd.MM.yyyy'}}
+                    </div>
+                    <div style="font-size:150%">
+                        {{ now | date:'HH:mm:ss'}}
+                    </div>
+                </div>
+                <app-wind></app-wind>
+                <div (click)="openSettings()" class="cog">
+                    <i class="material-icons">
+                        settings
+                    </i>
+                </div>
             </div>
         </div>
     </mat-toolbar-row>

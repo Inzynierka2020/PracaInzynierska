@@ -5,9 +5,25 @@ button {
     min-height: 50px;
 }
 
+.title {
+    font-size: 300%;
+}
+
 .buttons {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     height: 15%;
+}
+
+
+/*---- RESPONSIVE ----*/
+
+@media (max-height: 900px) and (max-width: 450px) {
+    .title {
+        font-size: 250%;
+    }
+    button {
+        font-size: 125%;
+    }
 }

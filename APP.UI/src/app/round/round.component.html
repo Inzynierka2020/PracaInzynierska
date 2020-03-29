@@ -10,13 +10,13 @@
             <app-score></app-score>
         </div>
         <mat-toolbar color="primary">
-            <mat-toolbar-row class="to-start my-3">
-                <div class="display-4">YET TO START</div>
+            <mat-toolbar-row class="to-start">
+                <div class="title">YET TO START</div>
             </mat-toolbar-row>
         </mat-toolbar>
         <div class="to-start-score w-100">
             <app-score [mode]="'yetToStart'" class="w-100"></app-score>
         </div>
     </div>
-    <button mat-raised-button color="accent" (click)="finishRound()">Finish round</button>
+    <button mat-raised-button color="accent" (click)="finishRound()">FINISH</button>
 </div>

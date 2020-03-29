@@ -4,6 +4,7 @@ import { PlayerComponent } from '../player/player.component';
 import { Pilot } from '../models/pilot';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { PilotService } from '../services/pilot.service';
 
 @Component({
   selector: 'app-score',
@@ -12,25 +13,18 @@ import { environment } from 'src/environments/environment';
 })
 export class ScoreComponent implements OnInit {
 
+  @Input()
   dataSource: Pilot[];
 
   @Input()
   mode = "";
 
-  @Input()
-  selectPlayers = true;
 
-  @Input()
-  group = 'A';
-
-  @Input()
-  title: string;
-
-  constructor(public dialog: MatDialog, private _http: HttpClient, @Inject("BASE_URL") private _baseUrl: string ) {
+  constructor(public dialog: MatDialog  ) {
   }
   
   ngOnInit() {
-     this._http.get<Pilot[]>(this._baseUrl + 'pilots').subscribe(result=>this.dataSource=result);
+     
   }
 
   openPlayer(event) {

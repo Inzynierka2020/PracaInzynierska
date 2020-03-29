@@ -1,10 +1,9 @@
-.tab-content {
-    margin-top: 128px;
+.material-icons {
+    font-size: 350%;
 }
 
-.grey {
-    color: grey !important;
-    cursor: pointer;
+.tab-content {
+    margin-top: 150px;
 }
 
 .gold {
@@ -39,7 +38,7 @@
     position: sticky !important;
     justify-content: center;
     background-color: white;
-    top: 128px;
+    top: 150px;
     z-index: 1000;
 }
 
@@ -60,7 +59,29 @@
 
 /*---- RESPONSIVE ----*/
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 700px) {
+    .material-icons {
+        margin: 0px !important;
+        font-size: 300%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .material-icons {
+        font-size: 220%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .tab-content {
+        margin-top: 112px;
+    }
+    .mat-tab-header {
+        top: 112px;
+    }
+}
+
+@media screen and (max-width: 585px) {
     .mat-tab-label {
         font-size: 15px;
         padding: 12px !important;

@@ -44,7 +44,7 @@ export class PlayerComponent implements OnInit {
   }
   savePlayer() {
     var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '70%',
+      width: '80 %',
       maxWidth: '500px',
       disableClose: true
     });
@@ -63,7 +63,7 @@ export class PlayerComponent implements OnInit {
 
   switchEditMode() {
     var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '70%',
+      width: '80%',
       maxWidth: '500px',
       disableClose: true
     });
