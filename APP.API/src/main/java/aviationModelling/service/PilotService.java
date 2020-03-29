@@ -3,6 +3,7 @@ package aviationModelling.service;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
 import aviationModelling.entity.Round;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public interface PilotService {
 
     List<Pilot> findAll();
+    List<Pilot> findAllOrderByScore();
     ResponseEntity<String> save(Pilot pilot);
     ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
@@ -18,10 +20,10 @@ public interface PilotService {
     List<Pilot> findPilotsWithUnfinishedFlight(Integer roundNum);
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
 
-    List<Float> findDiscardedFlights(Integer pilotId);
-    Float findBestScore(Integer pilotId);
-    Float findBestTime(Integer pilotId);
+    Float findBestPilotScore(Integer pilotId);
+    Float findBestPilotTime(Integer pilotId);
 
     List<Flight> findPilotFlights(Integer pilotId);
+    List<Flight> findUncancelledAndFinishedPilotFlights(Integer pilotId);
 
 }

@@ -42,6 +42,12 @@ public class Event {
     @JoinColumn(name = "event_id")
     private List<Pilot> pilots;
 
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
+    private List<Round> rounds;
+
+
 //    dla komunikacja dwukierunkowej:
 
 //    @OneToMany(mappedBy = "event",

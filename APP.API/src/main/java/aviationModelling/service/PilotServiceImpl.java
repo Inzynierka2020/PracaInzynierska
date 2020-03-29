@@ -25,6 +25,11 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
+    public List<Pilot> findAllOrderByScore() {
+        return pilotRepository.findAllByOrderByScoreDesc();
+    }
+
+    @Override
     public ResponseEntity<String> save(Pilot pilot) {
         pilotRepository.save(pilot);
         return new ResponseEntity<>("Pilot save successfully", HttpStatus.OK);
@@ -62,19 +67,20 @@ public class PilotServiceImpl implements PilotService {
         return pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(round, group);
     }
 
+
     @Override
-    public List<Float> findDiscardedFlights(Integer pilotId) {
-        return pilotRepository.findDiscardedFlights(pilotId);
+    public Float findBestPilotScore(Integer pilotId) {
+        return pilotRepository.findBestPilotScore(pilotId);
     }
 
     @Override
-    public Float findBestScore(Integer pilotId) {
-        return pilotRepository.findBestScore(pilotId);
+    public Float findBestPilotTime(Integer pilotId) {
+        return pilotRepository.findBestPilotTime(pilotId);
     }
 
     @Override
-    public Float findBestTime(Integer pilotId) {
-        return pilotRepository.findBestTime(pilotId);
+    public List<Flight> findUncancelledAndFinishedPilotFlights(Integer pilotId) {
+        return pilotRepository.findUncancelledAndFinishedPilotFlights(pilotId);
     }
 
     @Override
