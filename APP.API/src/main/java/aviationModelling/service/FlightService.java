@@ -13,5 +13,4 @@ public interface FlightService {
 
     Flight findFlight(Integer roundNum, Integer pilotId);
 
-    List<Integer> getRoundsNumber();
 }

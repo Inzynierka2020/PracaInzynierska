@@ -23,7 +23,7 @@ public class RestFlightController {
         return flightService.findFlight(roundNum, pilotId);
     }
 
-//    zapisz przelot i przelicz aktualny score kazdego pilota
+//    zapisz przelot
     @PostMapping
     public ResponseEntity<String> saveFlight(@RequestBody Flight flight) {
         return flightService.save(flight);

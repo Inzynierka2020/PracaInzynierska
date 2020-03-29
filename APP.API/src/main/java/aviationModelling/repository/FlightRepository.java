@@ -20,7 +20,4 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
 
     Flight findByFlightIdRoundNumAndFlightIdPilotId(Integer roundNum, Integer pilotId);
 
-    @Query("SELECT f.flightId.roundNum FROM Flight f " +
-            "WHERE f.round.isCancelled=false")
-    List<Integer> getRoundNumbers();
 }
