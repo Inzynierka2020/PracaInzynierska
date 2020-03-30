@@ -1,7 +1,9 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.PilotDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
+import aviationModelling.mapper.PilotMapper;
 import aviationModelling.repository.PilotRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,8 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public ResponseEntity<String> save(Pilot pilot) {
-        pilotRepository.save(pilot);
+    public ResponseEntity<String> save(PilotDTO pilotDTO) {
+        pilotRepository.save(PilotMapper.MAPPER.toPilot(pilotDTO));
         return new ResponseEntity<>("Pilot save successfully", HttpStatus.OK);
     }
 
@@ -66,7 +68,6 @@ public class PilotServiceImpl implements PilotService {
     public List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group) {
         return pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(round, group);
     }
-
 
     @Override
     public Float findBestPilotScore(Integer pilotId) {

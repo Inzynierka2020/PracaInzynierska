@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.PilotDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
 import aviationModelling.entity.Round;
@@ -12,7 +13,7 @@ public interface PilotService {
 
     List<Pilot> findAll();
     List<Pilot> findAllOrderByScore();
-    ResponseEntity<String> save(Pilot pilot);
+    ResponseEntity<String> save(PilotDTO pilotDTO);
     ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
     Pilot findById(int id);

@@ -5,6 +5,7 @@ import aviationModelling.dto.VaultEventDataDTO;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
+import aviationModelling.exception.EventNotFoundException;
 import aviationModelling.mapper.EventMapper;
 import aviationModelling.mapper.VaultEventMapper;
 import aviationModelling.mapper.VaultFlightMapper;
@@ -26,10 +27,10 @@ public class EventServiceImpl implements EventService {
     private PilotService pilotService;
     private FlightService flightService;
     private RoundService roundService;
-    private VaultService vaultService;
+    private VaultServiceImpl vaultService;
 
 
-    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, FlightService flightService, RoundService roundService, VaultService vaultService) {
+    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, FlightService flightService, RoundService roundService, VaultServiceImpl vaultService) {
         this.eventRepository = eventRepository;
         this.pilotService = pilotService;
         this.flightService = flightService;
@@ -45,16 +46,17 @@ public class EventServiceImpl implements EventService {
 
         if (result.isPresent()) {
             event = result.get();
+        } else {
+            throw new EventNotFoundException("Event " + id + " not found.");
         }
-        EventDTO eventDTO = EventMapper.MAPPER.toEventDTO(event);
         return event;
     }
 
-    @Override
-    public ResponseEntity<String> save(Event event) {
-        eventRepository.save(event);
-        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<String> save(Event event) {
+//        eventRepository.save(event);
+//        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
+//    }
 
 
     @Override
@@ -65,10 +67,9 @@ public class EventServiceImpl implements EventService {
         createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);
         saveFlightsToDb(eventData);
-//        jak tutaj wrzuce update, to nie dziala
 
 
-        return new ResponseEntity<>("All event data saved successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("All event data saved correctly", HttpStatus.CREATED);
     }
 
     private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
@@ -108,7 +109,7 @@ public class EventServiceImpl implements EventService {
 //        zapisywanie eventu
         Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
         event.setEventId(eventId);
-        save(event);
+        eventRepository.save(event);
     }
 
     @Override

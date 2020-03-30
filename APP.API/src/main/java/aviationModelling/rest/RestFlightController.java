@@ -27,14 +27,14 @@ public class RestFlightController {
 
 //    zapisz przelot
     @PostMapping
-    public ResponseEntity<String> saveFlight(@RequestBody Flight flight) {
-        return flightService.save(flight);
+    public ResponseEntity<String> saveFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO);
     }
 
 //    uaktualnij przelot
     @PutMapping
-    public ResponseEntity<String> updateFlight(@RequestBody Flight flight) {
-        return flightService.save(flight);
+    public ResponseEntity<String> updateFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO);
     }
 
 //    zwroc najszybszy lot

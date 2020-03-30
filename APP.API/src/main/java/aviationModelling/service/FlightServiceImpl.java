@@ -1,6 +1,8 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.FlightDTO;
 import aviationModelling.entity.Flight;
+import aviationModelling.mapper.FlightMapper;
 import aviationModelling.repository.FlightRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public ResponseEntity<String> save(Flight flight) {
-        flightRepository.save(flight);
+    public ResponseEntity<String> save(FlightDTO flightDTO) {
+        flightRepository.save(FlightMapper.MAPPER.toFlight(flightDTO));
         return new ResponseEntity<>("Flight saved successfully!", HttpStatus.CREATED);
     }
 

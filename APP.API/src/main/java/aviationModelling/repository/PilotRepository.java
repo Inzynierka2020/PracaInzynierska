@@ -34,6 +34,7 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
             "ORDER BY f.score DESC, p.lastName")
     List<Pilot> findPilotsWithFinishedFlight(@Param("roundNum") Integer roundNum);
 
+
     @Query("SELECT pil FROM Pilot pil WHERE pil.id NOT IN " +
             "(SELECT p.id FROM Pilot p JOIN Flight f ON p.id = f.flightId.pilotId " +
             "WHERE f.flightId.roundNum = :roundNum )" +

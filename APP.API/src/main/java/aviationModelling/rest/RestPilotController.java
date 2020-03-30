@@ -37,8 +37,8 @@ public class RestPilotController {
 
     //    uaktualnij pilota
     @PutMapping
-    public ResponseEntity<String> updatePilot(@RequestBody Pilot pilot) {
-        return pilotService.save(pilot);
+    public ResponseEntity<String> updatePilot(@RequestBody PilotDTO pilotDTO) {
+        return pilotService.save(pilotDTO);
     }
 
 //    zwroc danego pilota
@@ -51,6 +51,12 @@ public class RestPilotController {
     @GetMapping("/{pilotId}/flights")
     public List<FlightDTO> pilotFlights(@PathVariable int pilotId) {
         return FlightMapper.MAPPER.toFlightDTOList(pilotService.findPilotFlights(pilotId));
+    }
+
+//    zwroc wszystkie loty pilota o danym id
+    @GetMapping("/{pilotId}/finished-flights")
+    public List<FlightDTO> pilotFinishedFlights(@PathVariable int pilotId) {
+        return FlightMapper.MAPPER.toFlightDTOList(pilotService.findUncancelledAndFinishedPilotFlights(pilotId));
     }
 
 //    zwroc liste pilotow, ktorzy odbyli swoj lot w danej rundzie (sortuj wg wyniku malejaco, potem wg nazwiska)
