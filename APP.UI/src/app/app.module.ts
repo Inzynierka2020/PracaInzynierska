@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabComponent } from './tab/tab.component';
 import { ScoreComponent } from './score/score.component';
 import { RoundComponent } from './round/round.component';
-import { BrowseComponent } from './browse/browse.component';
+import { BrowseComponent} from './browse/browse.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NewRoundDialogComponent } from './new-round-dialog/new-round-dialog.component';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +18,7 @@ import { WindComponent } from './wind/wind.component';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { EventComponent } from './event/event.component';
+import { GroupPipe } from './pipes/group.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: EventComponent },
@@ -46,6 +47,7 @@ export function getBaseUrl() {
     PlayerComponent,
     WindComponent,
     EventComponent,
+    GroupPipe,
   ],
   imports: [
     BrowserModule,

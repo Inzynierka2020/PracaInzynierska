@@ -15,5 +15,6 @@ export interface Pilot {
     discard2: number;
     score: string;
     penalty: number;
+    flights: Flight[];
     flight: Flight;
 }

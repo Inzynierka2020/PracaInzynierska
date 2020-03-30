@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Pipe, PipeTransform, EventEmitter } from '@angular/core';
 import { RoundsService } from '../services/rounds.service';
 import { Pilot } from '../models/pilot';
 import { Flight } from '../models/flight';
+import { FlightsService } from '../services/flights.service';
+import { PilotService } from '../services/pilot.service';
+import { Round } from '../models/round';
 
 @Component({
   selector: 'app-browse',
@@ -11,28 +14,39 @@ import { Flight } from '../models/flight';
 export class BrowseComponent implements OnInit {
 
   @Input()
-  roundNumber = 0;
-
-  pilots: Pilot[];
-  flights: Flight[];
+  round: Round;
 
   dataSource: Pilot[];
-  editMode=false;
-  group='A';
+  editMode = false;
+  group = "A";
 
-  constructor(private _roundsService: RoundsService) { }
-
-  ngOnInit() {
-    this._roundsService.getRound(this.roundNumber).subscribe(result=>{
-      this.dataSource=result;
+  constructor(private _pilotService: PilotService) {
+    this._pilotService.getPilots().subscribe(pilotsResult => {
+      this.dataSource = pilotsResult;
+      this.ngOnChanges();
     });
   }
 
-  changeGroup(group){
-    this.group=group;
+  ngOnInit() {
   }
 
-  changeMode(){
-    this.editMode=!this.editMode;
+  ngOnChanges() {
+    if (this.dataSource) {
+      console.log("round changed");
+      this.dataSource.forEach(pilot => {
+        pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
+      });
+
+      this.dataSource.sort((a, b) => a.flight.order > b.flight.order ? 1 : -1);
+    }
+  }
+
+  changeGroup(group) {
+    this.group = group;
+  }
+
+  changeMode() {
+    this.editMode = !this.editMode;
   }
 }
+

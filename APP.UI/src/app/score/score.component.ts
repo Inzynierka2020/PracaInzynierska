@@ -17,6 +17,7 @@ export class ScoreComponent implements OnInit {
   @Output()
   rowAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
 
+
   constructor() { }
 
   ngOnInit() { }

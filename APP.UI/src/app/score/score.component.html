@@ -6,43 +6,45 @@
                 {{pilot.pilotBib}}
             </div>
             <div class="d-flex flex-column w-100">
-                <div class="title">{{pilot.number}} {{pilot.lastName | uppercase}} {{pilot.firstName}}</div>
+                <div class="title">{{pilot.flight ? pilot.flight.order : null}} {{pilot.lastName | uppercase}} {{pilot.firstName}}</div>
                 <div class="data" *ngIf="mode != 'yetToStart'">
                     <div class="d-flex w-100 justify-content-around">
                         <div class="data-field">
-                            <div class="semi-title">TOTAL</div>
+                            <div class="semi-title" *ngIf="pilot.flights">TOTAL</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score">{{pilot.score}}</div>
                         </div>
-                        <div class="data-field">
+                        <div class="data-field" *ngIf="pilot.flight">
                             <div class="semi-title">RESULT</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score">{{pilot.flight.score}}</div>
                         </div>
                         <div class="data-field">
                             <div class="semi-title">PENALTY</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score">{{pilot.flight ? pilot.flight.penalty : pilot.penalty}}</div>
                         </div>
-                        <div class="data-field" *ngIf="mode == 'general'">
+                        <div class="data-field" *ngIf="mode == 'general' && pilot.flight">
                             <div class="semi-title">DISCARD 1</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score">{{pilot.flight.discard1}}</div>
                         </div>
-                        <div class="data-field" *ngIf="mode == 'general'">
+                        <div class="data-field" *ngIf="mode == 'general' && pilot.flight">
                             <div class="semi-title">DISCARD 2</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score">{{pilot.flight.discard2}}</div>
                         </div>
-                        <div class="data-field" *ngIf="mode != 'general'">
+                        <div class="data-field" *ngIf="mode != 'general' && pilot.flight">
                             <div class="semi-title">STATUS</div>
                             <mat-divider></mat-divider>
-                            <div class="score">9999</div>
+                            <div class="score" *ngIf="pilot.flight.dnf">DNF</div>
+                            <div class="score" *ngIf="pilot.flight.dns">DNS</div>
+                            <div class="score" *ngIf="!pilot.flight.dnf && !pilot.flight.dns">FINISHED</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="group" *ngIf="mode !='general' && mode !='yetToStart'  ">
+            <div class="group" *ngIf="mode !='general' && mode !='yetToStart' && pilot.flight">
                 {{pilot.flight.group}}
             </div>
         </div>

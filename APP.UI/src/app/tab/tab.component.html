@@ -6,14 +6,14 @@
     </mat-tab>
     <mat-tab [disabled]="browsing">
         <ng-template mat-tab-label class="d-flex justify-content-between">
-            <i class="material-icons mr-2" [ngClass]="!browsing ? 'grey' : 'gold'" (click)="prevRound()">
+            <i class="material-icons mr-2" [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound(-1)">
                keyboard_arrow_left </i>
             <span [ngClass]="browsing ? 'black' : ''">ROUND {{roundNumber}}</span>
-            <i class="material-icons ml-2 " [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound()">
+            <i class="material-icons ml-2 " [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound(1)">
                 keyboard_arrow_right</i>
         </ng-template>
         <div class="tab-content">
-            <app-browse [roundNumber]="roundNumber"></app-browse>
+            <app-browse [round]="browsedRound"></app-browse>
         </div>
     </mat-tab>
     <mat-tab *ngIf="started ">

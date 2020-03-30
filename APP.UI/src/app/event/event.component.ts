@@ -23,11 +23,9 @@ export class EventComponent implements OnInit {
 
   startEvent() {
     this._eventService.initEvent(this.event.eventId).subscribe(result => {
-      this._eventService.initPilots(this.event.eventId).subscribe(result => {
-        this._eventService.getEvent(this.event.eventId).subscribe(result => {
-          result.started=true;
-          this.eventChange.emit(result);
-        })
+      this._eventService.getEvent(this.event.eventId).subscribe(result => {
+        result.started = true;
+        this.eventChange.emit(result);
       })
     })
   }

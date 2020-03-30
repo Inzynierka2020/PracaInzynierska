@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Round } from '../models/round';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class RoundsService {
     });
   }
 
-  startNewRound(roundNumber:number):Observable<any>{
-    return this._http.post<any>(this._baseUrl + "rounds/create/"+roundNumber,  {
+  startNewRound(roundNumber:number, eventId:number):Observable<any>{
+    return this._http.post<any>(this._baseUrl + "rounds/events/"+eventId+"/new/"+roundNumber,  {
       responseType: 'text' as 'json'
     });
   }
@@ -29,5 +30,9 @@ export class RoundsService {
 
   getRound(roundNumber:number):Observable<any>{
     return this._http.get(this._baseUrl + "rounds/"+roundNumber);
+  }
+
+  getRounds():Observable<Round[]>{
+    return this._http.get<Round[]>(this._baseUrl + "rounds/");
   }
 }

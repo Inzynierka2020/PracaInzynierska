@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Flight } from '../models/flight';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Pilot } from '../models/pilot';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,7 @@ export class FlightsService {
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
   getFinishedFlights(roundNumber): Observable<Flight[]> {
-    return this._http.get<Flight[]>(this._baseUrl + "pilots/" + roundNumber + "/finished-flights", {
-      responseType: 'text' as 'json'
-    });
+    return this._http.get<Flight[]>(this._baseUrl + "rounds/all-flights/" + roundNumber);
   }
 
   saveFlight(flight: Flight): Observable<any> {
@@ -34,7 +33,7 @@ export class FlightsService {
       flightTime: "",
       windAvg: 0,
       dirAvg: 0,
-      seconds: 0,
+      seconds: this.genRandomFloat()*this.genRandomFloat(),
       sub1: this.genRandomFloat(),
       sub2: this.genRandomFloat(),
       sub3: this.genRandomFloat(),

@@ -15,7 +15,7 @@ export class EventService {
 
   initEvent(eventId: number): Observable<string> {
     this.eventId=eventId;
-    return this._http.post<string>(this._baseUrl + "events/download-event-data/" + eventId, null, {
+    return this._http.post<string>(this._baseUrl + "events/event-data/" + eventId, null, {
       responseType: 'text' as 'json'
     });
   }
