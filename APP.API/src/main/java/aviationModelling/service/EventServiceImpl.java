@@ -1,14 +1,16 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.EventDTO;
 import aviationModelling.dto.VaultEventDataDTO;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
+import aviationModelling.exception.EventNotFoundException;
 import aviationModelling.mapper.EventMapper;
-import aviationModelling.mapper.FlightMapper;
-import aviationModelling.mapper.PilotMapper;
+import aviationModelling.mapper.VaultEventMapper;
+import aviationModelling.mapper.VaultFlightMapper;
+import aviationModelling.mapper.VaultPilotMapper;
 import aviationModelling.repository.EventRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -26,10 +27,10 @@ public class EventServiceImpl implements EventService {
     private PilotService pilotService;
     private FlightService flightService;
     private RoundService roundService;
-    private VaultService vaultService;
+    private VaultServiceImpl vaultService;
 
 
-    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, FlightService flightService, RoundService roundService, VaultService vaultService) {
+    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, FlightService flightService, RoundService roundService, VaultServiceImpl vaultService) {
         this.eventRepository = eventRepository;
         this.pilotService = pilotService;
         this.flightService = flightService;
@@ -45,15 +46,17 @@ public class EventServiceImpl implements EventService {
 
         if (result.isPresent()) {
             event = result.get();
+        } else {
+            throw new EventNotFoundException("Event " + id + " not found.");
         }
         return event;
     }
 
-    @Override
-    public ResponseEntity<String> save(Event event) {
-        eventRepository.save(event);
-        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<String> save(Event event) {
+//        eventRepository.save(event);
+//        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
+//    }
 
 
     @Override
@@ -64,10 +67,9 @@ public class EventServiceImpl implements EventService {
         createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);
         saveFlightsToDb(eventData);
-//        jak tutaj wrzuce update, to nie dziala
 
 
-        return new ResponseEntity<>("All event data saved successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("All event data saved correctly", HttpStatus.CREATED);
     }
 
     private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
@@ -88,7 +90,7 @@ public class EventServiceImpl implements EventService {
 //        dodaj do listy list listę przelotow kazdego pilota + zapisz
         eventData.getEvent().getPilots().forEach(pilot -> {
             if (pilot.getFlights() != null) {
-                flightList.add(FlightMapper.MAPPER.toFlightList(pilot.getFlights()));
+                flightList.add(VaultFlightMapper.MAPPER.toFlightList(pilot.getFlights()));
             }
         });
         flightList.forEach(list -> flightService.saveAll(list));
@@ -96,7 +98,7 @@ public class EventServiceImpl implements EventService {
 
     private void savePilotsToDb(VaultEventDataDTO eventData) {
 //        zapisz pilotow do bazy
-        List<Pilot> pilotList = PilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
+        List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
         pilotService.saveAll(pilotList);
     }
 
@@ -105,9 +107,9 @@ public class EventServiceImpl implements EventService {
 
     private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
 //        zapisywanie eventu
-        Event event = EventMapper.MAPPER.toEvent(eventData.getEvent());
+        Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
         event.setEventId(eventId);
-        save(event);
+        eventRepository.save(event);
     }
 
     @Override

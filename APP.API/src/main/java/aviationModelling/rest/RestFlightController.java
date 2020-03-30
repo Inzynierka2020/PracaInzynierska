@@ -1,6 +1,8 @@
 package aviationModelling.rest;
 
+import aviationModelling.dto.FlightDTO;
 import aviationModelling.entity.Flight;
+import aviationModelling.mapper.FlightMapper;
 import aviationModelling.service.FlightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,35 +21,25 @@ public class RestFlightController {
 
 //    znajdz pojedynczy lot
     @GetMapping("/{roundNum}/{pilotId}")
-    public Flight getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
-        return flightService.findFlight(roundNum, pilotId);
+    public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
+        return FlightMapper.MAPPER.toFlightDTO(flightService.findFlight(roundNum, pilotId));
     }
 
 //    zapisz przelot
     @PostMapping
-    public ResponseEntity<String> saveFlight(@RequestBody Flight flight) {
-        return flightService.save(flight);
+    public ResponseEntity<String> saveFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO);
     }
 
 //    uaktualnij przelot
     @PutMapping
-    public ResponseEntity<String> updateFlight(@RequestBody Flight flight) {
-        return flightService.save(flight);
+    public ResponseEntity<String> updateFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO);
     }
 
 //    zwroc najszybszy lot
     @GetMapping("/best-time")
-    public Flight getBestFlight() {
-        return flightService.findBestTime();
+    public FlightDTO getBestFlight() {
+        return FlightMapper.MAPPER.toFlightDTO(flightService.findBestTime());
     }
-
-//    zwroc najlepiej punktowany lot
-    @GetMapping("/best-score")
-    public Flight getBestScore() {
-        return flightService.findBestScore();
-    }
-
-
-
-
 }

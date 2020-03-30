@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class VaultService {
+public class VaultServiceImpl {
 
     private UrlWizard urlWizard;
     private RestTemplate restTemplate;
 
-    public VaultService(UrlWizard urlWizard) {
+    public VaultServiceImpl(UrlWizard urlWizard) {
         this.urlWizard = urlWizard;
         this.restTemplate = new RestTemplate();
     }
@@ -29,7 +29,6 @@ public class VaultService {
             if (pilot.getFlights() != null) {
                 pilot.getFlights().forEach(flight -> {
                     flight.setPilot_id(pilot.getPilot_id());
-//                    flight.setEvent_id(eventId);
                 });
             }
         });
