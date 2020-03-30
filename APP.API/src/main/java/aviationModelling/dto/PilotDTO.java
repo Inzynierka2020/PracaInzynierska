@@ -27,5 +27,5 @@ public class PilotDTO {
     private Float discarded1;
     private Float discarded2;
     private Float score;
-    private List<Flight> flights;
+    private List<FlightDTO> flights;
 }

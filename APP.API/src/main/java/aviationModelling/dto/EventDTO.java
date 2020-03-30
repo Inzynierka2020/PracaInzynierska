@@ -1,6 +1,7 @@
 package aviationModelling.dto;
 
 import aviationModelling.entity.Pilot;
+import aviationModelling.entity.Round;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class EventDTO {
     private String eventEndDate;
     private String eventType;
     private Integer numberOfRounds;
-    private List<Pilot> pilots;
+    private List<PilotDTO> pilots;
+    private List<RoundDTO> rounds;
 }

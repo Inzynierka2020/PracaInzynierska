@@ -15,7 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class RoundDTO {
     private Integer roundNum;
+    private Integer eventId;
     private boolean isCancelled;
     private boolean isFinished;
-    private List<Flight> flights;
+    private List<FlightDTO> flights;
 }
