@@ -1,6 +1,6 @@
 <mat-divider></mat-divider>
 <div class="d-flex align-items-center flex-column w-100">
-    <div *ngFor="let pilot of dataSource" class="rows" matRipple (click)="openPlayer($event)">
+    <div *ngFor="let pilot of dataSource" class="rows" matRipple (click)="callRowAction(pilot)">
         <div class="pilot-row ">
             <div class="number">
                 {{pilot.pilotBib}}
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="group" *ngIf="mode !='general' && mode !='yetToStart'  ">
-                {{group}}
+                {{pilot.flight.group}}
             </div>
         </div>
         <mat-divider></mat-divider>

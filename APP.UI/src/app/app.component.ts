@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'App';
 
   event: Event = {
-    eventId:0,
+    eventId: 1809,
     eventEndDate: "",
     eventLocation: "",
     eventName: "---",
@@ -21,8 +21,8 @@ export class AppComponent {
     started: false
   }
 
-constructor(private eventService: EventService) {
+  constructor(private eventService: EventService) {
 
-}
+  }
 
 }

@@ -1,6 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Flight } from '../models/flight';
+import { Pilot } from '../models/pilot';
+
+class PlayerDialogData {
+  pilot: Pilot
+  flight: Flight
+  groupsCount: number
+}
 
 @Component({
   selector: 'app-player',
@@ -9,75 +17,77 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 })
 export class PlayerComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<PlayerComponent>) { }
-
   @Input()
   editMode = true;
-
   @Input()
   returnDirectly = false;
+
+  pilot: Pilot;
+  flight: Flight;
+  groupsCount: number;
+  currentGroup: string;
+  groups: string[] = ["A", "B", "C", "D", "E"];
+
+  constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<PlayerComponent>, @Inject(MAT_DIALOG_DATA) private _data: PlayerDialogData) {
+    this.pilot = _data.pilot
+    this.flight = _data.flight;
+    this.currentGroup = this.flight.group;
+    this.groupsCount = this._data.groupsCount;
+  }
 
   ngOnInit() {
   }
 
-  group='A';
-
-  dNS = false;
-  dNF = false;
-
   didNotFinish() {
-    if (this.dNF) {
-      this.dNF = false;
+    if (this.flight.dnf) {
+      this.flight.dnf = false;
     } else {
-      this.dNF = true;
-      this.dNS = false;
+      this.flight.dnf = true;
+      this.flight.dns = false;
     }
   }
 
   didNotStart() {
-    if (this.dNS) {
-      this.dNS = false;
+    if (this.flight.dns) {
+      this.flight.dns = false;
     } else {
-      this.dNS = true;
-      this.dNF = false;
+      this.flight.dns = true;
+      this.flight.dnf = false;
     }
   }
-  savePlayer() {
-    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '80 %',
-      maxWidth: '500px',
-      disableClose: true
-    });
-    confirmDialogRef.afterClosed().subscribe(result => {
-      if (result) {
+  saveFlight() {
+    this.resolveConfirmationDialog().subscribe(confirmed => {
+      if (confirmed) {
         this.editMode = false;
-        if (this.returnDirectly)
-          this.dialogRef.close("true")
+        this.flight.pilotId = this.pilot.id;
+        this.flight.eventId = this.pilot.eventId;
+        this.dialogRef.close(this.flight);
       }
     })
-  }
-
-  back() {
-    this.dialogRef.close("true")
   }
 
   switchEditMode() {
-    var confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+    this.resolveConfirmationDialog().subscribe(confirmed => {
+      if (confirmed) {
+        this.returnDirectly ? this.closeThisDialog() : this.editMode = !this.editMode;
+      }
+    })
+  }
+
+  changeGroup(group: string) {
+    this.currentGroup = this.flight.group = group;
+  }
+
+  /*---- DIALOG METHODS ----*/
+  resolveConfirmationDialog() {
+    return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
       disableClose: true
-    });
-    confirmDialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.returnDirectly)
-          this.dialogRef.close("true")
-        this.editMode = !this.editMode;
-      }
-
-    })
-  }
-  changeGroup(group){
-    this.group=group;
+    }).afterClosed();
   }
 
+  closeThisDialog(result?) {
+    this.dialogRef.close(result)
+  }
 }

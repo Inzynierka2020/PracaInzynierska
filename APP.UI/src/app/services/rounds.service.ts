@@ -6,11 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RoundsService {
-
+  
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
+  
+  updateRound(roundNumber: number):Observable<any>{
+    return this._http.put<any>(this._baseUrl + "rounds/update/"+roundNumber,  {
+      responseType: 'text' as 'json'
+    });
+  }
 
   startNewRound(roundNumber:number):Observable<any>{
-    return this._http.post<any>(this._baseUrl + "rounds/create/"+roundNumber, {
+    return this._http.post<any>(this._baseUrl + "rounds/create/"+roundNumber,  {
       responseType: 'text' as 'json'
     });
   }

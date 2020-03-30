@@ -21,6 +21,6 @@
     </i>
 </div>
 <div class="buttons mt-4">
-    <button mat-raised-button color="accent" [mat-dialog-close]="roundNumber">Start</button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="-1" cdkFocusInitial>Cancel</button>
+    <button mat-raised-button color="accent" (click)="close(true)">Start</button>
+    <button mat-raised-button color="warn" (click)="close(false)" cdkFocusInitial>Cancel</button>
 </div>

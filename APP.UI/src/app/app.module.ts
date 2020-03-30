@@ -29,7 +29,6 @@ const appRoutes: Routes = [
 export function getBaseUrl() {
   var url = document.getElementsByTagName('base')[0].href.replace(/:\d{1,}\/|\/$/, '');
   url += ':'+environment.apiPort+'/';
-  console.log(url);
   return url; 
 }
 
@@ -55,7 +54,7 @@ export function getBaseUrl() {
     HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
   providers: [ { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }],

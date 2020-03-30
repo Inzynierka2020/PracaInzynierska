@@ -1,10 +1,5 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PlayerComponent } from '../player/player.component';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Pilot } from '../models/pilot';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { PilotService } from '../services/pilot.service';
 
 @Component({
   selector: 'app-score',
@@ -19,31 +14,14 @@ export class ScoreComponent implements OnInit {
   @Input()
   mode = "";
 
+  @Output()
+  rowAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
 
-  constructor(public dialog: MatDialog  ) {
-  }
-  
-  ngOnInit() {
-     
-  }
+  constructor() { }
 
-  openPlayer(event) {
-    if (this.mode != "general") {
-      var dialogRef = this.dialog.open(PlayerComponent, {
-        width: '90%',
-        maxWidth: '800px',
-        height: '95%',
-        maxHeight: '1000px',
-        disableClose: true,
-      })
-      if (this.mode == "browse") {
-        dialogRef.componentInstance.editMode = false;
-      }
-      dialogRef.componentInstance.returnDirectly = this.mode != "browse";
-    }
-  }
+  ngOnInit() { }
 
-  getPilots() {
-
+  callRowAction(pilot: Pilot) {
+    this.rowAction.emit(pilot);
   }
 }

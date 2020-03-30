@@ -24,6 +24,8 @@ export class TabComponent implements OnInit {
   browsing = false;
   roundNumber = 1;
   newRoundNumber = 1;
+  groupCount: number;
+
   constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService) { }
 
   ngOnInit() {
@@ -56,10 +58,12 @@ export class TabComponent implements OnInit {
         disableClose: true
       });
       dialogRef.afterClosed().subscribe(result => {
-        if (result>0) {
+        console.log();
+        if (result.started) {
           this.started = true;
-          this.startNewRound(result);
-          this.newRoundNumber=result;
+          this.newRoundNumber=result.roundNumber;
+          this.groupCount = result.groupCount;
+          this.startNewRound(this.newRoundNumber);
         } else {
           tab.selectedIndex = this.previousTabIndex;
           this.switch = !this.switch;
@@ -77,8 +81,8 @@ export class TabComponent implements OnInit {
     this._roundsService.startNewRound(roundNumber).subscribe(result=>{});
   }
 
-  finishRound(event, tab: MatTabGroup) {
-    this.started = event;
+  finishRound(finished, tab: MatTabGroup) {
+    this.started = !finished;
     tab.selectedIndex = 0;
   }
 

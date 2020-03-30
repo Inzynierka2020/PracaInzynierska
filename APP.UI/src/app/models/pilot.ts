@@ -1,13 +1,19 @@
+import { Flight } from './flight';
+
 export interface Pilot {
-    number: number;
+    id: number
+    eventId: number;
     pilotBib: number;
     firstName: string;
     lastName: string;
-    score: string;
-    total: number;
-    result: number;
-    penalty: number;
+    pilotClass: "";
+    ama: "",
+    fai: "",
+    faiLicense: "",
+    teamName: ""
     discard1: number;
     discard2: number;
-    status: string;
+    score: string;
+    penalty: number;
+    flight: Flight;
 }

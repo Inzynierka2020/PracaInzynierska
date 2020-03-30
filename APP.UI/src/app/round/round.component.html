@@ -4,10 +4,9 @@
             ROUND CANCELED
         </mat-checkbox>
     </div>
-
     <div class="content w-100">
         <div class="w-100">
-            <app-score></app-score>
+            <app-score [dataSource]="pilotsFinished" (rowAction)="null"></app-score>
         </div>
         <mat-toolbar color="primary">
             <mat-toolbar-row class="to-start">
@@ -15,7 +14,7 @@
             </mat-toolbar-row>
         </mat-toolbar>
         <div class="to-start-score w-100">
-            <app-score [mode]="'yetToStart'" class="w-100"></app-score>
+            <app-score [mode]="'yetToStart'" class="w-100" (rowAction)="createFlight($event)" [dataSource]="pilotsLeft"></app-score>
         </div>
     </div>
     <button mat-raised-button color="accent" (click)="finishRound()">FINISH</button>
