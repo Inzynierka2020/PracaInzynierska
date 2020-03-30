@@ -2,6 +2,7 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.entity.Flight;
+import aviationModelling.exception.CustomNotFoundException;
 import aviationModelling.mapper.FlightMapper;
 import aviationModelling.repository.FlightRepository;
 import org.springframework.http.HttpStatus;
@@ -22,25 +23,33 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public ResponseEntity<String> save(FlightDTO flightDTO) {
+    public ResponseEntity<FlightDTO> save(FlightDTO flightDTO) {
         flightRepository.save(FlightMapper.MAPPER.toFlight(flightDTO));
-        return new ResponseEntity<>("Flight saved successfully!", HttpStatus.CREATED);
+        return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<String> saveAll(List<Flight> flightList) {
-        flightRepository.saveAll(flightList);
-        return new ResponseEntity<>("All flights saved successfully", HttpStatus.CREATED);
+    public ResponseEntity<List<FlightDTO>> saveAll(List<FlightDTO> flightList) {
+        flightRepository.saveAll(FlightMapper.MAPPER.toFlightList(flightList));
+        return new ResponseEntity<>(flightList, HttpStatus.CREATED);
     }
 
     @Override
-    public Flight findBestTime() {
-        return flightRepository.findBestTime();
+    public FlightDTO findBestTime() {
+        Flight flight = flightRepository.findBestTime();
+        if(flight==null) {
+            throw new CustomNotFoundException("Flight with best time not found");
+        }
+        return FlightMapper.MAPPER.toFlightDTO(flight);
     }
 
     @Override
-    public Flight findFlight(Integer roundNum, Integer pilotId) {
-        return flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
+    public FlightDTO findFlight(Integer roundNum, Integer pilotId) {
+        Flight flight = flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
+        if(flight==null) {
+            throw new CustomNotFoundException("Flight (round = "+roundNum+", pilot ID = "+pilotId+") not found.");
+        }
+        return FlightMapper.MAPPER.toFlightDTO(flight);
     }
 
 }

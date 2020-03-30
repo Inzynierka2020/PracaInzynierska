@@ -18,16 +18,6 @@ public class UrlWizard {
     @Value("${vault.url}")
     private String url;
 
-    public String getEventPilots(Integer event_id) {
-        Map<String, String> params = new HashMap<>();
-        params.put("login", login);
-        params.put("password", password);
-        params.put("function", "getEventPilots");
-//        params.put("output_format", "json");
-        params.put("event_id", event_id.toString());
-        return urlBuilder(params);
-    }
-
     public String getEventInfo(Integer event_id) {
         Map<String, String> params = new HashMap<>();
         params.put("login", login);

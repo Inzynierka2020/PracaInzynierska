@@ -1,6 +1,7 @@
 package aviationModelling.rest;
 
 import aviationModelling.dto.EventDTO;
+import aviationModelling.exception.CustomResponse;
 import aviationModelling.mapper.EventMapper;
 import aviationModelling.service.EventService;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +21,24 @@ public class RestEventController {
     //    pobierz z lokalnej bazy event o podanym id
     @GetMapping("/{eventId}")
     public EventDTO getEvent(@PathVariable int eventId) {
-        return EventMapper.MAPPER.toEventDTO(eventService.findById(eventId));
+        return eventService.findById(eventId);
     }
 
 //     zapisz informacje o evencie do bazy danych
     @PostMapping("/event-data/{eventId}")
-    public ResponseEntity<String> saveEventFromVault(@PathVariable int eventId) {
+    public ResponseEntity<CustomResponse> saveEventFromVault(@PathVariable int eventId) {
         return eventService.initializeDbWithDataFromVault(eventId);
     }
     
 
 //    uaktualnij total score
     @PutMapping("/total-score")
-    public ResponseEntity<String> updateTotalScore() {
+    public ResponseEntity<CustomResponse> updateTotalScore() {
         return eventService.updateTotalScore();
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<String> deleteEvent(@PathVariable int eventId) {
+    public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
         return eventService.delete(eventId);
     }
 }

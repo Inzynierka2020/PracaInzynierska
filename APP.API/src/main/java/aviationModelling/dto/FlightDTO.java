@@ -1,6 +1,7 @@
 package aviationModelling.dto;
 
 import aviationModelling.entity.Flight;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.Internal.class)
 public class FlightDTO {
     private int pilotId;
     private int roundNum;

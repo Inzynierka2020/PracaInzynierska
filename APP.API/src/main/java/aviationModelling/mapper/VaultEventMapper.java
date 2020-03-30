@@ -1,6 +1,5 @@
 package aviationModelling.mapper;
 
-import aviationModelling.dto.EventDTO;
 import aviationModelling.dto.VaultEventDTO;
 import aviationModelling.entity.Event;
 import org.mapstruct.*;
