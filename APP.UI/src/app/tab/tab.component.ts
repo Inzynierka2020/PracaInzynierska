@@ -9,6 +9,7 @@ import { Pilot } from '../models/pilot';
 import { group } from '@angular/animations';
 import { Round } from '../models/round';
 import { MaxLengthValidator } from '@angular/forms';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-tab',
@@ -34,7 +35,7 @@ export class TabComponent implements OnInit {
   newRoundNumber = 0;
   rounds: Round[];
 
-  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService) {
+  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
     this.refreshRounds();
     this.getGeneralScoreData();
   }
@@ -51,6 +52,15 @@ export class TabComponent implements OnInit {
       console.log(roundsResult);
       this.rounds = roundsResult;
       this.changeRound();
+    })
+  }
+
+  refreshTotalScore(){
+    this._eventService.updateScore().subscribe(result=>{
+      this._pilotService.getPilots().subscribe(result=>{
+        this.dataSource = result;
+        this.dataSource.sort((a,b)=>a.score > b.score ? -1: 1);
+      });
     })
   }
 
@@ -101,6 +111,7 @@ export class TabComponent implements OnInit {
     this.started = !finished;
     tab.selectedIndex = 0;
     this.refreshRounds();
+    this.refreshTotalScore();
   }
 
   /*---- BROWSING ----*/

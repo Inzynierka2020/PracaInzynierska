@@ -9,8 +9,8 @@
                 <div class="title">{{pilot.flight ? pilot.flight.order : null}} {{pilot.lastName | uppercase}} {{pilot.firstName}}</div>
                 <div class="data" *ngIf="mode != 'yetToStart'">
                     <div class="d-flex w-100 justify-content-around">
-                        <div class="data-field">
-                            <div class="semi-title" *ngIf="pilot.flights">TOTAL</div>
+                        <div class="data-field" *ngIf="!pilot.flight">
+                            <div class="semi-title">TOTAL</div>
                             <mat-divider></mat-divider>
                             <div class="score">{{pilot.score}}</div>
                         </div>

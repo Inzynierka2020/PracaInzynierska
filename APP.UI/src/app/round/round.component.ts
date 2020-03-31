@@ -65,7 +65,7 @@ export class RoundComponent implements OnInit {
     pilot.flight = flight;
     this.pilotsLeft.splice(index, 1);
     this.pilotsFinished.push(pilot);
-    this.pilotsFinished.sort((a, b) => a.flight.group.localeCompare(b.flight.group));
+    // this.pilotsFinished.sort((a, b) => a.flight.group.localeCompare(b.flight.group));
 
     this._flighsService.saveFlight(flight).subscribe(result => {
       this.updateScore();
@@ -73,9 +73,15 @@ export class RoundComponent implements OnInit {
   }
 
   updateScore() {
-    this._roundsService.updateRound(this.roundNumber).subscribe();
-    this._flighsService.getFinishedFlights(this.roundNumber).subscribe(flightsResult=>{
-      this.flights = flightsResult;
+    this._roundsService.updateRound(this.roundNumber).subscribe(result => {
+      this._flighsService.getFinishedFlights(this.roundNumber).subscribe(flightsResult => {
+        this.flights = flightsResult;
+        this.pilotsFinished.forEach(pilot => {
+          pilot.flight = this.flights.find(flight => flight.pilotId == pilot.id);
+        });
+        // this.pilotsFinished.sort((a,b)=> a.flight.group.localeCompare(b.flight.group) || a.score > b.score ? 1 : -1);
+        this.pilotsFinished.sort((a,b)=> a.flight.score < b.flight.score ? 1 : -1);
+      });
     });
   }
 

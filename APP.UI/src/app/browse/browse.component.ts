@@ -32,12 +32,14 @@ export class BrowseComponent implements OnInit {
 
   ngOnChanges() {
     if (this.dataSource) {
-      console.log("round changed");
-      this.dataSource.forEach(pilot => {
-        pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
-      });
+      if (this.round) {
+        console.log("round changed", this.round);
+        this.dataSource.forEach(pilot => {
+          pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
+        });
 
-      this.dataSource.sort((a, b) => a.flight.order > b.flight.order ? 1 : -1);
+        this.dataSource.sort((a, b) => a.flight.score > b.flight.score ? -1 : 1);
+      }
     }
   }
 
