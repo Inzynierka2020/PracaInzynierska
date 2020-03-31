@@ -5,21 +5,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @ControllerAdvice
 public class RestExceptionHandler {
 
+
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(EventNotFoundException ex) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        ErrorResponse error = new ErrorResponse();
+    public ResponseEntity<CustomResponse> handleException(CustomNotFoundException ex) {
+        CustomResponse error = new CustomResponse();
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(ex.getMessage());
-        error.setTime(formatter.format(LocalDateTime.now()));
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<CustomResponse> handleException(InvalidRoundDataException ex) {
+        CustomResponse error = new CustomResponse();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<CustomResponse> handleException(Exception ex) {
+        CustomResponse error = new CustomResponse();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

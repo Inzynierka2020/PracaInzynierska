@@ -1,6 +1,5 @@
 package aviationModelling.mapper;
 
-import aviationModelling.dto.PilotDTO;
 import aviationModelling.dto.VaultPilotDTO;
 import aviationModelling.entity.Pilot;
 import org.mapstruct.*;

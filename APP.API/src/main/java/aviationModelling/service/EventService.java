@@ -2,15 +2,17 @@ package aviationModelling.service;
 
 import aviationModelling.dto.EventDTO;
 import aviationModelling.entity.Event;
+import aviationModelling.exception.CustomResponse;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public interface EventService {
-    Event findById(int id);
+    EventDTO findById(int id);
 //    ResponseEntity<String> save(Event event);
-    ResponseEntity<String> updateTotalScore();
-    ResponseEntity<String> delete(int eventId);
-    ResponseEntity<String> initializeDbWithDataFromVault(int eventId);
+    ResponseEntity<CustomResponse> updateTotalScore();
+    ResponseEntity<CustomResponse> delete(int eventId);
+    ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId);
     
 
 }

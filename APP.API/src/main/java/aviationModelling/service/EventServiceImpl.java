@@ -5,12 +5,15 @@ import aviationModelling.dto.VaultEventDataDTO;
 import aviationModelling.entity.Event;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
-import aviationModelling.exception.EventNotFoundException;
+import aviationModelling.exception.CustomNotFoundException;
+import aviationModelling.exception.CustomResponse;
 import aviationModelling.mapper.EventMapper;
 import aviationModelling.mapper.VaultEventMapper;
 import aviationModelling.mapper.VaultFlightMapper;
 import aviationModelling.mapper.VaultPilotMapper;
 import aviationModelling.repository.EventRepository;
+import aviationModelling.repository.FlightRepository;
+import aviationModelling.repository.PilotRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,22 +27,22 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepository;
-    private PilotService pilotService;
-    private FlightService flightService;
+    private PilotRepository pilotRepository;
+    private FlightRepository flightRepository;
     private RoundService roundService;
     private VaultServiceImpl vaultService;
 
 
-    public EventServiceImpl(EventRepository eventRepository, PilotService pilotService, FlightService flightService, RoundService roundService, VaultServiceImpl vaultService) {
+    public EventServiceImpl(EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository, RoundService roundService, VaultServiceImpl vaultService) {
         this.eventRepository = eventRepository;
-        this.pilotService = pilotService;
-        this.flightService = flightService;
+        this.pilotRepository = pilotRepository;
+        this.flightRepository = flightRepository;
         this.roundService = roundService;
         this.vaultService = vaultService;
     }
 
     @Override
-    public Event findById(int id) {
+    public EventDTO findById(int id) {
         Optional<Event> result = eventRepository.findById(id);
 
         Event event = null;
@@ -47,20 +50,14 @@ public class EventServiceImpl implements EventService {
         if (result.isPresent()) {
             event = result.get();
         } else {
-            throw new EventNotFoundException("Event " + id + " not found.");
+            throw new CustomNotFoundException("Event " + id + " not found.");
         }
-        return event;
+        return EventMapper.MAPPER.toEventDTO(event);
     }
-
-//    @Override
-//    public ResponseEntity<String> save(Event event) {
-//        eventRepository.save(event);
-//        return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
-//    }
 
 
     @Override
-    public ResponseEntity<String> initializeDbWithDataFromVault(int eventId) {
+    public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
         VaultEventDataDTO eventData = vaultService.retrieveEventData(eventId);
         saveEventToDb(eventId, eventData);
@@ -69,7 +66,8 @@ public class EventServiceImpl implements EventService {
         saveFlightsToDb(eventData);
 
 
-        return new ResponseEntity<>("All event data saved correctly", HttpStatus.CREATED);
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.CREATED.value(),
+                "Event "+eventId+" data saved."), HttpStatus.CREATED);
     }
 
     private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
@@ -93,13 +91,13 @@ public class EventServiceImpl implements EventService {
                 flightList.add(VaultFlightMapper.MAPPER.toFlightList(pilot.getFlights()));
             }
         });
-        flightList.forEach(list -> flightService.saveAll(list));
+        flightList.forEach(list -> flightRepository.saveAll(list));
     }
 
     private void savePilotsToDb(VaultEventDataDTO eventData) {
 //        zapisz pilotow do bazy
         List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
-        pilotService.saveAll(pilotList);
+        pilotRepository.saveAll(pilotList);
     }
 
 //    private void createRoundsInDb(Event event) {
@@ -113,14 +111,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ResponseEntity<String> updateTotalScore() {
-        List<Pilot> pilotList = pilotService.findAll();
+    public ResponseEntity<CustomResponse> updateTotalScore() {
+        List<Pilot> pilotList = pilotRepository.findAll();
         int totalRounds;
         for (Pilot pilot : pilotList) {
-            List<Flight> pilotFlights = pilotService.findUncancelledAndFinishedPilotFlights(pilot.getId());
+            List<Flight> pilotFlights = pilotRepository.findUncancelledAndFinishedPilotFlights(pilot.getId());
             totalRounds = pilotFlights.size();
 
-//
             if (totalRounds == 0) continue;
 
 //            po 4 rundach odrzuc najgorszy wynik
@@ -149,19 +146,26 @@ public class EventServiceImpl implements EventService {
                 pilotFlights.remove(worst);
             }
 
-            Float totalScore = (float) pilotFlights.stream().mapToDouble(flight -> flight.getScore()).sum();
+            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore()!=null).mapToDouble(flight -> flight.getScore()).sum();
             if (totalScore != null) pilot.setScore(totalScore);
             else pilot.setScore(0F);
         }
-        pilotService.saveAll(pilotList);
+        pilotRepository.saveAll(pilotList);
 
-        return new ResponseEntity<>("Total score updated successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(), "Total score updated."),
+                HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> delete(int eventId) {
-        Event event = findById(eventId);
+    public ResponseEntity<CustomResponse> delete(int eventId) {
+        Optional<Event> result = eventRepository.findById(eventId);
+        Event event = null;
+        if(!result.isPresent()) {
+            throw new CustomNotFoundException("Event "+eventId+" not found.");
+        }
+        event = result.get();
         eventRepository.delete(event);
-        return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
+                "Event "+eventId+" deleted."), HttpStatus.OK);
     }
 }

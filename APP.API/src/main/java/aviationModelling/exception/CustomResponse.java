@@ -8,11 +8,11 @@ import lombok.Setter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorResponse {
+public class CustomResponse {
     private int status;
     private String message;
-    private String time;
 }
