@@ -22,7 +22,8 @@ public interface FlightMapper {
 
     @Mappings({
             @Mapping(target = "flightId.pilotId", source = "pilotId"),
-            @Mapping(target = "flightId.roundNum", source = "roundNum")
+            @Mapping(target = "flightId.roundNum", source = "roundNum"),
+            @Mapping(target = "group", source = "group", defaultValue = "")
     })
     Flight toFlight(FlightDTO source);
 

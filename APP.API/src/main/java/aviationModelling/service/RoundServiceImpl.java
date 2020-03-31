@@ -62,7 +62,6 @@ public class RoundServiceImpl implements RoundService {
         return FlightMapper.MAPPER.toFlightDTOList(flightList);
     }
 
-
     @Override
     public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId) {
         Round round = new Round();
@@ -79,14 +78,23 @@ public class RoundServiceImpl implements RoundService {
         if (round.getFlights() == null) {
             throw new CustomNotFoundException("Round " + roundNum + " has no flights!");
         }
+//        zwroc liste 'punktowych' lotow (odrzuc wszystkie z czasem 0 lub null)
         List<Flight> validFlights = round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).collect(Collectors.toList());
+
         if (validFlights.size() != 0) {
-            Float best = validFlights.stream().min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
-            round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
-            roundRepository.save(round);
+//            wyodrebnij ilosc grup, w mapowaniu domyslnie grupa="", wiec przy braku podzialu groups.size() = 1
+            Set<String> groups = new HashSet<>();
+            validFlights.forEach(flight -> groups.add(flight.getGroup()));
+
+            groups.forEach(group -> {
+                Float best = validFlights.stream().filter(flight -> flight.getGroup().equals(group)).min(Comparator.comparingDouble(Flight::getSeconds)).get().getSeconds();
+                round.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0 && flight.getGroup().equals(group)).forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
+                roundRepository.save(round);
+            });
+
+
         } else {
-            cancelRound(roundNum);
-            throw new InvalidRoundDataException("Round " + roundNum + " cancelled because of invalid data");
+            throw new InvalidRoundDataException("Round " + roundNum + " not updated");
         }
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Scores in round " + roundNum + " updated."), HttpStatus.OK);
@@ -100,6 +108,7 @@ public class RoundServiceImpl implements RoundService {
             try {
                 updateLocalScore(number);
             } catch (Exception ex) {
+                cancelRound(number);
                 cancelled.add(number);
             }
         }

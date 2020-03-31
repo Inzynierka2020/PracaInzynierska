@@ -24,7 +24,6 @@ public interface RoundService {
 
     List<FlightDTO> findRoundFlights(Integer roundNum);
 
-
     ResponseEntity<CustomResponse> finishRound(Integer roundNum);
 
     List<Integer> getRoundNumbers();
