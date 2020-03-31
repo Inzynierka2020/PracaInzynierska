@@ -1,7 +1,10 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.FlightDTO;
+import aviationModelling.dto.RoundDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
+import aviationModelling.exception.CustomResponse;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
@@ -9,26 +12,24 @@ import java.util.List;
 
 public interface RoundService {
 
-    void save(Round round);
+    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
 
-    Round findByRoundNum(Integer roundNum);
+    RoundDTO findByRoundNum(Integer roundNum);
 
-    ResponseEntity<String> createRound(Integer roundNum, Integer eventId);
+    ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId);
 
-    ResponseEntity<String> updateLocalScore(Integer roundNum);
+    ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum);
 
-    ResponseEntity<String> cancelRound(Integer roundNum);
+    ResponseEntity<CustomResponse> cancelRound(Integer roundNum);
 
-    List<Flight> findRoundFlights(Integer roundNum);
-
-    List<Flight> findUncancelledRoundFlights(Integer roundNum);
+    List<FlightDTO> findRoundFlights(Integer roundNum);
 
 
-    ResponseEntity<String> finishRound(Integer roundNum);
+    ResponseEntity<CustomResponse> finishRound(Integer roundNum);
 
     List<Integer> getRoundNumbers();
 
-    ResponseEntity<String> updateAllRounds();
+    ResponseEntity<CustomResponse> updateAllRounds();
 
-    List<Round> findAll();
+    List<RoundDTO> findAll();
 }

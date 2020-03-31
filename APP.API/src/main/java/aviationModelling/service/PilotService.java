@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.PilotDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
@@ -11,20 +12,20 @@ import java.util.List;
 
 public interface PilotService {
 
-    List<Pilot> findAll();
-    List<Pilot> findAllOrderByScore();
-    ResponseEntity<String> save(PilotDTO pilotDTO);
+    List<PilotDTO> findAll();
+    List<PilotDTO> findAllOrderByScore();
+    ResponseEntity<PilotDTO> save(PilotDTO pilotDTO);
     ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
-    Pilot findById(int id);
-    List<Pilot> findPilotsWithFinishedFlight(Integer roundNum);
-    List<Pilot> findPilotsWithUnfinishedFlight(Integer roundNum);
-    List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
+    PilotDTO findById(int id);
+    List<FlightDTO> findPilotFlights(Integer pilotId);
+    List<PilotDTO> findPilotsWithFinishedFlight(Integer roundNum);
+    List<PilotDTO> findPilotsWithUnfinishedFlight(Integer roundNum);
+    List<PilotDTO> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
 
     Float findBestPilotScore(Integer pilotId);
     Float findBestPilotTime(Integer pilotId);
 
-    List<Flight> findPilotFlights(Integer pilotId);
-    List<Flight> findUncancelledAndFinishedPilotFlights(Integer pilotId);
+    List<FlightDTO> findUncancelledAndFinishedPilotFlights(Integer pilotId);
 
 }

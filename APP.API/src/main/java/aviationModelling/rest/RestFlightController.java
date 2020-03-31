@@ -22,24 +22,24 @@ public class RestFlightController {
 //    znajdz pojedynczy lot
     @GetMapping("/{roundNum}/{pilotId}")
     public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
-        return FlightMapper.MAPPER.toFlightDTO(flightService.findFlight(roundNum, pilotId));
+        return flightService.findFlight(roundNum, pilotId);
     }
 
 //    zapisz przelot
     @PostMapping
-    public ResponseEntity<String> saveFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<FlightDTO> saveFlight(@RequestBody FlightDTO flightDTO) {
         return flightService.save(flightDTO);
     }
 
 //    uaktualnij przelot
     @PutMapping
-    public ResponseEntity<String> updateFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<FlightDTO> updateFlight(@RequestBody FlightDTO flightDTO) {
         return flightService.save(flightDTO);
     }
 
 //    zwroc najszybszy lot
     @GetMapping("/best-time")
     public FlightDTO getBestFlight() {
-        return FlightMapper.MAPPER.toFlightDTO(flightService.findBestTime());
+        return flightService.findBestTime();
     }
 }

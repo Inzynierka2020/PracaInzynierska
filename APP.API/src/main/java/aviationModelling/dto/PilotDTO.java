@@ -1,6 +1,8 @@
 package aviationModelling.dto;
 
 import aviationModelling.entity.Flight;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.Public.class)
 public class PilotDTO {
     private Integer id;
     private Integer eventId;
@@ -27,5 +30,8 @@ public class PilotDTO {
     private Float discarded1;
     private Float discarded2;
     private Float score;
+    @JsonIgnore
+//    @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;
 }
+

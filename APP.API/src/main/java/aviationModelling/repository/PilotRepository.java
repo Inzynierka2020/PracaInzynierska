@@ -54,7 +54,8 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
 
     @Query("SELECT min(f.seconds) FROM Pilot p " +
             "JOIN Flight f ON p.id = f.flightId.pilotId " +
-            "WHERE p.id = :pilotId AND f.round.isCancelled = false")
+            "WHERE p.id = :pilotId AND f.round.isCancelled = false " +
+            "AND f.seconds>0")
     Float findBestPilotTime(@Param("pilotId") Integer pilotId);
 
 
