@@ -1,8 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, EventEmitter } from '@angular/core';
 import { MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.component';
+import { RoundsService } from '../services/rounds.service';
+import { PilotService } from '../services/pilot.service';
+import { Pilot } from '../models/pilot';
+import { group } from '@angular/animations';
+import { Round } from '../models/round';
+import { MaxLengthValidator } from '@angular/forms';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-tab',
@@ -11,64 +18,117 @@ import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.co
   encapsulation: ViewEncapsulation.None
 })
 export class TabComponent implements OnInit {
-
-  started = false;
   switch = false; //temporary workaround for a bug
+
+  @Input()
+  eventId: number;
+
+  dataSource: Pilot[];
+  started = false;
   previousTabIndex = 0;
   browsing = false;
-  roundNumber = 1;
-  constructor(public dialog: MatDialog) { }
+
+  roundNumber: number;
+  browsedRoundIndex = 0;
+  browsedRound: Round;
+  groupCount: number;
+  newRoundNumber = 0;
+  rounds: Round[];
+
+  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
+    this.refreshRounds();
+    this.getGeneralScoreData();
+  }
 
   ngOnInit() {
   }
 
+  getGeneralScoreData() {
+    this._pilotService.getPilots().subscribe(result => this.dataSource = result);
+  }
+
+  refreshRounds(){
+    this._roundsService.getRounds().subscribe(roundsResult => {
+      console.log(roundsResult);
+      this.rounds = roundsResult;
+      this.changeRound();
+    })
+  }
+
+  refreshTotalScore(){
+    this._eventService.updateScore().subscribe(result=>{
+      this._pilotService.getPilots().subscribe(result=>{
+        this.dataSource = result;
+        this.dataSource.sort((a,b)=>a.score > b.score ? -1: 1);
+      });
+    })
+  }
+
+
   onChangeTab(event: MatTabChangeEvent, tab: MatTabGroup) {
-    if (event.index == 2 && !this.started) {
+    if (event.index == 1) {
+      //BROWSE TAB
+      this.browsing = true;
+      this.previousTabIndex = event.index;
+    } else if (event.index == 2 && !this.started) {
+      //NEW ROUND TAB
       this.browsing = false;
+      let recentRoundNumber = Math.max.apply(Math, this.rounds.map(function(o) { return o.roundNum; }))
       const dialogRef = this.dialog.open(NewRoundDialogComponent, {
-        width: '75%',
+        width: '80%',
         maxWidth: '800px',
         height: 'fitcontent',
-        disableClose: true
+        disableClose: true,
+        data: {
+          roundNumber: recentRoundNumber+1
+        }
       });
-
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
+        console.log();
+        if (result.started) {
           this.started = true;
-          this.createNewRound();
+          this.groupCount = result.groupCount;
+          this.newRoundNumber = result.roundNumber;
+          this.startNewRound(this.newRoundNumber);
         } else {
           tab.selectedIndex = this.previousTabIndex;
           this.switch = !this.switch;
         }
       })
-    } else if (event.index == 1) {
-      this.browsing = true;
-      this.previousTabIndex = event.index;
     } else {
+      //GENERAL SCORE TAB
+      this.getGeneralScoreData();
       this.previousTabIndex = event.index;
       this.browsing = false;
     }
   }
 
-  createNewRound() {
-
+  startNewRound(roundNumber: number) {
+    this._roundsService.startNewRound(roundNumber, this.eventId).subscribe(result => { });
   }
 
-  finishRound(event, tab: MatTabGroup) {
-    this.started = event;
+  finishRound(finished, tab: MatTabGroup) {
+    this.started = !finished;
     tab.selectedIndex = 0;
+    this.refreshRounds();
+    this.refreshTotalScore();
   }
 
+  /*---- BROWSING ----*/
 
-  nextRound() {
+  nextRound(jump: number) {
     if (this.browsing)
-      this.roundNumber++;
+      this.browsedRoundIndex += jump;
+    if (this.browsedRoundIndex < 0)
+      this.browsedRoundIndex = this.rounds.length - 1
+    if (this.browsedRoundIndex == this.rounds.length)
+      this.browsedRoundIndex = 0
+
+    this.changeRound();
   }
 
-  prevRound() {
-    if (this.browsing)
-      this.roundNumber--;
-      if(this.roundNumber<0)
-        this.roundNumber=0;
+  changeRound(){
+    this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
+    this.browsedRound = this.rounds[this.browsedRoundIndex];
   }
 }

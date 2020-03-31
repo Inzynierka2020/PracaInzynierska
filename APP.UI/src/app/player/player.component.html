@@ -3,10 +3,10 @@
     <div class="d-flex justify-content-between mb-3 pt-2">
         <div class="d-flex align-items-center">
             <div class="number">
-                99
+                {{pilot.pilotBib}}
             </div>
             <h2>
-                WYRZYKOWSKI <br>Damian
+                {{pilot.firstName}} <br>{{pilot.lastName}}
             </h2>
             <!-- <h1> Class: OPEN</h1>
             <h1>AMA: 123456</h1>
@@ -32,14 +32,12 @@
             99
         </div>
     </div>
-    <mat-divider></mat-divider>
-    <div class="groups my-2">
+    <div class="groups my-2" *ngIf="groupsCount>1">
+        <mat-divider></mat-divider>
         <div class="data">
-            <button mat-raised-button class="group-button" [color]="group =='A' ? 'primary' : 'accent'" (click)="changeGroup('A')" *ngIf="editMode || group == 'A'">A</button>
-            <button mat-raised-button class="group-button" [color]="group =='B' ? 'primary' : 'accent'" (click)="changeGroup('B')" *ngIf="editMode || group == 'B'">B</button>
-            <button mat-raised-button class="group-button" [color]="group =='C' ? 'primary' : 'accent'" (click)="changeGroup('C')" *ngIf="editMode || group == 'C'">C</button>
-            <button mat-raised-button class="group-button" [color]="group =='D' ? 'primary' : 'accent'" (click)="changeGroup('D')" *ngIf="editMode || group == 'D'">D</button>
-            <button mat-raised-button class="group-button" [color]="group =='E' ? 'primary' : 'accent'" (click)="changeGroup('E')" *ngIf="editMode || group == 'E'">E</button>
+            <div *ngFor="let group of groups | slice:0:groupsCount">
+                <button mat-raised-button class="group-button" [color]="currentGroup ==group ? 'primary' : 'accent'" (click)="changeGroup(group)" *ngIf="editMode">{{group}}</button>
+            </div>
         </div>
     </div>
     <mat-divider></mat-divider>
@@ -59,52 +57,52 @@
                 <tr>
                     <th>B1</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub1}}</td>
                 </tr>
                 <tr>
                     <th>B2</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub2}}</td>
                 </tr>
                 <tr>
                     <th>B3</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub3}}</td>
                 </tr>
                 <tr>
                     <th>B4</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub4}}</td>
                 </tr>
                 <tr>
                     <th>B5</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub5}}</td>
                 </tr>
                 <tr>
                     <th>B6</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub6}}</td>
                 </tr>
                 <tr>
                     <th>B7</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub7}}</td>
                 </tr>
                 <tr>
                     <th>B8</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub8}}</td>
                 </tr>
                 <tr>
                     <th>B9</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub9}}</td>
                 </tr>
                 <tr>
                     <th>B10</th>
                     <td>99.99</td>
-                    <td>99.99</td>
+                    <td>{{flight.sub10}}</td>
                 </tr>
 
             </table>
@@ -121,20 +119,20 @@
             <div class="input">
                 <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode">
                     <mat-label>PENALTY</mat-label>
-                    <input matInput color="warn" [readonly]="!editMode" value="300">
+                    <input matInput color="warn" [readonly]="!editMode" value="">
                 </mat-form-field>
             </div>
             <div class="buttons" *ngIf="editMode">
-                <button mat-raised-button *ngIf="dNF" color="primary" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="!dNF" color="accent" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="dNS" color="primary" (click)="didNotStart()">DNS</button>
-                <button mat-raised-button *ngIf="!dNS" color="accent" (click)="didNotStart()">DNS</button>
+                <button mat-raised-button *ngIf="flight.dnf" color="primary" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="!flight.dnf" color="accent" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="flight.dns" color="primary" (click)="didNotStart()">DNS</button>
+                <button mat-raised-button *ngIf="!flight.dns" color="accent" (click)="didNotStart()">DNS</button>
             </div>
             <div class="buttons">
-                <button *ngIf="!editMode" mat-raised-button color="warn" (click)="back() ">Back</button>
-                <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode() ">Cancel</button>
-                <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode() ">Edit</button>
-                <button *ngIf="editMode" class="bg-success text-white" mat-raised-button (click)="savePlayer() " cdkFocusInitial>Save</button>
+                <button *ngIf="!editMode" mat-raised-button color="warn" (click)="closeThisDialog()">Back</button>
+                <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode()">Edit</button>
+                <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode()">Cancel</button>
+                <button *ngIf="editMode" class="bg-success text-white" mat-raised-button (click)="saveFlight() " cdkFocusInitial>Save</button>
             </div>
         </div>
     </div>

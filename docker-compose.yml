@@ -17,8 +17,6 @@ services:
     container_name: api
     build:
       context: ./APP.API/
-    #ports: #comment ports section out for local API developement
-     # - "8080:8080" 
     expose:
       - "8080"
     depends_on: 

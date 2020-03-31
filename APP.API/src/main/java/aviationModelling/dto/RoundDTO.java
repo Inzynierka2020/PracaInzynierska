@@ -19,6 +19,6 @@ public class RoundDTO {
     private Integer eventId;
     private boolean isCancelled;
     private boolean isFinished;
-    @JsonIgnore
+    //@JsonIgnore
     private List<FlightDTO> flights;
 }

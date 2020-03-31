@@ -1,42 +1,9 @@
-.mat-tab-labels {
-    display: flex;
-    justify-content: space-around !important;
-    align-items: stretch !important;
-}
-
-.mat-tab-label {
-    font-size: 20px;
-    font-weight: bolder;
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-    width: 100%;
-}
-
-.mat-tab-header {
-    position: sticky !important;
-    top: 128px;
-    background-color: white;
-    z-index: 1000;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    justify-content: center;
-}
-
-.mat-tab-list {
-    max-width: 1200px;
-}
-
-.mat-tab-label-container {
-    justify-content: center;
+.material-icons {
+    font-size: 350%;
 }
 
 .tab-content {
-    margin-top: 128px;
-}
-
-.grey {
-    color: grey !important;
-    cursor: pointer;
+    margin-top: 150px;
 }
 
 .gold {
@@ -54,4 +21,81 @@
 
 .black {
     color: black;
+}
+
+
+/*---- ANGULAR MATERIAL OVERRIDE ----*/
+
+.mat-tab-label {
+    font-size: 20px;
+    font-weight: bolder;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    width: 100%;
+}
+
+.mat-tab-header {
+    position: sticky !important;
+    justify-content: center;
+    background-color: white;
+    top: 150px;
+    z-index: 1000;
+}
+
+.mat-tab-list {
+    max-width: 1200px;
+}
+
+.mat-tab-label-container {
+    justify-content: center;
+}
+
+.mat-tab-labels {
+    display: flex;
+    justify-content: space-around !important;
+    align-items: stretch !important;
+}
+
+
+/*---- RESPONSIVE ----*/
+
+@media screen and (max-width: 700px) {
+    .material-icons {
+        margin: 0px !important;
+        font-size: 300%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .material-icons {
+        font-size: 220%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .tab-content {
+        margin-top: 112px;
+    }
+    .mat-tab-header {
+        top: 112px;
+    }
+}
+
+@media screen and (max-width: 585px) {
+    .mat-tab-label {
+        font-size: 15px;
+        padding: 12px !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .mat-tab-label {
+        padding: 0 !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .mat-tab-label {
+        font-size: 12px;
+    }
 }

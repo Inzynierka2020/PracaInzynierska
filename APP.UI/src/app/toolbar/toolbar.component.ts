@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsComponent } from '../settings/settings.component';
+import {Event } from '../models/event';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,6 +10,9 @@ import { SettingsComponent } from '../settings/settings.component';
 })
 export class ToolbarComponent implements OnInit {
 
+  @Input()
+  event:Event;
+  
   now: number;
   wind: string;
 
@@ -33,7 +37,6 @@ export class ToolbarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 }

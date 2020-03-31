@@ -1,0 +1,27 @@
+.container {
+    margin-top: 150px
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30%;
+    width: 100%;
+}
+
+.body {
+    overflow: hidden !important;
+}
+
+button {
+    width: 40%;
+    height: 80px;
+    font-size: 48px;
+}
+
+mat-form-field {
+    text-align: center;
+    font-size: 300% !important;
+    width: 50%;
+}

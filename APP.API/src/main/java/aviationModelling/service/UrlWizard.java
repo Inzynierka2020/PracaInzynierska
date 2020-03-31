@@ -22,7 +22,7 @@ public class UrlWizard {
         Map<String, String> params = new HashMap<>();
         params.put("login", login);
         params.put("password", password);
-        params.put("function", "getEventInfo");
+        params.put("function", "getEventInfoFull");
         params.put("output_format", "json");
         params.put("event_id", event_id.toString());
         return urlBuilder(params);

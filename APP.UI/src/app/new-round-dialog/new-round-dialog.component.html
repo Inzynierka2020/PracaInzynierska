@@ -1,26 +1,26 @@
-<h1 mat-dialog-title class="text-center mb-3">New round</h1>
+<div mat-dialog-title class="text-center">New round</div>
 <mat-divider class="w-50 mx-auto"></mat-divider>
-<h1 class="text-center mt-5">Group count</h1>
-<h5 class="text-center">(any above 1 activates group division during this round)</h5>
-<div mat-dialog-content class="mb-5 px-0">
+<div class="text-center title">Group count</div>
+<div class="text-center subtitle">(any above 1 activates group division during this round)</div>
+<div mat-dialog-content class="px-0">
     <i (click)="decrementGroups()" class="material-icons">
         remove
     </i>
-    <h1 class="number">{{groupsNumber}}</h1>
+    <div class="number">{{groupsNumber}}</div>
     <i (click)="incrementGroups()" class="material-icons "> add
     </i>
 </div>
 <mat-divider></mat-divider>
-<h1 class="text-center mt-5">Round number</h1>
-<div mat-dialog-content class="mb-5 px-0">
+<div class="text-center title">Round number</div>
+<div mat-dialog-content class="px-0">
     <i (click)="decrement()" class="material-icons">
         remove
     </i>
-    <h1 class="number">{{roundNumber}}</h1>
+    <div class="number">{{roundNumber}}</div>
     <i (click)="increment()" class="material-icons "> add
     </i>
 </div>
 <div class="buttons mt-4">
-    <button mat-raised-button color="accent" [mat-dialog-close]="true">Start</button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+    <button mat-raised-button color="accent" (click)="close(true)">Start</button>
+    <button mat-raised-button color="warn" (click)="close(false)" cdkFocusInitial>Cancel</button>
 </div>

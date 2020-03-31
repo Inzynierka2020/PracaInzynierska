@@ -1,8 +1,20 @@
 .flag {
-    width: 80px;
+    width: 3em;
+    max-width: 80px;
 }
 
 .text {
     font-size: inherit;
     font-style: italic;
+}
+
+mat-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+    mat-divider {
+        margin: 0;
+    }
 }

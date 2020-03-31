@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+class NewRoundDialogData {
+  roundNumber: number;
+}
 
 @Component({
   selector: 'app-new-round-dialog',
@@ -8,27 +12,31 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class NewRoundDialogComponent implements OnInit {
 
-  groups=false;
-  disabled=false;
-  roundNumber = 1;
+  roundNumber: number;
   groupsNumber = 1;
 
-  constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>, @Inject(MAT_DIALOG_DATA) private _data: NewRoundDialogData) {
+    this.roundNumber = _data.roundNumber;
+  }
 
   ngOnInit() {
   }
 
-  increment(){
+  close(started: boolean) {
+    this.dialogRef.close({ started: started, roundNumber: this.roundNumber, groupCount: this.groupsNumber });
+  }
+
+  increment() {
     this.roundNumber++;
   }
-  decrement(){
+  decrement() {
     this.roundNumber--;
   }
 
-  incrementGroups(){
+  incrementGroups() {
     this.groupsNumber++;
   }
-  decrementGroups(){
+  decrementGroups() {
     this.groupsNumber--;
   }
 

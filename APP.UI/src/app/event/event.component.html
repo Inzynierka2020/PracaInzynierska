@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="content">
+        <form class="w-100 d-flex justify-content-center">
+            <mat-form-field>
+                <mat-label>EVENT ID</mat-label>
+                <input matInput [(ngModel)]="event.eventId" name="eventId">
+            </mat-form-field>
+        </form>
+        <button mat-raised-button (click)="startEvent()" color="primary">Start</button>
+    </div>
+</div>

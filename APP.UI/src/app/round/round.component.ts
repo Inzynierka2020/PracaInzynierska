@@ -1,6 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { RoundsService } from '../services/rounds.service';
+import { Round } from '../models/round';
+import { Pilot } from '../models/pilot';
+import { Flight } from '../models/flight';
+import { EventService } from '../services/event.service';
+import { FlightsService } from '../services/flights.service';
+import { PilotService } from '../services/pilot.service';
+import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-round',
@@ -8,27 +16,112 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   styleUrls: ['./round.component.css']
 })
 export class RoundComponent implements OnInit {
+
+  @Input()
+  roundNumber: number;
+  @Input()
+  groupCount: number;
+
   @Output()
   finished = new EventEmitter<boolean>();
 
-  constructor(public dialog: MatDialog) { }
-
   canceled = false;
+  eventId: number;
+  flights: Flight[] = [];
+  pilotsLeft: Pilot[];
+  pilotsFinished: Pilot[] = [];
 
-  ngOnInit() {
+  constructor(public dialog: MatDialog, private _roundsService: RoundsService,
+    private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
+    this.eventId = _eventService.eventId;
+    this._pilotsService.getPilots().subscribe(result => {
+      this.pilotsLeft = result;
+    });
   }
 
-  finishRound(){
-    var dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '70%',
-      maxWidth: '500px',
-      disableClose: true
-    });
+  ngOnInit() {
 
-    dialogRef.afterClosed().subscribe(result=>{
-      if(result){
-        this.finished.emit(false);
+  }
+
+  /*---- METHODS ----*/
+
+  createFlight(pilot: Pilot) {
+    var flight = this._flighsService.getFlightData();
+    flight.roundNum = this.roundNumber;
+
+    this.resolvePlayerDialog(pilot, flight).subscribe(flightResult => {
+      console.log(flightResult);
+      if (flightResult)
+        this.finishFlight(flightResult);
+    })
+  }
+
+  finishFlight(flight: Flight) {
+    this.flights.push(flight);
+
+    var index = this.pilotsLeft.findIndex(pilot => pilot.id == flight.pilotId);
+    var pilot = this.pilotsLeft[index];
+
+    pilot.flight = flight;
+    this.pilotsLeft.splice(index, 1);
+    this.pilotsFinished.push(pilot);
+    // this.pilotsFinished.sort((a, b) => a.flight.group.localeCompare(b.flight.group));
+
+    this._flighsService.saveFlight(flight).subscribe(result => {
+      this.updateScore();
+    })
+  }
+
+  updateScore() {
+    this._roundsService.updateRound(this.roundNumber).subscribe(result => {
+      this._flighsService.getFinishedFlights(this.roundNumber).subscribe(flightsResult => {
+        this.flights = flightsResult;
+        this.pilotsFinished.forEach(pilot => {
+          pilot.flight = this.flights.find(flight => flight.pilotId == pilot.id);
+        });
+        // this.pilotsFinished.sort((a,b)=> a.flight.group.localeCompare(b.flight.group) || a.score > b.score ? 1 : -1);
+        this.pilotsFinished.sort((a,b)=> a.flight.score < b.flight.score ? 1 : -1);
+      });
+    });
+  }
+
+  finishRound() {
+    this.resolveConfirmDialog().subscribe(confirmed => {
+      if (confirmed) {
+        this.finished.emit(true);
+        this._roundsService.finishRound(this.roundNumber).subscribe(result => { });
       }
     });
+  }
+
+  /*---- DIALOGS ----*/
+
+  private resolvePlayerDialog(pilot: Pilot, flight: Flight) {
+    var dialogRef = this.dialog.open(PlayerComponent, {
+      width: '90%',
+      maxWidth: '800px',
+      height: '95%',
+      maxHeight: '1000px',
+      disableClose: true,
+      data: {
+        pilot,
+        flight,
+        groupsCount: this.groupCount
+      }
+    })
+    dialogRef.componentInstance.returnDirectly = true;
+
+    return dialogRef.afterClosed();
+  }
+  // if (this.mode == "browse") {
+  //   dialogRef.componentInstance.editMode = false;
+  // }
+
+  private resolveConfirmDialog() {
+    return this.dialog.open(ConfirmDialogComponent, {
+      width: '80%',
+      maxWidth: '500px',
+      disableClose: true
+    }).afterClosed();
   }
 }
