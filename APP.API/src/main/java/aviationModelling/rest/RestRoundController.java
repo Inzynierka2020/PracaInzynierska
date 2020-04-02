@@ -8,6 +8,7 @@ import aviationModelling.exception.CustomResponse;
 import aviationModelling.mapper.FlightMapper;
 import aviationModelling.mapper.RoundMapper;
 import aviationModelling.service.RoundService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,52 +25,55 @@ public class RestRoundController {
         this.roundService = roundService;
     }
 
-//    zwroc runde o danym numerze
+    @ApiOperation(value = "Return round with the given id")
     @GetMapping("/{roundNum}")
     public RoundDTO getRound(@PathVariable Integer roundNum) {
         return roundService.findByRoundNum(roundNum);
     }
 
-//    uaktualnij wyniki po przelocie
+    @ApiOperation(value = "Update local scores")
     @PutMapping("/update/{roundNum}")
     public ResponseEntity<CustomResponse> updateLocalScore(@PathVariable Integer roundNum) {
         return roundService.updateLocalScore(roundNum);
     }
 
+    @ApiOperation(value = "Update round")
     @PutMapping("/update")
     public ResponseEntity<CustomResponse> updateEveryRound() {
         return roundService.updateAllRounds();
     }
 
-//    stworz nowa runde
-    @PostMapping("/events/{eventId}/new/{roundNum}")
+    @ApiOperation(value = "Create new round")
+    @PostMapping("/new/{eventId}/{roundNum}")
     public ResponseEntity<RoundDTO> createRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
         return roundService.createRound(roundNum, eventId);
     }
 
-//    zwroc liste przelotow w danej rundzie
+    @ApiOperation(value = "Return list of flights in the given round")
     @GetMapping("/all-flights/{roundNum}")
     public List<FlightDTO> getRoundFlights(@PathVariable Integer roundNum) {
         return roundService.findRoundFlights(roundNum);
     }
 
-//    anuluj dana runde
+    @ApiOperation(value = "Cancel given round")
     @PutMapping("/cancel/{roundNum}")
     public ResponseEntity<CustomResponse> cancelRound(@PathVariable Integer roundNum) {
         return roundService.cancelRound(roundNum);
     }
 
-//    zakoncz dana runde i przelicz total score
+    @ApiOperation(value = "Finish given round")
     @PutMapping("/finish/{roundNum}")
     public ResponseEntity<CustomResponse>  finishRound(@PathVariable Integer roundNum) {
         return roundService.finishRound(roundNum);
     }
 
+    @ApiOperation(value = "Return all rounds")
     @GetMapping
     public List<RoundDTO> getRounds() {
         return roundService.findAll();
     }
 
+    @ApiOperation(value = "Return round numbers")
     @GetMapping("/numbers")
     List<Integer> getRoundNumbers() {
         return roundService.getRoundNumbers();
