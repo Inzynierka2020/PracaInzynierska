@@ -3,6 +3,7 @@ package aviationModelling.dto;
 import aviationModelling.entity.Pilot;
 import aviationModelling.entity.Round;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.Public.class)
 public class EventDTO {
     private Integer eventId;
     private String eventName;
@@ -21,8 +23,8 @@ public class EventDTO {
     private String eventEndDate;
     private String eventType;
     private Integer numberOfRounds;
-    @JsonIgnore
+    @JsonView(Views.Internal.class)
     private List<PilotDTO> pilots;
-    @JsonIgnore
+    @JsonView(Views.Internal.class)
     private List<RoundDTO> rounds;
 }

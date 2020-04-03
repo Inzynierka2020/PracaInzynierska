@@ -1,4 +1,4 @@
-package aviationModelling.rest;
+package aviationModelling.restcontroller;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.PilotDTO;

@@ -1,14 +1,10 @@
-package aviationModelling.rest;
+package aviationModelling.restcontroller;
 
 import aviationModelling.dto.FlightDTO;
-import aviationModelling.entity.Flight;
-import aviationModelling.mapper.FlightMapper;
 import aviationModelling.service.FlightService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/flights")

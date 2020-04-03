@@ -22,6 +22,8 @@ public interface RoundService {
 
     ResponseEntity<CustomResponse> cancelRound(Integer roundNum);
 
+    ResponseEntity<CustomResponse> uncancelRound(Integer roundNum);
+
     List<FlightDTO> findRoundFlights(Integer roundNum);
 
     ResponseEntity<CustomResponse> finishRound(Integer roundNum);

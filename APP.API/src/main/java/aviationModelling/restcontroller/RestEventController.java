@@ -1,8 +1,7 @@
-package aviationModelling.rest;
+package aviationModelling.restcontroller;
 
 import aviationModelling.dto.EventDTO;
 import aviationModelling.exception.CustomResponse;
-import aviationModelling.mapper.EventMapper;
 import aviationModelling.service.EventService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
