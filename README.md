@@ -17,7 +17,7 @@ W celu uruchomienia lokalnie projektu angularowego należy:
 - od teraz do uruchomienia projektu służy polecenie `ng serve`
 
 ### Spring
-
+Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../swagger-ui.html**
 ## Docker
 
 ## Linki
