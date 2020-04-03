@@ -92,9 +92,11 @@ export class RoundComponent {
   cancelRound() {
     this.resolveConfirmDialog().subscribe(confirmResult => {
       if (confirmResult == true) {
-        console.log("WARNING! UNCANCELING ROUND STILL NOT IMPLEMENTED");
-        this._roundsService.cancelRound(this.roundNumber).subscribe(result => {
-        })
+        if (this.canceled) {
+          this._roundsService.cancelRound(this.roundNumber).subscribe(result => { })
+        } else {
+          this._roundsService.uncancelRound(this.roundNumber).subscribe(result => { })
+        }
       } else {
         this.canceled = !this.canceled;
       }

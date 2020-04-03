@@ -104,6 +104,10 @@ export class TabComponent {
       this._roundsService.cancelRound(this.browsedRound.roundNum).subscribe(result=>{
         this.refreshRounds();
       })
+    }else{
+      this._roundsService.uncancelRound(this.browsedRound.roundNum).subscribe(result=>{
+        this.refreshRounds();
+      })
     }
   }
 
