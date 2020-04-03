@@ -128,6 +128,15 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    public ResponseEntity<CustomResponse> uncancelRound(Integer roundNum) {
+        Round round = roundRepository.findByRoundNum(roundNum);
+        round.setCancelled(false);
+        roundRepository.save(round);
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
+                "Round " + roundNum + " uncancelled."), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<CustomResponse> finishRound(Integer roundNum) {
         Round round = roundRepository.findByRoundNum(roundNum);
         round.setFinished(true);

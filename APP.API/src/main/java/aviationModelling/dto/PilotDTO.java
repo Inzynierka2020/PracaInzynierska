@@ -30,8 +30,7 @@ public class PilotDTO {
     private Float discarded1;
     private Float discarded2;
     private Float score;
-    @JsonIgnore
-//    @JsonView(Views.Internal.class)
+    @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;
 }
 

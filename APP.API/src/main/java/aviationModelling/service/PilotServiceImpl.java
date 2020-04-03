@@ -119,11 +119,6 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public Float findBestPilotScore(Integer pilotId) {
-        return pilotRepository.findBestPilotScore(pilotId);
-    }
-
-    @Override
     public Float findBestPilotTime(Integer pilotId) {
         return pilotRepository.findBestPilotTime(pilotId);
     }
