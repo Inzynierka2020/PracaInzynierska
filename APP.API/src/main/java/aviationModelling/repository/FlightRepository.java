@@ -10,12 +10,12 @@ import java.util.List;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId> {
+
     @Query("SELECT f FROM Flight f " +
-            "WHERE f.seconds = " +
-            "(SELECT min(seconds) FROM Flight " +
-            "WHERE seconds>0)")
+            "WHERE f.round.isCancelled = false AND f.seconds = " +
+            "(SELECT min(fl.seconds) FROM Flight fl " +
+            "WHERE fl.seconds>0 AND fl.round.isCancelled = false)")
     Flight findBestTime();
 
     Flight findByFlightIdRoundNumAndFlightIdPilotId(Integer roundNum, Integer pilotId);
-
 }

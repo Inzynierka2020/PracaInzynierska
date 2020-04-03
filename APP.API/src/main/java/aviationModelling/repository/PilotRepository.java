@@ -47,10 +47,6 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
             "ORDER BY f.score DESC, p.lastName")
     List<Pilot> findPilotsWithFinishedFlightGroupedByGroup(@Param("round") Integer round, @Param("group") String group);
 
-    @Query("SELECT max(f.score) FROM Pilot p " +
-            "JOIN Flight f ON p.id = f.flightId.pilotId " +
-            "WHERE p.id = :pilotId AND f.round.isCancelled = false")
-    Float findBestPilotScore(@Param("pilotId") Integer pilotId);
 
     @Query("SELECT min(f.seconds) FROM Pilot p " +
             "JOIN Flight f ON p.id = f.flightId.pilotId " +
