@@ -1,6 +1,6 @@
 <div class="d-flex flex-column align-items-center w-100">
     <div class="container">
-        <mat-checkbox [(ngModel)]="canceled" color="warn">
+        <mat-checkbox [(ngModel)]="canceled" color="warn" (click)="cancelRound()">
             ROUND CANCELED
         </mat-checkbox>
     </div>
@@ -8,7 +8,7 @@
         <div class="w-100">
             <app-score [dataSource]="pilotsFinished" (rowAction)="null"></app-score>
         </div>
-        <mat-toolbar color="primary">
+        <mat-toolbar color="primary" *ngIf="isYetToStartBarVisible">
             <mat-toolbar-row class="to-start">
                 <div class="title">YET TO START</div>
             </mat-toolbar-row>

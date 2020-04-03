@@ -16,6 +16,12 @@ export class RoundsService {
     });
   }
 
+  updateAllRounds():Observable<any>{
+    return this._http.put<any>(this._baseUrl + "rounds/update/",  {
+      responseType: 'text' as 'json'
+    });
+  }
+
   startNewRound(roundNumber:number, eventId:number):Observable<any>{
     return this._http.post<any>(this._baseUrl + "rounds/events/"+eventId+"/new/"+roundNumber,  {
       responseType: 'text' as 'json'

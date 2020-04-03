@@ -12,12 +12,18 @@
                         <div class="data-field" *ngIf="!pilot.flight">
                             <div class="semi-title">TOTAL</div>
                             <mat-divider></mat-divider>
-                            <div class="score">{{pilot.score}}</div>
+                            <div class="score">{{pilot.score.toFixed(2)}}</div>
                         </div>
                         <div class="data-field" *ngIf="pilot.flight">
                             <div class="semi-title">RESULT</div>
                             <mat-divider></mat-divider>
-                            <div class="score">{{pilot.flight.score}}</div>
+                            <div class="score" *ngIf="pilot.flight.score">{{pilot.flight.score.toFixed(2)}}</div>
+                            <div class="score" *ngIf="!pilot.flight.score">---</div>
+                        </div>
+                        <div class="data-field" *ngIf="pilot.flight">
+                            <div class="semi-title">SECONDS</div>
+                            <mat-divider></mat-divider>
+                            <div class="score">{{pilot.flight.seconds}}</div>
                         </div>
                         <div class="data-field">
                             <div class="semi-title">PENALTY</div>
