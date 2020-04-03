@@ -13,7 +13,7 @@
                 keyboard_arrow_right</i>
         </ng-template>
         <div class="tab-content">
-            <app-browse [round]="browsedRound"></app-browse>
+            <app-browse [round]="browsedRound" (roundCanceled)="cancelRound($event)"></app-browse>
         </div>
     </mat-tab>
     <mat-tab *ngIf="isRoundStarted ">

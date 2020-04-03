@@ -30,7 +30,7 @@ export class RoundComponent {
   flights: Flight[] = [];
   pilotsLeft: Pilot[] = [];
   pilotsFinished: Pilot[] = [];
-  order=1;
+  order = 1;
 
   isYetToStartBarVisible = true;
 
@@ -70,8 +70,8 @@ export class RoundComponent {
     this._flighsService.saveFlight(flight).subscribe(result => {
       this.updateScore();
     })
-    
-    if(this.pilotsLeft.length==0){
+
+    if (this.pilotsLeft.length == 0) {
       this.isYetToStartBarVisible = false;
     }
   }
@@ -84,14 +84,21 @@ export class RoundComponent {
           pilot.flight = this.flights.find(flight => flight.pilotId == pilot.id);
         });
         // this.pilotsFinished.sort((a,b)=> a.flight.group.localeCompare(b.flight.group) || a.score > b.score ? 1 : -1);
-        this.pilotsFinished.sort((a,b)=> a.flight.score < b.flight.score ? 1 : -1);
+        this.pilotsFinished.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       });
     });
   }
 
-  cancelRound(){
-    this.resolveConfirmDialog();
-    console.log("CANCELING ROUND NOT IMPLEMENTED");
+  cancelRound() {
+    this.resolveConfirmDialog().subscribe(confirmResult => {
+      if (confirmResult == true) {
+        console.log("WARNING! UNCANCELING ROUND STILL NOT IMPLEMENTED");
+        this._roundsService.cancelRound(this.roundNumber).subscribe(result => {
+        })
+      } else {
+        this.canceled = !this.canceled;
+      }
+    });
   }
 
   finishRound() {

@@ -4,14 +4,14 @@
             <span *ngIf="!editMode">lock</span>
             <span *ngIf="editMode"> lock_open</span>
         </i> -->
-        <mat-checkbox color="warn" [checked]="isRoundCanceled" [(ngModel)]="isRoundCanceled">
+        <mat-checkbox color="warn" [(ngModel)]="isRoundCanceled" (click)="cancelRound()">
             ROUND CANCELED
         </mat-checkbox>
     </div>
     <div ngClass="!browse ? 'content' : ''" class="w-100">
-        <app-score [mode]="'browse'" [dataSource]="dataSource" *ngIf="!isRoundCanceled"></app-score>
+        <app-score [mode]="'browse'" [dataSource]="dataSource"></app-score>
     </div>
-    <div class="data my-4" *ngIf="!isRoundCanceled">
+    <div class="data my-4">
         <button mat-raised-button [color]="group=='A' ? 'primary' : 'accent' " (click)="changeGroup( 'A') ">A</button>
         <button mat-raised-button [color]="group=='B' ? 'primary' : 'accent' " (click)="changeGroup( 'B') ">B</button>
         <button mat-raised-button [color]="group=='C' ? 'primary' : 'accent' " (click)="changeGroup( 'C') ">C</button>

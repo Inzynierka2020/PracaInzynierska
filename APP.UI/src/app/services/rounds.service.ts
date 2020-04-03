@@ -22,14 +22,21 @@ export class RoundsService {
     });
   }
 
-  startNewRound(roundNumber:number, eventId:number):Observable<any>{
-    return this._http.post<any>(this._baseUrl + "rounds/events/"+eventId+"/new/"+roundNumber,  {
+  startNewRound(roundNumber:number, eventId:number):Observable<Round>{
+    console.log(roundNumber, eventId)
+    return this._http.post<Round>(this._baseUrl + "rounds/events/"+eventId+"/new/"+roundNumber,  {
       responseType: 'text' as 'json'
     });
   }
 
   finishRound(roundNumber:number):Observable<any>{
     return this._http.put<any>(this._baseUrl + "rounds/finish/"+roundNumber, {
+      responseType: 'text' as 'json'
+    });
+  }
+
+  cancelRound(roundNumber:number):Observable<any>{
+    return this._http.put<any>(this._baseUrl + "rounds/cancel/"+roundNumber, {
       responseType: 'text' as 'json'
     });
   }
