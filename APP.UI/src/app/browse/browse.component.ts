@@ -19,6 +19,7 @@ export class BrowseComponent implements OnInit {
   dataSource: Pilot[];
   editMode = false;
   group = "A";
+  isRoundCanceled = false;
 
   constructor(private _pilotService: PilotService) {
     this._pilotService.getPilots().subscribe(pilotsResult => {
@@ -37,7 +38,8 @@ export class BrowseComponent implements OnInit {
         this.dataSource.forEach(pilot => {
           pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
         });
-
+        this.isRoundCanceled=this.round.cancelled;
+        console.log(this.isRoundCanceled);
         this.dataSource.sort((a, b) => a.flight.score > b.flight.score ? -1 : 1);
       }
     }

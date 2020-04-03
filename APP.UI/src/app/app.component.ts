@@ -8,7 +8,6 @@ import { Event } from '../app/models/event'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'App';
 
   event: Event = {
     eventId: 1809,
@@ -24,5 +23,4 @@ export class AppComponent {
   constructor(private eventService: EventService) {
 
   }
-
 }

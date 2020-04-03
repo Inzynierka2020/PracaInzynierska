@@ -29,4 +29,11 @@ export class EventComponent implements OnInit {
       })
     })
   }
+
+  deleteEvent() {
+    this._eventService.deleteEvent(this.event.eventId).subscribe(result => {
+    }, error => {
+      console.log("Deleting event failed. There is no such event in the database !");
+    });
+  }
 }

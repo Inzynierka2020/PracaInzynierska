@@ -20,6 +20,10 @@ export class EventService {
     });
   }
 
+  deleteEvent(eventId: number): Observable<any> {
+    return this._http.delete(this._baseUrl + "events/" + eventId);
+  }
+
   initPilots(eventId: number): Observable<string> {
     return this._http.post<string>(this._baseUrl + "events/download-pilots-data/" + eventId, null,{
       responseType: 'text' as 'json'

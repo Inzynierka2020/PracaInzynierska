@@ -1,15 +1,18 @@
 import { Component, OnInit, ViewEncapsulation, Input, EventEmitter } from '@angular/core';
 import { MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
-import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRoundDialogComponent } from '../new-round-dialog/new-round-dialog.component';
 import { RoundsService } from '../services/rounds.service';
 import { PilotService } from '../services/pilot.service';
 import { Pilot } from '../models/pilot';
-import { group } from '@angular/animations';
 import { Round } from '../models/round';
-import { MaxLengthValidator } from '@angular/forms';
 import { EventService } from '../services/event.service';
+
+enum TAB {
+  GENERAL = 0,
+  BROWSE = 1,
+  ROUND = 2,
+}
 
 @Component({
   selector: 'app-tab',
@@ -17,78 +20,43 @@ import { EventService } from '../services/event.service';
   styleUrls: ['./tab.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TabComponent implements OnInit {
+export class TabComponent {
   switch = false; //temporary workaround for a bug
 
   @Input()
   eventId: number;
+  previousTabIndex = 0;
 
   dataSource: Pilot[];
-  started = false;
-  previousTabIndex = 0;
-  browsing = false;
 
+  rounds: Round[];
   roundNumber: number;
   browsedRoundIndex = 0;
   browsedRound: Round;
+
+  isRoundStarted = false;
   groupCount: number;
   newRoundNumber = 0;
-  rounds: Round[];
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
     this.refreshRounds();
-    this.getGeneralScoreData();
   }
 
-  ngOnInit() {
-  }
+  isBrowsing = false;
 
-  getGeneralScoreData() {
-    this._pilotService.getPilots().subscribe(result => this.dataSource = result);
-  }
-
-  refreshRounds(){
-    this._roundsService.getRounds().subscribe(roundsResult => {
-      console.log(roundsResult);
-      this.rounds = roundsResult;
-      this.changeRound();
-    })
-  }
-
-  refreshTotalScore(){
-    this._eventService.updateScore().subscribe(result=>{
-      this._pilotService.getPilots().subscribe(result=>{
-        this.dataSource = result;
-        this.dataSource.sort((a,b)=>a.score > b.score ? -1: 1);
-      });
-    })
-  }
-
-
-  onChangeTab(event: MatTabChangeEvent, tab: MatTabGroup) {
-    if (event.index == 1) {
-      //BROWSE TAB
-      this.browsing = true;
-      this.previousTabIndex = event.index;
-    } else if (event.index == 2 && !this.started) {
-      //NEW ROUND TAB
-      this.browsing = false;
-      let recentRoundNumber = Math.max.apply(Math, this.rounds.map(function(o) { return o.roundNum; }))
-      const dialogRef = this.dialog.open(NewRoundDialogComponent, {
-        width: '80%',
-        maxWidth: '800px',
-        height: 'fitcontent',
-        disableClose: true,
-        data: {
-          roundNumber: recentRoundNumber+1
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log();
-        if (result.started) {
-          this.started = true;
-          this.groupCount = result.groupCount;
-          this.newRoundNumber = result.roundNumber;
+  onChangeTab(tabChangeEvent: MatTabChangeEvent, tab: MatTabGroup) {
+    // this.refreshRounds();
+    this.isBrowsing = false;
+    if (tabChangeEvent.index == TAB.BROWSE) {
+      this.isBrowsing = true;
+      this.previousTabIndex = tabChangeEvent.index;
+    } else if (tabChangeEvent.index == TAB.ROUND && !this.isRoundStarted) {
+      this.resolveNewRoundDialogComponent().afterClosed().subscribe(newRoundResult => {
+        console.log(newRoundResult);
+        if (newRoundResult.started) {
+          this.isRoundStarted = true;
+          this.groupCount = newRoundResult.groupCount;
+          this.newRoundNumber = newRoundResult.roundNumber;
           this.startNewRound(this.newRoundNumber);
         } else {
           tab.selectedIndex = this.previousTabIndex;
@@ -96,29 +64,27 @@ export class TabComponent implements OnInit {
         }
       })
     } else {
-      //GENERAL SCORE TAB
-      this.getGeneralScoreData();
-      this.previousTabIndex = event.index;
-      this.browsing = false;
+      this.refreshScores();
+      this.previousTabIndex = tabChangeEvent.index;
     }
   }
 
-  startNewRound(roundNumber: number) {
-    this._roundsService.startNewRound(roundNumber, this.eventId).subscribe(result => { });
-  }
+  /*---- SCORE ----*/
 
-  finishRound(finished, tab: MatTabGroup) {
-    this.started = !finished;
-    tab.selectedIndex = 0;
-    this.refreshRounds();
-    this.refreshTotalScore();
+  refreshScores() {
+    this._eventService.updateScore().subscribe(result => {
+      this._pilotService.getPilots().subscribe(result => {
+        this.dataSource = result;
+        this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
+      });
+    })
   }
 
   /*---- BROWSING ----*/
 
-  nextRound(jump: number) {
-    if (this.browsing)
-      this.browsedRoundIndex += jump;
+  nextRound(interval: number, tab: MatTabGroup) {
+    if (this.isBrowsing)
+      this.browsedRoundIndex += interval;
     if (this.browsedRoundIndex < 0)
       this.browsedRoundIndex = this.rounds.length - 1
     if (this.browsedRoundIndex == this.rounds.length)
@@ -127,8 +93,46 @@ export class TabComponent implements OnInit {
     this.changeRound();
   }
 
-  changeRound(){
+  changeRound() {
     this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
     this.browsedRound = this.rounds[this.browsedRoundIndex];
+  }
+
+  refreshRounds() {
+    this._roundsService.updateAllRounds().subscribe(updateResult => {
+      this._roundsService.getRounds().subscribe(roundsResult => {
+        console.log(roundsResult);
+        this.rounds = roundsResult;
+        this.changeRound();
+        this.refreshScores();
+      });
+    });
+  }
+
+  /*---- ROUND ----*/
+
+  startNewRound(roundNumber: number) {
+    this._roundsService.startNewRound(roundNumber, this.eventId).subscribe(result => { });
+  }
+
+  finishRound(finished, tab: MatTabGroup) {
+    this.isRoundStarted = !finished;
+    tab.selectedIndex = 0;
+    this.refreshRounds();
+  }
+
+  /*---- DIALOGS ----*/
+
+  resolveNewRoundDialogComponent() {
+    let recentRoundNumber = Math.max.apply(Math, this.rounds.map(function (o) { return o.roundNum; }))
+    return this.dialog.open(NewRoundDialogComponent, {
+      width: '80%',
+      maxWidth: '800px',
+      height: 'fitcontent',
+      disableClose: true,
+      data: {
+        roundNumber: recentRoundNumber + 1
+      }
+    });
   }
 }

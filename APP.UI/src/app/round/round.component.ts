@@ -15,7 +15,7 @@ import { PlayerComponent } from '../player/player.component';
   templateUrl: './round.component.html',
   styleUrls: ['./round.component.css']
 })
-export class RoundComponent implements OnInit {
+export class RoundComponent {
 
   @Input()
   roundNumber: number;
@@ -28,8 +28,11 @@ export class RoundComponent implements OnInit {
   canceled = false;
   eventId: number;
   flights: Flight[] = [];
-  pilotsLeft: Pilot[];
+  pilotsLeft: Pilot[] = [];
   pilotsFinished: Pilot[] = [];
+  order=1;
+
+  isYetToStartBarVisible = true;
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
     private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
@@ -37,10 +40,6 @@ export class RoundComponent implements OnInit {
     this._pilotsService.getPilots().subscribe(result => {
       this.pilotsLeft = result;
     });
-  }
-
-  ngOnInit() {
-
   }
 
   /*---- METHODS ----*/
@@ -57,6 +56,7 @@ export class RoundComponent implements OnInit {
   }
 
   finishFlight(flight: Flight) {
+    flight.order = this.order++;
     this.flights.push(flight);
 
     var index = this.pilotsLeft.findIndex(pilot => pilot.id == flight.pilotId);
@@ -70,6 +70,10 @@ export class RoundComponent implements OnInit {
     this._flighsService.saveFlight(flight).subscribe(result => {
       this.updateScore();
     })
+    
+    if(this.pilotsLeft.length==0){
+      this.isYetToStartBarVisible = false;
+    }
   }
 
   updateScore() {
@@ -83,6 +87,11 @@ export class RoundComponent implements OnInit {
         this.pilotsFinished.sort((a,b)=> a.flight.score < b.flight.score ? 1 : -1);
       });
     });
+  }
+
+  cancelRound(){
+    this.resolveConfirmDialog();
+    console.log("CANCELING ROUND NOT IMPLEMENTED");
   }
 
   finishRound() {

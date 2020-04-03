@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Pilot } from '../models/pilot';
 
 @Component({
@@ -6,7 +6,7 @@ import { Pilot } from '../models/pilot';
   templateUrl: './score.component.html',
   styleUrls: ['./score.component.css']
 })
-export class ScoreComponent implements OnInit {
+export class ScoreComponent {
 
   @Input()
   dataSource: Pilot[];
@@ -16,11 +16,6 @@ export class ScoreComponent implements OnInit {
 
   @Output()
   rowAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
-
-
-  constructor() { }
-
-  ngOnInit() { }
 
   callRowAction(pilot: Pilot) {
     this.rowAction.emit(pilot);

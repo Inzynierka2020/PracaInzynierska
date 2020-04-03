@@ -4,19 +4,19 @@
             <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
         </div>
     </mat-tab>
-    <mat-tab [disabled]="browsing">
+    <mat-tab [disabled]="isBrowsing">
         <ng-template mat-tab-label class="d-flex justify-content-between">
-            <i class="material-icons mr-2" [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound(-1)">
+            <i class="material-icons mr-2" [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(-1, matTabGroup)">
                keyboard_arrow_left </i>
-            <span [ngClass]="browsing ? 'black' : ''">ROUND {{roundNumber}}</span>
-            <i class="material-icons ml-2 " [ngClass]="!browsing ? 'grey' : 'gold'" (click)="nextRound(1)">
+            <span [ngClass]="isBrowsing ? 'black' : ''">ROUND {{roundNumber}}</span>
+            <i class="material-icons ml-2 " [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(1, matTabGroup)">
                 keyboard_arrow_right</i>
         </ng-template>
         <div class="tab-content">
             <app-browse [round]="browsedRound"></app-browse>
         </div>
     </mat-tab>
-    <mat-tab *ngIf="started ">
+    <mat-tab *ngIf="isRoundStarted ">
         <ng-template mat-tab-label class="d-flex justify-content-between">
             ROUND {{newRoundNumber}}
         </ng-template>
@@ -24,11 +24,11 @@
             <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount"></app-round>
         </div>
     </mat-tab>
-    <mat-tab *ngIf="!started && switch " label="NEW ROUND">
+    <mat-tab *ngIf="!isRoundStarted && switch " label="NEW ROUND">
         <div class="tab-content ">
         </div>
     </mat-tab>
-    <mat-tab *ngIf="!started && !switch " label="NEW ROUND">
+    <mat-tab *ngIf="!isRoundStarted && !switch " label="NEW ROUND">
         <div class="tab-content ">
         </div>
     </mat-tab>
