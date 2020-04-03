@@ -64,7 +64,7 @@ export class TabComponent {
         }
       })
     } else {
-      this.refreshScores();
+      this.refreshScores(); // ???
       this.previousTabIndex = tabChangeEvent.index;
     }
   }
@@ -96,6 +96,19 @@ export class TabComponent {
   changeRound() {
     this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
     this.browsedRound = this.rounds[this.browsedRoundIndex];
+  }
+
+  cancelRound(toCancel: boolean) {
+    console.log(toCancel)
+    if(toCancel){
+      this._roundsService.cancelRound(this.browsedRound.roundNum).subscribe(result=>{
+        this.refreshRounds();
+      })
+    }else{
+      this._roundsService.uncancelRound(this.browsedRound.roundNum).subscribe(result=>{
+        this.refreshRounds();
+      })
+    }
   }
 
   refreshRounds() {

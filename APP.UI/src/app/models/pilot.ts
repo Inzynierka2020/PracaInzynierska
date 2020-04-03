@@ -11,10 +11,10 @@ export interface Pilot {
     fai: "",
     faiLicense: "",
     teamName: ""
-    discard1: number;
-    discard2: number;
+    discarded1: number;
+    discarded2: number;
     score: string;
-    penalty: number;
+    penalty: number 
     flights: Flight[];
     flight: Flight;
 }

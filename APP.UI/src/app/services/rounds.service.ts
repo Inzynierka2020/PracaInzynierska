@@ -22,8 +22,9 @@ export class RoundsService {
     });
   }
 
-  startNewRound(roundNumber:number, eventId:number):Observable<any>{
-    return this._http.post<any>(this._baseUrl + "rounds/events/"+eventId+"/new/"+roundNumber,  {
+  startNewRound(roundNumber:number, eventId:number):Observable<Round>{
+    console.log(roundNumber, eventId)
+    return this._http.post<Round>(this._baseUrl + "rounds/new/"+eventId+"/"+roundNumber,  {
       responseType: 'text' as 'json'
     });
   }
@@ -34,11 +35,23 @@ export class RoundsService {
     });
   }
 
+  cancelRound(roundNumber:number):Observable<any>{
+    return this._http.put<any>(this._baseUrl + "rounds/cancel/"+roundNumber, {
+      responseType: 'text' as 'json'
+    });
+  }
+
+  uncancelRound(roundNumber:number):Observable<any>{
+    return this._http.put<any>(this._baseUrl + "rounds/uncancel/"+roundNumber, {
+      responseType: 'text' as 'json'
+    });
+  }
+
   getRound(roundNumber:number):Observable<any>{
     return this._http.get(this._baseUrl + "rounds/"+roundNumber);
   }
 
   getRounds():Observable<Round[]>{
-    return this._http.get<Round[]>(this._baseUrl + "rounds/");
+    return this._http.get<Round[]>(this._baseUrl + "rounds/list/with-flights");
   }
 }

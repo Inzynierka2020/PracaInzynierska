@@ -25,20 +25,21 @@
                             <mat-divider></mat-divider>
                             <div class="score">{{pilot.flight.seconds}}</div>
                         </div>
-                        <div class="data-field">
+                        <div class="data-field" *ngIf="pilot.flight">
                             <div class="semi-title">PENALTY</div>
                             <mat-divider></mat-divider>
-                            <div class="score">{{pilot.flight ? pilot.flight.penalty : pilot.penalty}}</div>
+                            <div class="score" *ngIf="pilot.flight">{{pilot.flight ? pilot.flight.penalty : "---"}}</div>
+                            <div class="score" *ngIf="!pilot.flight">{{pilot.penalty ? pilot.penalty : "---"}}</div>
                         </div>
-                        <div class="data-field" *ngIf="mode == 'general' && pilot.flight">
+                        <div class="data-field" *ngIf="mode == 'general' ">
                             <div class="semi-title">DISCARD 1</div>
                             <mat-divider></mat-divider>
-                            <div class="score">{{pilot.flight.discard1}}</div>
+                            <div class="score">{{pilot.discarded1 ? pilot.discarded1 : "---"}}</div>
                         </div>
-                        <div class="data-field" *ngIf="mode == 'general' && pilot.flight">
+                        <div class="data-field" *ngIf="mode == 'general'">
                             <div class="semi-title">DISCARD 2</div>
                             <mat-divider></mat-divider>
-                            <div class="score">{{pilot.flight.discard2}}</div>
+                            <div class="score">{{pilot.discarded2 ? pilot.discarded2 : "---"}}</div>
                         </div>
                         <div class="data-field" *ngIf="mode != 'general' && pilot.flight">
                             <div class="semi-title">STATUS</div>
