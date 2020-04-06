@@ -79,7 +79,7 @@ public class EventServiceImpl implements EventService {
 
         for (Integer number : roundNumbers) {
             roundService.createRound(number, eventId);
-            roundService.finishRound(number);
+            roundService.finishRound(number, eventId);
         }
     }
 
@@ -111,11 +111,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ResponseEntity<CustomResponse> updateTotalScore() {
-        List<Pilot> pilotList = pilotRepository.findAll();
+    public ResponseEntity<CustomResponse> updateTotalScore(int eventId) {
+        List<Pilot> pilotList = pilotRepository.findByEventIdOrderByLastName(eventId);
         int totalRounds;
         for (Pilot pilot : pilotList) {
-            List<Flight> pilotFlights = pilotRepository.findUncancelledAndFinishedPilotFlights(pilot.getId());
+            List<Flight> pilotFlights = pilotRepository
+                    .findUncancelledAndFinishedPilotFlights(pilot.getId(), pilot.getEventId());
             totalRounds = pilotFlights.size();
 
             if (totalRounds == 0) continue;

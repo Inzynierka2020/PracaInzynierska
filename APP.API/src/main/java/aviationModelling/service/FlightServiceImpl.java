@@ -35,8 +35,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDTO findBestTime() {
-        Flight flight = flightRepository.findBestTime();
+    public FlightDTO findBestTime(Integer eventId) {
+        Flight flight = flightRepository.findBestTime(eventId);
         if(flight==null) {
             throw new CustomNotFoundException("Flight with best time not found");
         }
@@ -44,8 +44,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDTO findFlight(Integer roundNum, Integer pilotId) {
-        Flight flight = flightRepository.findByFlightIdRoundNumAndFlightIdPilotId(roundNum, pilotId);
+    public FlightDTO findFlight(Integer roundNum, Integer pilotId, Integer eventId) {
+        Flight flight = flightRepository.findFlight(roundNum, pilotId, eventId);
         if(flight==null) {
             throw new CustomNotFoundException("Flight (round = "+roundNum+", pilot ID = "+pilotId+") not found.");
         }

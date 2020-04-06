@@ -12,19 +12,20 @@ import java.util.List;
 
 public interface PilotService {
 
-    List<PilotDTO> findAll();
-    List<PilotDTO> findAllOrderByScore();
+    List<PilotDTO> findAll(Integer eventId);
+    List<PilotDTO> findAllOrderByScore(Integer eventId);
     ResponseEntity<PilotDTO> save(PilotDTO pilotDTO);
-    ResponseEntity<String> saveAll(List<Pilot> pilotList);
 
-    PilotDTO findById(int id);
-    List<FlightDTO> findPilotFlights(Integer pilotId);
-    List<PilotDTO> findPilotsWithFinishedFlight(Integer roundNum);
-    List<PilotDTO> findPilotsWithUnfinishedFlight(Integer roundNum);
-    List<PilotDTO> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group);
+    //    PilotDTO findById(Integer pilotId, Integer eventId);
+    List<FlightDTO> findPilotFlights(Integer pilotId, Integer eventId);
+    List<PilotDTO> findPilotsWithFinishedFlight(Integer roundNum, Integer eventId);
+    List<PilotDTO> findPilotsWithUnfinishedFlight(Integer roundNum, Integer eventId);
+    List<PilotDTO> findPilotsWithFinishedFlightGroupedByGroup(Integer round, String group, Integer eventId);
 
-    Float findBestPilotTime(Integer pilotId);
+    Float findBestPilotTime(Integer pilotId, Integer eventId);
 
-    List<FlightDTO> findUncancelledAndFinishedPilotFlights(Integer pilotId);
+    List<FlightDTO> findUncancelledAndFinishedPilotFlights(Integer pilotId, Integer eventId);
+
+    PilotDTO findByPilotIdAndEventId(Integer pilotId, Integer eventId);
 
 }

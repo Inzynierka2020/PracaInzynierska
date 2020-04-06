@@ -18,9 +18,9 @@ public class RestFlightController {
     }
 
     @ApiOperation(value = "Return single flight")
-    @GetMapping("/{roundNum}/{pilotId}")
-    public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
-        return flightService.findFlight(roundNum, pilotId);
+    @GetMapping("/{roundNum}/{pilotId}/{eventId}")
+    public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId, @PathVariable Integer eventId) {
+        return flightService.findFlight(roundNum, pilotId, eventId);
     }
 
     @ApiOperation(value = "Save flight")
@@ -36,8 +36,8 @@ public class RestFlightController {
     }
 
     @ApiOperation(value = "Return flight with best time")
-    @GetMapping("/best-time")
-    public FlightDTO getBestFlight() {
-        return flightService.findBestTime();
+    @GetMapping("/best-time/{eventId}")
+    public FlightDTO getBestFlight(@PathVariable Integer eventId) {
+        return flightService.findBestTime(eventId);
     }
 }

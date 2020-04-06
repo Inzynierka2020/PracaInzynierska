@@ -1,8 +1,10 @@
 package aviationModelling.restcontroller;
 
 import aviationModelling.dto.EventDTO;
+import aviationModelling.dto.Views;
 import aviationModelling.exception.CustomResponse;
 import aviationModelling.service.EventService;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ public class RestEventController {
     }
 
     @ApiOperation(value = "Return event with the given id")
+    @JsonView(Views.Public.class)
     @GetMapping("/{eventId}")
     public EventDTO getEvent(@PathVariable int eventId) {
         return eventService.findById(eventId);
@@ -32,9 +35,9 @@ public class RestEventController {
 
 
     @ApiOperation(value = "Update total score")
-    @PutMapping("/total-score")
-    public ResponseEntity<CustomResponse> updateTotalScore() {
-        return eventService.updateTotalScore();
+    @PutMapping("/total-score/{eventId}")
+    public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
+        return eventService.updateTotalScore(eventId);
     }
 
     @ApiOperation(value = "Delete event with the given id")

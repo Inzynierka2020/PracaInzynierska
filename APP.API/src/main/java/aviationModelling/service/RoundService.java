@@ -14,23 +14,23 @@ public interface RoundService {
 
     ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
 
-    RoundDTO findByRoundNum(Integer roundNum);
+    RoundDTO findByRoundNumAndEventId(Integer roundNum, Integer eventId);
 
     ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId);
 
-    ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum);
+    ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum, Integer eventId);
 
-    ResponseEntity<CustomResponse> cancelRound(Integer roundNum);
+    ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
 
-    ResponseEntity<CustomResponse> uncancelRound(Integer roundNum);
+    ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId);
 
-    List<FlightDTO> findRoundFlights(Integer roundNum);
+    List<FlightDTO> findRoundFlights(Integer roundNum, Integer eventId);
 
-    ResponseEntity<CustomResponse> finishRound(Integer roundNum);
+    ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId);
 
-    List<Integer> getRoundNumbers();
+    List<Integer> getRoundNumbers(Integer eventId);
 
-    ResponseEntity<CustomResponse> updateAllRounds();
+    ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
 
-    List<RoundDTO> findAll();
+    List<RoundDTO> findAll(Integer eventId);
 }

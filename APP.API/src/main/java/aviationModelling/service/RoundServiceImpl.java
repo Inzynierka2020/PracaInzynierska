@@ -31,13 +31,13 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public ResponseEntity<RoundDTO> save(RoundDTO roundDTO) {
-
+        roundRepository.save(RoundMapper.MAPPER.toRound(roundDTO));
         return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public RoundDTO findByRoundNum(Integer roundNum) {
-        Round round = roundRepository.findByRoundNum(roundNum);
+    public RoundDTO findByRoundNumAndEventId(Integer roundNum, Integer eventId) {
+        Round round = roundRepository.findByRoundNumAndEventId(roundNum, eventId);
         if (round == null) {
             throw new CustomNotFoundException("Round " + roundNum + " not found");
         }
@@ -45,8 +45,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public List<RoundDTO> findAll() {
-        List<Round> roundList = roundRepository.findAll();
+    public List<RoundDTO> findAll(Integer eventId) {
+        List<Round> roundList = roundRepository.findAll(eventId);
         if (roundList.size() == 0) {
             throw new CustomNotFoundException("Rounds not found");
         }
@@ -54,8 +54,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public List<FlightDTO> findRoundFlights(Integer roundNum) {
-        List<Flight> flightList = roundRepository.findRoundFlights(roundNum);
+    public List<FlightDTO> findRoundFlights(Integer roundNum, Integer eventId) {
+        List<Flight> flightList = roundRepository.findRoundFlights(roundNum, eventId);
         if (flightList.size() == 0) {
             throw new CustomNotFoundException("Flights from round " + roundNum + " not found");
         }
@@ -65,16 +65,16 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId) {
         Round round = new Round();
-        round.setRoundNum(roundNum);
         round.setEventId(eventId);
+        round.setRoundNum(roundNum);
         round.setCancelled(false);
         roundRepository.save(round);
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(round), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum) {
-        Round round = roundRepository.findByRoundNum(roundNum);
+    public ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum, Integer eventId) {
+        Round round = roundRepository.findByRoundNumAndEventId(roundNum, eventId);
         if (round.getFlights() == null) {
             throw new CustomNotFoundException("Round " + roundNum + " has no flights!");
         }
@@ -101,14 +101,14 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<CustomResponse> updateAllRounds() {
-        List<Integer> roundNumbers = getRoundNumbers();
+    public ResponseEntity<CustomResponse> updateAllRounds(Integer eventId) {
+        List<Integer> roundNumbers = getRoundNumbers(eventId);
         List<Integer> cancelled = new ArrayList<>();
         for (Integer number : roundNumbers) {
             try {
-                updateLocalScore(number);
+                updateLocalScore(number, eventId);
             } catch (Exception ex) {
-                cancelRound(number);
+                cancelRound(number, eventId);
                 cancelled.add(number);
             }
         }
@@ -119,8 +119,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<CustomResponse> cancelRound(Integer roundNum) {
-        Round round = roundRepository.findByRoundNum(roundNum);
+    public ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId) {
+        Round round = roundRepository.findByRoundNumAndEventId(roundNum,eventId);
         round.setCancelled(true);
         roundRepository.save(round);
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
@@ -128,8 +128,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<CustomResponse> uncancelRound(Integer roundNum) {
-        Round round = roundRepository.findByRoundNum(roundNum);
+    public ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId) {
+        Round round = roundRepository.findByRoundNumAndEventId(roundNum,eventId);
         round.setCancelled(false);
         roundRepository.save(round);
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
@@ -137,8 +137,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<CustomResponse> finishRound(Integer roundNum) {
-        Round round = roundRepository.findByRoundNum(roundNum);
+    public ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId) {
+        Round round = roundRepository.findByRoundNumAndEventId(roundNum,eventId);
         round.setFinished(true);
         roundRepository.save(round);
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
@@ -146,7 +146,7 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public List<Integer> getRoundNumbers() {
-        return roundRepository.getRoundNumbers();
+    public List<Integer> getRoundNumbers(Integer eventId) {
+        return roundRepository.getRoundNumbers(eventId);
     }
 }

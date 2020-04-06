@@ -25,8 +25,8 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public List<PilotDTO> findAll() {
-        List<Pilot> pilots = pilotRepository.findAllByOrderByLastName();
+    public List<PilotDTO> findAll(Integer eventId) {
+        List<Pilot> pilots = pilotRepository.findByEventIdOrderByLastName(eventId);
         if (pilots.size() == 0) {
             throw new CustomNotFoundException("Pilot list not found");
         } else {
@@ -35,8 +35,8 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public List<PilotDTO> findAllOrderByScore() {
-        List<Pilot> pilots = pilotRepository.findAllByOrderByScoreDesc();
+    public List<PilotDTO> findAllOrderByScore(Integer eventId) {
+        List<Pilot> pilots = pilotRepository.findByEventIdOrderByScoreDesc(eventId);
         if (pilots.size() == 0) {
             throw new CustomNotFoundException("Pilot list not found");
         } else {
@@ -46,9 +46,9 @@ public class PilotServiceImpl implements PilotService {
 
     @Override
     public ResponseEntity<PilotDTO> save(PilotDTO pilotDTO) {
-        Optional<Pilot> result = pilotRepository.findById(pilotDTO.getId());
+        Pilot pilot = pilotRepository.findByPilotIdAndEventId(pilotDTO.getId(), pilotDTO.getEventId());
         pilotRepository.save(PilotMapper.MAPPER.toPilot(pilotDTO));
-        if (!result.isPresent()) {
+        if (pilot == null) {
             return new ResponseEntity<>(pilotDTO, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(pilotDTO, HttpStatus.OK);
@@ -56,21 +56,17 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public PilotDTO findById(int id) {
-        Optional<Pilot> result = pilotRepository.findById(id);
-        Pilot pilot = null;
-
-        if (result.isPresent()) {
-            pilot = result.get();
-        } else {
-            throw new CustomNotFoundException("Pilot with pilot ID " + id + " not found.");
+    public PilotDTO findByPilotIdAndEventId(Integer pilotId, Integer eventId) {
+        Pilot pilot = pilotRepository.findByPilotIdAndEventId(pilotId, eventId);
+        if (pilot == null) {
+            throw new CustomNotFoundException("Pilot with pilot ID " + pilotId + " not found.");
         }
         return PilotMapper.MAPPER.toPilotDTO(pilot);
     }
 
     @Override
-    public List<FlightDTO> findPilotFlights(Integer pilotId) {
-        List<Flight> flightList = pilotRepository.findPilotFlights(pilotId);
+    public List<FlightDTO> findPilotFlights(Integer pilotId, Integer eventId) {
+        List<Flight> flightList = pilotRepository.findPilotFlights(pilotId, eventId);
         if (flightList.size() == 0) {
             throw new CustomNotFoundException("Pilot's " + pilotId + " flight list not found");
         } else {
@@ -79,8 +75,8 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public List<FlightDTO> findUncancelledAndFinishedPilotFlights(Integer pilotId) {
-        List<Flight> flightList = pilotRepository.findUncancelledAndFinishedPilotFlights(pilotId);
+    public List<FlightDTO> findUncancelledAndFinishedPilotFlights(Integer pilotId, Integer eventId) {
+        List<Flight> flightList = pilotRepository.findUncancelledAndFinishedPilotFlights(pilotId, eventId);
         if (flightList.size() == 0) {
             throw new CustomNotFoundException("Pilot's " + pilotId + " finished flight list not found");
         } else {
@@ -89,28 +85,28 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public List<PilotDTO> findPilotsWithFinishedFlight(Integer roundNum) {
-        List<Pilot> pilots = pilotRepository.findPilotsWithFinishedFlight(roundNum);
+    public List<PilotDTO> findPilotsWithFinishedFlight(Integer roundNum, Integer eventId) {
+        List<Pilot> pilots = pilotRepository.findPilotsWithFinishedFlight(roundNum, eventId);
         if (pilots.size() == 0) {
-            throw new CustomNotFoundException("Pilot list is empty (round="+roundNum+")");
+            throw new CustomNotFoundException("Pilot list is empty (round=" + roundNum + ")");
         } else {
             return PilotMapper.MAPPER.toPilotListDTO(pilots);
         }
     }
 
     @Override
-    public List<PilotDTO> findPilotsWithUnfinishedFlight(Integer roundNum) {
-        List<Pilot> pilots = pilotRepository.findPilotsWithUnfinishedFlight(roundNum);
+    public List<PilotDTO> findPilotsWithUnfinishedFlight(Integer roundNum, Integer eventId) {
+        List<Pilot> pilots = pilotRepository.findPilotsWithUnfinishedFlight(roundNum, eventId);
         if (pilots.size() == 0) {
-            throw new CustomNotFoundException("Pilot list is empty (round="+roundNum+")");
+            throw new CustomNotFoundException("Pilot list is empty (round=" + roundNum + ")");
         } else {
             return PilotMapper.MAPPER.toPilotListDTO(pilots);
         }
     }
 
     @Override
-    public List<PilotDTO> findPilotsWithFinishedFlightGroupedByGroup(Integer roundNum, String group) {
-        List<Pilot> pilots = pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(roundNum, group);
+    public List<PilotDTO> findPilotsWithFinishedFlightGroupedByGroup(Integer roundNum, String group, Integer eventId) {
+        List<Pilot> pilots = pilotRepository.findPilotsWithFinishedFlightGroupedByGroup(roundNum, group, eventId);
         if (pilots.size() == 0) {
             throw new CustomNotFoundException("Pilot list of round " + roundNum + " and group " + group + " not found");
         } else {
@@ -119,13 +115,7 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public Float findBestPilotTime(Integer pilotId) {
-        return pilotRepository.findBestPilotTime(pilotId);
-    }
-
-    @Override
-    public ResponseEntity<String> saveAll(List<Pilot> pilotList) {
-        pilotRepository.saveAll(pilotList);
-        return new ResponseEntity<>("Pilot list saved successfully", HttpStatus.OK);
+    public Float findBestPilotTime(Integer pilotId, Integer eventId) {
+        return pilotRepository.findBestPilotTime(pilotId, eventId);
     }
 }
