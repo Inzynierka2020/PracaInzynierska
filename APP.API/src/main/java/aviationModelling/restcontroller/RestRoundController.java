@@ -24,70 +24,70 @@ public class RestRoundController {
     }
 
     @ApiOperation(value = "Return round with the given id")
-    @GetMapping("/{roundNum}/{eventId}")
-    public RoundDTO getRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @GetMapping("/{roundNum}")
+    public RoundDTO getRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.findByRoundNumAndEventId(roundNum,eventId);
     }
 
     @ApiOperation(value = "Return all rounds")
     @JsonView(Views.Public.class)
-    @GetMapping("/{eventId}/list")
-    public List<RoundDTO> getRounds(@PathVariable Integer eventId) {
+    @GetMapping
+    public List<RoundDTO> getRounds(@RequestParam Integer eventId) {
         return roundService.findAll(eventId);
     }
 
     @ApiOperation(value = "Return all rounds with list of flights")
     @JsonView(Views.Internal.class)
-    @GetMapping("/{eventId}/list/with-flights")
-    public List<RoundDTO> getRoundsWithFlights(@PathVariable Integer eventId) {
+    @GetMapping("with-flights")
+    public List<RoundDTO> getRoundsWithFlights(@RequestParam Integer eventId) {
         return roundService.findAll(eventId);
     }
 
     @ApiOperation(value = "Return list of flights in the given round")
-    @GetMapping("/{eventId}/flights/{roundNum}")
-    public List<FlightDTO> getRoundFlights(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @GetMapping("/{roundNum}/flights")
+    public List<FlightDTO> getRoundFlights(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.findRoundFlights(roundNum,eventId);
     }
 
     @ApiOperation(value = "Update all rounds")
-    @PutMapping("/update/{eventId}")
-    public ResponseEntity<CustomResponse> updateEveryRound(@PathVariable Integer eventId) {
+    @PutMapping("/update")
+    public ResponseEntity<CustomResponse> updateEveryRound(@RequestParam Integer eventId) {
         return roundService.updateAllRounds(eventId);
     }
 
     @ApiOperation(value = "Update local scores")
-    @PutMapping("/update/{roundNum}/{eventId}")
-    public ResponseEntity<CustomResponse> updateLocalScore(@PathVariable Integer roundNum,@PathVariable Integer eventId) {
+    @PutMapping("/update/{roundNum}")
+    public ResponseEntity<CustomResponse> updateLocalScore(@PathVariable Integer roundNum,@RequestParam Integer eventId) {
         return roundService.updateLocalScore(roundNum,eventId);
     }
 
     @ApiOperation(value = "Create new round")
-    @PostMapping("/new/{eventId}/{roundNum}")
-    public ResponseEntity<RoundDTO> createRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @PostMapping("/new/{roundNum}")
+    public ResponseEntity<RoundDTO> createRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.createRound(roundNum, eventId);
     }
 
     @ApiOperation(value = "Cancel given round")
-    @PutMapping("/cancel/{roundNum}/{eventId}")
-    public ResponseEntity<CustomResponse> cancelRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @PutMapping("/cancel/{roundNum}")
+    public ResponseEntity<CustomResponse> cancelRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.cancelRound(roundNum,eventId);
     }
 
     @ApiOperation(value = "Uncancel given round")
-    @PutMapping("/uncancel/{roundNum}/{eventId}")
-    public ResponseEntity<CustomResponse> uncancelRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @PutMapping("/uncancel/{roundNum}")
+    public ResponseEntity<CustomResponse> uncancelRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.uncancelRound(roundNum,eventId);
     }
 
     @ApiOperation(value = "Finish given round")
-    @PutMapping("/finish/{roundNum}/{eventId}")
-    public ResponseEntity<CustomResponse>  finishRound(@PathVariable Integer roundNum, @PathVariable Integer eventId) {
+    @PutMapping("/finish/{roundNum}")
+    public ResponseEntity<CustomResponse>  finishRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.finishRound(roundNum,eventId);
     }
 
     @ApiOperation(value = "Return round numbers")
-    @GetMapping("/{eventId}/numbers")
-    List<Integer> getRoundNumbers(@PathVariable Integer eventId) {
+    @GetMapping("/numbers")
+    List<Integer> getRoundNumbers(@RequestParam Integer eventId) {
         return roundService.getRoundNumbers(eventId);
     }
 

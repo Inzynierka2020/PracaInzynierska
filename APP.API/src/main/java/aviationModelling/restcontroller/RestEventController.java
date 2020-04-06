@@ -20,7 +20,7 @@ public class RestEventController {
         this.eventService = eventService;
     }
 
-    @ApiOperation(value = "Return event with the given id")
+    @ApiOperation(value = "Return event")
     @JsonView(Views.Public.class)
     @GetMapping("/{eventId}")
     public EventDTO getEvent(@PathVariable int eventId) {
@@ -40,7 +40,7 @@ public class RestEventController {
         return eventService.updateTotalScore(eventId);
     }
 
-    @ApiOperation(value = "Delete event with the given id")
+    @ApiOperation(value = "Delete event")
     @DeleteMapping("/{eventId}")
     public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
         return eventService.delete(eventId);
