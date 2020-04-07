@@ -14,15 +14,15 @@ public interface FlightMapper {
     FlightMapper MAPPER = Mappers.getMapper(FlightMapper.class);
 
     @Mappings({
-            @Mapping(source = "flightId.pilotId", target = "pilotId"),
-            @Mapping(source = "flightId.roundNum", target = "roundNum"),
-            @Mapping(source = "pilot.eventId", target = "eventId")
+            @Mapping(source = "flightId.eventPilotId", target = "pilotId"),
+            @Mapping(source = "flightId.eventRoundId", target = "roundNum"),
+            @Mapping(source = "eventPilot.eventId", target = "eventId")
     })
     FlightDTO toFlightDTO(Flight source);
 
     @Mappings({
-            @Mapping(target = "flightId.pilotId", source = "pilotId"),
-            @Mapping(target = "flightId.roundNum", source = "roundNum"),
+            @Mapping(target = "flightId.eventPilotId", source = "pilotId"),
+            @Mapping(target = "flightId.eventRoundId", source = "roundNum"),
             @Mapping(target = "group", source = "group", defaultValue = "")
     })
     Flight toFlight(FlightDTO source);

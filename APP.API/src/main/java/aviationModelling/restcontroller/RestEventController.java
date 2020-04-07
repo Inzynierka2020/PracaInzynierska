@@ -20,29 +20,29 @@ public class RestEventController {
         this.eventService = eventService;
     }
 
-    @ApiOperation(value = "Return event")
-    @JsonView(Views.Public.class)
-    @GetMapping("/{eventId}")
-    public EventDTO getEvent(@PathVariable int eventId) {
-        return eventService.findById(eventId);
-    }
-
+//    @ApiOperation(value = "Return event")
+//    @JsonView(Views.Public.class)
+//    @GetMapping("/{eventId}")
+//    public EventDTO getEvent(@PathVariable int eventId) {
+//        return eventService.findById(eventId);
+//    }
+//
     @ApiOperation(value = "Download data from F3XVault and save it to local db")
     @PostMapping("/event-data/{eventId}")
     public ResponseEntity<CustomResponse> saveEventFromVault(@PathVariable int eventId) {
         return eventService.initializeDbWithDataFromVault(eventId);
     }
-
-
-    @ApiOperation(value = "Update total score")
-    @PutMapping("/total-score/{eventId}")
-    public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
-        return eventService.updateTotalScore(eventId);
-    }
-
-    @ApiOperation(value = "Delete event")
-    @DeleteMapping("/{eventId}")
-    public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
-        return eventService.delete(eventId);
-    }
+//
+//
+//    @ApiOperation(value = "Update total score")
+//    @PutMapping("/total-score/{eventId}")
+//    public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
+//        return eventService.updateTotalScore(eventId);
+//    }
+//
+//    @ApiOperation(value = "Delete event")
+//    @DeleteMapping("/{eventId}")
+//    public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
+//        return eventService.delete(eventId);
+//    }
 }

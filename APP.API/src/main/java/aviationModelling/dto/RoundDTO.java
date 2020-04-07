@@ -18,9 +18,10 @@ import java.util.List;
 @JsonView(Views.Public.class)
 public class RoundDTO {
     private Integer roundNum;
-    private Integer eventId;
-    private boolean isCancelled;
-    private boolean isFinished;
+
     @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;
+
+    @JsonView(Views.Internal.class)
+    private List<EventRoundDTO> eventRounds;
 }

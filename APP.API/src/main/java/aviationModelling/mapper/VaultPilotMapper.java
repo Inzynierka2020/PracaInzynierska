@@ -14,7 +14,6 @@ public interface VaultPilotMapper {
 
     @Mappings({
             @Mapping(target = "id", source = "pilot_id"),
-            @Mapping(target = "eventId", source = "event_id"),
             @Mapping(target = "pilotBib", source = "pilot_bib"),
             @Mapping(target = "firstName", source = "pilot_first_name"),
             @Mapping(target = "lastName", source = "pilot_last_name"),
@@ -22,16 +21,15 @@ public interface VaultPilotMapper {
             @Mapping(target = "ama", source = "pilot_ama"),
             @Mapping(target = "fai", source = "pilot_fai"),
             @Mapping(target = "faiLicence", source = "pilot_fai_license"),
-            @Mapping(target = "teamName", source = "pilot_team"),
-            @Mapping(target = "flights", ignore = true),
-            @Mapping(target = "score", source="source", qualifiedByName = "score")
+            @Mapping(target = "teamName", source = "pilot_team")
+//            @Mapping(target = "score", source="source", qualifiedByName = "score")
     })
     Pilot toPilot(VaultPilotDTO source);
 
-    @Named("score")
-    default Float setScore(VaultPilotDTO source) {
-        return 0F;
-    }
+//    @Named("score")
+//    default Float setScore(VaultPilotDTO source) {
+//        return 0F;
+//    }
 
     @InheritInverseConfiguration
     VaultPilotDTO toVaultPilotDTO(Pilot source);
