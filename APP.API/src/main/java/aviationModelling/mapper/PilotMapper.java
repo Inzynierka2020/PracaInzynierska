@@ -31,6 +31,5 @@ public interface PilotMapper {
     })
     PilotDTO toPilotDTO(EventPilot source);
 
-    List<Pilot> toPilotList(List<PilotDTO> source);
-    List<PilotDTO> toPilotListDTO(List<Pilot> source);
+    List<PilotDTO> toPilotListDTO(List<EventPilot> source);
 }

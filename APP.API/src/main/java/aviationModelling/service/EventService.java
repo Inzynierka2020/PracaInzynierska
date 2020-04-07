@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public interface EventService {
-//    EventDTO findById(int id);
+    EventDTO getEvent(int id);
 ////    ResponseEntity<String> save(Event event);
 //    ResponseEntity<CustomResponse> updateTotalScore(int eventId);
 //    ResponseEntity<CustomResponse> delete(int eventId);

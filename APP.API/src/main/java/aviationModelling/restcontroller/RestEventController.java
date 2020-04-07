@@ -20,13 +20,13 @@ public class RestEventController {
         this.eventService = eventService;
     }
 
-//    @ApiOperation(value = "Return event")
-//    @JsonView(Views.Public.class)
-//    @GetMapping("/{eventId}")
-//    public EventDTO getEvent(@PathVariable int eventId) {
-//        return eventService.findById(eventId);
-//    }
-//
+    @ApiOperation(value = "Return event")
+    @JsonView(Views.Internal.class)
+    @GetMapping("/{eventId}")
+    public EventDTO getEvent(@PathVariable int eventId) {
+        return eventService.getEvent(eventId);
+    }
+
     @ApiOperation(value = "Download data from F3XVault and save it to local db")
     @PostMapping("/event-data/{eventId}")
     public ResponseEntity<CustomResponse> saveEventFromVault(@PathVariable int eventId) {

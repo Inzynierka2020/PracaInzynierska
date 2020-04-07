@@ -23,6 +23,7 @@ public interface RoundMapper {
     })
     RoundDTO toRoundDTO(EventRound source);
 
+    List<RoundDTO> toRoundDTOList(List<EventRound> source);
 
 //    List<RoundDTO> toRoundDTOList(List<Round> source);
 //    List<Round> toRoundList(List<RoundDTO> source);

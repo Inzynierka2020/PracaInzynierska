@@ -37,21 +37,17 @@ public class EventServiceImpl implements EventService {
         this.vaultService = vaultService;
     }
 
-    //    @Override
-//    public EventDTO findById(int id) {
-//        Optional<Event> result = eventRepository.findById(id);
-//
-//        Event event = null;
-//
-//        if (result.isPresent()) {
-//            event = result.get();
-//        } else {
-//            throw new CustomNotFoundException("Event " + id + " not found.");
-//        }
-//        return EventMapper.MAPPER.toEventDTO(event);
-//    }
-//
-//
+        @Override
+    public EventDTO getEvent(int id) {
+        Event event = eventRepository.findByEventId(id);
+
+        if(event == null) {
+            throw new CustomNotFoundException("Event " + id + " not found.");
+        }
+        return EventMapper.MAPPER.toEventDTO(event);
+    }
+
+
     @Override
     public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
