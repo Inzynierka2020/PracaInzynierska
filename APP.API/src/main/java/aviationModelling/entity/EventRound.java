@@ -16,7 +16,8 @@ public class EventRound {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "event_round_id")
+    private Integer eventRoundId;
 
     @Column(name = "round_num")
     private Integer roundNum;

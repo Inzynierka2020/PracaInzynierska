@@ -2,6 +2,7 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.PilotDTO;
+import aviationModelling.entity.EventPilot;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
 import aviationModelling.entity.Round;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface PilotService {
+
+    List<PilotDTO> findAll(Integer eventId);
 
 //    List<PilotDTO> findAll(Integer eventId);
 //    List<PilotDTO> findAllOrderByScore(Integer eventId);

@@ -22,7 +22,6 @@ public interface VaultPilotMapper {
             @Mapping(target = "fai", source = "pilot_fai"),
             @Mapping(target = "faiLicence", source = "pilot_fai_license"),
             @Mapping(target = "teamName", source = "pilot_team")
-//            @Mapping(target = "score", source="source", qualifiedByName = "score")
     })
     Pilot toPilot(VaultPilotDTO source);
 

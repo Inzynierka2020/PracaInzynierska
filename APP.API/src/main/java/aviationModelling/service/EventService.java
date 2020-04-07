@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 public interface EventService {
     EventDTO getEvent(int id);
 ////    ResponseEntity<String> save(Event event);
-//    ResponseEntity<CustomResponse> updateTotalScore(int eventId);
-//    ResponseEntity<CustomResponse> delete(int eventId);
+    ResponseEntity<CustomResponse> updateTotalScore(int eventId);
+    ResponseEntity<CustomResponse> delete(int eventId);
     ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId);
     
 

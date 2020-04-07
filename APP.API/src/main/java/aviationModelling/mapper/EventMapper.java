@@ -19,12 +19,4 @@ public interface EventMapper {
     EventDTO toEventDTO(Event source);
     Event toEvent(EventDTO source);
 
-
-
-
-
-
-
-
-
 }

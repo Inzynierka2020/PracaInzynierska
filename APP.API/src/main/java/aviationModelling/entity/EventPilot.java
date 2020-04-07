@@ -16,7 +16,8 @@ public class EventPilot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "event_pilot_id")
+    private Integer eventPilotId;
 
     @Column(name = "pilot_id")
     private Integer pilotId;

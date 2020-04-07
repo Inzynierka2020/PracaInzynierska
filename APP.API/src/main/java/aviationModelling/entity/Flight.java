@@ -69,6 +69,7 @@ public class Flight implements Serializable {
     @Getter @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     public static class FlightId implements Serializable {
 
         @Column(name = "event_pilot_id")

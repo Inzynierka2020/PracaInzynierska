@@ -13,9 +13,9 @@ public class RestFlightController {
 
     private FlightService flightService;
 
-//    public RestFlightController(FlightService flightService) {
-//        this.flightService = flightService;
-//    }
+    public RestFlightController(FlightService flightService) {
+        this.flightService = flightService;
+    }
 //
 //    @ApiOperation(value = "Return single flight")
 //    @GetMapping
@@ -23,11 +23,11 @@ public class RestFlightController {
 //        return flightService.findFlight(roundNum, pilotId, eventId);
 //    }
 //
-//    @ApiOperation(value = "Save flight")
-//    @PostMapping
-//    public ResponseEntity<FlightDTO> saveFlight(@RequestBody FlightDTO flightDTO) {
-//        return flightService.save(flightDTO);
-//    }
+    @ApiOperation(value = "Save flight")
+    @PostMapping
+    public ResponseEntity<FlightDTO> saveFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO);
+    }
 //
 //    @ApiOperation(value = "Update flight")
 //    @PutMapping

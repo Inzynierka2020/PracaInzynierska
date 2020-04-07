@@ -17,17 +17,18 @@ public class FlightServiceImpl implements FlightService {
     private FlightRepository flightRepository;
     private RoundService roundService;
 
-//    public FlightServiceImpl(FlightRepository flightRepository, RoundService roundService) {
-//        this.flightRepository = flightRepository;
-//        this.roundService = roundService;
-//    }
-//
-//    @Override
-//    public ResponseEntity<FlightDTO> save(FlightDTO flightDTO) {
-//        flightRepository.save(FlightMapper.MAPPER.toFlight(flightDTO));
-//        return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);
-//    }
-//
+    public FlightServiceImpl(FlightRepository flightRepository, RoundService roundService) {
+        this.flightRepository = flightRepository;
+        this.roundService = roundService;
+    }
+
+    @Override
+    public ResponseEntity<FlightDTO> save(FlightDTO flightDTO) {
+        Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
+        flightRepository.save(flight);
+        return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);
+    }
+
 //    @Override
 //    public ResponseEntity<List<FlightDTO>> saveAll(List<FlightDTO> flightList) {
 //        flightRepository.saveAll(FlightMapper.MAPPER.toFlightList(flightList));

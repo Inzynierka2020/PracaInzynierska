@@ -37,7 +37,4 @@ public interface VaultFlightMapper {
     List<Flight> toFlightList(List<VaultFlightDTO> source);
     List<VaultFlightDTO> toVaultFlightDTOList(List<Flight> source);
 
-
-
-
 }

@@ -22,11 +22,12 @@ public class RestPilotController {
         this.pilotService = pilotService;
     }
 
-//    @ApiOperation(value = "Return all pilots, order by lastName")
-//    @GetMapping
-//    public List<PilotDTO> getPilots(@RequestParam Integer eventId) {
-//        return pilotService.findAll(eventId);
-//    }
+    @ApiOperation(value = "Return all pilots, order by lastName")
+    @JsonView(Views.Public.class)
+    @GetMapping
+    public List<PilotDTO> getPilots(@RequestParam Integer eventId) {
+        return pilotService.findAll(eventId);
+    }
 //
 //    @ApiOperation(value = "Return all pilots, order by score")
 //    @GetMapping("/ranking")

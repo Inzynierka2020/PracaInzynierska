@@ -32,17 +32,17 @@ public class RestEventController {
     public ResponseEntity<CustomResponse> saveEventFromVault(@PathVariable int eventId) {
         return eventService.initializeDbWithDataFromVault(eventId);
     }
-//
-//
-//    @ApiOperation(value = "Update total score")
-//    @PutMapping("/total-score/{eventId}")
-//    public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
-//        return eventService.updateTotalScore(eventId);
-//    }
-//
-//    @ApiOperation(value = "Delete event")
-//    @DeleteMapping("/{eventId}")
-//    public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
-//        return eventService.delete(eventId);
-//    }
+
+
+    @ApiOperation(value = "Update total score")
+    @PutMapping("/total-score/{eventId}")
+    public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
+        return eventService.updateTotalScore(eventId);
+    }
+
+    @ApiOperation(value = "Delete event")
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
+        return eventService.delete(eventId);
+    }
 }

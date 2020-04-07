@@ -14,11 +14,7 @@ public interface PilotMapper {
 
     PilotMapper MAPPER = Mappers.getMapper(PilotMapper.class);
 
-//    PilotDTO toPilotDTO(Pilot source);
-//    Pilot toPilot(PilotDTO source);
-
     @Mappings({
-            @Mapping(source = "id", target = "eventPilotId"),
             @Mapping(source = "pilot.pilotBib", target = "pilotBib"),
             @Mapping(source = "pilot.firstName", target = "firstName"),
             @Mapping(source = "pilot.lastName", target = "lastName"),
@@ -31,5 +27,5 @@ public interface PilotMapper {
     })
     PilotDTO toPilotDTO(EventPilot source);
 
-    List<PilotDTO> toPilotListDTO(List<EventPilot> source);
+    List<PilotDTO> toPilotDTOList(List<EventPilot> source);
 }

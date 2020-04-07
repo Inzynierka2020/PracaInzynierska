@@ -23,14 +23,4 @@ public interface VaultEventMapper {
     })
     Event toEvent(VaultEventDTO source);
 
-
-
-
-
-
-
-
-
-
-
 }

@@ -23,14 +23,14 @@ public interface FlightMapper {
     FlightDTO toFlightDTO(Flight source);
 
     @Mappings({
-            @Mapping(target = "flightId.eventPilotId", source = "pilotId"),
-            @Mapping(target = "flightId.eventRoundId", source = "roundNum"),
-            @Mapping(target = "group", source = "group", defaultValue = "")
+            @Mapping(source = "eventPilotId", target = "flightId.eventPilotId"),
+            @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
+            @Mapping(source = "group", target = "group", defaultValue = "")
     })
     Flight toFlight(FlightDTO source);
 
-    List<Flight> toFlightList (List<FlightDTO> source);
-    List<FlightDTO> toFlightDTOList (List<Flight> source);
+    List<Flight> toFlightList(List<FlightDTO> source);
 
+    List<FlightDTO> toFlightDTOList(List<Flight> source);
 
 }

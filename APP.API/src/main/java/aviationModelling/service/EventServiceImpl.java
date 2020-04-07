@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -37,11 +38,11 @@ public class EventServiceImpl implements EventService {
         this.vaultService = vaultService;
     }
 
-        @Override
+    @Override
     public EventDTO getEvent(int id) {
         Event event = eventRepository.findByEventId(id);
 
-        if(event == null) {
+        if (event == null) {
             throw new CustomNotFoundException("Event " + id + " not found.");
         }
         return EventMapper.MAPPER.toEventDTO(event);
@@ -82,39 +83,29 @@ public class EventServiceImpl implements EventService {
         eventData.getEvent().getPilots().get(0).getFlights().forEach(flight -> roundNumbers.add(flight.getRound_number()));
 
         for (Integer number : roundNumbers) {
-            if (roundRepository.findByRoundNum(number) == null) {
-                Round round = new Round();
-                round.setRoundNum(number);
-                roundRepository.save(round);
-            }
-            EventRound eventRound = new EventRound();
-            eventRound.setRoundNum(number);
-            eventRound.setEventId(eventId);
-            eventRound.setCancelled(false);
-            eventRound.setFinished(true);
-            eventRoundRepository.save(eventRound);
-//            roundService.createRound(number, eventId);
-//            roundService.finishRound(number, eventId);
+            roundService.createRound(number, eventId);
+            roundService.finishRound(number, eventId);
         }
     }
 
     private void saveFlightsToDb(VaultEventDataDTO eventData, Integer eventId) {
-        List<EventPilot> eventPilotList = eventPilotRepository.findAll(eventId);
-        List<EventRound> eventRoundList = eventRoundRepository.findAll(eventId);
+        List<EventPilot> eventPilotList = pilotRepository.findAll(eventId);
+        List<EventRound> eventRoundList = roundRepository.findAll(eventId);
 
+//        dla kazdego pilota znajdz wszystkie jego loty i przypisz im uprzednio wygenerowany eventPilotId oraz eventRoundId
         eventData.getEvent().getPilots().forEach(pilot -> {
 
             if (pilot.getFlights() != null) {
 
                 Integer eventPilotId = eventPilotList.stream()
                         .filter(eventPilot -> eventPilot.getPilotId().equals(pilot.getPilot_id()))
-                        .findFirst().get().getId();
+                        .findFirst().get().getEventPilotId();
 
                 pilot.getFlights().forEach(tmpFlight -> {
                     Flight flight = VaultFlightMapper.MAPPER.toFlight(tmpFlight);
                     Integer eventRoundId = eventRoundList.stream()
                             .filter(eventRound -> eventRound.getRoundNum().equals(tmpFlight.getRound_number()))
-                            .findFirst().get().getId();
+                            .findFirst().get().getEventRoundId();
 
                     flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
                     flightRepository.save(flight);
@@ -136,64 +127,63 @@ public class EventServiceImpl implements EventService {
         event.setEventId(eventId);
         eventRepository.save(event);
     }
-//
-//    @Override
-//    public ResponseEntity<CustomResponse> updateTotalScore(int eventId) {
-//        List<Pilot> pilotList = pilotRepository.findByEventIdOrderByLastName(eventId);
-//        int totalRounds;
-//        for (Pilot pilot : pilotList) {
-//            List<Flight> pilotFlights = pilotRepository
-//                    .findUncancelledAndFinishedPilotFlights(pilot.getId(), pilot.getEventId());
-//            totalRounds = pilotFlights.size();
-//
-//            if (totalRounds == 0) continue;
-//
-////            po 4 rundach odrzuc najgorszy wynik
-//            if (totalRounds >= 4) {
-//                List<Flight> first4 = pilotFlights.subList(0, 4);
-//                first4.stream().forEach(flight -> {
-//                    if (flight.getScore() == null) {
-//                        flight.setScore(0F);
-//                    }
-//                });
-//
-//                Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-//                pilot.setDiscarded1(worst.getScore());
-//                pilotFlights.remove(worst);
-//            }
-//
-//            if (totalRounds >= 15) {
-//                List<Flight> first15 = pilotFlights.subList(0, 14);
-//                first15.stream().forEach(flight -> {
-//                    if (flight.getScore() == null) {
-//                        flight.setScore(0F);
-//                    }
-//                });
-//                Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-//                pilot.setDiscarded2(worst.getScore());
-//                pilotFlights.remove(worst);
-//            }
-//
-//            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore()!=null).mapToDouble(flight -> flight.getScore()).sum();
-//            if (totalScore != null) pilot.setScore(totalScore);
-//            else pilot.setScore(0F);
-//        }
-//        pilotRepository.saveAll(pilotList);
-//
-//        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(), "Total score updated."),
-//                HttpStatus.OK);
-//    }
-//
-//    @Override
-//    public ResponseEntity<CustomResponse> delete(int eventId) {
-//        Optional<Event> result = eventRepository.findById(eventId);
-//        Event event = null;
-//        if(!result.isPresent()) {
-//            throw new CustomNotFoundException("Event "+eventId+" not found.");
-//        }
-//        event = result.get();
-//        eventRepository.delete(event);
-//        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
-//                "Event "+eventId+" deleted."), HttpStatus.OK);
-//    }
+
+
+    @Override
+    public ResponseEntity<CustomResponse> updateTotalScore(int eventId) {
+        List<EventPilot> eventPilotList = pilotRepository.findAll(eventId);
+        int totalRounds;
+        for (EventPilot eventPilot : eventPilotList) {
+            List<Flight> pilotFlights = pilotRepository
+                    .findValidPilotFlights(eventPilot.getPilotId(), eventPilot.getEventId());
+            totalRounds = pilotFlights.size();
+
+            if (totalRounds == 0) continue;
+
+//            po 4 rundach odrzuc najgorszy wynik
+            if (totalRounds >= 4) {
+                List<Flight> first4 = pilotFlights.subList(0, 4);
+                first4.stream().forEach(flight -> {
+                    if (flight.getScore() == null) {
+                        flight.setScore(0F);
+                    }
+                });
+
+                Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                eventPilot.setDiscarded1(worst.getScore());
+                pilotFlights.remove(worst);
+            }
+
+            if (totalRounds >= 15) {
+                List<Flight> first15 = pilotFlights.subList(0, 14);
+                first15.stream().forEach(flight -> {
+                    if (flight.getScore() == null) {
+                        flight.setScore(0F);
+                    }
+                });
+                Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
+                eventPilot.setDiscarded2(worst.getScore());
+                pilotFlights.remove(worst);
+            }
+
+            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore()!=null).mapToDouble(flight -> flight.getScore()).sum();
+            if (totalScore != null) eventPilot.setScore(totalScore);
+            else eventPilot.setScore(0F);
+        }
+        eventPilotRepository.saveAll(eventPilotList);
+
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(), "Total score updated."),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CustomResponse> delete(int eventId) {
+        Event event = eventRepository.findByEventId(eventId);
+        if (event == null) {
+            throw new CustomNotFoundException("Event " + eventId + " not found.");
+        }
+        eventRepository.delete(event);
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
+                "Event " + eventId + " deleted."), HttpStatus.OK);
+    }
 }

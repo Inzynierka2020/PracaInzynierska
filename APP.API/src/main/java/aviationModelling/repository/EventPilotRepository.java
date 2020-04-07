@@ -11,12 +11,5 @@ import java.util.List;
 @Repository
 public interface EventPilotRepository extends JpaRepository<EventPilot, Integer> {
 
-    @Query("SELECT ep.id FROM EventPilot ep " +
-            "WHERE ep.pilotId = :pilotId " +
-            "AND ep.eventId = :eventId")
-    Integer getEventPilotId(@Param("pilotId") Integer pilotId, @Param("eventId") Integer eventId);
 
-    @Query("SELECT ep FROM EventPilot ep " +
-            "WHERE ep.eventId = :eventId")
-    List<EventPilot> findAll(@Param("eventId") Integer eventId);
 }

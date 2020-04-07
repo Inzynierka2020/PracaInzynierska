@@ -2,6 +2,7 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.PilotDTO;
+import aviationModelling.entity.EventPilot;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Pilot;
 import aviationModelling.exception.CustomNotFoundException;
@@ -24,7 +25,12 @@ public class PilotServiceImpl implements PilotService {
         this.pilotRepository = pilotRepository;
     }
 
-//    @Override
+    @Override
+    public List<PilotDTO> findAll(Integer eventId) {
+        return PilotMapper.MAPPER.toPilotDTOList(pilotRepository.findAll(eventId));
+    }
+
+    //    @Override
 //    public List<PilotDTO> findAll(Integer eventId) {
 //        List<Pilot> pilots = pilotRepository.findByEventIdOrderByLastName(eventId);
 //        if (pilots.size() == 0) {
