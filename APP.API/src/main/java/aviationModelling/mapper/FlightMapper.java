@@ -14,8 +14,10 @@ public interface FlightMapper {
     FlightMapper MAPPER = Mappers.getMapper(FlightMapper.class);
 
     @Mappings({
-            @Mapping(source = "flightId.eventPilotId", target = "pilotId"),
-            @Mapping(source = "flightId.eventRoundId", target = "roundNum"),
+            @Mapping(source = "flightId.eventPilotId", target = "eventPilotId"),
+            @Mapping(source = "flightId.eventRoundId", target = "eventRoundId"),
+            @Mapping(source = "eventPilot.pilotId", target = "pilotId"),
+            @Mapping(source = "eventRound.roundNum", target = "roundNum"),
             @Mapping(source = "eventPilot.eventId", target = "eventId")
     })
     FlightDTO toFlightDTO(Flight source);

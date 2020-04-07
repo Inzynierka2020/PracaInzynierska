@@ -120,8 +120,6 @@ public class EventServiceImpl implements EventService {
                             .filter(eventRound -> eventRound.getRoundNum().equals(tmpFlight.getRound_number()))
                             .findFirst().get().getId();
 
-//                    Integer eventPilotId = eventPilotRepository.getEventPilotId(tmpFlight.getPilot_id(), eventId);
-//                    Integer eventRoundId = eventRoundRepository.getEventRoundId(tmpFlight.getRound_number(), eventId);
                     flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
                     flightRepository.save(flight);
                 });
@@ -134,8 +132,6 @@ public class EventServiceImpl implements EventService {
         List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
         pilotRepository.saveAll(pilotList);
     }
-
-//    private void createRoundsInDb(Event event) {
 
 
     private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
