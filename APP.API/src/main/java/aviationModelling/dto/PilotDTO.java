@@ -17,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @JsonView(Views.Public.class)
 public class PilotDTO {
-    private Integer id;
+    private Integer eventPilotId;
+    private Integer pilotId;
     private Integer eventId;
     private String pilotBib;
     private String firstName;

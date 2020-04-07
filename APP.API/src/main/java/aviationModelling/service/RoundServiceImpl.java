@@ -1,26 +1,8 @@
 package aviationModelling.service;
 
-import aviationModelling.dto.EventRoundDTO;
-import aviationModelling.dto.FlightDTO;
-import aviationModelling.dto.RoundDTO;
-import aviationModelling.entity.EventRound;
-import aviationModelling.entity.Flight;
-import aviationModelling.entity.Pilot;
-import aviationModelling.entity.Round;
-import aviationModelling.exception.CustomNotFoundException;
-import aviationModelling.exception.CustomResponse;
-import aviationModelling.exception.InvalidRoundDataException;
-import aviationModelling.mapper.EventRoundMapper;
-import aviationModelling.mapper.FlightMapper;
-import aviationModelling.mapper.RoundMapper;
 import aviationModelling.repository.EventRoundRepository;
 import aviationModelling.repository.RoundRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class RoundServiceImpl implements RoundService {

@@ -1,16 +1,5 @@
 package aviationModelling.service;
 
-import aviationModelling.dto.EventRoundDTO;
-import aviationModelling.dto.FlightDTO;
-import aviationModelling.dto.RoundDTO;
-import aviationModelling.entity.Flight;
-import aviationModelling.entity.Round;
-import aviationModelling.exception.CustomResponse;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-
 public interface RoundService {
 
 //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);

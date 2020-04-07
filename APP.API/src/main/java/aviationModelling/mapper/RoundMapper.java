@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = {FlightMapper.class, EventRoundMapper.class})
+@Mapper(uses = {FlightMapper.class})
 public interface RoundMapper {
 
     RoundMapper MAPPER = Mappers.getMapper(RoundMapper.class);
