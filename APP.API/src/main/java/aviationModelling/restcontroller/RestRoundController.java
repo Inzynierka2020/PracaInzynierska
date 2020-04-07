@@ -90,9 +90,13 @@ public class RestRoundController {
 
     @ApiOperation(value = "Return round numbers")
     @GetMapping("/numbers")
-    List<Integer> getRoundNumbers(@RequestParam Integer eventId) {
+    public List<Integer> getRoundNumbers(@RequestParam Integer eventId) {
         return roundService.getRoundNumbers(eventId);
     }
 
-
+    @ApiOperation(value = "Return the best round flight")
+    @GetMapping("/best/{roundNum}")
+    public FlightDTO getRoundNumbers(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
+        return roundService.findBestRoundFlight(roundNum, eventId);
+    }
 }

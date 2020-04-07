@@ -39,8 +39,6 @@ public class RoundServiceImpl implements RoundService {
     }
 
 
-
-
     @Override
     public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId) {
         if (roundRepository.findByRoundNum(roundNum) == null) {
@@ -84,7 +82,7 @@ public class RoundServiceImpl implements RoundService {
                 "Round " + roundNum + " finished."), HttpStatus.OK);
     }
 
-//    @Override
+    //    @Override
 //    public ResponseEntity<RoundDTO> save(RoundDTO roundDTO) {
 //        roundRepository.save(RoundMapper.MAPPER.toRound(roundDTO));
 //        return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
@@ -100,7 +98,7 @@ public class RoundServiceImpl implements RoundService {
     }
 //
 
-//
+    //
     @Override
     public List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId) {
         List<Flight> flightList = roundRepository.findRoundFlights(roundNum, eventId);
@@ -167,9 +165,13 @@ public class RoundServiceImpl implements RoundService {
     }
 
 
-
     @Override
     public List<Integer> getRoundNumbers(Integer eventId) {
         return roundRepository.getRoundNumbers(eventId);
+    }
+
+    @Override
+    public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
+        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum,eventId));
     }
 }

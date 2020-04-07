@@ -16,28 +16,16 @@ public interface RoundService {
 //    EventRound findEventRound(Integer roundNum, Integer eventId);
 
     //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
-//
     RoundDTO findEventRound(Integer roundNum, Integer eventId);
-//
     ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId);
-
     ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
-
     ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId);
-
     ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId);
-//
     ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum, Integer eventId);
-//
-
-//
     List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId);
-//
-
-//
     List<Integer> getRoundNumbers(Integer eventId);
-
     ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
+    FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId);
 
 
 }

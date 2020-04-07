@@ -1,6 +1,5 @@
 package aviationModelling.repository;
 
-import aviationModelling.entity.EventPilot;
 import aviationModelling.entity.EventRound;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
@@ -34,5 +33,17 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
             "WHERE er.isCancelled = false " +
             "AND er.eventId = :eventId")
     List<Integer> getRoundNumbers(@Param("eventId") Integer eventId);
+
+    @Query("SELECT fl FROM Flight fl " +
+            "WHERE fl.seconds = " +
+            "(SELECT min(f.seconds) FROM EventRound er " +
+            "JOIN Flight f ON er.eventRoundId  =  f.flightId.eventRoundId " +
+            "WHERE er.roundNum = :roundNum " +
+            "AND er.eventId = :eventId " +
+            "AND f.eventRound.isCancelled = false " +
+            "AND f.seconds>0)")
+    Flight findBestRoundFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
+
+
 
 }
