@@ -16,7 +16,6 @@ public class VaultFlightDTO {
     private Integer pilot_id;
     private String group;
     private Integer order;
-    private String minutes;
     private String seconds;
     private Integer penalty;
     private Sub subs;

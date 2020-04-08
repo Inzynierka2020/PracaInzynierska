@@ -2,6 +2,7 @@ package aviationModelling.restcontroller;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
+import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.dto.Views;
 import aviationModelling.exception.CustomResponse;
 import aviationModelling.service.RoundService;
@@ -98,5 +99,11 @@ public class RestRoundController {
     @GetMapping("/best/{roundNum}")
     public FlightDTO getRoundNumbers(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.findBestRoundFlight(roundNum, eventId);
+    }
+
+    @ApiOperation(value = "Update event round status on F3XVault")
+    @PostMapping("/vault-update")
+    public ResponseEntity<VaultResponseDTO> createRound(@RequestBody RoundDTO roundDTO) {
+        return roundService.updateEventRoundStatus(roundDTO);
     }
 }

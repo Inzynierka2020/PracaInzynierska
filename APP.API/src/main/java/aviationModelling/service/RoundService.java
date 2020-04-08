@@ -2,6 +2,7 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
+import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.EventRound;
 import aviationModelling.exception.CustomResponse;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +27,8 @@ public interface RoundService {
     List<Integer> getRoundNumbers(Integer eventId);
     ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
     FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId);
+    ResponseEntity<VaultResponseDTO> updateEventRoundStatus(RoundDTO roundDTO);
+
 
 
 }

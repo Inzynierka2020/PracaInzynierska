@@ -1,6 +1,7 @@
 package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
+import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.Flight;
 import aviationModelling.exception.CustomNotFoundException;
 import aviationModelling.mapper.FlightMapper;
@@ -16,10 +17,12 @@ public class FlightServiceImpl implements FlightService {
 
     private FlightRepository flightRepository;
     private RoundService roundService;
+    private VaultService vaultService;
 
-    public FlightServiceImpl(FlightRepository flightRepository, RoundService roundService) {
+    public FlightServiceImpl(FlightRepository flightRepository, RoundService roundService, VaultService vaultService) {
         this.flightRepository = flightRepository;
         this.roundService = roundService;
+        this.vaultService = vaultService;
     }
 
     @Override
@@ -27,6 +30,15 @@ public class FlightServiceImpl implements FlightService {
         Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
         flightRepository.save(flight);
         return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<VaultResponseDTO> postScore(FlightDTO flightDTO) {
+        VaultResponseDTO response = vaultService.postScore(flightDTO);
+        if (response.getResponse_code().equals(0)) {
+            throw new RuntimeException(response.getError_string());
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 //    @Override

@@ -2,6 +2,7 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
+import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.EventRound;
 import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
@@ -23,10 +24,12 @@ public class RoundServiceImpl implements RoundService {
 
     private RoundRepository roundRepository;
     private EventRoundRepository eventRoundRepository;
+    private VaultService vaultService;
 
-    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository) {
+    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService) {
         this.roundRepository = roundRepository;
         this.eventRoundRepository = eventRoundRepository;
+        this.vaultService = vaultService;
     }
 
     @Override
@@ -173,5 +176,14 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
         return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum,eventId));
+    }
+
+    @Override
+    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(RoundDTO roundDTO) {
+        VaultResponseDTO response = vaultService.updateEventRoundStatus(roundDTO);
+        if (response.getResponse_code().equals(0)) {
+            throw new RuntimeException(response.getError_string());
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

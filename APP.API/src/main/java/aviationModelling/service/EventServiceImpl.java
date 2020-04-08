@@ -20,18 +20,16 @@ public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
     private PilotRepository pilotRepository;
     private FlightRepository flightRepository;
-    private EventRoundRepository eventRoundRepository;
     private EventPilotRepository eventPilotRepository;
     private RoundRepository roundRepository;
     private RoundService roundService;
     private VaultServiceImpl vaultService;
 
 
-    public EventServiceImpl(EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository, EventRoundRepository eventRoundRepository, EventPilotRepository eventPilotRepository, RoundRepository roundRepository, RoundService roundService, VaultServiceImpl vaultService) {
+    public EventServiceImpl(EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository, EventPilotRepository eventPilotRepository, RoundRepository roundRepository, RoundService roundService, VaultServiceImpl vaultService) {
         this.eventRepository = eventRepository;
         this.pilotRepository = pilotRepository;
         this.flightRepository = flightRepository;
-        this.eventRoundRepository = eventRoundRepository;
         this.eventPilotRepository = eventPilotRepository;
         this.roundRepository = roundRepository;
         this.roundService = roundService;
@@ -52,7 +50,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
-        VaultEventDataDTO eventData = vaultService.retrieveEventData(eventId);
+        VaultEventDataDTO eventData = vaultService.getEventInfoFull(eventId);
         saveEventToDb(eventId, eventData);
         createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);

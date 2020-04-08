@@ -44,6 +44,4 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
             "AND f.seconds>0)")
     Flight findBestRoundFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
 
-
-
 }

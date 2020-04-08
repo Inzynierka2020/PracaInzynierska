@@ -33,7 +33,6 @@ public class RestEventController {
         return eventService.initializeDbWithDataFromVault(eventId);
     }
 
-
     @ApiOperation(value = "Update total score")
     @PutMapping("/total-score/{eventId}")
     public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
