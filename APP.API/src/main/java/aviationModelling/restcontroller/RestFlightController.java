@@ -34,7 +34,7 @@ public class RestFlightController {
     }
 
     @ApiOperation(value = "Send flight to F3XVault")
-    @PostMapping("/send")
+    @PostMapping("/vault")
     public ResponseEntity<VaultResponseDTO> saveFlightToVault(@RequestBody FlightDTO flightDTO) {
         return flightService.postScore(flightDTO);
     }

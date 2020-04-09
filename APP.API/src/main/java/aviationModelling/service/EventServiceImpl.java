@@ -51,15 +51,44 @@ public class EventServiceImpl implements EventService {
     public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
         VaultEventDataDTO eventData = vaultService.getEventInfoFull(eventId);
+        if(eventRepository.findByEventId(eventId) != null) {
+            throw new RuntimeException("Event "+eventId+" already exists");
+        }
         saveEventToDb(eventId, eventData);
         createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);
         saveEventPilots(eventData, eventId);
         saveFlightsToDb(eventData, eventId);
 
-
         return new ResponseEntity<>(new CustomResponse(HttpStatus.CREATED.value(),
                 "Event " + eventId + " data saved."), HttpStatus.CREATED);
+    }
+
+    private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
+//        zapisywanie eventu
+        Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
+        event.setEventId(eventId);
+        eventRepository.save(event);
+    }
+
+    private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
+        if (eventData.getEvent().getPilots().get(0).getFlights() == null) {
+            return;
+        }
+        List<Integer> roundNumbers = new ArrayList<>();
+        eventData.getEvent().getPilots().get(0).getFlights().forEach(flight -> roundNumbers.add(flight.getRound_number()));
+
+        int defaultNumberOfRounds = 1;
+        for (Integer number : roundNumbers) {
+            roundService.createRound(number, eventId, defaultNumberOfRounds);
+            roundService.finishRound(number, eventId);
+        }
+    }
+
+    private void savePilotsToDb(VaultEventDataDTO eventData) {
+//        zapisz pilotow do bazy
+        List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
+        pilotRepository.saveAll(pilotList);
     }
 
     private void saveEventPilots(VaultEventDataDTO eventData, Integer eventId) {
@@ -70,20 +99,6 @@ public class EventServiceImpl implements EventService {
             eventPilot.setScore(0F);
             eventPilotRepository.save(eventPilot);
         });
-
-    }
-
-    private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
-        if (eventData.getEvent().getPilots().get(0).getFlights() == null) {
-            return;
-        }
-        List<Integer> roundNumbers = new ArrayList<>();
-        eventData.getEvent().getPilots().get(0).getFlights().forEach(flight -> roundNumbers.add(flight.getRound_number()));
-
-        for (Integer number : roundNumbers) {
-            roundService.createRound(number, eventId);
-            roundService.finishRound(number, eventId);
-        }
     }
 
     private void saveFlightsToDb(VaultEventDataDTO eventData, Integer eventId) {
@@ -112,21 +127,6 @@ public class EventServiceImpl implements EventService {
         });
     }
 
-    private void savePilotsToDb(VaultEventDataDTO eventData) {
-//        zapisz pilotow do bazy
-        List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
-        pilotRepository.saveAll(pilotList);
-    }
-
-
-    private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
-//        zapisywanie eventu
-        Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
-        event.setEventId(eventId);
-        eventRepository.save(event);
-    }
-
-
     @Override
     public ResponseEntity<CustomResponse> updateTotalScore(int eventId) {
         List<EventPilot> eventPilotList = pilotRepository.findAll(eventId);
@@ -135,43 +135,64 @@ public class EventServiceImpl implements EventService {
             List<Flight> pilotFlights = pilotRepository
                     .findValidPilotFlights(eventPilot.getPilotId(), eventPilot.getEventId());
             totalRounds = pilotFlights.size();
-
             if (totalRounds == 0) continue;
 
-//            po 4 rundach odrzuc najgorszy wynik
-            if (totalRounds >= 4) {
-                List<Flight> first4 = pilotFlights.subList(0, 4);
-                first4.stream().forEach(flight -> {
-                    if (flight.getScore() == null) {
-                        flight.setScore(0F);
-                    }
-                });
+            discard(totalRounds, eventPilot, pilotFlights);
 
-                Flight worst = first4.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-                eventPilot.setDiscarded1(worst.getScore());
-                pilotFlights.remove(worst);
-            }
+            countTotalPenalty(eventPilot, pilotFlights);
 
-            if (totalRounds >= 15) {
-                List<Flight> first15 = pilotFlights.subList(0, 14);
-                first15.stream().forEach(flight -> {
-                    if (flight.getScore() == null) {
-                        flight.setScore(0F);
-                    }
-                });
-                Flight worst = first15.stream().min(Comparator.comparingDouble(Flight::getScore)).get();
-                eventPilot.setDiscarded2(worst.getScore());
-                pilotFlights.remove(worst);
-            }
-
-            Float totalScore = (float) pilotFlights.stream().filter(flight -> flight.getScore()!=null).mapToDouble(flight -> flight.getScore()).sum();
-            if (totalScore != null) eventPilot.setScore(totalScore);
-            else eventPilot.setScore(0F);
+            setScore(eventPilot, pilotFlights);
         }
+        normalizeToPercentages(eventPilotList);
+
         eventPilotRepository.saveAll(eventPilotList);
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(), "Total score updated."),
                 HttpStatus.OK);
+    }
+
+
+
+    private void normalizeToPercentages(List<EventPilot> eventPilotList) {
+        Float best = eventPilotList.stream().max(Comparator.comparingDouble(EventPilot::getScore)).get().getScore();
+        eventPilotList.forEach(pilot -> pilot.setPercentage(pilot.getScore() / best * 100));
+    }
+
+    private void setScore(EventPilot eventPilot, List<Flight> pilotFlights) {
+        Float discarded = 0F;
+
+        if(eventPilot.getDiscarded1()!=null) discarded+=eventPilot.getDiscarded1();
+        if(eventPilot.getDiscarded2()!=null) discarded+=eventPilot.getDiscarded2();
+
+        Float total = (float) pilotFlights.stream().mapToDouble(flight -> flight.getScore()).sum();
+        eventPilot.setScore(total - eventPilot.getTotalPenalty() - discarded);
+    }
+
+    private void countTotalPenalty(EventPilot eventPilot, List<Flight> pilotFlights) {
+        Integer totalPenalty = pilotFlights.stream().mapToInt(flight -> flight.getPenalty()).sum();
+        eventPilot.setTotalPenalty(totalPenalty);
+    }
+
+    private void discard(int totalRounds, EventPilot eventPilot, List<Flight> pilotFlights) {
+        if (totalRounds >= 4) {
+//                sortuj rosnąco po wyniku
+            pilotFlights = pilotFlights.stream().sorted(Comparator.comparing(f -> f.getScore()))
+                    .collect(Collectors.toList());
+
+//                ponad 15 rozegranych kolejek - odrzuć dwa najgorsze wyniki
+            if (totalRounds >= 15) {
+                List<Flight> discarded = pilotFlights.subList(0, 2).stream()
+                        .sorted(Comparator.comparing(f -> f.getFlightId().getEventRoundId()))
+                        .collect(Collectors.toList());
+
+                eventPilot.setDiscarded1(discarded.get(0).getScore());
+                eventPilot.setDiscarded2(discarded.get(1).getScore());
+            }
+//                ponad 4 rozegrane kolejki - odrzuć najgorszy wynik
+            else {
+                eventPilot.setDiscarded1(pilotFlights.get(0).getScore());
+            }
+        }
     }
 
     @Override

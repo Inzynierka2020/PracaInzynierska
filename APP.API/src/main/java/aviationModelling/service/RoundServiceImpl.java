@@ -43,19 +43,32 @@ public class RoundServiceImpl implements RoundService {
 
 
     @Override
-    public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId) {
+    public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups) {
         if (roundRepository.findByRoundNum(roundNum) == null) {
             Round round = new Round();
             round.setRoundNum(roundNum);
             roundRepository.save(round);
         }
-        EventRound eventRound = new EventRound();
-        eventRound.setRoundNum(roundNum);
-        eventRound.setEventId(eventId);
-        eventRound.setCancelled(false);
-        eventRound.setFinished(false);
-        eventRoundRepository.save(eventRound);
+        EventRound eventRound = eventRoundRepository.findByRoundNumAndEventId(roundNum, eventId);
+        if (eventRound == null) {
+            eventRound = new EventRound();
+            eventRound.setRoundNum(roundNum);
+            eventRound.setEventId(eventId);
+            eventRound.setNumberOfGroups(numberOfGroups);
+            eventRoundRepository.save(eventRound);
+        }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO) {
+        if (roundRepository.findByRoundNum(roundDTO.getRoundNum()) == null) {
+            Round round = new Round();
+            round.setRoundNum(roundDTO.getRoundNum());
+            roundRepository.save(round);
+        }
+        eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
+        return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
     }
 
     @Override

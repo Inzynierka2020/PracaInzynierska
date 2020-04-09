@@ -19,6 +19,7 @@ public class VaultFlightDTO {
     private String seconds;
     private Integer penalty;
     private Sub subs;
+    private Float score;
 
     @Getter
     @Setter
