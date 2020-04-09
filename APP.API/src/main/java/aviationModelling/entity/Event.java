@@ -38,19 +38,12 @@ public class Event {
     private Integer numberOfRounds;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "event_id")
-    private List<Pilot> pilots;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventPilot> eventPilots;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventRound> eventRounds;
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "event_id")
-    private List<Round> rounds;
-
-
-//    dla komunikacja dwukierunkowej:
-
-//    @OneToMany(mappedBy = "event",
-//            cascade = CascadeType.ALL)
-//    private List<Pilot> pilots;
 }

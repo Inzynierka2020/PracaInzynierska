@@ -14,21 +14,23 @@ public interface FlightMapper {
     FlightMapper MAPPER = Mappers.getMapper(FlightMapper.class);
 
     @Mappings({
-            @Mapping(source = "flightId.pilotId", target = "pilotId"),
-            @Mapping(source = "flightId.roundNum", target = "roundNum"),
-            @Mapping(source = "pilot.eventId", target = "eventId")
+            @Mapping(source = "flightId.eventPilotId", target = "eventPilotId"),
+            @Mapping(source = "flightId.eventRoundId", target = "eventRoundId"),
+            @Mapping(source = "eventPilot.pilotId", target = "pilotId"),
+            @Mapping(source = "eventRound.roundNum", target = "roundNum"),
+            @Mapping(source = "eventPilot.eventId", target = "eventId")
     })
     FlightDTO toFlightDTO(Flight source);
 
     @Mappings({
-            @Mapping(target = "flightId.pilotId", source = "pilotId"),
-            @Mapping(target = "flightId.roundNum", source = "roundNum"),
-            @Mapping(target = "group", source = "group", defaultValue = "")
+            @Mapping(source = "eventPilotId", target = "flightId.eventPilotId"),
+            @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
+            @Mapping(source = "group", target = "group", defaultValue = "")
     })
     Flight toFlight(FlightDTO source);
 
-    List<Flight> toFlightList (List<FlightDTO> source);
-    List<FlightDTO> toFlightDTOList (List<Flight> source);
+    List<Flight> toFlightList(List<FlightDTO> source);
 
+    List<FlightDTO> toFlightDTOList(List<Flight> source);
 
 }

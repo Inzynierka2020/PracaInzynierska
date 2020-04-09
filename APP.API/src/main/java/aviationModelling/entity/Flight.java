@@ -1,10 +1,7 @@
 package aviationModelling.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -18,9 +15,6 @@ public class Flight implements Serializable {
 
     @EmbeddedId
     private FlightId flightId;
-
-//    @Column(name = "event_id")
-//    private Integer eventId;
 
     private Integer penalty;
 
@@ -62,23 +56,26 @@ public class Flight implements Serializable {
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "round_num", insertable=false, updatable=false)
-    private Round round;
+    @JoinColumn(name = "event_round_id", insertable=false, updatable=false)
+    private EventRound eventRound;
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "pilot_id", insertable=false, updatable=false)
-    private Pilot pilot;
+    @JoinColumn(name = "event_pilot_id", insertable=false, updatable=false)
+    private EventPilot eventPilot;
 
 
     @Embeddable
-    @Data
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
     public static class FlightId implements Serializable {
 
-        @Column(name = "pilot_id")
-        private int pilotId;
+        @Column(name = "event_pilot_id")
+        private Integer eventPilotId;
 
-        @Column(name = "round_num")
-        private int roundNum;
+        @Column(name = "event_round_id")
+        private Integer eventRoundId;
     }
 }

@@ -13,8 +13,8 @@ public interface VaultFlightMapper {
     VaultFlightMapper MAPPER = Mappers.getMapper(VaultFlightMapper.class);
 
     @Mappings({
-            @Mapping(target = "flightId.roundNum", source = "round_number"),
-            @Mapping(target = "flightId.pilotId", source = "pilot_id"),
+//            @Mapping(target = "flightId.roundNum", source = "round_number"),
+//            @Mapping(target = "flightId.pilotId", source = "pilot_id"),
             @Mapping(target = "group", source = "group", defaultValue = ""),
             @Mapping(target = "sub1", source = "subs.sub1", defaultValue = "0F"),
             @Mapping(target = "sub2", source = "subs.sub2", defaultValue = "0F"),
@@ -36,8 +36,5 @@ public interface VaultFlightMapper {
 
     List<Flight> toFlightList(List<VaultFlightDTO> source);
     List<VaultFlightDTO> toVaultFlightDTOList(List<Flight> source);
-
-
-
 
 }
