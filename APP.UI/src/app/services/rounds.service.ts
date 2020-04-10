@@ -47,9 +47,9 @@ export class RoundsService {
     });
   }
 
-  getRound(roundNumber:number):Observable<any>{
-    return this._http.get(this._baseUrl + "rounds/"+roundNumber);
-  }
+  // getRound(roundNumber:number):Observable<any>{
+  //   return this._http.get(this._baseUrl + "rounds/"+roundNumber);
+  // }
 
   getRounds():Observable<Round[]>{
     return this._http.get<Round[]>(this._baseUrl + "rounds/list/with-flights");

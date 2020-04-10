@@ -83,23 +83,7 @@ export class RoundComponent {
         this.pilotsFinished.forEach(pilot => {
           pilot.flight = this.flights.find(flight => flight.pilotId == pilot.id);
         });
-        this.pilotsFinished.sort((a, b) => {
-          if (a.flight.group.localeCompare(b.flight.group) == -1) {
-            return -1;
-          }
-          else if (a.flight.group.localeCompare(b.flight.group) == 1) {
-            return 1;
-          }
-          else {
-            if (a.flight.score < b.flight.score) {
-              return 1;
-            }
-            else if (a.flight.score > b.flight.score) {
-              return -1;
-            }
-            return 0;
-          }
-        });
+        this.pilotsFinished.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       });
     });
   }

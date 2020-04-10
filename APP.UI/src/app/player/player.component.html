@@ -6,7 +6,7 @@
                 {{pilot.pilotBib}}
             </div>
             <h2>
-                {{pilot.firstName}} <br>{{pilot.lastName}}
+                {{pilot.lastName | uppercase}}<br>{{pilot.firstName}}
             </h2>
             <!-- <h1> Class: OPEN</h1>
             <h1>AMA: 123456</h1>
@@ -28,7 +28,7 @@
                 </h1>
             </mat-toolbar-row>
         </mat-toolbar>
-        <div class="display-1 text-center mb-3">
+        <div class="display-1 text-center mb-3 font-weight-bolder">
             99
         </div>
     </div>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <mat-divider></mat-divider>
-    <div class="second-div mt-4">
+    <div class="second-div">
         <div class="bar1">
             <table>
                 <tr>
@@ -108,18 +108,18 @@
             </table>
         </div>
         <div class="bar2">
-            <div class="penalty mb-5" *ngIf="!editMode">
+            <!-- <div class="penalty mb-5" *ngIf="!editMode">
                 <h3 class="text-center text-danger">PENALTY</h3>
                 <mat-divider></mat-divider>
                 <h1 class="text-center text-danger">300</h1>
                 <h3 class="text-center mt-5">STATUS</h3>
                 <mat-divider></mat-divider>
                 <h1 class="text-center">FINISHED</h1>
-            </div>
+            </div> -->
             <div class="input">
                 <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode">
                     <mat-label>PENALTY</mat-label>
-                    <input matInput color="warn" [readonly]="!editMode" value="">
+                    <input matInput color="warn" [readonly]="!editMode" [(ngModel)]="flight.penalty">
                 </mat-form-field>
             </div>
             <div class="buttons" *ngIf="editMode">

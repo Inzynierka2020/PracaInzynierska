@@ -84,10 +84,17 @@
 }
 
 .group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 75px;
+    height: 100%;
     font-size: 400%;
     font-weight: bold;
     text-align: center;
-    color: #673ab7;
+    color: white;
+    vertical-align: middle;
+    text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
 }
 
 .group-button {
@@ -133,4 +140,29 @@
 
 .score {
     font-size: 100%;
+    text-align: center;
+}
+
+.bar {
+    border-width: 8px;
+}
+
+.color1 {
+    background: #9CBFFF;
+}
+
+.color2 {
+    background: #FFB5A8;
+}
+
+.color3 {
+    background: #8FF2FF;
+}
+
+.color5 {
+    background: #FFD375;
+}
+
+.color4 {
+    background: #82FFC8;
 }

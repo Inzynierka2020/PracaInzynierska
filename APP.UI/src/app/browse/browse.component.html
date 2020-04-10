@@ -4,18 +4,27 @@
             <span *ngIf="!editMode">lock</span>
             <span *ngIf="editMode"> lock_open</span>
         </i> -->
-        <mat-checkbox color="warn" [(ngModel)]="isRoundCanceled" (click)="cancelRound()">
+        <!-- <mat-checkbox color="warn" [(ngModel)]="isRoundCanceled" (click)="cancelRound()">
             ROUND CANCELED
-        </mat-checkbox>
+        </mat-checkbox> -->
+        <button mat-raised-button class="w-25" color="accent" [matMenuTriggerFor]="menu">CANCEL</button>
     </div>
     <div ngClass="!browse ? 'content' : ''" class="w-100">
         <app-score [mode]="'browse'" [dataSource]="dataSource"></app-score>
     </div>
-    <div class="data my-4">
+    <!-- <div class="data my-4">
         <button mat-raised-button [color]="group=='A' ? 'primary' : 'accent' " (click)="changeGroup( 'A') ">A</button>
         <button mat-raised-button [color]="group=='B' ? 'primary' : 'accent' " (click)="changeGroup( 'B') ">B</button>
         <button mat-raised-button [color]="group=='C' ? 'primary' : 'accent' " (click)="changeGroup( 'C') ">C</button>
         <button mat-raised-button [color]="group=='D' ? 'primary' : 'accent' " (click)="changeGroup( 'D') ">D</button>
         <button mat-raised-button [color]="group=='E' ? 'primary' : 'accent' " (click)="changeGroup( 'E') ">E</button>
-    </div>
+    </div> -->
 </div>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item>ROUND</button>
+    <button mat-menu-item>GROUP A</button>
+    <button mat-menu-item>GROUP B</button>
+    <button mat-menu-item>GROUP C</button>
+    <button mat-menu-item>GROUP D</button>
+    <button mat-menu-item>GROUP E</button>
+</mat-menu>

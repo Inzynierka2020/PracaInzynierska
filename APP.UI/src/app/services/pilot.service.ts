@@ -14,7 +14,7 @@ export class PilotService {
     return this._http.get<Pilot[]>(this._baseUrl + 'pilots');
   }
 
-  getPilotsWithFlights(): Observable<Pilot[]>{
-    return this._http.get<Pilot[]>(this._baseUrl + 'pilots');
-  }
+  // getPilotsWithFlights(): Observable<Pilot[]>{
+  //   return this._http.get<Pilot[]>(this._baseUrl + 'pilots');
+  // }
 }

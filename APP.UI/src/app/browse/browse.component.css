@@ -47,7 +47,7 @@ button {
     display: flex;
     flex-direction: row;
     align-content: center;
-    justify-content: center;
+    justify-content: flex-end;
     max-width: 800px;
 }
 

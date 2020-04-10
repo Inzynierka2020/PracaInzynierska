@@ -24,11 +24,11 @@ export class EventService {
     return this._http.delete(this._baseUrl + "events/" + eventId);
   }
 
-  initPilots(eventId: number): Observable<string> {
-    return this._http.post<string>(this._baseUrl + "events/download-pilots-data/" + eventId, null,{
-      responseType: 'text' as 'json'
-    });
-  }
+  // initPilots(eventId: number): Observable<string> {
+  //   return this._http.post<string>(this._baseUrl + "events/download-pilots-data/" + eventId, null,{
+  //     responseType: 'text' as 'json'
+  //   });
+  // }
 
   getEvent(eventId: number): Observable<Event> {
     return this._http.get<Event>(this._baseUrl + "events/" + eventId);
