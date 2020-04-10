@@ -142,6 +142,10 @@ public class RoundServiceImpl implements RoundService {
             Set<String> groups = new HashSet<>();
             validFlights.forEach(flight -> groups.add(flight.getGroup()));
 
+            if (eventRound.getNumberOfGroups() == 1 && groups.size() != 1) {
+                eventRound.setNumberOfGroups(groups.size());
+            }
+
             groups.forEach(group -> {
                 Float best = validFlights.stream()
                         .filter(flight -> flight.getGroup().equals(group))
@@ -188,7 +192,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
-        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum,eventId));
+        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum, eventId));
     }
 
     @Override

@@ -137,7 +137,7 @@ public class EventServiceImpl implements EventService {
             totalRounds = pilotFlights.size();
             if (totalRounds == 0) continue;
 
-            discard(totalRounds, eventPilot, pilotFlights);
+            discardWorstScores(totalRounds, eventPilot, pilotFlights);
 
             countTotalPenalty(eventPilot, pilotFlights);
 
@@ -173,7 +173,7 @@ public class EventServiceImpl implements EventService {
         eventPilot.setTotalPenalty(totalPenalty);
     }
 
-    private void discard(int totalRounds, EventPilot eventPilot, List<Flight> pilotFlights) {
+    private void discardWorstScores(int totalRounds, EventPilot eventPilot, List<Flight> pilotFlights) {
         if (totalRounds >= 4) {
 //                sortuj rosnąco po wyniku
             pilotFlights = pilotFlights.stream().sorted(Comparator.comparing(f -> f.getScore()))
@@ -181,6 +181,7 @@ public class EventServiceImpl implements EventService {
 
 //                ponad 15 rozegranych kolejek - odrzuć dwa najgorsze wyniki
             if (totalRounds >= 15) {
+//                sortuj odrzucone wyniki wg kolejnosci rund
                 List<Flight> discarded = pilotFlights.subList(0, 2).stream()
                         .sorted(Comparator.comparing(f -> f.getFlightId().getEventRoundId()))
                         .collect(Collectors.toList());
