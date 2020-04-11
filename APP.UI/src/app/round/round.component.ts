@@ -32,7 +32,7 @@ export class RoundComponent {
   pilotsFinished: Pilot[] = [];
   order = 1;
 
-  isYetToStartBarVisible = true;
+  noMorePilotsLeft = false;
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
     private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
@@ -72,7 +72,39 @@ export class RoundComponent {
     })
 
     if (this.pilotsLeft.length == 0) {
-      this.isYetToStartBarVisible = false;
+      this.noMorePilotsLeft = true;
+    }
+  }
+
+  reflight(pilot: Pilot) {
+    this.resolveConfirmDialog(`Do you want to reflight pilot: ${pilot.lastName.toUpperCase()} ${pilot.firstName}?`).subscribe(confirmResult => {
+      if (confirmResult == true) {
+        var index = this.pilotsFinished.findIndex(pilotToFind => pilotToFind.id == pilot.id);
+        var pilotToReflight = this.pilotsFinished[index];
+        pilotToReflight.flight = this._flighsService.getBlankData();
+        pilotToReflight.flight.pilotId = pilotToReflight.id;
+        pilotToReflight.flight.roundNum = this.roundNumber;
+        pilotToReflight.flight.eventId = this.eventId;
+
+        this.pilotsFinished.splice(index, 1);
+        this.pilotsLeft.push(pilot);
+
+        this.noMorePilotsLeft = false;
+        this._flighsService.saveFlight(pilotToReflight.flight).subscribe(result => {
+          this.updateScore();
+        })
+      }
+    });
+  }
+
+  fillBlankFlights() {
+    var count = this.pilotsLeft.length
+    for (var _i = 0; _i < count; _i++) {
+      var flight = this._flighsService.getBlankData();
+      flight.pilotId = this.pilotsLeft[0].id;
+      flight.eventId = this.eventId;
+      flight.roundNum = this.roundNumber;
+      this.finishFlight(flight);
     }
   }
 
@@ -105,6 +137,9 @@ export class RoundComponent {
   finishRound() {
     this.resolveConfirmDialog().subscribe(confirmed => {
       if (confirmed) {
+        if (this.pilotsLeft.length > 0) {
+          this.fillBlankFlights();
+        }
         this.finished.emit(true);
         this._roundsService.finishRound(this.roundNumber).subscribe(result => { });
       }
@@ -134,11 +169,12 @@ export class RoundComponent {
   //   dialogRef.componentInstance.editMode = false;
   // }
 
-  private resolveConfirmDialog() {
+  private resolveConfirmDialog(data = null) {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
-      disableClose: true
+      disableClose: true,
+      data: data
     }).afterClosed();
   }
 }

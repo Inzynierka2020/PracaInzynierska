@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Settings } from '../models/settings';
 
 @Component({
   selector: 'app-settings',
@@ -8,16 +9,24 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>) { }
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>) {
+  }
 
+  settings: Settings= {
+    apiUrl: "http://www.f3xvault.com/api.php?",
+    login: "piotrek.adamczykk@gmail.com",
+    password: "ascroft",
+    eventId: 1834
+  }
+  
   ngOnInit() {
   }
 
-  close(){
+  close() {
     this.dialogRef.close();
   }
 
-  save(){
-    
+  save() {
+
   }
 }

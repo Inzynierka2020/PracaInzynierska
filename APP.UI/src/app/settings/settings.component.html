@@ -13,20 +13,24 @@
         </mat-button-toggle-group>
         <div class="settings-text">
             <div *ngIf="group.value=='left'">
-                <form class="form">
+                <div class="form">
                     <mat-form-field>
-                        <mat-label>Vault login</mat-label>
-                        <input matInput placeholder="example@mail.com" value="">
+                        <mat-label>Login</mat-label>
+                        <input matInput placeholder="example@mail.com" [(ngModel)]="settings.login">
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-label>Vault password</mat-label>
-                        <input matInput placeholder="" value="" type="password">
+                        <mat-label>Password</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="settings.password" type="password">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>ApiUrl</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="settings.apiUrl">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Event ID</mat-label>
-                        <input matInput placeholder="" value="1809">
+                        <input matInput placeholder="" [(ngModel)]="settings.eventId">
                     </mat-form-field>
-                </form>
+                </div>
             </div>
             <div *ngIf="group.value=='center'">
                 Application options

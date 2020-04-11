@@ -8,7 +8,7 @@ import { Pilot } from '../models/pilot';
   providedIn: 'root'
 })
 export class FlightsService {
-  
+
 
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
@@ -33,7 +33,7 @@ export class FlightsService {
       flightTime: "",
       windAvg: 0,
       dirAvg: 0,
-      seconds: this.genRandomFloat()*this.genRandomFloat(),
+      seconds: this.genRandomFloat() * this.genRandomFloat(),
       sub1: this.genRandomFloat(),
       sub2: this.genRandomFloat(),
       sub3: this.genRandomFloat(),
@@ -47,6 +47,36 @@ export class FlightsService {
       sub11: this.genRandomFloat(),
       dns: false,
       dnf: false,
+      score: 0
+    }
+    return flight;
+  }
+
+  getBlankData(): Flight {
+    var flight = <Flight>{
+      pilotId: 0,
+      roundNum: 0,
+      eventId: 0,
+      penalty: 0,
+      order: 0,
+      group: "A",
+      flightTime: "",
+      windAvg: 0,
+      dirAvg: 0,
+      seconds: 0,
+      sub1: 0,
+      sub2: 0,
+      sub3: 0,
+      sub4: 0,
+      sub5: 0,
+      sub6: 0,
+      sub7: 0,
+      sub8: 0,
+      sub9: 0,
+      sub10: 0,
+      sub11: 0,
+      dns: false,
+      dnf: true,
       score: 0
     }
     return flight;

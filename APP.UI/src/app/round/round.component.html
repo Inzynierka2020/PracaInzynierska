@@ -6,16 +6,16 @@
     </div>
     <div class="content w-100">
         <div class="w-100">
-            <app-score [dataSource]="pilotsFinished" (rowAction)="null"></app-score>
+            <app-score [dataSource]="pilotsFinished" (rowClickAction)="null" (rowPressAction)="reflight($event)"></app-score>
         </div>
-        <mat-toolbar color="primary" *ngIf="isYetToStartBarVisible">
+        <mat-toolbar color="primary" *ngIf="!noMorePilotsLeft">
             <mat-toolbar-row class="to-start">
                 <div class="title">YET TO START</div>
             </mat-toolbar-row>
         </mat-toolbar>
         <div class="to-start-score w-100">
-            <app-score [mode]="'yetToStart'" class="w-100" (rowAction)="createFlight($event)" [dataSource]="pilotsLeft"></app-score>
+            <app-score [mode]="'yetToStart'" class="w-100" (rowClickAction)="createFlight($event)" [dataSource]="pilotsLeft"></app-score>
         </div>
     </div>
-    <button mat-raised-button color="accent" (click)="finishRound()">FINISH</button>
+    <button mat-raised-button color="accent" (click)="finishRound()" *ngIf="noMorePilotsLeft || canceled">FINISH</button>
 </div>

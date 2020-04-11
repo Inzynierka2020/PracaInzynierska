@@ -15,9 +15,16 @@ export class ScoreComponent {
   mode = "";
 
   @Output()
-  rowAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
+  rowClickAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
+
+  @Output()
+  rowPressAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
 
   callRowAction(pilot: Pilot) {
-    this.rowAction.emit(pilot);
+    this.rowClickAction.emit(pilot);
+  }
+
+  callPressAction(pilot: Pilot) {
+    this.rowPressAction.emit(pilot);
   }
 }

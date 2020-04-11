@@ -1,6 +1,6 @@
 <mat-divider class="bar"></mat-divider>
 <div class="d-flex align-items-center flex-column w-100 ">
-    <div *ngFor="let pilot of dataSource; index as index " class="rows " matRipple (click)="callRowAction(pilot) ">
+    <div *ngFor="let pilot of dataSource; index as index " class="rows " matRipple (click)="callRowAction(pilot)" (press)="callPressAction(pilot)">
         <div class="d-flex">
             <div class="pilot-row ">
                 <div class="number " *ngIf="mode !='yetToStart' ; else pilotBib ">
