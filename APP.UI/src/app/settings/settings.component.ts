@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Settings } from '../models/settings';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,7 +10,7 @@ import { Settings } from '../models/settings';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>) {
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>, public themeService: ThemeService) {
   }
 
   settings: Settings= {
@@ -28,5 +29,14 @@ export class SettingsComponent implements OnInit {
 
   save() {
 
+  }
+
+  toggleTheme() {
+    console.log("DUPA")
+    if (this.themeService.isSecondTheme()) {
+      this.themeService.setFirstTheme();
+    } else {
+      this.themeService.setSecondTheme();
+    }
   }
 }

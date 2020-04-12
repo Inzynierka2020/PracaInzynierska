@@ -11,7 +11,7 @@
 .title {
     font-size: 150%;
     font-weight: bold;
-    color: #ffd740;
+    color: var(--bg-accent);
     text-shadow: 2px 2px 25px black !important;
     text-align: justify;
     width: 100%;
@@ -42,7 +42,7 @@
 }
 
 .material-icons {
-    color: #ffd740;
+    color: var(--bg-accent);
     font-size: 64px;
     text-shadow: 2px 2px 25px rgba(0, 0, 0, .87) !important;
 }

@@ -123,16 +123,16 @@
                 </mat-form-field>
             </div>
             <div class="buttons" *ngIf="editMode">
-                <button mat-raised-button *ngIf="flight.dnf" color="primary" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="!flight.dnf" color="accent" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="flight.dns" color="primary" (click)="didNotStart()">DNS</button>
-                <button mat-raised-button *ngIf="!flight.dns" color="accent" (click)="didNotStart()">DNS</button>
+                <button mat-raised-button *ngIf="flight.dnf" class="color-primary" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="!flight.dnf" class="color-accent" (click)="didNotFinish()">DNF</button>
+                <button mat-raised-button *ngIf="flight.dns" class="color-primary" (click)="didNotStart()">DNS</button>
+                <button mat-raised-button *ngIf="!flight.dns" class="color-accent" (click)="didNotStart()">DNS</button>
             </div>
             <div class="buttons">
-                <button *ngIf="!editMode" mat-raised-button color="warn" (click)="closeThisDialog()">Back</button>
-                <button *ngIf="!editMode" mat-raised-button color="accent" (click)="switchEditMode()">Edit</button>
-                <button *ngIf="editMode" mat-raised-button color="warn" (click)="switchEditMode()">Cancel</button>
-                <button *ngIf="editMode" class="bg-success text-white" mat-raised-button (click)="saveFlight() " cdkFocusInitial>Save</button>
+                <button *ngIf="!editMode" mat-raised-button class="color-danger" (click)="closeThisDialog()">Back</button>
+                <button *ngIf="!editMode" mat-raised-button class="color-accent" (click)="switchEditMode()">Edit</button>
+                <button *ngIf="editMode" mat-raised-button class="color-danger" (click)="switchEditMode()">Cancel</button>
+                <button *ngIf="editMode" class="color-success" mat-raised-button (click)="saveFlight() " cdkFocusInitial>Save</button>
             </div>
         </div>
     </div>

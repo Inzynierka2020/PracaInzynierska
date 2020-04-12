@@ -6,7 +6,7 @@
                 <input matInput [(ngModel)]="event.eventId" name="eventId">
             </mat-form-field>
         </form>
-        <button mat-raised-button (click)="startEvent()" color="primary">Start</button>
-        <button mat-raised-button (click)="deleteEvent()" color="warn" class="mt-5">Delete</button>
+        <button mat-raised-button class="color-accent" (click)="startEvent()">Start</button>
+        <button mat-raised-button class="mt-5 color-danger" (click)="deleteEvent()">Delete</button>
     </div>
 </div>

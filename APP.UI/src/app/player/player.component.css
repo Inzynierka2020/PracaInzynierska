@@ -80,8 +80,8 @@ tr:nth-child(even) {
 }
 
 th {
-    background-color: #673ab7;
-    color: white;
+    background-color: var(--bg-primary);
+    color: var(--tx-primary);
 }
 
 .second-div {
@@ -98,7 +98,7 @@ th {
 }
 
 mat-label {
-    color: red !important;
+    color: var(--bg-danger) !important;
 }
 
 .wind {
@@ -134,18 +134,6 @@ mat-label {
 .flag {
     border-left: 2px solid rgba(0, 0, 0, .12);
     width: 50%;
-}
-
-.blue {
-    background-color: skyblue;
-}
-
-.green {
-    background-color: green;
-}
-
-.orange {
-    background-color: orange;
 }
 
 .data {

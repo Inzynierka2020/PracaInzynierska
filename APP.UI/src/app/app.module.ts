@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { EventComponent } from './event/event.component';
 import { GroupPipe } from './pipes/group.pipe';
+import { WarningSnackComponent } from './wind/warning-snack/warning-snack.component';
 
 const appRoutes: Routes = [
   { path: '', component: EventComponent },
@@ -48,6 +49,7 @@ export function getBaseUrl() {
     WindComponent,
     EventComponent,
     GroupPipe,
+    WarningSnackComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +63,6 @@ export function getBaseUrl() {
   ],
   providers: [ { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }],
   bootstrap: [AppComponent],
-  entryComponents: [SettingsComponent, NewRoundDialogComponent, ConfirmDialogComponent, PlayerComponent]
+  entryComponents: [SettingsComponent, NewRoundDialogComponent, ConfirmDialogComponent, PlayerComponent, WarningSnackComponent]
 })
 export class AppModule { }

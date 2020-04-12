@@ -36,12 +36,12 @@
                 Application options
             </div>
             <div *ngIf="group.value=='right'">
-                Visual options
+                <button mat-raised-button class="color-accent w-50" (click)="toggleTheme()">Switch theme</button>
             </div>
         </div>
     </div>
     <div class="buttons">
-        <button mat-raised-button color="accent" (click)="save()">Save</button>
-        <button mat-raised-button color="warn" (click)="close()">Close</button>
+        <button mat-raised-button class="color-accent" (click)="save()">Save</button>
+        <button mat-raised-button class="color-danger" (click)="close()">Close</button>
     </div>
 </div>

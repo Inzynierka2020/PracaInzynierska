@@ -1,9 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+    --bg-primary: #47A3FF;
+    --bg-accent: #FFEE93;
+    --bg-success: #90FFDC;
+    --bg-danger: #FF928B;
+    --bg-info: #7A7978;
+    --background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
+    --tx-primary: white;
+    --group-a: #9CBFFF;
+    --group-b: #FFB5A8;
+    --group-c: #8FF2FF;
+    --group-d: #FFD375;
+    --group-e: #82FFC8;
+}
+
 html,
 body {
     height: 100%;
-    background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed !important;
+    background: var(--background) !important;
 }
 
 body {
@@ -24,7 +39,7 @@ body {
 }
 
 mat-dialog-container {
-    background: linear-gradient(to bottom, #FFFFFF, #ECE9E6) !important;
+    background: var(--background) !important;
     border-radius: 20px !important;
 }
 
@@ -34,4 +49,46 @@ button {
 
 button:focus {
     outline: none !important;
+}
+
+.mat-toolbar-row {
+    background: var(--bg-primary) !important;
+    color: var(--tx-primary);
+}
+
+.color-primary {
+    background: var(--bg-primary) !important;
+    color: var(--tx-primary) !important;
+}
+
+.color-accent {
+    background: var(--bg-accent) !important;
+}
+
+.color-danger {
+    background: var(--bg-danger) !important;
+}
+
+.color-success {
+    background: var(--bg-success) !important;
+}
+
+.color-a {
+    background: var(--group-a);
+}
+
+.color-b {
+    background: var(--group-b);
+}
+
+.color-c {
+    background: var(--group-c);
+}
+
+.color-d {
+    background: var(--group-d);
+}
+
+.color-e {
+    background: var(--group-e);
 }
