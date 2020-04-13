@@ -7,6 +7,7 @@ import { PilotService } from '../services/pilot.service';
 import { Round } from '../models/round';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-browse',
@@ -26,8 +27,9 @@ export class BrowseComponent {
   group = "A";
   isRoundCanceled = false;
 
-  constructor(private _pilotService: PilotService, private dialog: MatDialog) {
-    this._pilotService.getPilots().subscribe(pilotsResult => {
+  constructor(private _pilotService: PilotService, private _eventService: EventService, private dialog: MatDialog) {
+    let eventId = _eventService.getEventId();
+    this._pilotService.getPilots(eventId).subscribe(pilotsResult => {
       this.dataSource = pilotsResult;
       this.ngOnChanges();
     });
@@ -37,7 +39,7 @@ export class BrowseComponent {
     if (this.dataSource) {
       if (this.round) {
         this.dataSource.forEach(pilot => {
-          pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
+          pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.pilotId);
         });
         this.isRoundCanceled = this.round.cancelled;
         this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
@@ -52,7 +54,6 @@ export class BrowseComponent {
         this.round.cancelled = !this.round.cancelled;
         this.roundCanceled.emit(this.round.cancelled);
       } else {
-        this.isRoundCanceled = !this.isRoundCanceled;
       }
     })
   }

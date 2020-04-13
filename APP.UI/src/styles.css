@@ -3,8 +3,8 @@
 :root {
     --bg-primary: #202223;
     --bg-accent: #4499E9;
-    --bg-success: #80ffc0;
-    --bg-danger: #FF928B;
+    --bg-success: #4499E9;
+    --bg-danger: #4499E9;
     --bg-disabled: #20222380;
     --background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
     --tx-primary: white;

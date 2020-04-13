@@ -28,6 +28,8 @@ export class FlightsService {
 
   getFlightData(): Flight {
     var flight = <Flight>{
+      eventPilotId: 0,
+      eventRoundId: 0,
       pilotId: 0,
       roundNum: 0,
       eventId: 0,
@@ -58,6 +60,8 @@ export class FlightsService {
 
   getBlankData(): Flight {
     var flight = <Flight>{
+      eventPilotId: 0,
+      eventRoundId: 0,
       pilotId: 0,
       roundNum: 0,
       eventId: 0,

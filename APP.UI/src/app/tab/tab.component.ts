@@ -23,8 +23,8 @@ enum TAB {
 export class TabComponent {
   switch = false; //temporary workaround for a bug
 
-  @Input()
   eventId: number;
+
   previousTabIndex = 0;
 
   dataSource: Pilot[];
@@ -39,6 +39,7 @@ export class TabComponent {
   newRoundNumber = 0;
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
+    this.eventId = this._eventService.getEventId()
     this.refreshRounds();
   }
 
@@ -71,8 +72,8 @@ export class TabComponent {
   /*---- SCORE ----*/
 
   refreshScores() {
-    this._eventService.updateScore().subscribe(result => {
-      this._pilotService.getPilots().subscribe(result => {
+    this._eventService.updateScore(this.eventId).subscribe(result => {
+      this._pilotService.getPilots(this.eventId).subscribe(result => {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
       });
@@ -98,20 +99,20 @@ export class TabComponent {
   }
 
   cancelRound(toCancel: boolean) {
-    if(toCancel){
-      this._roundsService.cancelRound(this.browsedRound.roundNum).subscribe(result=>{
+    if (toCancel) {
+      this._roundsService.cancelRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
         this.refreshRounds();
       })
-    }else{
-      this._roundsService.uncancelRound(this.browsedRound.roundNum).subscribe(result=>{
+    } else {
+      this._roundsService.uncancelRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
         this.refreshRounds();
       })
     }
   }
 
   refreshRounds() {
-    this._roundsService.updateAllRounds().subscribe(updateResult => {
-      this._roundsService.getRounds().subscribe(roundsResult => {
+    this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
+      this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
         this.rounds = roundsResult;
         this.changeRound();
         this.refreshScores();

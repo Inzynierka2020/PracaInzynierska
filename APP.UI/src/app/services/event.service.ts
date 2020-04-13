@@ -11,10 +11,10 @@ export class EventService {
 
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
-  eventId:number;
+  eventId: number;
 
   initEvent(eventId: number): Observable<string> {
-    this.eventId=eventId;
+    this.eventId = eventId;
     return this._http.post<string>(this._baseUrl + "events/event-data/" + eventId, null, {
       responseType: 'text' as 'json'
     });
@@ -22,6 +22,10 @@ export class EventService {
 
   deleteEvent(eventId: number): Observable<any> {
     return this._http.delete(this._baseUrl + "events/" + eventId);
+  }
+
+  getEventId() {
+    return this.eventId;
   }
 
   // initPilots(eventId: number): Observable<string> {
@@ -34,7 +38,7 @@ export class EventService {
     return this._http.get<Event>(this._baseUrl + "events/" + eventId);
   }
 
-  updateScore(eventId: number):Observable<any> {
-    return this._http.put(this._baseUrl + "events/total-score/" +eventId, null);
+  updateScore(eventId: number): Observable<any> {
+    return this._http.put(this._baseUrl + "events/total-score/" + eventId, null);
   }
 }

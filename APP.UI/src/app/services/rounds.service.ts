@@ -10,20 +10,26 @@ export class RoundsService {
 
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
-  updateRound(roundNumber: number): Observable<any> {
-    return this._http.put<any>(this._baseUrl + "rounds/update/" + roundNumber, {
+  updateRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/update/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  updateAllRounds(): Observable<any> {
-    return this._http.put<any>(this._baseUrl + "rounds/update/", {
+  updateAllRounds(eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/update?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
-  //chjngre
   startNewRound(roundNumber: number, eventId: number): Observable<Round> {
-    return this._http.post<Round>(this._baseUrl + "rounds/new/" + eventId + "/" + roundNumber, {
+    let round: Round = {
+      cancelled: false,
+      eventId: eventId,
+      finished: false,
+      roundNum: roundNumber,
+      flights: null
+    }
+    return this._http.post<Round>(this._baseUrl + "rounds/new/", round, {
       responseType: 'text' as 'json'
     });
   }
@@ -34,14 +40,14 @@ export class RoundsService {
     });
   }
 
-  cancelRound(roundNumber: number): Observable<any> {
-    return this._http.put<any>(this._baseUrl + "rounds/cancel/" + roundNumber, {
+  cancelRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/cancel/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  uncancelRound(roundNumber: number): Observable<any> {
-    return this._http.put<any>(this._baseUrl + "rounds/uncancel/" + roundNumber, {
+  uncancelRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/uncancel/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
@@ -51,6 +57,6 @@ export class RoundsService {
   // }
 
   getRounds(eventID: number): Observable<Round[]> {
-    return this._http.get<Round[]>(this._baseUrl + "rounds/eventId=" + eventID);
+    return this._http.get<Round[]>(this._baseUrl + "rounds/with-flights?eventId=" + eventID);
   }
 }
