@@ -31,6 +31,13 @@ public class RestRoundController {
         return roundService.findAll(eventId);
     }
 
+    @ApiOperation(value = "Return all rounds")
+    @JsonView(Views.Internal.class)
+    @GetMapping("/with-flights")
+    public List<RoundDTO> getRoundsWithFlights(@RequestParam Integer eventId) {
+        return roundService.findAll(eventId);
+    }
+
     @ApiOperation(value = "Return round")
     @GetMapping("/{roundNum}")
     public RoundDTO getRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
