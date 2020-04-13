@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonView(Views.Internal.class)
 public class FlightDTO {
-    private Integer eventPilotId;
-    private Integer eventRoundId;
+//    private Integer eventPilotId;
+//    private Integer eventRoundId;
     private Integer pilotId;
     private Integer roundNum;
     private Integer eventId;
