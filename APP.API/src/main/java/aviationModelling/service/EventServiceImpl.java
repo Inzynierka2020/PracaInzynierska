@@ -51,8 +51,8 @@ public class EventServiceImpl implements EventService {
     public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
         VaultEventDataDTO eventData = vaultService.getEventInfoFull(eventId);
-        if(eventRepository.findByEventId(eventId) != null) {
-            throw new RuntimeException("Event "+eventId+" already exists");
+        if (eventRepository.findByEventId(eventId) != null) {
+            throw new RuntimeException("Event " + eventId + " already exists");
         }
         saveEventToDb(eventId, eventData);
         createRoundsInDb(eventData, eventId);
@@ -135,7 +135,15 @@ public class EventServiceImpl implements EventService {
             List<Flight> pilotFlights = pilotRepository
                     .findValidPilotFlights(eventPilot.getPilotId(), eventPilot.getEventId());
             totalRounds = pilotFlights.size();
-            if (totalRounds == 0) continue;
+            if (totalRounds == 0) {
+                if (eventPilot.getScore() > 0) {
+                    eventPilot.setScore(0F);
+                }
+                if (eventPilot.getTotalPenalty()>0) {
+                    eventPilot.setTotalPenalty(0);
+                }
+                continue;
+            }
 
             discardWorstScores(totalRounds, eventPilot, pilotFlights);
 
@@ -152,24 +160,28 @@ public class EventServiceImpl implements EventService {
     }
 
 
-
     private void normalizeToPercentages(List<EventPilot> eventPilotList) {
-        Float best = eventPilotList.stream().max(Comparator.comparingDouble(EventPilot::getScore)).get().getScore();
-        eventPilotList.forEach(pilot -> pilot.setPercentage(pilot.getScore() / best * 100));
+        long count = eventPilotList.stream().filter(pilot -> pilot.getScore() > 0).count();
+        if (count != 0) {
+            Float best = eventPilotList.stream().max(Comparator.comparingDouble(EventPilot::getScore)).get().getScore();
+            eventPilotList.forEach(pilot -> pilot.setPercentage(pilot.getScore() / best * 100));
+        } else {
+            eventPilotList.forEach(pilot-> pilot.setPercentage(0F));
+        }
     }
 
     private void setScore(EventPilot eventPilot, List<Flight> pilotFlights) {
         Float discarded = 0F;
 
-        if(eventPilot.getDiscarded1()!=null) discarded+=eventPilot.getDiscarded1();
-        if(eventPilot.getDiscarded2()!=null) discarded+=eventPilot.getDiscarded2();
+        if (eventPilot.getDiscarded1() != null) discarded += eventPilot.getDiscarded1();
+        if (eventPilot.getDiscarded2() != null) discarded += eventPilot.getDiscarded2();
 
         Float total = (float) pilotFlights.stream().mapToDouble(flight -> flight.getScore()).sum();
         eventPilot.setScore(total - eventPilot.getTotalPenalty() - discarded);
     }
 
     private void countTotalPenalty(EventPilot eventPilot, List<Flight> pilotFlights) {
-        Integer totalPenalty = pilotFlights.stream().mapToInt(flight -> flight.getPenalty()).sum();
+        Integer totalPenalty = pilotFlights.stream().filter(flight -> !flight.getEventRound().isCancelled()).mapToInt(flight -> flight.getPenalty()).sum();
         eventPilot.setTotalPenalty(totalPenalty);
     }
 
@@ -193,6 +205,9 @@ public class EventServiceImpl implements EventService {
             else {
                 eventPilot.setDiscarded1(pilotFlights.get(0).getScore());
             }
+        } else {
+            eventPilot.setDiscarded1(0F);
+            eventPilot.setDiscarded2(0F);
         }
     }
 
