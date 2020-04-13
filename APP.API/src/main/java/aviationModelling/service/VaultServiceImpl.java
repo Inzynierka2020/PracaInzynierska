@@ -30,7 +30,8 @@ public class VaultServiceImpl implements VaultService {
     }
 
     public VaultResponseDTO postScore(FlightDTO flightDTO) {
-        VaultResponseDTO response = restTemplate.getForObject(urlWizard.postScore(flightDTO), VaultResponseDTO.class);
+        String json = restTemplate.getForObject(urlWizard.postScore(flightDTO), String.class);
+        VaultResponseDTO response = new Gson().fromJson(json, VaultResponseDTO.class);
         if(response.getResponse_code()==0) {
             response.setMessage("Sending data to F3XVault failed");
         } else {

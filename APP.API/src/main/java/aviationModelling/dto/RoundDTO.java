@@ -20,7 +20,6 @@ public class RoundDTO {
     private Integer eventRoundId;
     private Integer roundNum;
     private Integer eventId;
-    private Integer numberOfGroups;
     private boolean isCancelled;
     private boolean isFinished;
 

@@ -64,6 +64,7 @@ public class Flight implements Serializable {
     @JoinColumn(name = "event_pilot_id", insertable=false, updatable=false)
     private EventPilot eventPilot;
 
+
     @Embeddable
     @Getter @Setter
     @NoArgsConstructor
