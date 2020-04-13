@@ -31,6 +31,9 @@ public class EventRound {
     @Column(name = "is_finished")
     private boolean isFinished;
 
+    @Column(name = "number_of_groups")
+    private Integer numberOfGroups;
+
     @OneToMany(mappedBy = "eventRound", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Flight> flights;
 

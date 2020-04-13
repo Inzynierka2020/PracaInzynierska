@@ -31,13 +31,13 @@ public class RestRoundController {
         return roundService.findAll(eventId);
     }
 
-    @ApiOperation(value = "Return round with the given id")
+    @ApiOperation(value = "Return round")
     @GetMapping("/{roundNum}")
     public RoundDTO getRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.findEventRound(roundNum,eventId);
     }
 
-    @ApiOperation(value = "Return list of flights in the given round")
+    @ApiOperation(value = "Return list of flights")
     @GetMapping("/{roundNum}/flights")
     public List<FlightDTO> getRoundFlights(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.getRoundFlights(roundNum, eventId);
@@ -65,25 +65,31 @@ public class RestRoundController {
         return roundService.updateLocalScore(roundNum,eventId);
     }
 
+//    @ApiOperation(value = "Create new round")
+//    @PostMapping("/new/{roundNum}")
+//    public ResponseEntity<RoundDTO> createRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
+//        return roundService.createRound(roundNum, eventId);
+//    }
+
     @ApiOperation(value = "Create new round")
-    @PostMapping("/new/{roundNum}")
-    public ResponseEntity<RoundDTO> createRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
-        return roundService.createRound(roundNum, eventId);
+    @PostMapping("/new")
+    public ResponseEntity<RoundDTO> createRound(@RequestBody RoundDTO roundDTO) {
+        return roundService.createRound(roundDTO);
     }
 
-    @ApiOperation(value = "Cancel given round")
+    @ApiOperation(value = "Cancel round")
     @PutMapping("/cancel/{roundNum}")
     public ResponseEntity<CustomResponse> cancelRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.cancelRound(roundNum,eventId);
     }
 
-    @ApiOperation(value = "Uncancel given round")
+    @ApiOperation(value = "Uncancel round")
     @PutMapping("/uncancel/{roundNum}")
     public ResponseEntity<CustomResponse> uncancelRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.uncancelRound(roundNum,eventId);
     }
 
-    @ApiOperation(value = "Finish given round")
+    @ApiOperation(value = "Finish round")
     @PutMapping("/finish/{roundNum}")
     public ResponseEntity<CustomResponse>  finishRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.finishRound(roundNum,eventId);
@@ -103,7 +109,7 @@ public class RestRoundController {
 
     @ApiOperation(value = "Update event round status on F3XVault")
     @PostMapping("/vault-update")
-    public ResponseEntity<VaultResponseDTO> createRound(@RequestBody RoundDTO roundDTO) {
+    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(@RequestBody RoundDTO roundDTO) {
         return roundService.updateEventRoundStatus(roundDTO);
     }
 }
