@@ -25,8 +25,12 @@ public class EventPilot {
     @Column(name = "event_id")
     private Integer eventId;
 
+    @Column(name = "total_penalty")
+    private Integer totalPenalty;
+
     private Float discarded1;
     private Float discarded2;
+    private Float percentage;
     private Float score;
 
     @OneToMany(mappedBy = "eventPilot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

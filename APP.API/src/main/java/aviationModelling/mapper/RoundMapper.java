@@ -19,4 +19,7 @@ public interface RoundMapper {
 
     List<RoundDTO> toRoundDTOList(List<EventRound> source);
 
+    EventRound toEventRound(RoundDTO source);
+    List<EventRound> toEventRoundList(List<RoundDTO> source);
+
 }

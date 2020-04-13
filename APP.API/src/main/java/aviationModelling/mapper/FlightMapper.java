@@ -25,7 +25,8 @@ public interface FlightMapper {
     @Mappings({
             @Mapping(source = "eventPilotId", target = "flightId.eventPilotId"),
             @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
-            @Mapping(source = "group", target = "group", defaultValue = "")
+            @Mapping(source = "group", target = "group", defaultValue = ""),
+            @Mapping(source = "score", target = "score", defaultValue = "0F")
     })
     Flight toFlight(FlightDTO source);
 

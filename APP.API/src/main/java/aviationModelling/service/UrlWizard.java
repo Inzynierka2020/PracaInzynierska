@@ -47,7 +47,7 @@ public class UrlWizard {
         params.put("sub10", flightDTO.getSub1().toString());
         params.put("sub11", flightDTO.getSub1().toString());
         if (flightDTO.getPenalty() != 0 && flightDTO.getPenalty() != null) {
-            params.put("penalty", flightDTO.getPilotId().toString());
+            params.put("penalty", flightDTO.getPenalty().toString());
         }
         if (flightDTO.getFlightTime() != null) {
             params.put("flight_time", flightDTO.getFlightTime().toString());
