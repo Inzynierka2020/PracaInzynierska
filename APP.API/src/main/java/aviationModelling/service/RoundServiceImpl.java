@@ -43,32 +43,19 @@ public class RoundServiceImpl implements RoundService {
 
 
     @Override
-    public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups) {
+    public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId) {
         if (roundRepository.findByRoundNum(roundNum) == null) {
             Round round = new Round();
             round.setRoundNum(roundNum);
             roundRepository.save(round);
         }
-        EventRound eventRound = eventRoundRepository.findByRoundNumAndEventId(roundNum, eventId);
-        if (eventRound == null) {
-            eventRound = new EventRound();
-            eventRound.setRoundNum(roundNum);
-            eventRound.setEventId(eventId);
-            eventRound.setNumberOfGroups(numberOfGroups);
-            eventRoundRepository.save(eventRound);
-        }
+        EventRound eventRound = new EventRound();
+        eventRound.setRoundNum(roundNum);
+        eventRound.setEventId(eventId);
+        eventRound.setCancelled(false);
+        eventRound.setFinished(false);
+        eventRoundRepository.save(eventRound);
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
-    }
-
-    @Override
-    public ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO) {
-        if (roundRepository.findByRoundNum(roundDTO.getRoundNum()) == null) {
-            Round round = new Round();
-            round.setRoundNum(roundDTO.getRoundNum());
-            roundRepository.save(round);
-        }
-        eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
-        return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
     }
 
     @Override
@@ -142,10 +129,6 @@ public class RoundServiceImpl implements RoundService {
             Set<String> groups = new HashSet<>();
             validFlights.forEach(flight -> groups.add(flight.getGroup()));
 
-            if (eventRound.getNumberOfGroups() == 1 && groups.size() != 1) {
-                eventRound.setNumberOfGroups(groups.size());
-            }
-
             groups.forEach(group -> {
                 Float best = validFlights.stream()
                         .filter(flight -> flight.getGroup().equals(group))
@@ -192,7 +175,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
-        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum, eventId));
+        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum,eventId));
     }
 
     @Override

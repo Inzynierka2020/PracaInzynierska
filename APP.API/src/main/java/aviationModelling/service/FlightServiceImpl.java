@@ -27,9 +27,6 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public ResponseEntity<FlightDTO> save(FlightDTO flightDTO) {
-        if(flightDTO.isDns() || flightDTO.isDnf()) {
-            flightDTO.setSeconds(0F);
-        }
         Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
         flightRepository.save(flight);
         return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);

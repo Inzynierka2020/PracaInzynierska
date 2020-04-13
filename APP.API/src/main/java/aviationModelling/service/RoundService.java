@@ -18,8 +18,7 @@ public interface RoundService {
 
     //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
     RoundDTO findEventRound(Integer roundNum, Integer eventId);
-    ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups);
-    ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO);
+    ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId);
     ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
     ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId);
     ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId);

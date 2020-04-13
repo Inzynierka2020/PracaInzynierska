@@ -28,10 +28,8 @@ public class PilotDTO {
     private String fai;
     private String faiLicence;
     private String teamName;
-    private Integer totalPenalty;
     private Float discarded1;
     private Float discarded2;
-    private Float percentage;
     private Float score;
     @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;
