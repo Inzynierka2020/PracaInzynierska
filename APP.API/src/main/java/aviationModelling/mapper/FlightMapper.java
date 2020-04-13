@@ -14,8 +14,8 @@ public interface FlightMapper {
     FlightMapper MAPPER = Mappers.getMapper(FlightMapper.class);
 
     @Mappings({
-            @Mapping(source = "flightId.eventPilotId", target = "eventPilotId"),
-            @Mapping(source = "flightId.eventRoundId", target = "eventRoundId"),
+//            @Mapping(source = "flightId.eventPilotId", target = "eventPilotId"),
+//            @Mapping(source = "flightId.eventRoundId", target = "eventRoundId"),
             @Mapping(source = "eventPilot.pilotId", target = "pilotId"),
             @Mapping(source = "eventRound.roundNum", target = "roundNum"),
             @Mapping(source = "eventPilot.eventId", target = "eventId")
@@ -23,8 +23,8 @@ public interface FlightMapper {
     FlightDTO toFlightDTO(Flight source);
 
     @Mappings({
-            @Mapping(source = "eventPilotId", target = "flightId.eventPilotId"),
-            @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
+//            @Mapping(source = "eventPilotId", target = "flightId.eventPilotId"),
+//            @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
             @Mapping(source = "group", target = "group", defaultValue = ""),
             @Mapping(source = "score", target = "score", defaultValue = "0F")
     })

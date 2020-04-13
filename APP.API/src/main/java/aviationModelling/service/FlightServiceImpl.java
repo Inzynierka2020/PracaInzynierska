@@ -6,6 +6,8 @@ import aviationModelling.entity.Flight;
 import aviationModelling.exception.CustomNotFoundException;
 import aviationModelling.mapper.FlightMapper;
 import aviationModelling.repository.FlightRepository;
+import aviationModelling.repository.PilotRepository;
+import aviationModelling.repository.RoundRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,13 +18,15 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private FlightRepository flightRepository;
-    private RoundService roundService;
     private VaultService vaultService;
+    private PilotRepository pilotRepository;
+    private RoundRepository roundRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository, RoundService roundService, VaultService vaultService) {
+    public FlightServiceImpl(FlightRepository flightRepository, VaultService vaultService, PilotRepository pilotRepository, RoundRepository roundRepository) {
         this.flightRepository = flightRepository;
-        this.roundService = roundService;
         this.vaultService = vaultService;
+        this.pilotRepository = pilotRepository;
+        this.roundRepository = roundRepository;
     }
 
     @Override
@@ -30,7 +34,12 @@ public class FlightServiceImpl implements FlightService {
         if(flightDTO.isDns() || flightDTO.isDnf()) {
             flightDTO.setSeconds(0F);
         }
+
+        Integer eventPilotId = pilotRepository.getEventPilotId(flightDTO.getPilotId(), flightDTO.getEventId());
+        Integer eventRoundId = roundRepository.getEventRoundId(flightDTO.getRoundNum(), flightDTO.getEventId());
+
         Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
+        flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
         flightRepository.save(flight);
         return new ResponseEntity<>(flightDTO, HttpStatus.CREATED);
     }
