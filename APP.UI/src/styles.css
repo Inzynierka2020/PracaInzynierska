@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-    --bg-primary: #47A3FF;
-    --bg-accent: #FFEE93;
-    --bg-success: #90FFDC;
+    --bg-primary: #202223;
+    --bg-accent: #4499E9;
+    --bg-success: #80ffc0;
     --bg-danger: #FF928B;
-    --bg-info: #7A7978;
+    --bg-disabled: #20222380;
     --background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
     --tx-primary: white;
     --group-a: #9CBFFF;
@@ -58,6 +58,11 @@ button:focus {
 
 .color-primary {
     background: var(--bg-primary) !important;
+    color: var(--tx-primary) !important;
+}
+
+.color-disabled {
+    background: var(--bg-disabled) !important;
     color: var(--tx-primary) !important;
 }
 

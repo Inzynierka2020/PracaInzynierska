@@ -1,5 +1,5 @@
 .flag {
-    width: 3em;
+    width: 2.2em;
     max-width: 80px;
 }
 
@@ -24,8 +24,4 @@ mat-divider {
     mat-divider {
         margin: 0;
     }
-}
-
-.mat-snack-bar-container {
-    max-width: 800px;
 }

@@ -32,7 +32,6 @@ export class SettingsComponent implements OnInit {
   }
 
   toggleTheme() {
-    console.log("DUPA")
     if (this.themeService.isSecondTheme()) {
       this.themeService.setFirstTheme();
     } else {

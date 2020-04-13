@@ -6,11 +6,10 @@ export interface Theme {
   export const first: Theme = {
     name: "first",
     properties: {
-        "--bg-primary": "#47A3FF",
-        "--bg-accent": "#FFEE93",
-        "--bg-success": "#90FFDC",
+        "--bg-primary": "#202223",
+        "--bg-accent": "#4499E9",
+        "--bg-success": "#80ffc0",
         "--bg-danger": "#FF928B",
-        "--bg-info": "#7A7978",
         "--background": "linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed",
         "--tx-primary": "white",
         "--group-a": "#9CBFFF",
@@ -24,11 +23,10 @@ export interface Theme {
   export const second: Theme = {
     name: "second",
     properties: {
-        "--bg-primary": "red",
-        "--bg-accent": "#FFEE93",
-        "--bg-success": "#90FFDC",
+        "--bg-primary": "#4499E9",
+        "--bg-accent": "#202223",
+        "--bg-success": "#47494b",
         "--bg-danger": "#FF928B",
-        "--bg-info": "#7A7978",
         "--background": "linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed",
         "--tx-primary": "white",
         "--group-a": "#9CBFFF",

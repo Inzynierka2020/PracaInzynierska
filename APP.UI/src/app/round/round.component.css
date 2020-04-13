@@ -1,12 +1,32 @@
-button {
+.finish-button {
     width: 30%;
     height: 8%;
     min-height: 50px;
     max-width: 200px;
-    font-size: 25px;
+    font-size: 30px;
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+.cancel-button {
+    height: 60px;
+    width: 125px;
+    font-size: 30px;
+}
+
+.option-button {
+    height: 60px;
+    font-size: 30px;
+}
+
+.cancel-title {
+    height: 60px;
+    width: 50%;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .content {
@@ -23,14 +43,18 @@ button {
 
 .container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 56px;
-    max-height: 56px;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    max-width: 800px;
 }
 
 mat-toolbar {
     max-width: 1000px;
+}
+
+.mat-menu-content {
+    padding-left: 8px !important
 }
 
 .to-start-score {
@@ -59,7 +83,7 @@ mat-toolbar {
 }
 
 @media (max-width: 400px) {
-    button {
+    .finish-button {
         font-size: 100%;
         height: 0px;
         min-height: 40px;

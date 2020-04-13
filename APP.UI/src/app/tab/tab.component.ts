@@ -52,7 +52,6 @@ export class TabComponent {
       this.previousTabIndex = tabChangeEvent.index;
     } else if (tabChangeEvent.index == TAB.ROUND && !this.isRoundStarted) {
       this.resolveNewRoundDialogComponent().afterClosed().subscribe(newRoundResult => {
-        console.log(newRoundResult);
         if (newRoundResult.started) {
           this.isRoundStarted = true;
           this.groupCount = newRoundResult.groupCount;
@@ -99,7 +98,6 @@ export class TabComponent {
   }
 
   cancelRound(toCancel: boolean) {
-    console.log(toCancel)
     if(toCancel){
       this._roundsService.cancelRound(this.browsedRound.roundNum).subscribe(result=>{
         this.refreshRounds();
@@ -114,7 +112,6 @@ export class TabComponent {
   refreshRounds() {
     this._roundsService.updateAllRounds().subscribe(updateResult => {
       this._roundsService.getRounds().subscribe(roundsResult => {
-        console.log(roundsResult);
         this.rounds = roundsResult;
         this.changeRound();
         this.refreshScores();

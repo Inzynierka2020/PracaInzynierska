@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-center w-100">
+<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'color-disabled' : isRoundCanceled}">
     <div class="container">
         <!-- <i class="material-icons" (click)="changeMode()">
             <span *ngIf="!editMode">lock</span>
@@ -7,7 +7,19 @@
         <!-- <mat-checkbox color="warn" [(ngModel)]="isRoundCanceled" (click)="cancelRound()">
             ROUND CANCELED
         </mat-checkbox> -->
-        <button mat-raised-button class="w-25 color-accent" [matMenuTriggerFor]="menu">CANCEL</button>
+        <div class="title" *ngIf="isRoundCanceled">
+            ROUND CANCELED
+        </div>
+        <span></span>
+        <!-- <button mat-raised-button class="w-25 color-accent" [matMenuTriggerFor]="menu">CANCEL</button> -->
+        <button mat-raised-button class="w-25 color-accent" (click)="cancelRound()">
+            <div *ngIf="isRoundCanceled">
+                UNCANCEL
+            </div>
+            <div *ngIf="!isRoundCanceled">
+                CANCEL
+            </div>
+        </button>
     </div>
     <div ngClass="!browse ? 'content' : ''" class="w-100">
         <app-score [mode]="'browse'" [dataSource]="dataSource"></app-score>
@@ -22,9 +34,9 @@
 </div>
 <mat-menu #menu="matMenu">
     <button mat-menu-item>ROUND</button>
-    <button mat-menu-item>GROUP A</button>
+    <!-- <button mat-menu-item>GROUP A</button>
     <button mat-menu-item>GROUP B</button>
     <button mat-menu-item>GROUP C</button>
     <button mat-menu-item>GROUP D</button>
-    <button mat-menu-item>GROUP E</button>
+    <button mat-menu-item>GROUP E</button> -->
 </mat-menu>

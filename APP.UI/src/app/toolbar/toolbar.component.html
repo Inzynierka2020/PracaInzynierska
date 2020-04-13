@@ -11,7 +11,9 @@
                         {{ now | date:'HH:mm:ss'}}
                     </div>
                 </div>
-                <app-wind></app-wind>
+                <div class="w-25">
+                    <app-wind></app-wind>
+                </div>
                 <div (click)="openSettings()" class="cog">
                     <i class="material-icons">
                         settings

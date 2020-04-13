@@ -36,20 +36,18 @@ export class BrowseComponent {
   ngOnChanges() {
     if (this.dataSource) {
       if (this.round) {
-        console.log("round changed", this.round);
         this.dataSource.forEach(pilot => {
           pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
         });
         this.isRoundCanceled = this.round.cancelled;
-        console.log(this.isRoundCanceled);
         this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       }
     }
 
   }
   cancelRound() {
-    this.resolveConfirmDialog().subscribe(confirmedResult => {
-      console.log("CONF", confirmedResult)
+    let opt = this.isRoundCanceled ? "uncancel" : "cancel";
+    this.resolveConfirmDialog(`Do you really want to ${opt} this round?`).subscribe(confirmedResult => {
       if (confirmedResult) {
         this.round.cancelled = !this.round.cancelled;
         this.roundCanceled.emit(this.round.cancelled);
@@ -69,11 +67,12 @@ export class BrowseComponent {
 
   /**** DIALOGS ****/
 
-  private resolveConfirmDialog() {
+  private resolveConfirmDialog(msg = null) {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
-      disableClose: true
+      disableClose: true,
+      data: msg
     }).afterClosed();
   }
 }

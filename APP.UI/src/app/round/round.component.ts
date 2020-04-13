@@ -49,7 +49,6 @@ export class RoundComponent {
     flight.roundNum = this.roundNumber;
 
     this.resolvePlayerDialog(pilot, flight).subscribe(flightResult => {
-      console.log(flightResult);
       if (flightResult)
         this.finishFlight(flightResult);
     })
@@ -120,16 +119,28 @@ export class RoundComponent {
     });
   }
 
+  cancelGroup(group: string){
+    let groupToCancel = this.flights.filter(flight => flight.group == group);
+    groupToCancel.forEach(flight => {
+      let pilotToCancel = this.pilotsFinished.find(pilot=> pilot.id == flight.pilotId);
+      let pilotToCancelIndex = this.pilotsFinished.findIndex(pilot=> pilot.id == flight.pilotId);
+      this.pilotsLeft.push(pilotToCancel);
+      this.pilotsFinished.splice(pilotToCancelIndex, 1);
+      //remove flight
+    });
+    this.noMorePilotsLeft=false;
+  }
+  
   cancelRound() {
     this.resolveConfirmDialog().subscribe(confirmResult => {
       if (confirmResult == true) {
+        this.canceled = !this.canceled;
         if (this.canceled) {
           this._roundsService.cancelRound(this.roundNumber).subscribe(result => { })
         } else {
           this._roundsService.uncancelRound(this.roundNumber).subscribe(result => { })
         }
       } else {
-        this.canceled = !this.canceled;
       }
     });
   }
