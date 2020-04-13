@@ -13,7 +13,11 @@ export class FlightsService {
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
   getFinishedFlights(roundNumber): Observable<Flight[]> {
-    return this._http.get<Flight[]>(this._baseUrl + "rounds/flights/" + roundNumber);
+    return this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights/");
+  }
+
+  getBestFlightFromRound(roundNumber): Observable<Flight[]> {
+    return this._http.get<Flight[]>(this._baseUrl + "rounds/best/" + roundNumber);
   }
 
   saveFlight(flight: Flight): Observable<any> {

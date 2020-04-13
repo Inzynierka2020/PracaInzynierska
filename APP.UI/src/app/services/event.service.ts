@@ -34,7 +34,7 @@ export class EventService {
     return this._http.get<Event>(this._baseUrl + "events/" + eventId);
   }
 
-  updateScore():Observable<any> {
-    return this._http.put(this._baseUrl + "events/total-score", null);
+  updateScore(eventId: number):Observable<any> {
+    return this._http.put(this._baseUrl + "events/total-score/" +eventId, null);
   }
 }
