@@ -14,13 +14,12 @@ import java.util.List;
 public class VaultFlightDTO {
     private Integer round_number;
     private Integer pilot_id;
-//    private Integer event_id;
     private String group;
     private Integer order;
-    private String minutes;
     private String seconds;
     private Integer penalty;
     private Sub subs;
+    private Float score;
 
     @Getter
     @Setter

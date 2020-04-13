@@ -19,14 +19,14 @@ public class RestExceptionHandler {
         error.setMessage(ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler
-    public ResponseEntity<CustomResponse> handleException(InvalidRoundDataException ex) {
-        CustomResponse error = new CustomResponse();
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setMessage(ex.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//
+//    @ExceptionHandler
+//    public ResponseEntity<CustomResponse> handleException(InvalidRoundDataException ex) {
+//        CustomResponse error = new CustomResponse();
+//        error.setStatus(HttpStatus.BAD_REQUEST.value());
+//        error.setMessage(ex.getMessage());
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler
     public ResponseEntity<CustomResponse> handleException(Exception ex) {

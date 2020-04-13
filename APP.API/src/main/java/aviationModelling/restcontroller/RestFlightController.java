@@ -1,7 +1,9 @@
 package aviationModelling.restcontroller;
 
 import aviationModelling.dto.FlightDTO;
+import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.service.FlightService;
+import aviationModelling.service.VaultService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class RestFlightController {
 
     private FlightService flightService;
+    private VaultService vaultService;
 
-    public RestFlightController(FlightService flightService) {
+    public RestFlightController(FlightService flightService, VaultService vaultService) {
         this.flightService = flightService;
-    }
-
-    @ApiOperation(value = "Return single flight")
-    @GetMapping("/{roundNum}/{pilotId}")
-    public FlightDTO getFlight(@PathVariable Integer roundNum, @PathVariable Integer pilotId) {
-        return flightService.findFlight(roundNum, pilotId);
+        this.vaultService = vaultService;
     }
 
     @ApiOperation(value = "Save flight")
@@ -35,9 +33,23 @@ public class RestFlightController {
         return flightService.save(flightDTO);
     }
 
-    @ApiOperation(value = "Return flight with best time")
-    @GetMapping("/best-time")
-    public FlightDTO getBestFlight() {
-        return flightService.findBestTime();
+    @ApiOperation(value = "Send flight to F3XVault")
+    @PostMapping("/vault")
+    public ResponseEntity<VaultResponseDTO> saveFlightToVault(@RequestBody FlightDTO flightDTO) {
+        return flightService.postScore(flightDTO);
     }
+
+    //
+//    @ApiOperation(value = "Return single flight")
+//    @GetMapping
+//    public FlightDTO getFlight(@RequestParam Integer roundNum, @RequestParam Integer pilotId, @RequestParam Integer eventId) {
+//        return flightService.findFlight(roundNum, pilotId, eventId);
+//    }
+//
+
+//    @ApiOperation(value = "Return flight with best time")
+//    @GetMapping("/best-time")
+//    public FlightDTO getBestFlight(@RequestParam Integer eventId) {
+//        return flightService.findBestTime(eventId);
+//    }
 }

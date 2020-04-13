@@ -2,8 +2,8 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
-import aviationModelling.entity.Flight;
-import aviationModelling.entity.Round;
+import aviationModelling.dto.VaultResponseDTO;
+import aviationModelling.entity.EventRound;
 import aviationModelling.exception.CustomResponse;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -12,25 +12,24 @@ import java.util.List;
 
 public interface RoundService {
 
-    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
+    List<RoundDTO> findAll(Integer eventId);
 
-    RoundDTO findByRoundNum(Integer roundNum);
+//    EventRound findEventRound(Integer roundNum, Integer eventId);
 
-    ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId);
+    //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
+    RoundDTO findEventRound(Integer roundNum, Integer eventId);
+    ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups);
+    ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO);
+    ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
+    ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId);
+    ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId);
+    ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum, Integer eventId);
+    List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId);
+    List<Integer> getRoundNumbers(Integer eventId);
+    ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
+    FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId);
+    ResponseEntity<VaultResponseDTO> updateEventRoundStatus(RoundDTO roundDTO);
 
-    ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum);
 
-    ResponseEntity<CustomResponse> cancelRound(Integer roundNum);
 
-    ResponseEntity<CustomResponse> uncancelRound(Integer roundNum);
-
-    List<FlightDTO> findRoundFlights(Integer roundNum);
-
-    ResponseEntity<CustomResponse> finishRound(Integer roundNum);
-
-    List<Integer> getRoundNumbers();
-
-    ResponseEntity<CustomResponse> updateAllRounds();
-
-    List<RoundDTO> findAll();
 }

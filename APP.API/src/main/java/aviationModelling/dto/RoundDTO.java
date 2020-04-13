@@ -17,10 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @JsonView(Views.Public.class)
 public class RoundDTO {
+    private Integer eventRoundId;
     private Integer roundNum;
     private Integer eventId;
+    private Integer numberOfGroups;
     private boolean isCancelled;
     private boolean isFinished;
+
     @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;
 }

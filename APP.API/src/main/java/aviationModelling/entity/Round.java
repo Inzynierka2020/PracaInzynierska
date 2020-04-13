@@ -11,26 +11,13 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 public class Round {
-
     @Id
     @Column(name = "round_num")
     private Integer roundNum;
 
-    @Column(name = "event_id")
-    private Integer eventId;
-
-    @Column(name = "is_cancelled")
-    private boolean isCancelled;
-
-    @Column(name = "is_finished")
-    private boolean isFinished;
-
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "round_num")
-//    private List<Flight> flights;
-
     @OneToMany(mappedBy = "round", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Flight> flights;
+    private List<EventRound> eventRounds;
+
 
 
 }

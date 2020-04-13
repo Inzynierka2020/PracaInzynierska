@@ -18,19 +18,9 @@ public interface VaultEventMapper {
             @Mapping(target = "eventEndDate", source = "end_date"),
             @Mapping(target = "eventType", source = "event_type"),
             @Mapping(target = "numberOfRounds", source = "rounds"),
-            @Mapping(target = "pilots", ignore = true),
-            @Mapping(target = "rounds", ignore = true),
+//            @Mapping(target = "eventPilots", ignore = true),
+            @Mapping(target = "eventRounds", ignore = true),
     })
     Event toEvent(VaultEventDTO source);
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,6 +1,7 @@
 package aviationModelling.mapper;
 
 import aviationModelling.dto.VaultFlightDTO;
+import aviationModelling.dto.VaultPilotDTO;
 import aviationModelling.entity.Flight;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -13,8 +14,8 @@ public interface VaultFlightMapper {
     VaultFlightMapper MAPPER = Mappers.getMapper(VaultFlightMapper.class);
 
     @Mappings({
-            @Mapping(target = "flightId.roundNum", source = "round_number"),
-            @Mapping(target = "flightId.pilotId", source = "pilot_id"),
+//            @Mapping(target = "flightId.roundNum", source = "round_number"),
+//            @Mapping(target = "flightId.pilotId", source = "pilot_id"),
             @Mapping(target = "group", source = "group", defaultValue = ""),
             @Mapping(target = "sub1", source = "subs.sub1", defaultValue = "0F"),
             @Mapping(target = "sub2", source = "subs.sub2", defaultValue = "0F"),
@@ -27,6 +28,8 @@ public interface VaultFlightMapper {
             @Mapping(target = "sub9", source = "subs.sub9", defaultValue = "0F"),
             @Mapping(target = "sub10", source = "subs.sub10", defaultValue = "0F"),
             @Mapping(target = "sub11", source = "subs.sub11", defaultValue = "0F"),
+            @Mapping(target = "score", source = "score", defaultValue = "0F"),
+            @Mapping(target = "penalty", source = "penalty", defaultValue = "0")
 
     })
     Flight toFlight(VaultFlightDTO source);
@@ -36,8 +39,5 @@ public interface VaultFlightMapper {
 
     List<Flight> toFlightList(List<VaultFlightDTO> source);
     List<VaultFlightDTO> toVaultFlightDTOList(List<Flight> source);
-
-
-
 
 }
