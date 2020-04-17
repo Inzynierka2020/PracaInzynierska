@@ -59,7 +59,7 @@ export class PlayerComponent implements OnInit {
     this.resolveConfirmationDialog().subscribe(confirmed => {
       if (confirmed) {
         this.editMode = false;
-        this.flight.pilotId = this.pilot.id;
+        this.flight.pilotId = this.pilot.pilotId;
         this.flight.eventId = this.pilot.eventId;
         this.dialogRef.close(this.flight);
       }

@@ -1,6 +1,14 @@
 .flag {
-    width: 3em;
+    width: 2.2em;
     max-width: 80px;
+}
+
+.green {
+    filter: invert(28%) sepia(63%) saturate(3705%) hue-rotate(121deg) brightness(94%) contrast(84%);
+}
+
+.red {
+    filter: invert(11%) sepia(58%) saturate(5878%) hue-rotate(8deg) brightness(87%) contrast(117%);
 }
 
 .text {

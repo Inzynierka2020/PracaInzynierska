@@ -1,5 +1,7 @@
 export interface Flight {
-    pilotId: number;
+    eventPilotId: number;
+    eventRoundId: number;
+    pilotId:number
     roundNum: number;
     eventId: number;
     penalty: number;

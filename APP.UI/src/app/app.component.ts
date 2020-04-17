@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EventService } from './services/event.service';
 import { Event } from '../app/models/event'
 
 @Component({
@@ -9,18 +8,11 @@ import { Event } from '../app/models/event'
 })
 export class AppComponent {
 
-  event: Event = {
-    eventId: 1809,
-    eventEndDate: "",
-    eventLocation: "",
-    eventName: "---",
-    eventStartDate: "",
-    eventType: "",
-    numberOfRounds: 0,
-    started: false
-  }
+  event: Event;
+  eventStarted = false;
 
-  constructor(private eventService: EventService) {
-
+  start() {
+    if (event)
+      this.eventStarted = true;
   }
 }

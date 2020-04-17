@@ -7,51 +7,58 @@ import { Round } from '../models/round';
   providedIn: 'root'
 })
 export class RoundsService {
-  
+
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
-  
-  updateRound(roundNumber: number):Observable<any>{
-    return this._http.put<any>(this._baseUrl + "rounds/update/"+roundNumber,  {
+
+  updateRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/update/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  updateAllRounds():Observable<any>{
-    return this._http.put<any>(this._baseUrl + "rounds/update/",  {
+  updateAllRounds(eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/update?eventId=" + eventId, {
+      responseType: 'text' as 'json'
+    });
+  }
+  startNewRound(roundNumber: number, eventId: number): Observable<Round> {
+    let round: Round = {
+      cancelled: false,
+      eventId: eventId,
+      finished: false,
+      roundNum: roundNumber,
+      flights: null,
+      numberOfGroups: 1
+
+    }
+    return this._http.post<Round>(this._baseUrl + "rounds/new?eventId=" + eventId, round, {
       responseType: 'text' as 'json'
     });
   }
 
-  startNewRound(roundNumber:number, eventId:number):Observable<Round>{
-    console.log(roundNumber, eventId)
-    return this._http.post<Round>(this._baseUrl + "rounds/new/"+eventId+"/"+roundNumber,  {
+  finishRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/finish/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  finishRound(roundNumber:number):Observable<any>{
-    return this._http.put<any>(this._baseUrl + "rounds/finish/"+roundNumber, {
+  cancelRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/cancel/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  cancelRound(roundNumber:number):Observable<any>{
-    return this._http.put<any>(this._baseUrl + "rounds/cancel/"+roundNumber, {
+  uncancelRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/uncancel/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }
 
-  uncancelRound(roundNumber:number):Observable<any>{
-    return this._http.put<any>(this._baseUrl + "rounds/uncancel/"+roundNumber, {
-      responseType: 'text' as 'json'
-    });
-  }
+  // getRound(roundNumber:number):Observable<any>{
+  //   return this._http.get(this._baseUrl + "rounds/"+roundNumber);
+  // }
 
-  getRound(roundNumber:number):Observable<any>{
-    return this._http.get(this._baseUrl + "rounds/"+roundNumber);
-  }
-
-  getRounds():Observable<Round[]>{
-    return this._http.get<Round[]>(this._baseUrl + "rounds/list/with-flights");
+  getRounds(eventID: number): Observable<Round[]> {
+    return this._http.get<Round[]>(this._baseUrl + "rounds/with-flights?eventId=" + eventID);
   }
 }

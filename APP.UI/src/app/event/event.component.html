@@ -1,12 +1,9 @@
 <div class="container">
     <div class="content">
-        <form class="w-100 d-flex justify-content-center">
-            <mat-form-field>
-                <mat-label>EVENT ID</mat-label>
-                <input matInput [(ngModel)]="event.eventId" name="eventId">
-            </mat-form-field>
-        </form>
-        <button mat-raised-button (click)="startEvent()" color="primary">Start</button>
-        <button mat-raised-button (click)="deleteEvent()" color="warn" class="mt-5">Delete</button>
+        <div class="display-4 w-100 text-center">
+            EVENT CONNECTION SETTINGS
+        </div>
+        <app-connection-settings class="w-75 settingss my-4" [(settings)]="settings"></app-connection-settings>
+        <button mat-raised-button class="theme-accent" (click)="startEvent()">CONNECT</button>
     </div>
 </div>

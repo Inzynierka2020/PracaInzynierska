@@ -1,7 +1,8 @@
 import { Flight } from './flight';
 
 export interface Pilot {
-    id: number
+    eventPilotId: number;
+    pilotId: number
     eventId: number;
     pilotBib: number;
     firstName: string;
@@ -11,10 +12,11 @@ export interface Pilot {
     fai: "",
     faiLicense: "",
     teamName: ""
+    totalPenalty: number;
     discarded1: number;
     discarded2: number;
+    percentage: number;
     score: string;
-    penalty: number 
     flights: Flight[];
     flight: Flight;
 }

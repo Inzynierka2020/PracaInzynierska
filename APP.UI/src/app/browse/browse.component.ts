@@ -7,6 +7,7 @@ import { PilotService } from '../services/pilot.service';
 import { Round } from '../models/round';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-browse',
@@ -26,8 +27,9 @@ export class BrowseComponent {
   group = "A";
   isRoundCanceled = false;
 
-  constructor(private _pilotService: PilotService, private dialog: MatDialog) {
-    this._pilotService.getPilots().subscribe(pilotsResult => {
+  constructor(private _pilotService: PilotService, private _eventService: EventService, private dialog: MatDialog) {
+    let eventId = _eventService.getEventId();
+    this._pilotService.getPilots(eventId).subscribe(pilotsResult => {
       this.dataSource = pilotsResult;
       this.ngOnChanges();
     });
@@ -36,41 +38,22 @@ export class BrowseComponent {
   ngOnChanges() {
     if (this.dataSource) {
       if (this.round) {
-        console.log("round changed", this.round);
         this.dataSource.forEach(pilot => {
-          pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.id);
+          pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.pilotId);
         });
         this.isRoundCanceled = this.round.cancelled;
-        console.log(this.isRoundCanceled);
-        this.dataSource.sort((a, b) => {
-          if (a.flight.group.localeCompare(b.flight.group) == -1) {
-            return -1;
-          }
-          else if (a.flight.group.localeCompare(b.flight.group) == 1) {
-            return 1;
-          }
-          else {
-            if (a.flight.score < b.flight.score) {
-              return 1;
-            }
-            else if (a.flight.score > b.flight.score) {
-              return -1;
-            }
-            return 0;
-          }
-        });
+        this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       }
     }
 
   }
   cancelRound() {
-    this.resolveConfirmDialog().subscribe(confirmedResult => {
-      console.log("CONF", confirmedResult)
+    let opt = this.isRoundCanceled ? "uncancel" : "cancel";
+    this.resolveConfirmDialog(`Do you really want to ${opt} this round?`).subscribe(confirmedResult => {
       if (confirmedResult) {
         this.round.cancelled = !this.round.cancelled;
         this.roundCanceled.emit(this.round.cancelled);
       } else {
-        this.isRoundCanceled = !this.isRoundCanceled;
       }
     })
   }
@@ -85,11 +68,12 @@ export class BrowseComponent {
 
   /**** DIALOGS ****/
 
-  private resolveConfirmDialog() {
+  private resolveConfirmDialog(msg = null) {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
-      disableClose: true
+      disableClose: true,
+      data: msg
     }).afterClosed();
   }
 }

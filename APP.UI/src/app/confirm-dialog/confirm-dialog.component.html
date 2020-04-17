@@ -1,5 +1,5 @@
-<div class="text-center mb-4 title">Are you sure?</div>
+<div class="text-center mb-4 title">{{message}}</div>
 <div class="buttons">
-    <button mat-raised-button color="accent" [mat-dialog-close]="true">Yes</button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+    <button mat-raised-button class="theme-accent" [mat-dialog-close]="true">YES</button>
+    <button mat-raised-button class="theme-primary-light" [mat-dialog-close]="false" cdkFocusInitial>NO</button>
 </div>

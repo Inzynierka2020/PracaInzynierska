@@ -32,12 +32,12 @@ export class RoundComponent {
   pilotsFinished: Pilot[] = [];
   order = 1;
 
-  isYetToStartBarVisible = true;
+  noMorePilotsLeft = false;
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
     private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
-    this.eventId = _eventService.eventId;
-    this._pilotsService.getPilots().subscribe(result => {
+    this.eventId = _eventService.getEventId();
+    this._pilotsService.getPilots(this.eventId).subscribe(result => {
       this.pilotsLeft = result;
     });
   }
@@ -49,7 +49,6 @@ export class RoundComponent {
     flight.roundNum = this.roundNumber;
 
     this.resolvePlayerDialog(pilot, flight).subscribe(flightResult => {
-      console.log(flightResult);
       if (flightResult)
         this.finishFlight(flightResult);
     })
@@ -59,7 +58,7 @@ export class RoundComponent {
     flight.order = this.order++;
     this.flights.push(flight);
 
-    var index = this.pilotsLeft.findIndex(pilot => pilot.id == flight.pilotId);
+    var index = this.pilotsLeft.findIndex(pilot => pilot.pilotId == flight.pilotId);
     var pilot = this.pilotsLeft[index];
 
     pilot.flight = flight;
@@ -72,48 +71,76 @@ export class RoundComponent {
     })
 
     if (this.pilotsLeft.length == 0) {
-      this.isYetToStartBarVisible = false;
+      this.noMorePilotsLeft = true;
+    }
+  }
+
+  reflight(pilot: Pilot) {
+    this.resolveConfirmDialog(`Do you want to reflight pilot: ${pilot.lastName.toUpperCase()} ${pilot.firstName}?`).subscribe(confirmResult => {
+      if (confirmResult == true) {
+        var index = this.pilotsFinished.findIndex(pilotToFind => pilotToFind.pilotId == pilot.pilotId);
+        var pilotToReflight = this.pilotsFinished[index];
+        pilotToReflight.flight = this._flighsService.getBlankData();
+        pilotToReflight.flight.pilotId = pilotToReflight.pilotId;
+        pilotToReflight.flight.roundNum = this.roundNumber;
+        pilotToReflight.flight.eventId = this.eventId;
+
+        this.pilotsFinished.splice(index, 1);
+        this.pilotsLeft.push(pilot);
+
+        this.noMorePilotsLeft = false;
+        this._flighsService.saveFlight(pilotToReflight.flight).subscribe(result => {
+          this.updateScore();
+        })
+      }
+    });
+  }
+
+  fillBlankFlights() {
+    var count = this.pilotsLeft.length
+    for (var _i = 0; _i < count; _i++) {
+      var flight = this._flighsService.getBlankData();
+      flight.pilotId = this.pilotsLeft[0].pilotId;
+      flight.eventId = this.eventId;
+      flight.roundNum = this.roundNumber;
+      this.finishFlight(flight);
     }
   }
 
   updateScore() {
-    this._roundsService.updateRound(this.roundNumber).subscribe(result => {
-      this._flighsService.getFinishedFlights(this.roundNumber).subscribe(flightsResult => {
+    this._roundsService.updateRound(this.roundNumber, this.eventId).subscribe(result => {
+      this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(flightsResult => {
         this.flights = flightsResult;
         this.pilotsFinished.forEach(pilot => {
-          pilot.flight = this.flights.find(flight => flight.pilotId == pilot.id);
+          pilot.flight = this.flights.find(flight => flight.pilotId == pilot.pilotId);
         });
-        this.pilotsFinished.sort((a, b) => {
-          if (a.flight.group.localeCompare(b.flight.group) == -1) {
-            return -1;
-          }
-          else if (a.flight.group.localeCompare(b.flight.group) == 1) {
-            return 1;
-          }
-          else {
-            if (a.flight.score < b.flight.score) {
-              return 1;
-            }
-            else if (a.flight.score > b.flight.score) {
-              return -1;
-            }
-            return 0;
-          }
-        });
+        this.pilotsFinished.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       });
     });
   }
 
+  cancelGroup(group: string){
+    let groupToCancel = this.flights.filter(flight => flight.group == group);
+    groupToCancel.forEach(flight => {
+      let pilotToCancel = this.pilotsFinished.find(pilot=> pilot.pilotId == flight.pilotId);
+      let pilotToCancelIndex = this.pilotsFinished.findIndex(pilot=> pilot.pilotId == flight.pilotId);
+      this.pilotsLeft.push(pilotToCancel);
+      this.pilotsFinished.splice(pilotToCancelIndex, 1);
+      //remove flight
+    });
+    this.noMorePilotsLeft=false;
+  }
+  
   cancelRound() {
     this.resolveConfirmDialog().subscribe(confirmResult => {
       if (confirmResult == true) {
+        this.canceled = !this.canceled;
         if (this.canceled) {
-          this._roundsService.cancelRound(this.roundNumber).subscribe(result => { })
+          this._roundsService.cancelRound(this.roundNumber, this.eventId).subscribe(result => { })
         } else {
-          this._roundsService.uncancelRound(this.roundNumber).subscribe(result => { })
+          this._roundsService.uncancelRound(this.roundNumber, this.eventId).subscribe(result => { })
         }
       } else {
-        this.canceled = !this.canceled;
       }
     });
   }
@@ -121,8 +148,11 @@ export class RoundComponent {
   finishRound() {
     this.resolveConfirmDialog().subscribe(confirmed => {
       if (confirmed) {
+        if (this.pilotsLeft.length > 0) {
+          this.fillBlankFlights();
+        }
         this.finished.emit(true);
-        this._roundsService.finishRound(this.roundNumber).subscribe(result => { });
+        this._roundsService.finishRound(this.roundNumber, this.eventId).subscribe(result => { });
       }
     });
   }
@@ -150,11 +180,12 @@ export class RoundComponent {
   //   dialogRef.componentInstance.editMode = false;
   // }
 
-  private resolveConfirmDialog() {
+  private resolveConfirmDialog(data = null) {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
-      disableClose: true
+      disableClose: true,
+      data: data
     }).afterClosed();
   }
 }
