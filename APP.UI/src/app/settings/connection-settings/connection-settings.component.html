@@ -1,0 +1,19 @@
+<div class="d-flex flex-column">
+    <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input matInput placeholder="example@mail.com" [(ngModel)]="settings.login">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="" [(ngModel)]="settings.password" type="password">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>ApiUrl</mat-label>
+        <input matInput placeholder="" [(ngModel)]="settings.apiUrl">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Event ID</mat-label>
+        <input matInput placeholder="" [(ngModel)]="settings.eventId" *ngIf="disabled" disabled>
+        <input matInput placeholder="" [(ngModel)]="settings.eventId" *ngIf="!disabled">
+    </mat-form-field>
+</div>

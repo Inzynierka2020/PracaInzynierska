@@ -25,9 +25,9 @@ export class WindComponent implements OnInit {
       this.regular = false;
       this.notRegularTime += 1;
       if (this.maxNotRegularTime <= this.notRegularTime) {
-        this._snackBar.openFromComponent(WarningSnackComponent, {
-          duration: this.durationInSeconds * 1000,
-        });
+        // this._snackBar.openFromComponent(WarningSnackComponent, {
+        //   duration: this.durationInSeconds * 1000,
+        // });
         this.notRegularTime = 0;
       }
       if (this.wind > 3 && this.wind < 25)
@@ -36,9 +36,15 @@ export class WindComponent implements OnInit {
           this.notRegularTime=0;
         }
     }, 1000);
+    
   }
 
   ngOnInit() {
   }
 
+  openSnack(){
+    this._snackBar.openFromComponent(WarningSnackComponent, {
+      duration: this.durationInSeconds * 1000,
+    });
+  }
 }

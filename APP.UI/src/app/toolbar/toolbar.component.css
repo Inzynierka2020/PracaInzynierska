@@ -29,21 +29,22 @@
 }
 
 .cog {
-    padding: 10px;
+    height: 85%;
+    width: 15%;
     display: flex;
-    align-items: center;
-    transition: ease-out 0.4s;
+    justify-content: center;
+    /* padding: 10px; */
 }
 
-.cog:hover {
+
+/* .cog:hover {
     cursor: pointer;
     transform: rotate(180deg) scale(1.2);
-}
+} */
 
 .material-icons {
-    color: var(--bg-accent);
-    font-size: 64px;
-    text-shadow: 2px 2px 25px rgba(0, 0, 0, .87) !important;
+    font-size: 56px;
+    /* text-shadow: 2px 2px 25px rgba(0, 0, 0, .87) !important; */
 }
 
 .wind {

@@ -61,7 +61,6 @@ export class PlayerComponent implements OnInit {
         this.editMode = false;
         this.flight.pilotId = this.pilot.pilotId;
         this.flight.eventId = this.pilot.eventId;
-        console.log(this.flight)
         this.dialogRef.close(this.flight);
       }
     })

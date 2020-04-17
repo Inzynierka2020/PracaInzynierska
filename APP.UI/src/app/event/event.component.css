@@ -6,12 +6,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 30%;
+    padding-top: 15%;
     width: 100%;
-}
-
-.body {
-    overflow: hidden !important;
 }
 
 button {
@@ -24,4 +20,8 @@ mat-form-field {
     text-align: center;
     font-size: 300% !important;
     width: 50%;
+}
+
+.settingss {
+    font-size: x-large;
 }

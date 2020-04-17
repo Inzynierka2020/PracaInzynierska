@@ -27,15 +27,17 @@ export class RoundsService {
       eventId: eventId,
       finished: false,
       roundNum: roundNumber,
-      flights: null
+      flights: null,
+      numberOfGroups: 1
+
     }
-    return this._http.post<Round>(this._baseUrl + "rounds/new/", round, {
+    return this._http.post<Round>(this._baseUrl + "rounds/new?eventId=" + eventId, round, {
       responseType: 'text' as 'json'
     });
   }
 
-  finishRound(roundNumber: number): Observable<any> {
-    return this._http.put<any>(this._baseUrl + "rounds/finish/" + roundNumber, {
+  finishRound(roundNumber: number, eventId: number): Observable<any> {
+    return this._http.put<any>(this._baseUrl + "rounds/finish/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });
   }

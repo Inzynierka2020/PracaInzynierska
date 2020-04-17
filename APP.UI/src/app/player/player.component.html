@@ -1,7 +1,7 @@
 <!-- <h1 mat-dialog-title class="text-center mb-0 text-danger display-4" *ngIf="editMode ">EDIT MODE</h1> -->
-<div class="content px-3">
+<div class="content px-1">
     <div class="d-flex justify-content-between mb-3 pt-2">
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center pr-3">
             <div class="number">
                 {{pilot.pilotBib}}
             </div>
@@ -36,16 +36,16 @@
         <mat-divider></mat-divider>
         <div class="data">
             <div *ngFor="let group of groups | slice:0:groupsCount">
-                <button mat-raised-button class="group-button" [ngClass]="{'color-primary' : currentGroup ==group, 'color-accent' : currentGroup != group}" (click)="changeGroup(group)" *ngIf="editMode">{{group}}</button>
+                <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
             </div>
         </div>
     </div>
     <mat-divider></mat-divider>
-    <div class="second-div">
-        <div class="bar1">
+    <div class="second-div ">
+        <div class="bar1 ">
             <table>
                 <tr>
-                    <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0);">
+                    <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); ">
                     </th>
                     <td>BEST</td>
                 </tr>
@@ -107,37 +107,37 @@
 
             </table>
         </div>
-        <div class="bar2">
-            <!-- <div class="penalty mb-5" *ngIf="!editMode">
-                <h3 class="text-center text-danger">PENALTY</h3>
+        <div class="bar2 ">
+            <!-- <div class="penalty mb-5 " *ngIf="!editMode ">
+                <h3 class="text-center text-danger ">PENALTY</h3>
                 <mat-divider></mat-divider>
-                <h1 class="text-center text-danger">300</h1>
-                <h3 class="text-center mt-5">STATUS</h3>
+                <h1 class="text-center text-danger ">300</h1>
+                <h3 class="text-center mt-5 ">STATUS</h3>
                 <mat-divider></mat-divider>
-                <h1 class="text-center">FINISHED</h1>
+                <h1 class="text-center ">FINISHED</h1>
             </div> -->
-            <div class="input">
-                <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode">
+            <div class="input pt-1 ">
+                <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode ">
                     <mat-label>PENALTY</mat-label>
-                    <input matInput color="warn" [readonly]="!editMode" [(ngModel)]="flight.penalty">
+                    <input matInput color="warn " [readonly]="!editMode " [(ngModel)]="flight.penalty ">
                 </mat-form-field>
             </div>
-            <div class="buttons" *ngIf="editMode">
-                <button mat-raised-button *ngIf="flight.dnf" class="color-primary" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="!flight.dnf" class="color-accent" (click)="didNotFinish()">DNF</button>
-                <button mat-raised-button *ngIf="flight.dns" class="color-primary" (click)="didNotStart()">DNS</button>
-                <button mat-raised-button *ngIf="!flight.dns" class="color-accent" (click)="didNotStart()">DNS</button>
+            <div class="buttons w-75 " *ngIf="editMode ">
+                <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
+                <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
+                <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
+                <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
             </div>
-            <div class="buttons">
-                <button *ngIf="!editMode" mat-raised-button class="color-danger" (click)="closeThisDialog()">Back</button>
-                <button *ngIf="!editMode" mat-raised-button class="color-accent" (click)="switchEditMode()">Edit</button>
-                <button *ngIf="editMode" mat-raised-button class="color-danger" (click)="switchEditMode()">Cancel</button>
-                <button *ngIf="editMode" class="color-success" mat-raised-button (click)="saveFlight() " cdkFocusInitial>Save</button>
+            <div class="buttons ">
+                <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="closeThisDialog() ">Back</button>
+                <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">Edit</button>
+                <button *ngIf="editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">CANCEL</button>
+                <button *ngIf="editMode " class="theme-accent " mat-raised-button (click)="saveFlight() " cdkFocusInitial>SAVE</button>
             </div>
         </div>
     </div>
-    <!-- <div *ngIf="!editMode">
-        <div class="buttons my-4">
+    <!-- <div *ngIf="!editMode ">
+        <div class="buttons my-4 ">
             <h2>Did not start.</h2>
         </div>
     </div> -->

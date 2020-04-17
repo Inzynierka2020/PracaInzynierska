@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AppComponent } from './app.component';
 import { MaterialModule } from 'src/modules/material/material.module';
-import { RouterModule, Routes } from '@angular/router';
 import { TabComponent } from './tab/tab.component';
 import { ScoreComponent } from './score/score.component';
 import { RoundComponent } from './round/round.component';
@@ -20,13 +19,7 @@ import { environment } from 'src/environments/environment';
 import { EventComponent } from './event/event.component';
 import { GroupPipe } from './pipes/group.pipe';
 import { WarningSnackComponent } from './wind/warning-snack/warning-snack.component';
-
-const appRoutes: Routes = [
-  { path: '', component: EventComponent },
-  { path: 'tab', component: TabComponent },
-  { path: 'score', component: ScoreComponent },
-  // { path: '**', component: PageNotFoundComponent }
-];
+import { ConnectionSettingsComponent } from './settings/connection-settings/connection-settings.component';
 
 export function getBaseUrl() {
   var url = document.getElementsByTagName('base')[0].href.replace(/:\d{1,}\/|\/$/, '');
@@ -50,16 +43,13 @@ export function getBaseUrl() {
     EventComponent,
     GroupPipe,
     WarningSnackComponent,
+    ConnectionSettingsComponent,
   ],
   imports: [
     BrowserModule,
     MaterialModule,
     FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
-    )
+    HttpClientModule
   ],
   providers: [ { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }],
   bootstrap: [AppComponent],

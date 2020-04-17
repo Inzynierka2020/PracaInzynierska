@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'color-disabled' : canceled}">
+<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'theme-disabled' : canceled}">
     <div class="container">
         <!-- <mat-checkbox [(ngModel)]="canceled" color="warn" (click)="cancelRound()">
             ROUND CANCELED
@@ -14,7 +14,7 @@
             ROUND CANCELED
         </div>
         <span></span>
-        <button mat-raised-button class="w-25 color-accent cancel-button" [matMenuTriggerFor]="menu">CANCEL</button>
+        <button mat-raised-button class="w-25 theme-accent cancel-button" [matMenuTriggerFor]="menu">CANCEL</button>
     </div>
     <div class="content w-100">
         <div class="w-100">
@@ -30,7 +30,7 @@
             <app-score [mode]="'yetToStart'" class="w-100" (rowClickAction)="createFlight($event)" [dataSource]="pilotsLeft"></app-score>
         </div>
     </div>
-    <button mat-raised-button class="finish-button color-accent" (click)="finishRound()" *ngIf="noMorePilotsLeft || canceled">FINISH</button>
+    <button mat-raised-button class="finish-button theme-accent" (click)="finishRound()" *ngIf="noMorePilotsLeft || canceled">FINISH</button>
 </div>
 <mat-menu #menu="matMenu">
     <button class="option-button" mat-menu-item (click)="cancelRound()">ROUND</button>

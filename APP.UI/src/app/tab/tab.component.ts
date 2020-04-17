@@ -72,7 +72,7 @@ export class TabComponent {
   /*---- SCORE ----*/
 
   refreshScores() {
-    this._eventService.updateScore(this.eventId).subscribe(result => {
+    this._eventService.updateGeneralScore(this.eventId).subscribe(result => {
       this._pilotService.getPilots(this.eventId).subscribe(result => {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);

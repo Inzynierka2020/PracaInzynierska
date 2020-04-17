@@ -12,8 +12,8 @@ export class FlightsService {
 
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
 
-  getFinishedFlights(roundNumber): Observable<Flight[]> {
-    return this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights/");
+  getFinishedFlights(roundNumber, eventId): Observable<Flight[]> {
+    return this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights?eventId="+eventId);
   }
 
   getBestFlightFromRound(roundNumber): Observable<Flight[]> {
@@ -35,7 +35,7 @@ export class FlightsService {
       eventId: 0,
       penalty: 0,
       order: 0,
-      group: "A",
+      group: "",
       flightTime: "",
       windAvg: 0,
       dirAvg: 0,
@@ -67,7 +67,7 @@ export class FlightsService {
       eventId: 0,
       penalty: 0,
       order: 0,
-      group: "A",
+      group: "",
       flightTime: "",
       windAvg: 0,
       dirAvg: 0,

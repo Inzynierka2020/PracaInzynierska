@@ -1,24 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-:root {
-    --bg-primary: #202223;
-    --bg-accent: #4499E9;
-    --bg-success: #4499E9;
-    --bg-danger: #4499E9;
-    --bg-disabled: #20222380;
-    --background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
-    --tx-primary: white;
-    --group-a: #9CBFFF;
-    --group-b: #FFB5A8;
-    --group-c: #8FF2FF;
-    --group-d: #FFD375;
-    --group-e: #82FFC8;
-}
-
 html,
 body {
     height: 100%;
-    background: var(--background) !important;
+    background: var(--th-background) !important;
 }
 
 body {
@@ -39,7 +24,7 @@ body {
 }
 
 mat-dialog-container {
-    background: var(--background) !important;
+    background: var(--th-background) !important;
     border-radius: 20px !important;
 }
 
@@ -52,30 +37,74 @@ button:focus {
 }
 
 .mat-toolbar-row {
-    background: var(--bg-primary) !important;
-    color: var(--tx-primary);
+    background: var(--th-primary) !important;
+    color: var(--text-primary);
 }
 
-.color-primary {
-    background: var(--bg-primary) !important;
-    color: var(--tx-primary) !important;
+
+/* ----- THEMES ----- */
+
+:root {
+    --th-primary-dark: #000000;
+    --th-primary: #202122;
+    --th-primary-light: #6d6d6d;
+    --th-accent-dark: rgb(5, 64, 119);
+    --th-accent: #4499E9;
+    --th-accent-light: rgb(114, 184, 250);
+    --th-disabled: #20222380;
+    --th-background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
+    --text-primary: white;
+    --text-accent: white;
+    --group-a: #9CBFFF;
+    --group-b: #FFB5A8;
+    --group-c: #8FF2FF;
+    --group-d: #FFD375;
+    --group-e: #82FFC8;
 }
 
-.color-disabled {
-    background: var(--bg-disabled) !important;
-    color: var(--tx-primary) !important;
+.color-bg {
+    background: var(--background) !important;
+    color: var(--text-primary) !important;
 }
 
-.color-accent {
-    background: var(--bg-accent) !important;
+.theme-primary-dark {
+    background: var(--th-primary-dark) !important;
+    color: var(--text-primary) !important;
 }
 
-.color-danger {
-    background: var(--bg-danger) !important;
+.theme-primary {
+    background: var(--th-primary) !important;
+    color: var(--text-primary) !important;
 }
 
-.color-success {
-    background: var(--bg-success) !important;
+.theme-primary-light {
+    background: var(--th-primary-light) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-accent-dark {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-accent {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-accent-reversed {
+    color: var(--th-accent) !important;
+    background: var(--text-accent) !important;
+}
+
+.theme-accent-light {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-disabled {
+    background: var(--th-disabled) !important;
+    color: black !important
 }
 
 .color-a {

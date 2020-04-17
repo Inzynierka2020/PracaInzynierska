@@ -1,0 +1,7 @@
+.mat-form-field-ripple {
+    background-color: var(--th-accent) !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: var(--th-accent) !important;
+}

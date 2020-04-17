@@ -7,7 +7,7 @@
 }
 
 .gold {
-    color: var(--bg-accent) !important;
+    color: var(--th-accent) !important;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, .87) !important;
     transition: 0.1s ease-in-out;
     user-select: none;
@@ -57,7 +57,7 @@
 }
 
 .mat-ink-bar {
-    background: var(--primary) !important;
+    background: var(--th-accent) !important;
 }
 
 

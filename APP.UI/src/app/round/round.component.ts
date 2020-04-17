@@ -36,7 +36,7 @@ export class RoundComponent {
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
     private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
-    this.eventId = _eventService.eventId;
+    this.eventId = _eventService.getEventId();
     this._pilotsService.getPilots(this.eventId).subscribe(result => {
       this.pilotsLeft = result;
     });
@@ -109,7 +109,7 @@ export class RoundComponent {
 
   updateScore() {
     this._roundsService.updateRound(this.roundNumber, this.eventId).subscribe(result => {
-      this._flighsService.getFinishedFlights(this.roundNumber).subscribe(flightsResult => {
+      this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(flightsResult => {
         this.flights = flightsResult;
         this.pilotsFinished.forEach(pilot => {
           pilot.flight = this.flights.find(flight => flight.pilotId == pilot.pilotId);
@@ -152,7 +152,7 @@ export class RoundComponent {
           this.fillBlankFlights();
         }
         this.finished.emit(true);
-        this._roundsService.finishRound(this.roundNumber).subscribe(result => { });
+        this._roundsService.finishRound(this.roundNumber, this.eventId).subscribe(result => { });
       }
     });
   }

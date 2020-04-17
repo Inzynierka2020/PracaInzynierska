@@ -1,11 +1,11 @@
 <div class="content">
     <div class="settings">
         <mat-button-toggle-group #group="matButtonToggleGroup">
-            <mat-button-toggle value="left" checked>
-                <p>Connection</p>
-            </mat-button-toggle>
-            <mat-button-toggle value="center">
+            <mat-button-toggle value="center" checked>
                 <p>Application</p>
+            </mat-button-toggle>
+            <mat-button-toggle value="left" *ngIf="!noEvent">
+                <p>Connection</p>
             </mat-button-toggle>
             <mat-button-toggle value="right">
                 <p>Visuals</p>
@@ -14,34 +14,23 @@
         <div class="settings-text">
             <div *ngIf="group.value=='left'">
                 <div class="form">
-                    <mat-form-field>
-                        <mat-label>Login</mat-label>
-                        <input matInput placeholder="example@mail.com" [(ngModel)]="settings.login">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Password</mat-label>
-                        <input matInput placeholder="" [(ngModel)]="settings.password" type="password">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>ApiUrl</mat-label>
-                        <input matInput placeholder="" [(ngModel)]="settings.apiUrl">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Event ID</mat-label>
-                        <input matInput placeholder="" [(ngModel)]="settings.eventId">
-                    </mat-form-field>
+                    <app-connection-settings [(settings)]="settings"></app-connection-settings>
                 </div>
             </div>
             <div *ngIf="group.value=='center'">
-                Application options
+                <button mat-raised-button class="theme-accent theme-disabled w-50" (click)="finishEvent()" *ngIf="noEvent" disabled>FINISH
+                    EVENT</button>
+                <button mat-raised-button class="theme-accent w-50" (click)="finishEvent()" *ngIf="!noEvent">FINISH
+                        EVENT</button>
             </div>
             <div *ngIf="group.value=='right'">
-                <button mat-raised-button class="color-accent w-50" (click)="toggleTheme()">Switch theme</button>
+                <button mat-raised-button class="theme-accent w-50" (click)="toggleTheme()">SWITCH THEME</button>
             </div>
         </div>
     </div>
-    <div class="buttons">
-        <button mat-raised-button class="color-accent" (click)="save()">Save</button>
-        <button mat-raised-button class="color-danger" (click)="close()">Close</button>
+    <mat-divider></mat-divider>
+    <div class="buttons mt-4">
+        <button mat-raised-button class="theme-accent" (click)="save()">SAVE</button>
+        <button mat-raised-button class="theme-primary-light" (click)="close()">CLOSE</button>
     </div>
 </div>

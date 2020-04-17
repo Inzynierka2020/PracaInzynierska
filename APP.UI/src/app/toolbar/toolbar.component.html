@@ -1,7 +1,7 @@
 <mat-toolbar>
-    <mat-toolbar-row>
-        <div class="content" [ngClass]="event.eventName=='---' ? 'justify-content-center' : ''">
-            <div class="title" *ngIf="event.eventName!='---'"><i>'{{event.eventName}}'</i></div>
+    <mat-toolbar-row class="theme-primary">
+        <div class="content" [ngClass]="!event ? 'justify-content-center' : ''">
+            <div class="title" *ngIf="event"><i>'{{event.eventName}}'</i></div>
             <div class="wind">
                 <div class="date">
                     <div>
@@ -14,11 +14,13 @@
                 <div class="w-25">
                     <app-wind></app-wind>
                 </div>
-                <div (click)="openSettings()" class="cog">
-                    <i class="material-icons">
-                        settings
-                    </i>
-                </div>
+                <button mat-raised-button class="theme-accent-reversed cog">
+                    <div (click)="openSettings()" class="d-flex">
+                        <i class="material-icons">
+                            settings
+                        </i>
+                    </div>
+                </button>
             </div>
         </div>
     </mat-toolbar-row>

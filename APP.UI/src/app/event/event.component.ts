@@ -1,39 +1,47 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EventService } from '../services/event.service';
-import { Router } from '@angular/router';
 import { Event } from '../models/event';
+import { Settings } from '../models/settings';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css']
 })
-export class EventComponent implements OnInit {
-
-  constructor(private _eventService: EventService, private _router: Router) { }
+export class EventComponent {
 
   @Input()
   event: Event;
-
   @Output()
-  eventChange: EventEmitter<Event> = new EventEmitter<Event>();
+  eventChange = new EventEmitter();
 
-  ngOnInit() {
+  settings: Settings = {
+    apiUrl: "http://www.f3xvault.com/api.php?",
+    login: "piotrek.adamczykk@gmail.com",
+    password: "ascroft",
+    eventId: null
+  }
+
+  constructor(private _eventService: EventService) {
+    let eventId = localStorage.getItem('eventId');
+    if (eventId) {
+      this.settings.eventId = Number(eventId);
+      this.getEvent();
+    }
   }
 
   startEvent() {
-    this._eventService.initEvent(this.event.eventId).subscribe(result => {
-      this._eventService.getEvent(this.event.eventId).subscribe(result => {
-        result.started = true;
-        this.eventChange.emit(result);
-      })
+    localStorage.setItem('eventId', this.settings.eventId.toString());
+    this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
+      this.getEvent();
     })
   }
 
-  deleteEvent() {
-    this._eventService.deleteEvent(this.event.eventId).subscribe(result => {
+  getEvent() {
+    this._eventService.getEvent(this.settings.eventId).subscribe(eventResult => {
+      this.eventChange.emit(eventResult);
     }, error => {
-      console.log("Deleting event failed. There is no such event in the database !");
-    });
+      localStorage.removeItem('eventId');
+    })
   }
 }

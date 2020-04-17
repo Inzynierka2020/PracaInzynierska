@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'color-disabled' : isRoundCanceled}">
+<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'theme-disabled' : isRoundCanceled}">
     <div class="container">
         <!-- <i class="material-icons" (click)="changeMode()">
             <span *ngIf="!editMode">lock</span>
@@ -12,7 +12,7 @@
         </div>
         <span></span>
         <!-- <button mat-raised-button class="w-25 color-accent" [matMenuTriggerFor]="menu">CANCEL</button> -->
-        <button mat-raised-button class="w-25 color-accent" (click)="cancelRound()">
+        <button mat-raised-button class="w-25 theme-accent" (click)="cancelRound()">
             <div *ngIf="isRoundCanceled">
                 UNCANCEL
             </div>
