@@ -15,6 +15,12 @@ W celu uruchomienia lokalnie UI aplikacji należy:
 - od teraz do uruchomienia projektu służy polecenie `ng serve`
 
 ### Spring
+W celu uruchomienia lokalnie API aplikacji należy:
+- pobrać repozytorium
+- posiadać zainstalowanego [Mavena](https://maven.apache.org/download.cgi) oraz [JDK](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)
+- przejść do katalogu APP.API i poleceniem `mvn clean install` skompilować program
+- przejść do utworzonego katalogu target i poleceniem `java -jar nazwa-utworzonego-pliku-jar.jar` uruchomić API
+Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem .../swagger-ui.html
 
 ## Docker
 
