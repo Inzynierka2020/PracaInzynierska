@@ -28,6 +28,11 @@ mat-dialog-container {
     border-radius: 20px !important;
 }
 
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: var(--th-accent);
+}
+
 button {
     border-radius: 20px !important;
 }
