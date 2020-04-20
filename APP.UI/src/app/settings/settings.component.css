@@ -1,8 +1,16 @@
 mat-button-toggle-group {
     flex-direction: column;
     font-size: larger;
-    min-width: fit-content;
+    min-width: 25%;
     background-color: white;
+}
+
+mat-form-field {
+    font-size: x-large;
+}
+
+.mat-option.mat-selected:not(.mat-option-disabled) {
+    color: var(--th-accent) !important
 }
 
 p {

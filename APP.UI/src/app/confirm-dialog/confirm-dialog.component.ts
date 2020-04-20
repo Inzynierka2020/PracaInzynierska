@@ -10,7 +10,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string) { }
 
-  message = "Are you sure?"
+  message = "AreYouSure"
   ngOnInit() {
     if (this.data)
       this.message = this.data;

@@ -2,13 +2,13 @@
     <div class="settings">
         <mat-button-toggle-group #group="matButtonToggleGroup">
             <mat-button-toggle value="center" checked>
-                <p>Application</p>
+                <p>{{'Application' | translate}}</p>
             </mat-button-toggle>
             <mat-button-toggle value="left" *ngIf="!noEvent">
-                <p>Connection</p>
+                <p>{{'Connection' | translate}}</p>
             </mat-button-toggle>
             <mat-button-toggle value="right">
-                <p>Visuals</p>
+                <p>{{'Visuals' | translate}}</p>
             </mat-button-toggle>
         </mat-button-toggle-group>
         <div class="settings-text">
@@ -18,19 +18,27 @@
                 </div>
             </div>
             <div *ngIf="group.value=='center'">
-                <button mat-raised-button class="theme-accent theme-disabled w-50" (click)="finishEvent()" *ngIf="noEvent" disabled>FINISH
-                    EVENT</button>
-                <button mat-raised-button class="theme-accent w-50" (click)="finishEvent()" *ngIf="!noEvent">FINISH
-                        EVENT</button>
+                <div class="d-flex flex-column">
+                    <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
+                </div>
             </div>
             <div *ngIf="group.value=='right'">
-                <button mat-raised-button class="theme-accent w-50" (click)="toggleTheme()">SWITCH THEME</button>
+                <button mat-raised-button class="theme-accent w-50" (click)="toggleTheme()">{{'Switch theme' | translate}}</button>
+                <mat-form-field class="w-75 mt-4">
+                    <mat-label>{{'Select language' | translate}}</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let lang of languages" (click)="toggleLang(lang)" [value]="lang">
+                            {{lang | uppercase}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
     </div>
     <mat-divider></mat-divider>
     <div class="buttons mt-4">
-        <button mat-raised-button class="theme-accent" (click)="save()">SAVE</button>
-        <button mat-raised-button class="theme-primary-light" (click)="close()">CLOSE</button>
+        <button mat-raised-button class="theme-accent" (click)="save()">{{'Save' | translate}}</button>
+        <button mat-raised-button class="theme-primary-light" (click)="close()">{{'Close' | translate}}</button>
     </div>
 </div>

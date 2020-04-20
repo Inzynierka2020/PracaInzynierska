@@ -48,7 +48,7 @@ export class RoundsService {
     });
   }
 
-  uncancelRound(roundNumber: number, eventId: number): Observable<any> {
+  reactivateRound(roundNumber: number, eventId: number): Observable<any> {
     return this._http.put<any>(this._baseUrl + "rounds/uncancel/" + roundNumber + "?eventId=" + eventId, {
       responseType: 'text' as 'json'
     });

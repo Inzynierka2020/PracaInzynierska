@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
 import { EventService } from '../services/event.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -11,12 +12,14 @@ import { EventService } from '../services/event.service';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>, public themeService: ThemeService, public _eventService: EventService) {
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>, public themeService: ThemeService, public _eventService: EventService, public translate: TranslateService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
       this.noEvent = true;
   }
+
+  languages = ['en', 'pl'];
 
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
@@ -26,6 +29,7 @@ export class SettingsComponent implements OnInit {
   }
 
   noEvent = true;
+  language: 'en';
 
   ngOnInit() {
 
@@ -36,7 +40,7 @@ export class SettingsComponent implements OnInit {
   }
 
   save() {
-
+    this.close();
   }
 
   finishEvent() {
@@ -56,5 +60,9 @@ export class SettingsComponent implements OnInit {
     } else {
       this.themeService.setSecondTheme();
     }
+  }
+
+  toggleLang(lang: string) {
+    this.translate.use(lang);
   }
 }

@@ -48,8 +48,8 @@ export class BrowseComponent {
 
   }
   cancelRound() {
-    let opt = this.isRoundCanceled ? "uncancel" : "cancel";
-    this.resolveConfirmDialog(`Do you really want to ${opt} this round?`).subscribe(confirmedResult => {
+    let opt = this.isRoundCanceled ? "CancelMsg.Reactivate" : "CancelMsg.Cancel";
+    this.resolveConfirmDialog(opt).subscribe(confirmedResult => {
       if (confirmedResult) {
         this.round.cancelled = !this.round.cancelled;
         this.roundCanceled.emit(this.round.cancelled);

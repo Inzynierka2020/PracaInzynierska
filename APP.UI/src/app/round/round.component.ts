@@ -138,7 +138,7 @@ export class RoundComponent {
         if (this.canceled) {
           this._roundsService.cancelRound(this.roundNumber, this.eventId).subscribe(result => { })
         } else {
-          this._roundsService.uncancelRound(this.roundNumber, this.eventId).subscribe(result => { })
+          this._roundsService.reactivateRound(this.roundNumber, this.eventId).subscribe(result => { })
         }
       } else {
       }

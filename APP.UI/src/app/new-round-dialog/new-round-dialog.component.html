@@ -1,7 +1,7 @@
-<div mat-dialog-title class="text-center">New round</div>
+<div mat-dialog-title class="text-center">{{'New round' | translate}}</div>
 <mat-divider class="w-50 mx-auto"></mat-divider>
-<div class="text-center title">Group count</div>
-<div class="text-center subtitle">(any above 1 activates group division during this round)</div>
+<div class="text-center title">{{'Group count' | translate}}</div>
+<div class="text-center subtitle">{{ 'GroupCountMsg' | translate}}</div>
 <div mat-dialog-content class="px-0">
     <i (click)="decrementGroups()" class="material-icons">
         remove
@@ -11,7 +11,7 @@
     </i>
 </div>
 <mat-divider></mat-divider>
-<div class="text-center title">Round number</div>
+<div class="text-center title">{{'Round number' | translate}}</div>
 <div mat-dialog-content class="px-0">
     <i (click)="decrement()" class="material-icons">
         remove
@@ -21,6 +21,6 @@
     </i>
 </div>
 <div class="buttons mt-4">
-    <button mat-raised-button class="theme-accent" (click)="close(true)">START</button>
-    <button mat-raised-button class="theme-primary-light" (click)="close(false)" cdkFocusInitial>CANCEL</button>
+    <button mat-raised-button class="theme-accent" (click)="close(true)">{{'Start' | translate}}</button>
+    <button mat-raised-button class="theme-primary-light" (click)="close(false)" cdkFocusInitial>{{'Cancel' | translate}}</button>
 </div>
