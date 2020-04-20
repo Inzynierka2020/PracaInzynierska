@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonView(Views.Public.class)
 public class RoundDTO {
-    private Integer eventRoundId;
+//    private Integer eventRoundId;
     private Integer roundNum;
     private Integer eventId;
     private Integer numberOfGroups;
