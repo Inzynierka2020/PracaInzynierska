@@ -34,6 +34,8 @@ export class EventComponent {
     localStorage.setItem('eventId', this.settings.eventId.toString());
     this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
       this.getEvent();
+    }, error => {
+      this.getEvent();
     })
   }
 
@@ -42,6 +44,7 @@ export class EventComponent {
       this.eventChange.emit(eventResult);
     }, error => {
       localStorage.removeItem('eventId');
+      window.location.reload();
     })
   }
 }
