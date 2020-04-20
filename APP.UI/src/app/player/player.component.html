@@ -24,7 +24,7 @@
         <mat-toolbar color="primary">
             <mat-toolbar-row>
                 <h1 class="text-center w-100">
-                    NEW PLAYER
+                    {{'New player' | translate}}
                 </h1>
             </mat-toolbar-row>
         </mat-toolbar>
@@ -47,7 +47,7 @@
                 <tr>
                     <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); ">
                     </th>
-                    <td>BEST</td>
+                    <td>{{'Best' | translate}}</td>
                 </tr>
                 <tr>
                     <th>CT</th>
@@ -118,7 +118,7 @@
             </div> -->
             <div class="input pt-1 ">
                 <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode ">
-                    <mat-label>PENALTY</mat-label>
+                    <mat-label>{{'Penalty' | translate}}</mat-label>
                     <input matInput color="warn " [readonly]="!editMode " [(ngModel)]="flight.penalty ">
                 </mat-form-field>
             </div>
@@ -131,8 +131,8 @@
             <div class="buttons ">
                 <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="closeThisDialog() ">Back</button>
                 <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">Edit</button>
-                <button *ngIf="editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">CANCEL</button>
-                <button *ngIf="editMode " class="theme-accent " mat-raised-button (click)="saveFlight() " cdkFocusInitial>SAVE</button>
+                <button *ngIf="editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">{{'Cancel' | translate}}</button>
+                <button *ngIf="editMode " class="theme-accent " mat-raised-button (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
             </div>
         </div>
     </div>

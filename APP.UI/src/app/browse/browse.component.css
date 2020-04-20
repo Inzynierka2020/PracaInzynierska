@@ -44,6 +44,10 @@ button {
     font-size: 30px;
 }
 
+.cancel-button {
+    width: 33%;
+}
+
 .data {
     display: flex;
     flex-direction: row;

@@ -17,31 +17,31 @@
                     <div class="data " *ngIf="mode !='yetToStart' ">
                         <div class="d-flex w-100 justify-content-between " *ngIf="!pilot.flight; else browseRow ">
                             <div class="data-field ">
-                                <div class="semi-title ">TOTAL</div>
+                                <div class="semi-title ">{{'Total' | translate}}</div>
                                 <mat-divider></mat-divider>
                                 <div class="score ">{{pilot.score.toFixed(2)}}</div>
                             </div>
                             <div class="data-field ">
-                                <div class="semi-title ">RESULT</div>
+                                <div class="semi-title ">{{'Result' | translate}}</div>
                                 <mat-divider></mat-divider>
                                 <div class="score " *ngIf="pilot.score; else noValue ">
                                     {{pilot.score.toFixed(2)}}</div>
                             </div>
                             <div class="data-field ">
-                                <div class="semi-title ">PENALTY</div>
+                                <div class="semi-title ">{{'Penalty' | translate}}</div>
                                 <mat-divider></mat-divider>
                                 <div class="score " *ngIf="pilot.penalty; else noValue ">{{pilot.penalty}}</div>
                             </div>
 
                             <div class="data-field " *ngIf="mode=='general' ">
-                                <div class="semi-title ">DISCARD 1</div>
+                                <div class="semi-title ">{{'Discard' | translate}} 1</div>
                                 <mat-divider></mat-divider>
                                 <div class="score " *ngIf="pilot.discarded1; else noValue ">
                                     {{pilot.discarded1.toFixed(2)}}
                                 </div>
                             </div>
                             <div class="data-field " *ngIf="mode=='general' ">
-                                <div class="semi-title ">DISCARD 2</div>
+                                <div class="semi-title ">{{'Discard' | translate}} 2</div>
                                 <mat-divider></mat-divider>
                                 <div class="score " *ngIf="pilot.discarded2; else noValue ">
                                     {{pilot.discarded2.toFixed(2)}}
@@ -51,7 +51,7 @@
                         <ng-template #browseRow>
                             <div class="d-flex w-100 justify-content-between ">
                                 <div class="data-field ">
-                                    <div class="semi-title ">TIME</div>
+                                    <div class="semi-title ">{{'Time' | translate}}</div>
                                     <mat-divider></mat-divider>
                                     <div class="score " *ngIf="pilot.flight.seconds; else noValue ">
                                         <div *ngIf="pilot.flight.dnf">DNF</div>
@@ -61,21 +61,21 @@
                                     </div>
                                 </div>
                                 <div class="data-field ">
-                                    <div class="semi-title ">Points</div>
+                                    <div class="semi-title ">{{'Points' | translate}}</div>
                                     <mat-divider></mat-divider>
                                     <div class="score " *ngIf="pilot.flight.score; else noValue ">
                                         {{pilot.flight.score.toFixed(2)}}
                                     </div>
                                 </div>
                                 <div class="data-field ">
-                                    <div class="semi-title ">Penalty</div>
+                                    <div class="semi-title ">{{'Penalty' | translate}}</div>
                                     <mat-divider></mat-divider>
                                     <div class="score " *ngIf="pilot.flight.penalty; else noValue ">
                                         {{pilot.flight.penalty}}
                                     </div>
                                 </div>
                                 <div class="data-field ">
-                                    <div class="semi-title ">STATUS</div>
+                                    <div class="semi-title ">{{'Status' | translate}}</div>
                                     <mat-divider></mat-divider>
                                     <div class="score ">XXXXXXXXXXXXXXXX</div>
                                 </div>
