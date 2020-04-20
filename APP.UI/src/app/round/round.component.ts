@@ -110,6 +110,7 @@ export class RoundComponent {
   updateScore() {
     this._roundsService.updateRound(this.roundNumber, this.eventId).subscribe(result => {
       this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(flightsResult => {
+        console.log(flightsResult)
         this.flights = flightsResult;
         this.pilotsFinished.forEach(pilot => {
           pilot.flight = this.flights.find(flight => flight.pilotId == pilot.pilotId);

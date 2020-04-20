@@ -27,7 +27,7 @@ export class BrowseComponent {
   group = "A";
   isRoundCanceled = false;
 
-  constructor(private _pilotService: PilotService, private _eventService: EventService, private dialog: MatDialog) {
+  constructor(private _pilotService: PilotService, private _eventService: EventService, private dialog: MatDialog, private _flightService: FlightsService) {
     let eventId = _eventService.getEventId();
     this._pilotService.getPilots(eventId).subscribe(pilotsResult => {
       this.dataSource = pilotsResult;
@@ -37,15 +37,17 @@ export class BrowseComponent {
 
   ngOnChanges() {
     if (this.dataSource) {
-      if (this.round) {
+        if (this.round) {
         this.dataSource.forEach(pilot => {
           pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.pilotId);
+          if (!pilot.flight)
+            pilot.flight = this._flightService.getBlankData();
         });
         this.isRoundCanceled = this.round.cancelled;
         this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
       }
     }
-
+    
   }
   cancelRound() {
     let opt = this.isRoundCanceled ? "CancelMsg.Reactivate" : "CancelMsg.Cancel";
