@@ -8,6 +8,7 @@ class PlayerDialogData {
   pilot: Pilot
   flight: Flight
   groupsCount: number
+  editMode:boolean
 }
 
 @Component({
@@ -16,12 +17,10 @@ class PlayerDialogData {
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-
-  @Input()
-  editMode = true;
   @Input()
   returnDirectly = false;
-
+  
+  editMode=false;
   pilot: Pilot;
   flight: Flight;
   groupsCount: number;
@@ -33,6 +32,7 @@ export class PlayerComponent implements OnInit {
     this.flight = _data.flight;
     this.currentGroup = this.flight.group;
     this.groupsCount = this._data.groupsCount;
+    this.editMode = _data.editMode;
   }
 
   ngOnInit() {
@@ -58,18 +58,9 @@ export class PlayerComponent implements OnInit {
   saveFlight() {
     this.resolveConfirmationDialog().subscribe(confirmed => {
       if (confirmed) {
-        this.editMode = false;
         this.flight.pilotId = this.pilot.pilotId;
         this.flight.eventId = this.pilot.eventId;
         this.dialogRef.close(this.flight);
-      }
-    })
-  }
-
-  switchEditMode() {
-    this.resolveConfirmationDialog().subscribe(confirmed => {
-      if (confirmed) {
-        this.returnDirectly ? this.closeThisDialog() : this.editMode = !this.editMode;
       }
     })
   }

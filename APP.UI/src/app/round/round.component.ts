@@ -48,9 +48,19 @@ export class RoundComponent {
     var flight = this._flighsService.getFlightData();
     flight.roundNum = this.roundNumber;
 
-    this.resolvePlayerDialog(pilot, flight).subscribe(flightResult => {
+    this.resolvePlayerDialog(pilot, flight, false).subscribe(flightResult => {
       if (flightResult)
         this.finishFlight(flightResult);
+    })
+  }
+
+  editFlight(pilot: Pilot) {
+    this.resolvePlayerDialog(pilot, pilot.flight, true).subscribe(flightResult => {
+      console.log(flightResult)
+      if (flightResult)
+        this._flighsService.saveFlight(flightResult).subscribe(result => {
+          this.updateScore();
+        })
     })
   }
 
@@ -120,18 +130,18 @@ export class RoundComponent {
     });
   }
 
-  cancelGroup(group: string){
+  cancelGroup(group: string) {
     let groupToCancel = this.flights.filter(flight => flight.group == group);
     groupToCancel.forEach(flight => {
-      let pilotToCancel = this.pilotsFinished.find(pilot=> pilot.pilotId == flight.pilotId);
-      let pilotToCancelIndex = this.pilotsFinished.findIndex(pilot=> pilot.pilotId == flight.pilotId);
+      let pilotToCancel = this.pilotsFinished.find(pilot => pilot.pilotId == flight.pilotId);
+      let pilotToCancelIndex = this.pilotsFinished.findIndex(pilot => pilot.pilotId == flight.pilotId);
       this.pilotsLeft.push(pilotToCancel);
       this.pilotsFinished.splice(pilotToCancelIndex, 1);
       //remove flight
     });
-    this.noMorePilotsLeft=false;
+    this.noMorePilotsLeft = false;
   }
-  
+
   cancelRound() {
     this.resolveConfirmDialog().subscribe(confirmResult => {
       if (confirmResult == true) {
@@ -160,7 +170,7 @@ export class RoundComponent {
 
   /*---- DIALOGS ----*/
 
-  private resolvePlayerDialog(pilot: Pilot, flight: Flight) {
+  private resolvePlayerDialog(pilot: Pilot, flight: Flight, editMode: boolean) {
     var dialogRef = this.dialog.open(PlayerComponent, {
       width: '90%',
       maxWidth: '800px',
@@ -170,16 +180,14 @@ export class RoundComponent {
       data: {
         pilot,
         flight,
-        groupsCount: this.groupCount
+        groupsCount: this.groupCount,
+        editMode: editMode
       }
     })
     dialogRef.componentInstance.returnDirectly = true;
 
     return dialogRef.afterClosed();
   }
-  // if (this.mode == "browse") {
-  //   dialogRef.componentInstance.editMode = false;
-  // }
 
   private resolveConfirmDialog(data = null) {
     return this.dialog.open(ConfirmDialogComponent, {

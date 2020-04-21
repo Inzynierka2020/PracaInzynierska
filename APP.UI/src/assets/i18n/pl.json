@@ -43,5 +43,6 @@
         "Cancel": "CZY CHCESZ ANULOWAĆ RUNDĘ?",
         "Reactivate": "CZY CHCESZ REAKTYWOWAĆ RUNDĘ ? "
     },
-    "Close": "ZAMKNIJ"
+    "Close": "ZAMKNIJ",
+    "Total seconds": "CAŁKOWITY CZAS [s]"
 }
