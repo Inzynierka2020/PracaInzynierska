@@ -46,7 +46,7 @@ export function getBaseUrl() {
     EventComponent,
     GroupPipe,
     WarningSnackComponent,
-    ConnectionSettingsComponent,
+    ConnectionSettingsComponent
   ],
   imports: [
     BrowserModule,

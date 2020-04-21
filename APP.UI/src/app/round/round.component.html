@@ -1,15 +1,5 @@
 <div class="d-flex flex-column align-items-center w-100" [ngClass]="{'theme-disabled' : canceled}">
     <div class="container">
-        <!-- <mat-checkbox [(ngModel)]="canceled" color="warn" (click)="cancelRound()">
-            ROUND CANCELED
-        </mat-checkbox> -->
-        <!-- <i class="material-icons" (click)="changeMode()">
-                <span *ngIf="!editMode">lock</span>
-                <span *ngIf="editMode"> lock_open</span>
-            </i> -->
-        <!-- <mat-checkbox color="warn" [(ngModel)]="isRoundCanceled" (click)="cancelRound()">
-                ROUND CANCELED
-            </mat-checkbox> -->
         <div class="cancel-title" *ngIf="canceled">
             {{'ROUND CANCELED' | translate }}
         </div>
@@ -18,7 +8,7 @@
     </div>
     <div class="content w-100">
         <div class="w-100">
-            <app-score [dataSource]="pilotsFinished" (rowClickAction)="null" (rowPressAction)="reflight($event)">
+            <app-score [dataSource]="pilotsFinished" (rowClickAction)="editFlight($event)" (rowPressAction)="reflight($event)">
             </app-score>
         </div>
         <mat-toolbar color="primary" *ngIf="!noMorePilotsLeft">

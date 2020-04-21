@@ -43,5 +43,6 @@
         "Cancel": "Do you really want to cancel this round?",
         "Reactivate": "Do you really want to reactivate this round?"
     },
-    "Close": "CLOSE"
+    "Close": "CLOSE",
+    "Total seconds": "TOTAL TIME"
 }

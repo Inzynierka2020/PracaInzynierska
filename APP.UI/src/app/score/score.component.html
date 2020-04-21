@@ -53,11 +53,11 @@
                                 <div class="data-field ">
                                     <div class="semi-title ">{{'Time' | translate}}</div>
                                     <mat-divider></mat-divider>
-                                    <div class="score " *ngIf="pilot.flight.seconds; else noValue ">
+                                    <div class="score " *ngIf="pilot.flight.seconds>=0; else noValue ">
                                         <div *ngIf="pilot.flight.dnf">DNF</div>
                                         <div *ngIf="pilot.flight.dns">DNS</div>
                                         <div *ngIf="!pilot.flight.dns && !pilot.flight.dnf">
-                                            {{pilot.flight.seconds.toFixed(2)}}</div>
+                                            {{pilot.flight.seconds}}</div>
                                     </div>
                                 </div>
                                 <div class="data-field ">

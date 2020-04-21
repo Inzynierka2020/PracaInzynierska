@@ -1,9 +1,14 @@
 <div class="container">
-    <div class="content">
+    <div *ngIf="!loading; else spinner" class="content">
         <div class="display-4 w-100 text-center">
             {{'EventSettings' | translate}}
         </div>
         <app-connection-settings class="w-75 settingss my-4" [(settings)]="settings"></app-connection-settings>
         <button mat-raised-button class="theme-accent" (click)="startEvent()">{{'Connect' | translate}}</button>
     </div>
+    <ng-template #spinner>
+        <div class="content">
+            <mat-spinner [diameter]="200"></mat-spinner>
+        </div>
+    </ng-template>
 </div>

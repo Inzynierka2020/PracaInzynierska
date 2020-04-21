@@ -1,5 +1,4 @@
-<!-- <h1 mat-dialog-title class="text-center mb-0 text-danger display-4" *ngIf="editMode ">EDIT MODE</h1> -->
-<div class="content px-1">
+<div class="content px-1" *ngIf="editMode; else notEdit">
     <div class="d-flex justify-content-between mb-3 pt-2">
         <div class="d-flex align-items-center pr-3">
             <div class="number">
@@ -8,11 +7,6 @@
             <h2>
                 {{pilot.lastName | uppercase}}<br>{{pilot.firstName}}
             </h2>
-            <!-- <h1> Class: OPEN</h1>
-            <h1>AMA: 123456</h1>
-            <h1>FAI: ---</h1>
-            <h1>FAI License: ---</h1>
-            <h1>TEAM: ---</h1> -->
         </div>
         <div class="headerDivider"></div>
         <div class="pl-3 flag">
@@ -20,16 +14,16 @@
         </div>
     </div>
     <mat-divider></mat-divider>
-    <div *ngIf="editMode">
+    <div>
         <mat-toolbar color="primary">
             <mat-toolbar-row>
                 <h1 class="text-center w-100">
-                    {{'New player' | translate}}
+                    {{'Total seconds' | translate}}
                 </h1>
             </mat-toolbar-row>
         </mat-toolbar>
-        <div class="display-1 text-center mb-3 font-weight-bolder">
-            99
+        <div class="display-1 text-center mt-2 font-weight-bolder">
+            <input matInput [(ngModel)]="flight.seconds">
         </div>
     </div>
     <div class="groups my-2" *ngIf="groupsCount>1">
@@ -45,101 +39,194 @@
         <div class="bar1 ">
             <table>
                 <tr>
-                    <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); ">
-                    </th>
-                    <td>{{'Best' | translate}}</td>
-                </tr>
-                <tr>
                     <th>CT</th>
-                    <td>99.99</td>
                     <td>99.99</td>
                 </tr>
                 <tr>
                     <th>B1</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub1}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub1"></td>
                 </tr>
                 <tr>
                     <th>B2</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub2}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub2"></td>
                 </tr>
                 <tr>
                     <th>B3</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub3}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub3"></td>
                 </tr>
                 <tr>
                     <th>B4</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub4}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub4"></td>
                 </tr>
                 <tr>
                     <th>B5</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub5}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub5"></td>
                 </tr>
                 <tr>
                     <th>B6</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub6}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub6"></td>
                 </tr>
                 <tr>
                     <th>B7</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub7}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub7"></td>
                 </tr>
                 <tr>
                     <th>B8</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub8}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub8"></td>
                 </tr>
                 <tr>
                     <th>B9</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub9}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub9"></td>
                 </tr>
                 <tr>
                     <th>B10</th>
-                    <td>99.99</td>
-                    <td>{{flight.sub10}}</td>
+                    <td><input matInput [(ngModel)]="flight.sub10"></td>
                 </tr>
 
             </table>
         </div>
         <div class="bar2 ">
-            <!-- <div class="penalty mb-5 " *ngIf="!editMode ">
-                <h3 class="text-center text-danger ">PENALTY</h3>
-                <mat-divider></mat-divider>
-                <h1 class="text-center text-danger ">300</h1>
-                <h3 class="text-center mt-5 ">STATUS</h3>
-                <mat-divider></mat-divider>
-                <h1 class="text-center ">FINISHED</h1>
-            </div> -->
             <div class="input pt-1 ">
-                <mat-form-field class="d-flex flex-column form " color="warn" *ngIf="editMode ">
+                <mat-form-field class="d-flex flex-column form " color="warn">
                     <mat-label>{{'Penalty' | translate}}</mat-label>
-                    <input matInput color="warn " [readonly]="!editMode " [(ngModel)]="flight.penalty ">
+                    <input matInput color="warn" [(ngModel)]="flight.penalty">
                 </mat-form-field>
             </div>
-            <div class="buttons w-75 " *ngIf="editMode ">
+            <div class="buttons w-75">
                 <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
                 <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
                 <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
                 <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
             </div>
             <div class="buttons ">
-                <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="closeThisDialog() ">Back</button>
-                <button *ngIf="!editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">Edit</button>
-                <button *ngIf="editMode " mat-raised-button class="theme-accent " (click)="switchEditMode() ">{{'Cancel' | translate}}</button>
-                <button *ngIf="editMode " class="theme-accent " mat-raised-button (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
             </div>
         </div>
     </div>
-    <!-- <div *ngIf="!editMode ">
-        <div class="buttons my-4 ">
-            <h2>Did not start.</h2>
-        </div>
-    </div> -->
-
 </div>
+<ng-template #notEdit>
+    <div class="content px-1">
+        <div class="d-flex justify-content-between mb-3 pt-2">
+            <div class="d-flex align-items-center pr-3">
+                <div class="number">
+                    {{pilot.pilotBib}}
+                </div>
+                <h2>
+                    {{pilot.lastName | uppercase}}<br>{{pilot.firstName}}
+                </h2>
+            </div>
+            <div class="headerDivider"></div>
+            <div class="pl-3 flag">
+                <app-wind class="wind"></app-wind>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+            <mat-toolbar color="primary">
+                <mat-toolbar-row>
+                    <h1 class="text-center w-100">
+                        {{'New player' | translate}}
+                    </h1>
+                </mat-toolbar-row>
+            </mat-toolbar>
+            <div class="display-1 text-center mb-3 font-weight-bolder">
+                99
+            </div>
+        </div>
+        <div class="groups my-2" *ngIf="groupsCount>1">
+            <mat-divider></mat-divider>
+            <div class="data">
+                <div *ngFor="let group of groups | slice:0:groupsCount">
+                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="second-div ">
+            <div class="bar1 ">
+                <table>
+                    <tr>
+                        <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); ">
+                        </th>
+                        <td>{{'Best' | translate}}</td>
+                    </tr>
+                    <tr>
+                        <th>CT</th>
+                        <td>99.99</td>
+                        <td>99.99</td>
+                    </tr>
+                    <tr>
+                        <th>B1</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub1}}</td>
+                    </tr>
+                    <tr>
+                        <th>B2</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub2}}</td>
+                    </tr>
+                    <tr>
+                        <th>B3</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub3}}</td>
+                    </tr>
+                    <tr>
+                        <th>B4</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub4}}</td>
+                    </tr>
+                    <tr>
+                        <th>B5</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub5}}</td>
+                    </tr>
+                    <tr>
+                        <th>B6</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub6}}</td>
+                    </tr>
+                    <tr>
+                        <th>B7</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub7}}</td>
+                    </tr>
+                    <tr>
+                        <th>B8</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub8}}</td>
+                    </tr>
+                    <tr>
+                        <th>B9</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub9}}</td>
+                    </tr>
+                    <tr>
+                        <th>B10</th>
+                        <td>99.99</td>
+                        <td>{{flight.sub10}}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="bar2 ">
+                <div class="input pt-1 ">
+                    <mat-form-field class="d-flex flex-column form " color="warn">
+                        <mat-label>{{'Penalty' | translate}}</mat-label>
+                        <input matInput color="warn" [(ngModel)]="flight.penalty">
+                    </mat-form-field>
+                </div>
+                <div class="buttons w-75">
+                    <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
+                </div>
+                <div class="buttons ">
+                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                    <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -10,6 +10,8 @@ import { Settings } from '../models/settings';
 })
 export class EventComponent {
 
+  loading = false;
+
   @Input()
   event: Event;
   @Output()
@@ -23,16 +25,26 @@ export class EventComponent {
   }
 
   constructor(private _eventService: EventService) {
+    this.loading = true;
     let eventId = localStorage.getItem('eventId');
     if (eventId) {
       this.settings.eventId = Number(eventId);
       this.getEvent();
+    }else{
+      this.loading=false;
     }
   }
 
   startEvent() {
+    if(!this.settings.eventId){
+      console.log("No EVENT ID provided");
+      return;
+    }
+    this.loading = true;
     localStorage.setItem('eventId', this.settings.eventId.toString());
     this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
+      this.getEvent();
+    }, error => {
       this.getEvent();
     })
   }
@@ -40,8 +52,10 @@ export class EventComponent {
   getEvent() {
     this._eventService.getEvent(this.settings.eventId).subscribe(eventResult => {
       this.eventChange.emit(eventResult);
+      this.loading=false;
     }, error => {
       localStorage.removeItem('eventId');
+      window.location.reload();
     })
   }
 }
