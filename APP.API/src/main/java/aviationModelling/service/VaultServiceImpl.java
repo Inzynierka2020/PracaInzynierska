@@ -21,8 +21,7 @@ public class VaultServiceImpl implements VaultService {
 
     public VaultEventDataDTO getEventInfoFull(int eventId) {
         String json = restTemplate.getForObject(urlWizard.getEventInfo(eventId), String.class);
-        json = json.replace("[]", "null").replace("\"\"", "null");
-
+        json = json.replace("\"\"", "null");
         VaultEventDataDTO eventData = new Gson().fromJson(json, VaultEventDataDTO.class);
         eventData.getEvent().setEvent_id(eventId);
 
