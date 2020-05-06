@@ -36,16 +36,16 @@ public class UrlWizard {
         params.put("round", flightDTO.getRoundNum().toString());
         params.put("seconds", flightDTO.getSeconds().toString());
         params.put("sub1", flightDTO.getSub1().toString());
-        params.put("sub2", flightDTO.getSub1().toString());
-        params.put("sub3", flightDTO.getSub1().toString());
-        params.put("sub4", flightDTO.getSub1().toString());
-        params.put("sub5", flightDTO.getSub1().toString());
-        params.put("sub6", flightDTO.getSub1().toString());
-        params.put("sub7", flightDTO.getSub1().toString());
-        params.put("sub8", flightDTO.getSub1().toString());
-        params.put("sub9", flightDTO.getSub1().toString());
-        params.put("sub10", flightDTO.getSub1().toString());
-        params.put("sub11", flightDTO.getSub1().toString());
+        params.put("sub2", flightDTO.getSub2().toString());
+        params.put("sub3", flightDTO.getSub3().toString());
+        params.put("sub4", flightDTO.getSub4().toString());
+        params.put("sub5", flightDTO.getSub5().toString());
+        params.put("sub6", flightDTO.getSub6().toString());
+        params.put("sub7", flightDTO.getSub7().toString());
+        params.put("sub8", flightDTO.getSub8().toString());
+        params.put("sub9", flightDTO.getSub9().toString());
+        params.put("sub10", flightDTO.getSub10().toString());
+        params.put("sub11", flightDTO.getSub11().toString());
         if (flightDTO.getPenalty() != 0 && flightDTO.getPenalty() != null) {
             params.put("penalty", flightDTO.getPenalty().toString());
         }

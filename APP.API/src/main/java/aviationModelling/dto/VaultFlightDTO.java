@@ -18,7 +18,7 @@ public class VaultFlightDTO {
     private Integer order;
     private String seconds;
     private Integer penalty;
-    private Sub subs;
+    public List<Sub> subs;
     private Float score;
 
     @Getter
@@ -26,16 +26,7 @@ public class VaultFlightDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Sub {
-        String sub1;
-        String sub2;
-        String sub3;
-        String sub4;
-        String sub5;
-        String sub6;
-        String sub7;
-        String sub8;
-        String sub9;
-        String sub10;
-        String sub11;
+        public Integer sub_num;
+        public String sub_val;
     }
 }

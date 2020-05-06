@@ -8,29 +8,29 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper()
 public interface VaultFlightMapper {
 
     VaultFlightMapper MAPPER = Mappers.getMapper(VaultFlightMapper.class);
 
     @Mappings({
+
 //            @Mapping(target = "flightId.roundNum", source = "round_number"),
 //            @Mapping(target = "flightId.pilotId", source = "pilot_id"),
             @Mapping(target = "group", source = "group", defaultValue = ""),
-            @Mapping(target = "sub1", source = "subs.sub1", defaultValue = "0F"),
-            @Mapping(target = "sub2", source = "subs.sub2", defaultValue = "0F"),
-            @Mapping(target = "sub3", source = "subs.sub3", defaultValue = "0F"),
-            @Mapping(target = "sub4", source = "subs.sub4", defaultValue = "0F"),
-            @Mapping(target = "sub5", source = "subs.sub5", defaultValue = "0F"),
-            @Mapping(target = "sub6", source = "subs.sub6", defaultValue = "0F"),
-            @Mapping(target = "sub7", source = "subs.sub7", defaultValue = "0F"),
-            @Mapping(target = "sub8", source = "subs.sub8", defaultValue = "0F"),
-            @Mapping(target = "sub9", source = "subs.sub9", defaultValue = "0F"),
-            @Mapping(target = "sub10", source = "subs.sub10", defaultValue = "0F"),
-            @Mapping(target = "sub11", source = "subs.sub11", defaultValue = "0F"),
+            @Mapping(target = "sub1", expression = "java(!(source.subs== null || source.subs.get(0).sub_val == null) ? Float.parseFloat(source.subs.get(0).sub_val) : null)"),
+            @Mapping(target = "sub2", expression = "java(!(source.subs== null || source.subs.get(1).sub_val == null) ? Float.parseFloat(source.subs.get(1).sub_val) : null)"),
+            @Mapping(target = "sub3", expression = "java(!(source.subs== null || source.subs.get(2).sub_val == null) ? Float.parseFloat(source.subs.get(2).sub_val) : null)"),
+            @Mapping(target = "sub4", expression = "java(!(source.subs== null || source.subs.get(3).sub_val == null) ? Float.parseFloat(source.subs.get(3).sub_val) : null)"),
+            @Mapping(target = "sub5", expression = "java(!(source.subs== null || source.subs.get(4).sub_val == null) ? Float.parseFloat(source.subs.get(4).sub_val) : null)"),
+            @Mapping(target = "sub6", expression = "java(!(source.subs== null || source.subs.get(5).sub_val == null) ? Float.parseFloat(source.subs.get(5).sub_val) : null)"),
+            @Mapping(target = "sub7", expression = "java(!(source.subs== null || source.subs.get(6).sub_val == null) ? Float.parseFloat(source.subs.get(6).sub_val) : null)"),
+            @Mapping(target = "sub8", expression = "java(!(source.subs== null || source.subs.get(7).sub_val == null) ? Float.parseFloat(source.subs.get(7).sub_val) : null)"),
+            @Mapping(target = "sub9", expression = "java(!(source.subs== null || source.subs.get(8).sub_val == null) ? Float.parseFloat(source.subs.get(8).sub_val) : null)"),
+            @Mapping(target = "sub10", expression = "java(!(source.subs== null || source.subs.get(9).sub_val == null) ? Float.parseFloat(source.subs.get(9).sub_val) : null)"),
+            @Mapping(target = "sub11", expression = "java(!(source.subs== null || source.subs.get(10).sub_val == null) ? Float.parseFloat(source.subs.get(10).sub_val) : null)"),
             @Mapping(target = "score", source = "score", defaultValue = "0F"),
             @Mapping(target = "penalty", source = "penalty", defaultValue = "0")
-
     })
     Flight toFlight(VaultFlightDTO source);
 
