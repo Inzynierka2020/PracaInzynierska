@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rounds")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RestRoundController {
 
     private RoundService roundService;
