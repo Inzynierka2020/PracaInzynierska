@@ -13,13 +13,12 @@ import java.util.List;
 public class VaultEventDTO {
     private Integer event_id;
     private String event_name;
-    private String location;
-    private String start_date;
-    private String end_date;
-    private String event_type;
-    private Integer rounds;
-    private List<Task> tasks;
+    private String location_name;
+    private String country_code;
+    private String event_type_name;
+    private Integer total_rounds;
     private List<VaultPilotDTO> pilots;
+    private VaultPrelimStandingsDTO prelim_standings;
 
 
     @Getter @Setter

@@ -12,14 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VaultFlightDTO {
-    private Integer round_number;
-    private Integer pilot_id;
-    private String group;
-    private Integer order;
-    private String seconds;
-    private Integer penalty;
-    public List<Sub> subs;
-    private Float score;
+    private String flight_group;
+    private Integer flight_order;
+    private String flight_seconds;
+    private Integer flight_penalty;
+    private Float flight_score;
+    private Float flight_dropped;
+    private Integer score_status;
+    public List<Sub> flight_subs;
+
 
     @Getter
     @Setter

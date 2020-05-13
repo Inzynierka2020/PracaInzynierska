@@ -25,17 +25,14 @@ public class Event {
     @Column(name = "event_location")
     private String eventLocation;
 
-    @Column(name = "event_start_date")
-    private String eventStartDate;
-
-    @Column(name = "event_end_date")
-    private String eventEndDate;
+    @Column(name = "country_code")
+    private String countryCode;
 
     @Column(name = "event_type")
-    private String eventType;
+    private String eventTypeName;
 
-    @Column(name = "number_of_rounds")
-    private Integer numberOfRounds;
+    @Column(name = "total_rounds")
+    private Integer totalRounds;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)

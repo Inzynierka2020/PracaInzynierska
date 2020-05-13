@@ -28,17 +28,8 @@ public class Pilot {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "pilot_class")
-    private String pilotClass;
-
-    private String ama;
-    private String fai;
-
-    @Column(name = "fai_license")
-    private String faiLicence;
-
-    @Column(name = "team_name")
-    private String teamName;
+    @Column(name = "country_code")
+    private String countryCode;
 
 
 
