@@ -23,11 +23,6 @@ public class PilotDTO {
     private String pilotBib;
     private String firstName;
     private String lastName;
-    private String pilotClass;
-    private String ama;
-    private String fai;
-    private String faiLicence;
-    private String teamName;
     private Integer totalPenalty;
     private Float discarded1;
     private Float discarded2;

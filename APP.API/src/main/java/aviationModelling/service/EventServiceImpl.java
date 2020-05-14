@@ -54,78 +54,91 @@ public class EventServiceImpl implements EventService {
         if (eventRepository.findByEventId(eventId) != null) {
             throw new RuntimeException("Event " + eventId + " already exists");
         }
-//        saveEventToDb(eventId, eventData);
-//        createRoundsInDb(eventData, eventId);
-//        savePilotsToDb(eventData);
-//        saveEventPilots(eventData, eventId);
-//        saveFlightsToDb(eventData, eventId);
+        saveEventToDb(eventId, eventData);
+        createRoundsInDb(eventData, eventId);
+        savePilotsToDb(eventData);
+        saveEventPilots(eventData, eventId);
+        saveFlightsToDb(eventData, eventId);
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.CREATED.value(),
                 "Event " + eventId + " data saved."), HttpStatus.CREATED);
     }
 
-//    private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
-////        zapisywanie eventu
-//        Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
-//        event.setEventId(eventId);
-//        eventRepository.save(event);
-//    }
+    private void saveEventToDb(int eventId, VaultEventDataDTO eventData) {
+//        zapisywanie eventu
+        Event event = VaultEventMapper.MAPPER.toEvent(eventData.getEvent());
+        event.setEventId(eventId);
+        eventRepository.save(event);
+    }
 
-//    private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
-//        if (eventData.getEvent().getPilots().get(0).getFlights() == null) {
-//            return;
-//        }
-//        List<Integer> roundNumbers = new ArrayList<>();
-//        eventData.getEvent().getPilots().get(0).getFlights().forEach(flight -> roundNumbers.add(flight.getRound_number()));
-//
-//        int defaultNumberOfGroups = 1;
-//        for (Integer number : roundNumbers) {
-//            roundService.createRound(number, eventId, defaultNumberOfGroups);
-//            roundService.finishRound(number, eventId);
-//        }
-//    }
+    private void createRoundsInDb(VaultEventDataDTO eventData, Integer eventId) {
+        if (eventData.getEvent().getTotal_rounds() == 0) {
+            return;
+        }
+        List<Integer> roundNumbers = new ArrayList<>();
+        eventData.getEvent().getPrelim_standings().getStandings().get(0).getRounds().forEach(round -> roundNumbers.add(round.getRound_number()));
 
-//    private void savePilotsToDb(VaultEventDataDTO eventData) {
-////        zapisz pilotow do bazy
-//        List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
-//        pilotRepository.saveAll(pilotList);
-//    }
+        int defaultNumberOfGroups = 1;
+        for (Integer number : roundNumbers) {
+            roundService.createRound(number, eventId, defaultNumberOfGroups);
+            roundService.finishRound(number, eventId);
+        }
+    }
+
+    private void savePilotsToDb(VaultEventDataDTO eventData) {
+//        zapisz pilotow do bazy
+        List<Pilot> pilotList = VaultPilotMapper.MAPPER.toPilotList(eventData.getEvent().getPilots());
+        pilotRepository.saveAll(pilotList);
+    }
 
     private void saveEventPilots(VaultEventDataDTO eventData, Integer eventId) {
-        eventData.getEvent().getPilots().forEach(pilot -> {
+        eventData.getEvent().getPrelim_standings().getStandings().forEach(pilot -> {
             EventPilot eventPilot = new EventPilot();
             eventPilot.setEventId(eventId);
             eventPilot.setPilotId(pilot.getPilot_id());
-            eventPilot.setScore(0F);
+
+            if (pilot.getTotal_score() != null) {
+                eventPilot.setScore(pilot.getTotal_score());
+            } else {
+                eventPilot.setScore(null);
+            }
+            eventPilot.setTotalPenalty(pilot.getTotal_penalties());
+            eventPilot.setPercentage(pilot.getTotal_percent());
             eventPilotRepository.save(eventPilot);
         });
     }
 
-//    private void saveFlightsToDb(VaultEventDataDTO eventData, Integer eventId) {
-//        List<EventPilot> eventPilotList = pilotRepository.findAll(eventId);
-//        List<EventRound> eventRoundList = roundRepository.findAll(eventId);
-//
-////        dla kazdego pilota znajdz wszystkie jego loty i przypisz im uprzednio wygenerowany eventPilotId oraz eventRoundId
-//        eventData.getEvent().getPilots().forEach(pilot -> {
-//
-//            if (pilot.getFlights() != null) {
-//
-//                Integer eventPilotId = eventPilotList.stream()
-//                        .filter(eventPilot -> eventPilot.getPilotId().equals(pilot.getPilot_id()))
-//                        .findFirst().get().getEventPilotId();
-//
-//                pilot.getFlights().forEach(tmpFlight -> {
-//                    Flight flight = VaultFlightMapper.MAPPER.toFlight(tmpFlight);
-//                    Integer eventRoundId = eventRoundList.stream()
-//                            .filter(eventRound -> eventRound.getRoundNum().equals(tmpFlight.getRound_number()))
-//                            .findFirst().get().getEventRoundId();
-//
-//                    flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
-//                    flightRepository.save(flight);
-//                });
-//            }
-//        });
-//    }
+    private void saveFlightsToDb(VaultEventDataDTO eventData, Integer eventId) {
+        List<EventPilot> eventPilotList = pilotRepository.findAll(eventId);
+        List<EventRound> eventRoundList = roundRepository.findAll(eventId);
+
+//        dla kazdego pilota znajdz wszystkie jego loty i przypisz im uprzednio wygenerowany eventPilotId oraz eventRoundId
+        eventData.getEvent().getPrelim_standings().getStandings().forEach(pilot -> {
+//        jesli brak rund
+            if (!(pilot.getRounds() == null || pilot.getRounds().size()==0)) {
+
+//                przypisz event_pilot_id (potrzebne do klucza glownego flighta)
+                Integer eventPilotId = eventPilotList.stream()
+                        .filter(eventPilot -> eventPilot.getPilotId().equals(pilot.getPilot_id()))
+                        .findFirst().get().getEventPilotId();
+
+                pilot.getRounds().forEach(round -> {
+                    if(round.getFlights() != null) {
+                        round.getFlights().forEach(tmpFlight -> {
+                            Flight flight = VaultFlightMapper.MAPPER.toFlight(tmpFlight);
+                            Integer eventRoundId = eventRoundList.stream()
+                                    .filter(eventRound -> eventRound.getRoundNum().equals(round.getRound_number()))
+                                    .findFirst().get().getEventRoundId();
+
+                            flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
+                            flightRepository.save(flight);
+                        });
+                    }
+
+                });
+            }
+        });
+    }
 
     @Override
     public ResponseEntity<CustomResponse> updateTotalScore(int eventId) {

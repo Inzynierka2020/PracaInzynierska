@@ -19,10 +19,8 @@ public class EventDTO {
     private Integer eventId;
     private String eventName;
     private String eventLocation;
-    private String eventStartDate;
-    private String eventEndDate;
-    private String eventType;
-    private Integer numberOfRounds;
+    private String eventTypeName;
+    private Integer totalRounds;
     @JsonView(Views.Internal.class)
     private List<PilotDTO> pilots;
     @JsonView(Views.Internal.class)
