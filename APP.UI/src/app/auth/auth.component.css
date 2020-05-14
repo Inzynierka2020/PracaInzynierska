@@ -1,0 +1,24 @@
+.container {
+  padding-top: 150px;
+}
+
+div {
+  margin-top: 10px;
+}
+
+button {
+  margin-right: 5px;
+  width: auto;
+  height: 80px;
+  font-size: 35px;
+}
+
+/* .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--th-accent) !important;
+} */
+
+mat-form-field {
+  font-size: 200% !important;
+  width: 100%;
+}
+
