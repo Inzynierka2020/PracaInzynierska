@@ -17,8 +17,8 @@ public class VaultFlightDTO {
     private String flight_seconds;
     private Integer flight_penalty;
     private Float flight_score;
-    private Float flight_dropped;
-    private Integer score_status;
+    private Integer flight_dropped; //1-true, 0-false
+    private Integer score_status; //1-valid, 0-invalid
     public List<Sub> flight_subs;
 
 

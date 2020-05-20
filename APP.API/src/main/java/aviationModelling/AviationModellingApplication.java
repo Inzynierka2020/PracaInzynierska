@@ -12,7 +12,7 @@ import java.util.Arrays;
 @SpringBootApplication
 public class AviationModellingApplication {
 	public static void main(String[] args) throws InterruptedException {
-//		Thread.sleep(90000);
+		Thread.sleep(90000);
 		SpringApplication.run(AviationModellingApplication.class, args);
 	}
 
