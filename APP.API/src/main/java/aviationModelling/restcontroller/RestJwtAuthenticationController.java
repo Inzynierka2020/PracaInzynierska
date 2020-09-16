@@ -22,20 +22,20 @@ import java.util.Date;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class RestJwtAuthenticationController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
+
+
     private JwtTokenUtil jwtTokenUtil;
 
     private JwtUserDetailsService userDetailsService;
 
-    public RestJwtAuthenticationController(JwtUserDetailsService userDetailsService) {
+    public RestJwtAuthenticationController(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+        this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        userDetailsService.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
@@ -50,15 +50,7 @@ public class RestJwtAuthenticationController {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
+
 
 
 

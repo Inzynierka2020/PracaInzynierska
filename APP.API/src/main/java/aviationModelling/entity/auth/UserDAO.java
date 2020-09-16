@@ -1,7 +1,5 @@
 package aviationModelling.entity.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@Table(name = "[user]")
+@Table(name = "db_user")
 public class UserDAO {
 
     @Id

@@ -36,7 +36,7 @@ public class RestEventController {
     @ApiOperation(value = "Update total score")
     @PutMapping("/total-score/{eventId}")
     public ResponseEntity<CustomResponse> updateTotalScore(@PathVariable int eventId) {
-        return eventService.updateTotalScore(eventId);
+        return eventService.updateAllTotalScores(eventId);
     }
 
     @ApiOperation(value = "Delete event")

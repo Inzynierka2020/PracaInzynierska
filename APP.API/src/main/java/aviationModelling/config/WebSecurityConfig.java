@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
 //                dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate", "/register").permitAll()
+                .authorizeRequests().antMatchers("/authenticate", "/register", "swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 //                all other requests need to be authenticated
                 .anyRequest().authenticated()

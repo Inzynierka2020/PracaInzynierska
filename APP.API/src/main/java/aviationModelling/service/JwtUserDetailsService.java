@@ -6,6 +6,10 @@ import aviationModelling.entity.auth.UserDAO;
 import aviationModelling.repository.AuthorityRepository;
 import aviationModelling.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -30,6 +34,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     @Override
@@ -59,6 +65,16 @@ public class JwtUserDetailsService implements UserDetailsService {
         List<Authority> authorities = new ArrayList<>();
         roles.forEach(role-> authorities.add(authorityRepository.findByName(role)));
         return authorities;
+    }
+
+    public void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
     }
 
 }

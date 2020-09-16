@@ -52,29 +52,4 @@ public class FlightServiceImpl implements FlightService {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @Override
-//    public ResponseEntity<List<FlightDTO>> saveAll(List<FlightDTO> flightList) {
-//        flightRepository.saveAll(FlightMapper.MAPPER.toFlightList(flightList));
-//        return new ResponseEntity<>(flightList, HttpStatus.CREATED);
-//    }
-//
-//    @Override
-//    public FlightDTO findBestTime(Integer eventId) {
-//        Flight flight = flightRepository.findBestTime(eventId);
-//        if(flight==null) {
-//            throw new CustomNotFoundException("Flight with best time not found");
-//        }
-//        return FlightMapper.MAPPER.toFlightDTO(flight);
-//    }
-//
-//    @Override
-//    public FlightDTO findFlight(Integer roundNum, Integer pilotId, Integer eventId) {
-//        Flight flight = flightRepository.findFlight(roundNum, pilotId, eventId);
-//        if(flight==null) {
-//            throw new CustomNotFoundException("Flight (round = "+roundNum+", pilot ID = "+pilotId+") not found.");
-//        }
-//        return FlightMapper.MAPPER.toFlightDTO(flight);
-//    }
-
 }
