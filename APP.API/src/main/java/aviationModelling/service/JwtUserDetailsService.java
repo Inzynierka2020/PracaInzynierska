@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +58,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setAuthorities(mapToAuthorities(user.getAuthorities()));
+        if(user.getAuthorities() != null) {
+            newUser.setAuthorities(mapToAuthorities(user.getAuthorities()));
+        } else {
+            newUser.setAuthorities(Arrays.asList(authorityRepository.findByName("USER")));
+        }
         return userRepository.save(newUser);
     }
 

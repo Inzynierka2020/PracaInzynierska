@@ -38,13 +38,13 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<{ expirationDate: string; token: string }>(
+      .post<{ expirationDate: string; jwttoken: string }>(
         "http://localhost:8080/authenticate",
         { username: username, password: password }
       )
       .pipe(
         tap((response) => {
-          this.handleAuthentication(response.token, response.expirationDate);
+          this.handleAuthentication(response.jwttoken, response.expirationDate);
         })
       );
   }
