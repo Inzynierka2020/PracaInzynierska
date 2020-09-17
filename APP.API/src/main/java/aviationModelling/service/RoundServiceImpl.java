@@ -133,28 +133,21 @@ public class RoundServiceImpl implements RoundService {
         if (eventRound.getFlights() == null) {
             throw new CustomNotFoundException("Round " + roundNum + " has no flights!");
         }
-//        zwroc liste 'punktowych' lotow (odrzuc wszystkie z czasem 0 lub null)
-        List<Flight> validFlights = eventRound.getFlights().stream()
-                .filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0)
-                .collect(Collectors.toList());
+
+        List<Flight> validFlights = getValidFlights(eventRound);
 
         if (validFlights.size() != 0) {
 //            wyodrebnij ilosc grup, w mapowaniu domyslnie grupa="", wiec przy braku podzialu groups.size() = 1
-            Set<String> groups = new HashSet<>();
-            validFlights.forEach(flight -> groups.add(flight.getGroup()));
+            Set<String> groups = getGroupNames(validFlights);
 
             if (eventRound.getNumberOfGroups() == 1 && groups.size() != 1) {
                 eventRound.setNumberOfGroups(groups.size());
             }
 
             groups.forEach(group -> {
-                Float best = validFlights.stream()
-                        .filter(flight -> flight.getGroup().equals(group))
-                        .min(Comparator.comparingDouble(Flight::getSeconds))
-                        .get().getSeconds();
+                Float bestTime = findBestTime(validFlights, group);
 
-                eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0 && flight.getGroup().equals(group))
-                        .forEach(flight -> flight.setScore(best / flight.getSeconds() * 1000));
+                countFlightScore(eventRound, group, bestTime);
 
                 eventRoundRepository.save(eventRound);
             });
@@ -165,6 +158,31 @@ public class RoundServiceImpl implements RoundService {
         }
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Scores in round " + roundNum + " updated."), HttpStatus.OK);
+    }
+
+    private void countFlightScore(EventRound eventRound, String group, Float bestTime) {
+        eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0 && flight.getGroup().equals(group))
+                .forEach(flight -> flight.setScore(bestTime / flight.getSeconds() * 1000));
+    }
+
+    private Float findBestTime(List<Flight> validFlights, String group) {
+        return validFlights.stream()
+                .filter(flight -> flight.getGroup().equals(group))
+                .min(Comparator.comparingDouble(Flight::getSeconds))
+                .get().getSeconds();
+    }
+
+    private Set<String> getGroupNames(List<Flight> validFlights) {
+        Set<String> groups = new HashSet<>();
+        validFlights.forEach(flight -> groups.add(flight.getGroup()));
+        return groups;
+    }
+
+    //        zwroc liste 'punktowych' lotow (odrzuc wszystkie z czasem 0 lub null)
+    private List<Flight> getValidFlights(EventRound eventRound) {
+        return eventRound.getFlights().stream()
+                .filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -184,7 +202,6 @@ public class RoundServiceImpl implements RoundService {
                         " rounds score updated, " + cancelled.size() +
                         " rounds cancelled because of invalid data"), HttpStatus.OK);
     }
-
 
     @Override
     public List<Integer> getRoundNumbers(Integer eventId) {

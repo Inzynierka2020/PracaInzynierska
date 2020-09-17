@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -17,17 +18,18 @@ import java.util.function.Function;
 public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
+//    token wazny 10h
     private static final long JWT_TOKEN_VALIDITY = 10 * 60 * 60;
 
     @Value("{jwt.secret}")
     private String secret;
 
-    //    retrieve username from jwt token
+//    wydobadz username z tokena
     public String getUserNameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    //    retrieve expiration date from jwt token
+//    wydobadz date waznosci z tokena
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }

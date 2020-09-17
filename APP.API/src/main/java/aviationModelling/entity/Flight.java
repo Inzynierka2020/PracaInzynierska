@@ -77,4 +77,8 @@ public class Flight implements Serializable {
         @Column(name = "event_round_id")
         private Integer eventRoundId;
     }
+
+    public boolean isValid() {
+        return seconds != null && seconds > 0;
+    }
 }

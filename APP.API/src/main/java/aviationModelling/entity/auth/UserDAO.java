@@ -1,17 +1,17 @@
-package aviationModelling.entity;
+package aviationModelling.entity.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
-@Data
-@Table(name = "[user]")
+@Getter @Setter
+@NoArgsConstructor
+@Table(name = "db_user")
 public class UserDAO {
 
     @Id
@@ -28,5 +28,11 @@ public class UserDAO {
     @Column(name = "password")
 //    @JsonIgnore
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private List<Authority> authorities;
 
 }
