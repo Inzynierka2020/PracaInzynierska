@@ -46,7 +46,7 @@ export class RoundComponent {
           });
         },
         error => {
-          console.log("INFO: EMPTY ROUND");
+          console.log("INFO: Empty round");
         }
       )
     });
@@ -66,7 +66,6 @@ export class RoundComponent {
 
   editFlight(pilot: Pilot) {
     this.resolvePlayerDialog(pilot, pilot.flight, true).subscribe(flightResult => {
-      console.log(flightResult)
       if (flightResult)
         this._flighsService.saveFlight(flightResult).subscribe(result => {
           this.updateScore();
@@ -77,7 +76,7 @@ export class RoundComponent {
   finishFlight(flight: Flight) {
     if(flight.seconds == 0)
       return;
-      
+
     flight.order = this.order++;
     this.flights.push(flight);
 
