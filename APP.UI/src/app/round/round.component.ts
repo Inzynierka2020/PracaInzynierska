@@ -75,6 +75,9 @@ export class RoundComponent {
   }
 
   finishFlight(flight: Flight) {
+    if(flight.seconds == 0)
+      return;
+      
     flight.order = this.order++;
     this.flights.push(flight);
 

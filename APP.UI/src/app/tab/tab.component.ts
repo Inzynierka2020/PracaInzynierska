@@ -120,6 +120,8 @@ export class TabComponent {
   refreshRounds() {
     this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
       this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
+        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
+        console.log("sorted"); //del
         this.rounds = roundsResult;
         this.changeRound();
         this.refreshScores();
