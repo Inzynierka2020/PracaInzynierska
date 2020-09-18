@@ -101,6 +101,7 @@ export class TabComponent {
     if(!lastRound.finished){
       this.isRoundStarted = true;
       this.newRoundNumber = lastRound.roundNum;
+      this.groupCount = lastRound.numberOfGroups;
       this.rounds.pop();
     }
   }
@@ -120,6 +121,7 @@ export class TabComponent {
   refreshRounds() {
     this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
       this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
+        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
         this.rounds = roundsResult;
         this.changeRound();
         this.refreshScores();
