@@ -54,7 +54,6 @@ export class BrowseComponent {
   editFlight(pilot: Pilot) {
     if (!this.isRoundCanceled)
       this.resolvePlayerDialog(pilot, pilot.flight).subscribe(flightResult => {
-        console.log(flightResult)
         if (flightResult)
           this._flightService.saveFlight(flightResult).subscribe(result => {
             this.roundCanceled.emit(this.round.cancelled);

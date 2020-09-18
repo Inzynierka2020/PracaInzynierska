@@ -37,7 +37,7 @@ export class EventComponent {
 
   startEvent() {
     if(!this.settings.eventId){
-      console.log("No EVENT ID provided");
+      console.log("INFO: No EVENT ID provided");
       return;
     }
     this.loading = true;

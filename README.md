@@ -17,7 +17,6 @@ W celu uruchomienia lokalnie projektu angularowego należy:
 - od teraz do uruchomienia projektu służy polecenie `ng serve`
 
 ### Spring
-<<<<<<< HEAD
 W celu uruchomienia lokalnie API aplikacji należy:
 - pobrać repozytorium
 - posiadać zainstalowanego [Mavena](https://maven.apache.org/download.cgi) oraz [JDK](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)
@@ -25,9 +24,6 @@ W celu uruchomienia lokalnie API aplikacji należy:
 - przejść do utworzonego katalogu target i poleceniem `java -jar nazwa-utworzonego-pliku-jar.jar` uruchomić API
 Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem .../api/swagger-ui.html
 
-=======
-Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../swagger-ui.html**
->>>>>>> a72f7431eb721ac26efd59c76efb584c6a74a83f
 ## Docker
 
 ## Linki

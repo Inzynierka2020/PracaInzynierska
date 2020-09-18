@@ -50,7 +50,7 @@ export class SettingsComponent implements OnInit {
       window.location.reload();
     }, error => {
       window.location.reload();
-      console.log("Deleting event failed. There is no such event in the database !");
+      console.log("INFO: Deleting event failed. There is no such event in the database !");
     });
   }
 
