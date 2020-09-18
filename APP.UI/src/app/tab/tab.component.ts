@@ -101,6 +101,8 @@ export class TabComponent {
     if(!lastRound.finished){
       this.isRoundStarted = true;
       this.newRoundNumber = lastRound.roundNum;
+      this.groupCount = lastRound.numberOfGroups;
+      console.log("XDDDDD", this.groupCount);
       this.rounds.pop();
     }
   }

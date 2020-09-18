@@ -138,7 +138,7 @@
             <mat-divider></mat-divider>
             <div class="data">
                 <div *ngFor="let group of groups | slice:0:groupsCount">
-                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
+                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group)">{{group}}</button>
                 </div>
             </div>
         </div>
