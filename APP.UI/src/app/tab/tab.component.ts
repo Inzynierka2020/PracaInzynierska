@@ -96,6 +96,13 @@ export class TabComponent {
   changeRound() {
     this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
     this.browsedRound = this.rounds[this.browsedRoundIndex];
+
+    var lastRound = this.rounds[this.rounds.length-1];
+    if(!lastRound.finished){
+      this.isRoundStarted = true;
+      this.newRoundNumber = lastRound.roundNum;
+      this.rounds.pop();
+    }
   }
 
   cancelRound(toCancel: boolean) {

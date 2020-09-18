@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 
 import { ToolbarComponent } from "./toolbar/toolbar.component";
 import { AppComponent } from "./app.component";
-import { MaterialModule } from "src/modules/material/material.module";
+import { MaterialModule } from "../modules/material/material.module";
 import { TabComponent } from "./tab/tab.component";
 import { ScoreComponent } from "./score/score.component";
 import { RoundComponent } from "./round/round.component";
@@ -15,7 +15,6 @@ import { ConfirmDialogComponent } from "./confirm-dialog/confirm-dialog.componen
 import { PlayerComponent } from "./player/player.component";
 import { WindComponent } from "./wind/wind.component";
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { environment } from "src/environments/environment";
 import { EventComponent } from "./event/event.component";
 import { GroupPipe } from "./pipes/group.pipe";
 import { WarningSnackComponent } from "./wind/warning-snack/warning-snack.component";
@@ -27,6 +26,7 @@ import { AuthComponent } from "./auth/auth.component";
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { WrapperComponent } from './wrapper/wrapper.component';
 import { AppRoutingModule } from './app-routing.module';
+import { environment } from "../environments/environment";
 
 export function getBaseUrl() {
   var url = document

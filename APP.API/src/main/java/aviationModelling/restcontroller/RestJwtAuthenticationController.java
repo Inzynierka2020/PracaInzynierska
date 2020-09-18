@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Date;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
 @RestController
 public class RestJwtAuthenticationController {
 

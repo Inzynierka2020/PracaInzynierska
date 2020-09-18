@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pilots")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
 public class RestPilotController {
 
     private PilotService pilotService;

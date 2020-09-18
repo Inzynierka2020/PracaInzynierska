@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { tap } from "rxjs/operators";
 import { Token } from "./token.model";
@@ -17,14 +17,15 @@ export interface UserResponse {
 })
 export class AuthService {
   constructor(private http: HttpClient,
-    private router: Router) {}
+    private router: Router,
+    @Inject('BASE_URL') private _baseUrl) { }
 
   token = new BehaviorSubject<Token>(null);
   private tokenExpirationTimer: any;
 
   register(username: string, password: string, email: string) {
     return this.http
-      .post<UserResponse>("http://localhost:8080/register", {
+      .post<UserResponse>(this._baseUrl + "register", {
         username,
         password,
         email,
@@ -39,7 +40,7 @@ export class AuthService {
   login(username: string, password: string) {
     return this.http
       .post<{ expirationDate: string; jwttoken: string }>(
-        "http://localhost:8080/authenticate",
+        this._baseUrl + "authenticate",
         { username: username, password: password }
       )
       .pipe(
@@ -82,7 +83,7 @@ export class AuthService {
       _token: string;
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem("tokenData"));
-    if(!tokenData) {
+    if (!tokenData) {
       return;
     }
     const actualToken = new Token(
