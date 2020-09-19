@@ -4,5 +4,6 @@ WORKDIR /app
 
 COPY . ./
 RUN mvn clean package -Dspring.profiles.active=prod -DskipTests
+RUN chmod +x ./entrypoint.sh
 
-ENTRYPOINT [  "mvn", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-Dspring.profiles.active=prod'" ]
+ENTRYPOINT [ "bash", "./entrypoint.sh" ]
