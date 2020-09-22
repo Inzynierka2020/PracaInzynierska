@@ -126,12 +126,12 @@
             <mat-toolbar color="primary">
                 <mat-toolbar-row>
                     <h1 class="text-center w-100">
-                        {{'New player' | translate}}
+                        {{title | translate}}
                     </h1>
                 </mat-toolbar-row>
             </mat-toolbar>
             <div class="display-1 text-center mb-3 font-weight-bolder">
-                99
+                {{value}}
             </div>
         </div>
         <div class="groups my-2" *ngIf="groupsCount>1">

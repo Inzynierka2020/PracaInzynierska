@@ -19,6 +19,7 @@
             </div>
             <div *ngIf="group.value=='center'">
                 <div class="d-flex flex-column">
+                    <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
                 </div>

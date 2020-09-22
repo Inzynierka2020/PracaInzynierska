@@ -44,5 +44,6 @@
         "Reactivate": "CZY CHCESZ REAKTYWOWAĆ RUNDĘ ? "
     },
     "Close": "ZAMKNIJ",
-    "Total seconds": "CAŁKOWITY CZAS [s]"
+    "Total seconds": "CAŁKOWITY CZAS [s]",
+    "Connect device": "PODŁĄCZ DO ZEGARA"
 }

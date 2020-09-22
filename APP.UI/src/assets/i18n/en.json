@@ -44,5 +44,6 @@
         "Reactivate": "Do you really want to reactivate this round?"
     },
     "Close": "CLOSE",
-    "Total seconds": "TOTAL TIME"
+    "Total seconds": "TOTAL TIME",
+    "Connect device": "CONNECT TO CLOCK"
 }

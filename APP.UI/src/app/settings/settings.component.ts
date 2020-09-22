@@ -4,6 +4,7 @@ import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ClockService } from '../services/clock.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +13,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>, public themeService: ThemeService, public _eventService: EventService, public translate: TranslateService) {
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>, 
+    public themeService: ThemeService, 
+    public _eventService: EventService, 
+    public _clockService: ClockService, 
+    public translate: TranslateService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -33,6 +38,10 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  connect(){
+    this._clockService.connectDevice();
   }
 
   close() {

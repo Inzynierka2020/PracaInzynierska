@@ -55,7 +55,7 @@ export class RoundComponent {
   /*---- METHODS ----*/
 
   createFlight(pilot: Pilot) {
-    var flight = this._flighsService.getFlightData();
+    var flight = this._flighsService.getBlankData();
     flight.roundNum = this.roundNumber;
 
     this.resolvePlayerDialog(pilot, flight, false).subscribe(flightResult => {
