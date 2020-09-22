@@ -80,8 +80,8 @@ public class RestRoundController {
 
     @ApiOperation(value = "Create new round")
     @PostMapping("/new")
-    public ResponseEntity<RoundDTO> createRound(@RequestBody RoundDTO roundDTO) {
-        return roundService.createRound(roundDTO);
+    public ResponseEntity<RoundDTO> createRound(@RequestParam Integer roundNum, @RequestParam Integer eventId, @RequestParam Integer numberOfGroups) {
+        return roundService.createRound(roundNum, eventId, numberOfGroups);
     }
 
     @ApiOperation(value = "Cancel round")
@@ -110,7 +110,7 @@ public class RestRoundController {
 
     @ApiOperation(value = "Return the best round flight")
     @GetMapping("/best/{roundNum}")
-    public FlightDTO getRoundNumbers(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
+    public FlightDTO getBestFlight(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.findBestRoundFlight(roundNum, eventId);
     }
 
