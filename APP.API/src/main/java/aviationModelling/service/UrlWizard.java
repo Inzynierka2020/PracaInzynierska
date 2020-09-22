@@ -2,7 +2,11 @@ package aviationModelling.service;
 
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
+import aviationModelling.entity.auth.UserDAO;
+import aviationModelling.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -11,15 +15,11 @@ import java.util.Map;
 @Service
 public class UrlWizard {
 
-    @Value("${vault.login}")
-    private String login;
+    private UserRepository userRepository;
 
-    @Value("${vault.password}")
-    private String password;
-
-    @Value("${vault.url}")
-    private String url;
-
+    public UrlWizard(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public String getEventInfo(Integer event_id) {
         Map<String, String> params = new HashMap<>();
@@ -83,11 +83,14 @@ public class UrlWizard {
     }
 
     private String urlBuilder(Map<String, String> params) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDAO user = userRepository.findByUsername(username);
+
         StringBuilder result = new StringBuilder();
-        result.append(url);
-        result.append("login=" + login);
+        result.append(user.getVaultUrl());
+        result.append("login=" + user.getVaultLogin());
         result.append("&");
-        result.append("password=" + password);
+        result.append("password=" + user.getVaultPassword());
         result.append("&");
         result.append("output_format=" + "json");
         result.append("&");
@@ -104,7 +107,4 @@ public class UrlWizard {
         // usun & na koncu Stringa
         return stringResult.substring(0, stringResult.length() - 1);
     }
-
-
-
 }
