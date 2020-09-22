@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EventService } from '../services/event.service';
 import { Event } from '../models/event';
 import { Settings } from '../models/settings';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-event',
@@ -24,35 +25,38 @@ export class EventComponent {
     eventId: null
   }
 
-  constructor(private _eventService: EventService) {
+  constructor(private _eventService: EventService,
+    private _configService: ConfigService) {
     this.loading = true;
     let eventId = localStorage.getItem('eventId');
     if (eventId) {
       this.settings.eventId = Number(eventId);
       this.getEvent();
-    }else{
-      this.loading=false;
+    } else {
+      this.loading = false;
     }
   }
 
   startEvent() {
-    if(!this.settings.eventId){
+    if (!this.settings.eventId) {
       console.log("INFO: No EVENT ID provided");
       return;
     }
-    this.loading = true;
-    localStorage.setItem('eventId', this.settings.eventId.toString());
-    this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
-      this.getEvent();
-    }, error => {
-      this.getEvent();
-    })
+    this._configService.updateConfig(this.settings).subscribe(result => {
+      this.loading = true;
+      localStorage.setItem('eventId', this.settings.eventId.toString());
+      this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
+        this.getEvent();
+      }, error => {
+        this.getEvent();
+      })
+    });
   }
 
   getEvent() {
     this._eventService.getEvent(this.settings.eventId).subscribe(eventResult => {
       this.eventChange.emit(eventResult);
-      this.loading=false;
+      this.loading = false;
     }, error => {
       localStorage.removeItem('eventId');
       window.location.reload();

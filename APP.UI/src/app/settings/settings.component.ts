@@ -4,6 +4,7 @@ import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +13,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>, public themeService: ThemeService, public _eventService: EventService, public translate: TranslateService) {
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>,
+    public themeService: ThemeService,
+    public _eventService: EventService,
+    private _configService: ConfigService,
+    public translate: TranslateService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -40,7 +45,9 @@ export class SettingsComponent implements OnInit {
   }
 
   save() {
-    this.close();
+    this._configService.updateConfig(this.settings).subscribe(result => {
+      this.close();
+    })
   }
 
   finishEvent() {
