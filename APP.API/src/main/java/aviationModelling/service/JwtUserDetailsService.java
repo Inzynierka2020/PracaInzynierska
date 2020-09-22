@@ -13,6 +13,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -75,7 +76,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     public UserDAO update(UserDTO user) {
-        final UserDAO userDAO = userRepository.findByUsername(user.getUsername());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final UserDAO userDAO = userRepository.findByUsername(username);
         if (userDAO != null) {
             if (user.getAuthorities() != null) userDAO.setAuthorities(mapToAuthorities(user.getAuthorities()));
             if (user.getUsername() != null) userDAO.setUsername(user.getUsername());
