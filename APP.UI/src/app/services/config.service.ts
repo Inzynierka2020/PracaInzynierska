@@ -22,9 +22,12 @@ export class ConfigService {
       vaultPassword: settings.password,
       vaultUrl: settings.apiUrl
     }
-    console.log(config);
     return this._http.put(this._baseUrl + "users/update", config, {
       responseType: 'text' as 'json'
     });
+  }
+
+  getConfig(): Observable<UserConfig> {
+    return this._http.get<UserConfig>(this._baseUrl + "users/vault-config");
   }
 }
