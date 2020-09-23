@@ -152,7 +152,6 @@ export class PlayerComponent implements OnInit {
   saveFlight() {
     this.resolveConfirmationDialog().subscribe(confirmed => {
       if (confirmed) {
-        this.flight.seconds=2;
         this.flight.pilotId = this.pilot.pilotId;
         this.flight.eventId = this.pilot.eventId;
         this.dialogRef.close(this.flight);
