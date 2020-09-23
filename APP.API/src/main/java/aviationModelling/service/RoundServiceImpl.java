@@ -81,7 +81,7 @@ public class RoundServiceImpl implements RoundService {
             round.setRoundNum(roundDTO.getRoundNum());
             roundRepository.save(round);
         }
-        if(roundDTO.getNumberOfGroups()==null) roundDTO.setNumberOfGroups(1);
+        if (roundDTO.getNumberOfGroups() == null) roundDTO.setNumberOfGroups(1);
         eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
         return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
     }
@@ -134,8 +134,10 @@ public class RoundServiceImpl implements RoundService {
     public List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId) {
 //        check if event exists
         final EventDTO event = EventMapper.MAPPER.toEventDTO(eventRepository.findByEventId(eventId));
-        if(event==null) {
-            throw new CustomNotFoundException("Event "+eventId+" doesn't exist");
+
+        if (event == null) {
+            throw new CustomNotFoundException("Event " + eventId + " doesn't exist");
+
         }
 //        check if round exists
         final Optional<RoundDTO> foundRound = event.getRounds()
@@ -195,10 +197,15 @@ public class RoundServiceImpl implements RoundService {
     }
 
     private Float findBestTime(List<Flight> validFlights, String group) {
-        return validFlights.stream()
-                .filter(flight -> flight.getGroup().equals(group))
-                .min(Comparator.comparingDouble(Flight::getSeconds))
-                .get().getSeconds();
+        final List<Flight> flights = validFlights.stream()
+                .filter(flight -> flight.getGroup().equals(group) && flight.getSeconds() > 0).collect(Collectors.toList());
+        if (flights.size() > 0) {
+            return flights.stream()
+                    .min(Comparator.comparingDouble(Flight::getSeconds))
+                    .get().getSeconds();
+        } else {
+            return 0F;
+        }
     }
 
     private Set<String> getGroupNames(List<Flight> validFlights) {
@@ -210,7 +217,7 @@ public class RoundServiceImpl implements RoundService {
     //        zwroc liste 'punktowych' lotow (odrzuc wszystkie z czasem 0 lub null)
     private List<Flight> getValidFlights(EventRound eventRound) {
         return eventRound.getFlights().stream()
-                .filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0)
+                .filter(flight -> flight.getSeconds() != null)
                 .collect(Collectors.toList());
     }
 
