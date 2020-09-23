@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiPort: '8080',
+  apiPort: '9090',
 };
 
 /*

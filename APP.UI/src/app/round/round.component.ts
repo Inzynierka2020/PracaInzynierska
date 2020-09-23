@@ -74,8 +74,10 @@ export class RoundComponent {
   }
 
   finishFlight(flight: Flight) {
-    if(flight.seconds == 0)
+    if(flight.seconds == 0){
+      this._flighsService.saveFlight(flight).subscribe();
       return;
+    }
 
     flight.order = this.order++;
     this.flights.push(flight);
@@ -122,7 +124,7 @@ export class RoundComponent {
     var count = this.pilotsLeft.length
     for (var _i = 0; _i < count; _i++) {
       var flight = this._flighsService.getBlankData();
-      flight.pilotId = this.pilotsLeft[0].pilotId;
+      flight.pilotId = this.pilotsLeft[_i].pilotId;
       flight.eventId = this.eventId;
       flight.roundNum = this.roundNumber;
       this.finishFlight(flight);
