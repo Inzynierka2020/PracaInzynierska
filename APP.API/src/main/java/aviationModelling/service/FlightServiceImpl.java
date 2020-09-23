@@ -45,6 +45,16 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
+    public ResponseEntity<?> delete(FlightDTO flightDTO) {
+        Integer eventPilotId = pilotRepository.getEventPilotId(flightDTO.getPilotId(), flightDTO.getEventId());
+        Integer eventRoundId = roundRepository.getEventRoundId(flightDTO.getRoundNum(), flightDTO.getEventId());
+        Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
+        flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
+        flightRepository.delete(flight);
+        return new ResponseEntity<>(flight, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<VaultResponseDTO> postScore(FlightDTO flightDTO) {
         VaultResponseDTO response = vaultService.postScore(flightDTO);
         if (response.getResponse_code().equals(0)) {

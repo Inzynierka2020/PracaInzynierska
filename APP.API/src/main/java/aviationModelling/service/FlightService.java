@@ -10,6 +10,7 @@ import java.util.List;
 public interface FlightService {
     ResponseEntity<FlightDTO> save(FlightDTO flightDTO);
     ResponseEntity<VaultResponseDTO> postScore(FlightDTO flightDTO);
+    ResponseEntity<?> delete(FlightDTO flightDTO);
 //    ResponseEntity<List<FlightDTO>> saveAll(List<FlightDTO> flightList);
 //    FlightDTO findBestTime(Integer eventId);
 //

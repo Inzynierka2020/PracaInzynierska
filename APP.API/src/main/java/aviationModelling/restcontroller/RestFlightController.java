@@ -39,6 +39,12 @@ public class RestFlightController {
         return flightService.postScore(flightDTO);
     }
 
+    @ApiOperation(value = "Delete flight from db")
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.delete(flightDTO);
+    }
+
     //
 //    @ApiOperation(value = "Return single flight")
 //    @GetMapping
