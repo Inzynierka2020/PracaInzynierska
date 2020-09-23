@@ -134,8 +134,10 @@ public class RoundServiceImpl implements RoundService {
     public List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId) {
 //        check if event exists
         final EventDTO event = EventMapper.MAPPER.toEventDTO(eventRepository.findByEventId(eventId));
+
         if (event == null) {
             throw new CustomNotFoundException("Event " + eventId + " doesn't exist");
+
         }
 //        check if round exists
         final Optional<RoundDTO> foundRound = event.getRounds()

@@ -78,6 +78,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDAO update(UserDTO user) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final UserDAO userDAO = userRepository.findByUsername(username);
+
         if (userDAO != null) {
             if (user.getAuthorities() != null) userDAO.setAuthorities(mapToAuthorities(user.getAuthorities()));
             if (user.getUsername() != null) userDAO.setUsername(user.getUsername());
