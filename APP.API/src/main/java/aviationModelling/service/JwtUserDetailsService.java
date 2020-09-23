@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.ConfigDTO;
 import aviationModelling.dto.UserDTO;
 import aviationModelling.entity.auth.Authority;
 import aviationModelling.entity.auth.UserDAO;
@@ -99,4 +100,13 @@ public class JwtUserDetailsService implements UserDetailsService {
         return authorities;
     }
 
+    public ConfigDTO getVaultConfig() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final UserDAO user = userRepository.findByUsername(username);
+        ConfigDTO config = new ConfigDTO();
+        config.setVaultLogin(user.getVaultLogin());
+        config.setVaultUrl(user.getVaultUrl());
+        config.setVaultPassword(user.getVaultPassword());
+        return config;
+    }
 }

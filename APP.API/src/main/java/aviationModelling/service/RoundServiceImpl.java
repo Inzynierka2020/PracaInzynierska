@@ -192,8 +192,11 @@ public class RoundServiceImpl implements RoundService {
     }
 
     private void countFlightScore(EventRound eventRound, String group, Float bestTime) {
-        eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0 && flight.getGroup().equals(group))
-                .forEach(flight -> flight.setScore(bestTime / flight.getSeconds() * 1000));
+        eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getGroup().equals(group))
+                .forEach(flight -> {
+                    if (flight.getSeconds().equals(0F)) flight.setScore(0F);
+                    else flight.setScore(bestTime / flight.getSeconds() * 1000);
+                });
     }
 
     private Float findBestTime(List<Flight> validFlights, String group) {
