@@ -1,8 +1,10 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.ConfigDTO;
 import aviationModelling.dto.UserDTO;
 import aviationModelling.entity.auth.Authority;
 import aviationModelling.entity.auth.UserDAO;
+import aviationModelling.mapper.UserMapper;
 import aviationModelling.repository.AuthorityRepository;
 import aviationModelling.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,11 +35,13 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private AuthorityRepository authorityRepository;
+    private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthorityRepository authorityRepository;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
@@ -53,25 +58,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
     }
 
-    public UserDAO save(UserDTO user) {
-        UserDAO newUser = new UserDAO();
-        newUser.setUsername(user.getUsername());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(user.getAuthorities() != null) {
-            newUser.setAuthorities(mapToAuthorities(user.getAuthorities()));
-        } else {
-            newUser.setAuthorities(Arrays.asList(authorityRepository.findByName("USER")));
-        }
-        return userRepository.save(newUser);
-    }
-
-    private List<Authority> mapToAuthorities(List<String> roles) {
-        List<Authority> authorities = new ArrayList<>();
-        roles.forEach(role-> authorities.add(authorityRepository.findByName(role)));
-        return authorities;
-    }
-
     public void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -82,4 +68,45 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
     }
 
+    public UserDAO save(UserDTO user) {
+
+
+        UserDAO newUser = userMapper.toUserDAO(user);
+
+        return userRepository.save(newUser);
+    }
+
+    public UserDAO update(UserDTO user) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final UserDAO userDAO = userRepository.findByUsername(username);
+
+        if (userDAO != null) {
+            if (user.getAuthorities() != null) userDAO.setAuthorities(mapToAuthorities(user.getAuthorities()));
+            if (user.getUsername() != null) userDAO.setUsername(user.getUsername());
+            if (user.getEmail() != null) userDAO.setEmail(user.getEmail());
+            if (user.getPassword() != null) userDAO.setPassword(passwordEncoder.encode(user.getUsername()));
+            if (user.getVaultLogin() != null) userDAO.setVaultLogin(user.getVaultLogin());
+            if (user.getVaultPassword() != null) userDAO.setVaultPassword(user.getVaultPassword());
+            if (user.getVaultUrl() != null) userDAO.setVaultUrl(user.getVaultUrl());
+            return userRepository.save(userDAO);
+        } else {
+            return save(user);
+        }
+    }
+
+    public List<Authority> mapToAuthorities(List<String> roles) {
+        List<Authority> authorities = new ArrayList<>();
+        roles.forEach(role -> authorities.add(authorityRepository.findByName(role)));
+        return authorities;
+    }
+
+    public ConfigDTO getVaultConfig() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final UserDAO user = userRepository.findByUsername(username);
+        ConfigDTO config = new ConfigDTO();
+        config.setVaultLogin(user.getVaultLogin());
+        config.setVaultUrl(user.getVaultUrl());
+        config.setVaultPassword(user.getVaultPassword());
+        return config;
+    }
 }

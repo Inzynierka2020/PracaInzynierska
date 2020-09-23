@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.EventDTO;
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
 import aviationModelling.dto.VaultResponseDTO;
@@ -8,10 +9,13 @@ import aviationModelling.entity.Flight;
 import aviationModelling.entity.Round;
 import aviationModelling.exception.CustomNotFoundException;
 import aviationModelling.exception.CustomResponse;
+import aviationModelling.mapper.EventMapper;
 import aviationModelling.mapper.FlightMapper;
 import aviationModelling.mapper.RoundMapper;
+import aviationModelling.repository.EventRepository;
 import aviationModelling.repository.EventRoundRepository;
 import aviationModelling.repository.RoundRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,11 +29,21 @@ public class RoundServiceImpl implements RoundService {
     private RoundRepository roundRepository;
     private EventRoundRepository eventRoundRepository;
     private VaultService vaultService;
+    @Autowired
+    private EventRepository eventRepository;
 
-    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService) {
+//    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService) {
+//        this.roundRepository = roundRepository;
+//        this.eventRoundRepository = eventRoundRepository;
+//        this.vaultService = vaultService;
+//    }
+
+
+    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService, EventRepository eventRepository) {
         this.roundRepository = roundRepository;
         this.eventRoundRepository = eventRoundRepository;
         this.vaultService = vaultService;
+        this.eventRepository = eventRepository;
     }
 
     @Override
@@ -67,7 +81,7 @@ public class RoundServiceImpl implements RoundService {
             round.setRoundNum(roundDTO.getRoundNum());
             roundRepository.save(round);
         }
-        if(roundDTO.getNumberOfGroups()==null) roundDTO.setNumberOfGroups(1);
+        if (roundDTO.getNumberOfGroups() == null) roundDTO.setNumberOfGroups(1);
         eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
         return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
     }
@@ -118,11 +132,28 @@ public class RoundServiceImpl implements RoundService {
     //
     @Override
     public List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId) {
-        List<Flight> flightList = roundRepository.findRoundFlights(roundNum, eventId);
-        if (flightList.size() == 0) {
-            throw new CustomNotFoundException("Flights from round " + roundNum + " not found");
+//        check if event exists
+        final EventDTO event = EventMapper.MAPPER.toEventDTO(eventRepository.findByEventId(eventId));
+
+        if (event == null) {
+            throw new CustomNotFoundException("Event " + eventId + " doesn't exist");
+
         }
-        return FlightMapper.MAPPER.toFlightDTOList(flightList);
+//        check if round exists
+        final Optional<RoundDTO> foundRound = event.getRounds()
+                .stream()
+                .filter(round -> round.getRoundNum().equals(roundNum))
+                .findFirst();
+
+        final RoundDTO roundDTO = foundRound.orElseThrow(() -> new CustomNotFoundException("Round " + roundNum + " not found"));
+
+        return roundDTO.getFlights();
+
+//        List<Flight> flightList = roundRepository.findRoundFlights(roundNum, eventId);
+//        if (flightList.size() == 0) {
+//            throw new CustomNotFoundException("Flights from round " + roundNum + " not found");
+//        }
+//        return FlightMapper.MAPPER.toFlightDTOList(flightList);
     }
 //
 
@@ -161,15 +192,23 @@ public class RoundServiceImpl implements RoundService {
     }
 
     private void countFlightScore(EventRound eventRound, String group, Float bestTime) {
-        eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0 && flight.getGroup().equals(group))
-                .forEach(flight -> flight.setScore(bestTime / flight.getSeconds() * 1000));
+        eventRound.getFlights().stream().filter(flight -> flight.getSeconds() != null && flight.getGroup().equals(group))
+                .forEach(flight -> {
+                    if (flight.getSeconds().equals(0F)) flight.setScore(0F);
+                    else flight.setScore(bestTime / flight.getSeconds() * 1000);
+                });
     }
 
     private Float findBestTime(List<Flight> validFlights, String group) {
-        return validFlights.stream()
-                .filter(flight -> flight.getGroup().equals(group))
-                .min(Comparator.comparingDouble(Flight::getSeconds))
-                .get().getSeconds();
+        final List<Flight> flights = validFlights.stream()
+                .filter(flight -> flight.getGroup().equals(group) && flight.getSeconds() > 0).collect(Collectors.toList());
+        if (flights.size() > 0) {
+            return flights.stream()
+                    .min(Comparator.comparingDouble(Flight::getSeconds))
+                    .get().getSeconds();
+        } else {
+            return 0F;
+        }
     }
 
     private Set<String> getGroupNames(List<Flight> validFlights) {
@@ -181,7 +220,7 @@ public class RoundServiceImpl implements RoundService {
     //        zwroc liste 'punktowych' lotow (odrzuc wszystkie z czasem 0 lub null)
     private List<Flight> getValidFlights(EventRound eventRound) {
         return eventRound.getFlights().stream()
-                .filter(flight -> flight.getSeconds() != null && flight.getSeconds() > 0)
+                .filter(flight -> flight.getSeconds() != null)
                 .collect(Collectors.toList());
     }
 

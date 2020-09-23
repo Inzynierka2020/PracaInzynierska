@@ -6,6 +6,7 @@ import aviationModelling.dto.UserDTO;
 import aviationModelling.model.JwtRequest;
 import aviationModelling.model.JwtResponse;
 import aviationModelling.service.JwtUserDetailsService;
+//import aviationModelling.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,6 @@ import java.util.Date;
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
 @RestController
 public class RestJwtAuthenticationController {
-
 
     private JwtTokenUtil jwtTokenUtil;
 

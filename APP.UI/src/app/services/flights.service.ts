@@ -26,6 +26,12 @@ export class FlightsService {
     });
   }
 
+  // deleteFlight(flight: Flight): Observable<any> {
+  //   return this._http.delete<string>(this._baseUrl + "flights/", flight, {
+  //     responseType: 'text' as 'json'
+  //   });
+  // }
+
   getFlightData(): Flight {
     var flight = <Flight>{
       eventPilotId: 0,
@@ -84,7 +90,7 @@ export class FlightsService {
       sub10: 0,
       sub11: 0,
       dns: false,
-      dnf: true,
+      dnf: false,
       score: 0
     }
     return flight;

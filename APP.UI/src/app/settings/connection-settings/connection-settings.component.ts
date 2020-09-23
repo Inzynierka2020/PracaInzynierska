@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { Settings } from 'src/app/models/settings';
+import { Settings } from '../../models/settings';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-connection-settings',
@@ -15,7 +16,7 @@ export class ConnectionSettingsComponent implements OnInit {
   @Output()
   settingsChange = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private _configService: ConfigService) { }
 
   disabled = false;
   ngOnInit() {
@@ -25,6 +26,11 @@ export class ConnectionSettingsComponent implements OnInit {
     } else {
       this.disabled = false;
     }
+    this._configService.getConfig().subscribe(userConfig => {
+      this.settings.apiUrl = userConfig.vaultUrl;
+      this.settings.login = userConfig.vaultLogin;
+      this.settings.password = userConfig.vaultPassword;
+    })
   }
   ngOnChange() {
     this.settingsChange.emit(this.settings);

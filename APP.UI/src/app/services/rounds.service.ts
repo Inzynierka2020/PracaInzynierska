@@ -31,7 +31,8 @@ export class RoundsService {
       numberOfGroups: 1
 
     }
-    return this._http.post<Round>(this._baseUrl + "rounds/new?eventId=" + eventId, round, {
+    return this._http.post<Round>(this._baseUrl + "rounds/new?eventId=" + eventId+"&numberOfGroups="+round.numberOfGroups+"&roundNum=" + round.roundNum,
+     null, {
       responseType: 'text' as 'json'
     });
   }

@@ -5,6 +5,7 @@ import { ThemeService } from '../services/theme.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ClockService } from '../services/clock.service';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-settings',
@@ -17,6 +18,7 @@ export class SettingsComponent implements OnInit {
     public themeService: ThemeService, 
     public _eventService: EventService, 
     public _clockService: ClockService, 
+    private _configService: ConfigService,
     public translate: TranslateService) {
     if (this._eventService.getEventId())
       this.noEvent = false
@@ -49,7 +51,9 @@ export class SettingsComponent implements OnInit {
   }
 
   save() {
-    this.close();
+    this._configService.updateConfig(this.settings).subscribe(result => {
+      this.close();
+    })
   }
 
   finishEvent() {
