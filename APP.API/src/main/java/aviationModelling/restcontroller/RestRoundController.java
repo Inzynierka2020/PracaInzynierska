@@ -114,8 +114,8 @@ public class RestRoundController {
     }
 
     @ApiOperation(value = "Update event round status on F3XVault")
-    @PostMapping("/vault-update")
-    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(@RequestBody RoundDTO roundDTO) {
-        return roundService.updateEventRoundStatus(roundDTO);
+    @PostMapping("/vault-update/{roundNum}")
+    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
+        return roundService.updateEventRoundStatus(roundNum, eventId);
     }
 }

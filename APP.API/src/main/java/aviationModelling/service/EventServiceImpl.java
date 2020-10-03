@@ -211,6 +211,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private void discardTwoFlights(EventPilot eventPilot, List<Flight> sortedFlightList) {
+//        in order to print discarded value ordered by round ID
         List<Flight> discardedFlightsOrderedByRoundId = getDiscardedFlightsOrderedByRoundId(sortedFlightList);
 
         eventPilot.setDiscarded1(discardedFlightsOrderedByRoundId.get(0).getScore());
