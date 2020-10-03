@@ -46,7 +46,7 @@ public class UrlWizard {
         params.put("sub9", flightDTO.getSub9().toString());
         params.put("sub10", flightDTO.getSub10().toString());
         params.put("sub11", flightDTO.getSub11().toString());
-        if (flightDTO.getPenalty() != 0 && flightDTO.getPenalty() != null) {
+        if (flightDTO.getPenalty() != null && flightDTO.getPenalty() != 0) {
             params.put("penalty", flightDTO.getPenalty().toString());
         }
         if (flightDTO.getFlightTime() != null) {
@@ -73,11 +73,11 @@ public class UrlWizard {
         return urlBuilder(params);
     }
 
-    public String updateEventRoundStatus(RoundDTO roundDTO) {
+    public String updateEventRoundStatus(Integer roundNum, Integer eventId) {
         Map<String, String> params = new HashMap<>();
         params.put("function", "updateEventRoundStatus");
-        params.put("event_id", roundDTO.getEventId().toString());
-        params.put("round_number", roundDTO.getRoundNum().toString());
+        params.put("event_id", eventId.toString());
+        params.put("round_number", roundNum.toString());
         params.put("event_round_score_status", "1");
         return urlBuilder(params);
     }
