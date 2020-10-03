@@ -18,19 +18,21 @@ export class ClockService {
   private dataEmitter = new EventEmitter();
 
 
-  public getFrame(){
+  public getFrame() {
     return this.frameEmitter.asObservable();
   }
-  private parseFrame(){
-    if(this.buffer[0]!='$')
+  private parseFrame() {
+    if (this.buffer[0] != '$')
       return;
-    
+
     var frames = this.buffer.split('$');
     this.buffer = "";
     frames.forEach(frame => {
       frame = '$' + frame;
-      if(frame.endsWith('\n'))
+      if (frame.endsWith('\n')){
         this.frameEmitter.next(frame);
+        this.frameEmitter.next(0);
+      }
       else
         this.buffer += frame;
     });
@@ -71,8 +73,9 @@ export class ClockService {
   }
 
   private listenForData(device, dataEmitter) {
-    var listen = function (device, msgBuffer) {
-      device.transferIn(1, 64)
+    var msgBuffer = "";
+    setInterval(() => {
+      device.transferIn(1, 6400)
         .then(result => {
           let decoder = new TextDecoder();
           let byte = decoder.decode(result.data)
@@ -84,11 +87,12 @@ export class ClockService {
           // }
           dataEmitter.emit(byte);
         })
-        .then(function () {
-          listen(device, msgBuffer);
-        });
-    }
-    listen(device, "")
+        .catch(alert => {
+        })
+      // .then(function () {
+      //    listen(device, msgBuffer);
+      // });
+    }, 50);
   };
 
 }

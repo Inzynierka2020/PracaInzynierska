@@ -45,5 +45,12 @@
     },
     "Close": "CLOSE",
     "Total seconds": "TOTAL TIME",
-    "Connect device": "CONNECT TO CLOCK"
+    "Connect device": "CONNECT TO CLOCK",
+    "Sign In": "SIGN IN",
+    "Sign Up": "SIGN UP",
+    "Back": "BACK",
+    "Title": "AVIATION MODELLING DATABASE APP",
+    "Username": "USERNAME",
+    "E-Mail": "E-MAIL",
+    "Sign Out": "SIGN OUT"
 }

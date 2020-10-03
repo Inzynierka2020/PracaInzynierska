@@ -1,30 +1,26 @@
+<div class="display-4 w-100 text-center p-5 title">
+    {{'Title' | translate}}
+</div>
 <div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-md-6 offset-md-3 col-lg-6 offset-lg-3">
-
-      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
 
         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="username" id="username" class="form-control" ngModel name="username" #username="ngModel" />
-          <!-- <span class="help-block" *ngIf="error">{{ error }}</span> -->
+            <label for="username">{{'Username' | translate}}</label>
+            <input type="username" id="username" class="form-control" ngModel name="username" #username="ngModel" />
+            <!-- <span class="help-block" *ngIf="error">{{ error }}</span> -->
         </div>
         <div class="form-group" *ngIf="!isLoginMode">
-          <label for="email">E-Mail</label>
-          <input type="email" id="email" class="form-control" ngModel name="email" #email="ngModel" />
-          <!-- <span class="help-block" *ngIf="error">{{ error }}</span> -->
+            <label for="email">{{'E-Mail' | translate}}</label>
+            <input type="email" id="email" class="form-control" ngModel name="email" #email="ngModel" />
+            <!-- <span class="help-block" *ngIf="error">{{ error }}</span> -->
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" class="form-control" ngModel name="password">
+            <label for="password">{{'Password' | translate}}</label>
+            <input type="password" id="password" class="form-control" ngModel name="password">
         </div>
-        <div>
-          <button class="btn btn-primary" type="submit"
-            [disabled]=!f.valid>{{ isLoginMode ? 'Login' : 'Sign Up'}}</button>
-          <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Switch to
-            {{ isLoginMode ? 'Sign Up' : 'Login'}}</button>
+        <div class="buttons">
+            <button mat-raised-button class="theme-accent" type="submit" [disabled]=!f.valid>{{ (isLoginMode ? 'Sign In' : 'Sign Up') | translate }}</button>
+            <button mat-raised-button class="theme-accent" type="button" (click)="onSwitchMode()">{{ (isLoginMode ? 'Sign Up' : 'Back') | translate}}</button>
         </div>
-      </form>
-    </div>
-  </div>
+    </form>
 </div>

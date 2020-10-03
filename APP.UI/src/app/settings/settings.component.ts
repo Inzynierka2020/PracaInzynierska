@@ -6,6 +6,7 @@ import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ClockService } from '../services/clock.service';
 import { ConfigService } from '../services/config.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +20,8 @@ export class SettingsComponent implements OnInit {
     public _eventService: EventService, 
     public _clockService: ClockService, 
     private _configService: ConfigService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private _authService: AuthService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -77,5 +79,11 @@ export class SettingsComponent implements OnInit {
 
   toggleLang(lang: string) {
     this.translate.use(lang);
+    localStorage.setItem("lang", lang);
+  }
+
+  signOut(){
+    this._authService.logout();
+    this.dialogRef.close();
   }
 }

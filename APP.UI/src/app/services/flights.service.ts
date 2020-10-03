@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Flight } from '../models/flight';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Pilot } from '../models/pilot';
 
@@ -16,8 +16,9 @@ export class FlightsService {
     return this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights?eventId="+eventId);
   }
 
-  getBestFlightFromRound(roundNumber): Observable<Flight[]> {
-    return this._http.get<Flight[]>(this._baseUrl + "rounds/best/" + roundNumber);
+  getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
+    console.log(roundNumber, eventId);
+    return this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId="+eventId);
   }
 
   saveFlight(flight: Flight): Observable<any> {
@@ -26,11 +27,15 @@ export class FlightsService {
     });
   }
 
-  // deleteFlight(flight: Flight): Observable<any> {
-  //   return this._http.delete<string>(this._baseUrl + "flights/", flight, {
-  //     responseType: 'text' as 'json'
-  //   });
-  // }
+  deleteFlight(flight: Flight): Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: flight
+    };
+    return this._http.delete<Flight>(this._baseUrl + "flights/delete", options);
+  }
 
   getFlightData(): Flight {
     var flight = <Flight>{

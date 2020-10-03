@@ -45,5 +45,12 @@
     },
     "Close": "ZAMKNIJ",
     "Total seconds": "CAŁKOWITY CZAS [s]",
-    "Connect device": "PODŁĄCZ DO ZEGARA"
+    "Connect device": "PODŁĄCZ DO ZEGARA",
+    "Sign In": "ZALOGUJ",
+    "Sign Up": "ZAREJESTRUJ",
+    "Back": "WSTECZ",
+    "Title": "APLIKACJA ZAWODÓW MODELI LOTNICZYCH",
+    "Username": "NAZWA UŻYTKOWNIKA",
+    "E-Mail": "E-MAIL",
+    "Sign Out": "WYLOGUJ"
 }

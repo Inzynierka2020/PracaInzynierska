@@ -35,12 +35,13 @@ export class RoundComponent {
   noMorePilotsLeft = false;
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
-    private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService) {
+    private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService, private _roundService: RoundsService) {
     this.eventId = _eventService.getEventId();
     this._pilotsService.getPilots(this.eventId).subscribe(result => {
       this.pilotsLeft = result;
       this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(
         result => {
+          this._roundService.reactivateRound(this.roundNumber, this.eventId);
           result.forEach(flight => {
             this.finishFlight(flight);
           });
@@ -50,6 +51,10 @@ export class RoundComponent {
         }
       )
     });
+  }
+
+  ngOnInit(){
+    this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
   }
 
   /*---- METHODS ----*/
@@ -74,11 +79,6 @@ export class RoundComponent {
   }
 
   finishFlight(flight: Flight) {
-    if(flight.seconds == 0){
-      this._flighsService.saveFlight(flight).subscribe();
-      return;
-    }
-
     flight.order = this.order++;
     this.flights.push(flight);
 
@@ -113,8 +113,9 @@ export class RoundComponent {
         this.pilotsLeft.push(pilot);
 
         this.noMorePilotsLeft = false;
-        this._flighsService.saveFlight(pilotToReflight.flight).subscribe(result => {
-          this.updateScore();
+        this._flighsService.deleteFlight(pilotToReflight.flight).subscribe(result => {
+          if (this.pilotsFinished.length > 0)
+            this.updateScore();
         })
       }
     });
@@ -127,7 +128,7 @@ export class RoundComponent {
       flight.pilotId = this.pilotsLeft[_i].pilotId;
       flight.eventId = this.eventId;
       flight.roundNum = this.roundNumber;
-      this.finishFlight(flight);
+      this._flighsService.saveFlight(flight).subscribe();
     }
   }
 

@@ -14,6 +14,13 @@ export class WrapperComponent {
   ) {
     translate.addLangs(["en", "pl"]);
     translate.setDefaultLang("pl");
+    var lang = localStorage.getItem("lang");
+    if (lang)
+      this.translate.use(lang);
+    else {
+      localStorage.setItem("lang", "en");
+      this.translate.use("en");
+    }
   }
 
   event: Event;

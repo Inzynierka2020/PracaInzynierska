@@ -40,47 +40,47 @@
             <table>
                 <tr>
                     <th>CT</th>
-                    <td>99.99</td>
-                </tr>
-                <tr>
-                    <th>B1</th>
                     <td><input matInput [(ngModel)]="flight.sub1"></td>
                 </tr>
                 <tr>
-                    <th>B2</th>
+                    <th>B1</th>
                     <td><input matInput [(ngModel)]="flight.sub2"></td>
                 </tr>
                 <tr>
-                    <th>B3</th>
+                    <th>B2</th>
                     <td><input matInput [(ngModel)]="flight.sub3"></td>
                 </tr>
                 <tr>
-                    <th>B4</th>
+                    <th>B3</th>
                     <td><input matInput [(ngModel)]="flight.sub4"></td>
                 </tr>
                 <tr>
-                    <th>B5</th>
+                    <th>B4</th>
                     <td><input matInput [(ngModel)]="flight.sub5"></td>
                 </tr>
                 <tr>
-                    <th>B6</th>
+                    <th>B5</th>
                     <td><input matInput [(ngModel)]="flight.sub6"></td>
                 </tr>
                 <tr>
-                    <th>B7</th>
+                    <th>B6</th>
                     <td><input matInput [(ngModel)]="flight.sub7"></td>
                 </tr>
                 <tr>
-                    <th>B8</th>
+                    <th>B7</th>
                     <td><input matInput [(ngModel)]="flight.sub8"></td>
                 </tr>
                 <tr>
-                    <th>B9</th>
+                    <th>B8</th>
                     <td><input matInput [(ngModel)]="flight.sub9"></td>
                 </tr>
                 <tr>
-                    <th>B10</th>
+                    <th>B9</th>
                     <td><input matInput [(ngModel)]="flight.sub10"></td>
+                </tr>
+                <tr>
+                    <th>B10</th>
+                    <td><input matInput [(ngModel)]="flight.sub11"></td>
                 </tr>
 
             </table>
@@ -131,7 +131,7 @@
                 </mat-toolbar-row>
             </mat-toolbar>
             <div class="display-1 text-center mb-3 font-weight-bolder">
-                {{value}}
+                {{value }}
             </div>
         </div>
         <div class="groups my-2" *ngIf="groupsCount>1">
@@ -153,58 +153,58 @@
                     </tr>
                     <tr>
                         <th>CT</th>
-                        <td>99.99</td>
-                        <td>99.99</td>
+                        <td>{{bestFlight.sub1 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub1 > 0}">{{flight.sub1 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B1</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub1}}</td>
+                        <td>{{bestFlight.sub2 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub2 > 0}">{{flight.sub2 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B2</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub2}}</td>
+                        <td>{{bestFlight.sub3 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub3 > 0}">{{flight.sub3 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B3</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub3}}</td>
+                        <td>{{bestFlight.sub4 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub4 > 0}">{{flight.sub4 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B4</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub4}}</td>
+                        <td>{{bestFlight.sub5 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub5 > 0}">{{flight.sub5 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B5</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub5}}</td>
+                        <td>{{bestFlight.sub6 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub6 > 0}">{{flight.sub6 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B6</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub6}}</td>
+                        <td>{{bestFlight.sub7 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub7 > 0}">{{flight.sub7 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B7</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub7}}</td>
+                        <td>{{bestFlight.sub8 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub8 > 0}">{{flight.sub8 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B8</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub8}}</td>
+                        <td>{{bestFlight.sub9 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub9 > 0}">{{flight.sub9 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B9</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub9}}</td>
+                        <td>{{bestFlight.sub10 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub10 > 0}">{{flight.sub10 | number : '1.1-1'}}</td>
                     </tr>
                     <tr>
                         <th>B10</th>
-                        <td>99.99</td>
-                        <td>{{flight.sub10}}</td>
+                        <td>{{bestFlight.sub11 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub11 > 0}">{{flight.sub11 | number : '1.1-1'}}</td>
                     </tr>
 
                 </table>
@@ -217,8 +217,8 @@
                     </mat-form-field>
                 </div>
                 <div class="buttons w-75">
-                    <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
-                    <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish()">DNF</button>
                     <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
                     <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
                 </div>

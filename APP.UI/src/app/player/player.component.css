@@ -139,3 +139,8 @@ mat-label {
     display: flex;
     justify-content: space-evenly;
 }
+
+.green {
+    background-color: greenyellow;
+    transition: 0.5s;
+}

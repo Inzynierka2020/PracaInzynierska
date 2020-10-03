@@ -4,6 +4,8 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { Flight } from '../models/flight';
 import { Pilot } from '../models/pilot';
 import { ClockService } from '../services/clock.service';
+import { FlightsService } from '../services/flights.service';
+import { EventService } from '../services/event.service';
 
 class PlayerDialogData {
   pilot: Pilot
@@ -20,13 +22,17 @@ class PlayerDialogData {
 export class PlayerComponent implements OnInit {
   @Input()
   returnDirectly = false;
-
+  
   editMode = false;
   pilot: Pilot;
   flight: Flight;
+  bestFlight: Flight;
   groupsCount: number;
   currentGroup: string;
   groups: string[] = ["A", "B", "C", "D", "E"];
+
+  RCZS_timestamp: number;
+  started = false;
 
   title = "New player"
   value: string;
@@ -34,7 +40,9 @@ export class PlayerComponent implements OnInit {
   constructor(public dialog: MatDialog,
     public dialogRef: MatDialogRef<PlayerComponent>,
     @Inject(MAT_DIALOG_DATA) private _data: PlayerDialogData,
-    private _clockService: ClockService
+    private _clockService: ClockService,
+    private _flightService: FlightsService,
+    private _eventService: EventService
   ) {
     this.pilot = _data.pilot
     this.flight = _data.flight;
@@ -42,15 +50,23 @@ export class PlayerComponent implements OnInit {
     this.groupsCount = this._data.groupsCount;
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
+    this.bestFlight = this._flightService.getBlankData();
   }
 
   private _subscription;
   ngOnInit() {
     this._subscription = this._clockService.getFrame()
       .subscribe(frame => {
-        console.log(frame);
+        if (frame != 0)
+          console.log(frame);
         this.parseFrame(frame);
       })
+    this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
+      console.log(result);
+      if (result != null) {
+        this.bestFlight = result;
+      }
+    })
   }
 
   ngOnDestroy() {
@@ -66,67 +82,81 @@ export class PlayerComponent implements OnInit {
         this.value = values[1] + " s";
         break;
       }
-      case "$RTMO":{
+      case "$RTMO": {
         this.value = "PRZEKROCZONO";
         break;
       }
       case "$RCZS": {
         this.title = "CZAS STARTOWY";
         this.value = values[1] + " s"
+        if(values[1] == "30"){
+          this.RCZS_timestamp = parseInt(values[2]);
+          console.log(this.RCZS_timestamp);
+        }
+        this.flight.sub1 = 30 - parseInt(values[1]);
         break;
       }
       case "$RNTR": {
         this.title = "CAŁKOWITY CZAS"
         this.value = "-";
         var base = values[2];
-        var time = parseFloat(values[3])/100.0;
+        var time = parseFloat(values[3]) / 100.0;
         
-        switch(base){
-          case "1":{
-            this.flight.sub1 = time;
+        switch (base) {
+          case "0": {
+            var timestamp = parseInt(values[6]);
+            console.log(timestamp);
+            this.flight.sub1 = (timestamp - this.RCZS_timestamp) / 100.0; 
+            this.started = true;
             break;
           }
-          case "2":{
-            this.flight.sub2 = time;
+          case "1": {
+            this.flight.sub2 = time - this.flight.seconds;
             break;
           }
-          case "3":{
-            this.flight.sub3 = time;
+          case "2": {
+            this.flight.sub3 = time - this.flight.seconds;
             break;
           }
-          case "4":{
-            this.flight.sub4 = time;
+          case "3": {
+            this.flight.sub4 = time - this.flight.seconds;
             break;
           }
-          case "5":{
-            this.flight.sub5 = time;
+          case "4": {
+            this.flight.sub5 = time - this.flight.seconds;
             break;
           }
-          case "6":{
-            this.flight.sub6 = time;
+          case "5": {
+            this.flight.sub6 = time - this.flight.seconds;
             break;
           }
-          case "7":{
-            this.flight.sub7 = time;
+          case "6": {
+            this.flight.sub7 = time - this.flight.seconds;
             break;
           }
-          case "8":{
-            this.flight.sub8 = time;
+          case "7": {
+            this.flight.sub8 = time - this.flight.seconds;
             break;
           }
-          case "9":{
-            this.flight.sub9 = time;
+          case "8": {
+            this.flight.sub9 = time - this.flight.seconds;
+            break;
+          }
+          case "9": {
+            this.flight.sub10 = time - this.flight.seconds;
             break;
           }
         }
-
+        this.flight.seconds = time;
+        this.value = this.flight.seconds.toFixed(1).toString();
         break;
       }
       case "$REND": {
         this.title = "CAŁKOWITY CZAS"
-        this.value = "-";
-        var time = parseFloat(values[3])/100.0;
-        this.flight.sub10 = time;
+        var time = parseFloat(values[3]) / 100.0;
+        this.flight.sub11 = time - this.flight.seconds;
+        this.flight.seconds = time;
+        this.value = time.toFixed(1).toString();
         break;
       }
     }
@@ -155,7 +185,6 @@ export class PlayerComponent implements OnInit {
         this.flight.pilotId = this.pilot.pilotId;
         this.flight.eventId = this.pilot.eventId;
         this.dialogRef.close(this.flight);
-        
       }
     })
   }
