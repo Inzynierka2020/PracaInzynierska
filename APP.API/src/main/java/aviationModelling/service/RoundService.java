@@ -28,7 +28,7 @@ public interface RoundService {
     List<Integer> getRoundNumbers(Integer eventId);
     ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
     FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId);
-    ResponseEntity<VaultResponseDTO> updateEventRoundStatus(RoundDTO roundDTO);
+    ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId);
 
 
 

@@ -30,7 +30,7 @@ public class VaultServiceImpl implements VaultService {
 
     public VaultResponseDTO postScore(FlightDTO flightDTO) {
         VaultResponseDTO response = restTemplate.getForObject(urlWizard.postScore(flightDTO), VaultResponseDTO.class);
-        if(response.getResponse_code()==0) {
+        if (response.getResponse_code() == 0) {
             response.setMessage("Sending data to F3XVault failed");
         } else {
             response.setMessage("Sending data to F3XVault succeeded");
@@ -38,13 +38,13 @@ public class VaultServiceImpl implements VaultService {
         return response;
     }
 
-    public VaultResponseDTO  updateEventRoundStatus(RoundDTO roundDTO) {
-        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundDTO), String.class);
+    public VaultResponseDTO updateEventRoundStatus(Integer roundNum, Integer eventId) {
+        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundNum, eventId), String.class);
         VaultResponseDTO response = new Gson().fromJson(json, VaultResponseDTO.class);
-        if(response.getResponse_code()==0) {
-            response.setMessage("Event round status update failed");
+        if (response.getResponse_code() == 0) {
+            response.setMessage("Event round " + roundNum + " status update failed");
         } else {
-            response.setMessage("Event round status updated on F3XVault");
+            response.setMessage("Event round " + roundNum + " status updated on F3XVault");
         }
         return response;
     }

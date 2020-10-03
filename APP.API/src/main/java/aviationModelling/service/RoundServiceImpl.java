@@ -253,8 +253,8 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(RoundDTO roundDTO) {
-        VaultResponseDTO response = vaultService.updateEventRoundStatus(roundDTO);
+    public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId) {
+        VaultResponseDTO response = vaultService.updateEventRoundStatus(roundNum, eventId);
         if (response.getResponse_code().equals(0)) {
             throw new RuntimeException(response.getError_string());
         }
