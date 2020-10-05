@@ -1,15 +1,15 @@
 <div class="content px-1" *ngIf="editMode; else notEdit">
-    <div class="d-flex justify-content-between mb-3 pt-2">
+    <div class="d-flex justify-content-between">
         <div class="d-flex align-items-center pr-3">
             <div class="number">
                 {{pilot.pilotBib}}
             </div>
-            <h2>
-                {{pilot.lastName | uppercase}}<br>{{pilot.firstName}}
-            </h2>
+            <div class="name">
+                {{pilot.lastName | uppercase}} {{pilot.firstName}}
+            </div>
         </div>
         <div class="headerDivider"></div>
-        <div class="pl-3 flag">
+        <div class="flag">
             <app-wind class="wind"></app-wind>
         </div>
     </div>
@@ -17,13 +17,13 @@
     <div>
         <mat-toolbar color="primary">
             <mat-toolbar-row>
-                <h1 class="text-center w-100">
+                <div class="text-center w-100 title">
                     {{'Total seconds' | translate}}
-                </h1>
+                </div>
             </mat-toolbar-row>
         </mat-toolbar>
-        <div class="display-1 text-center mt-2 font-weight-bolder">
-            <input matInput [(ngModel)]="flight.seconds">
+        <div class="text-center font-weight-bolder value">
+            <input autocomplete="off" matInput [(ngModel)]="flight.seconds">
         </div>
     </div>
     <div class="groups my-2" *ngIf="groupsCount>1">
@@ -40,47 +40,47 @@
             <table>
                 <tr>
                     <th>CT</th>
-                    <td><input matInput [(ngModel)]="flight.sub1"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub1"></td>
                 </tr>
                 <tr>
                     <th>B1</th>
-                    <td><input matInput [(ngModel)]="flight.sub2"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub2"></td>
                 </tr>
                 <tr>
                     <th>B2</th>
-                    <td><input matInput [(ngModel)]="flight.sub3"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub3"></td>
                 </tr>
                 <tr>
                     <th>B3</th>
-                    <td><input matInput [(ngModel)]="flight.sub4"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub4"></td>
                 </tr>
                 <tr>
                     <th>B4</th>
-                    <td><input matInput [(ngModel)]="flight.sub5"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub5"></td>
                 </tr>
                 <tr>
                     <th>B5</th>
-                    <td><input matInput [(ngModel)]="flight.sub6"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub6"></td>
                 </tr>
                 <tr>
                     <th>B6</th>
-                    <td><input matInput [(ngModel)]="flight.sub7"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub7"></td>
                 </tr>
                 <tr>
                     <th>B7</th>
-                    <td><input matInput [(ngModel)]="flight.sub8"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub8"></td>
                 </tr>
                 <tr>
                     <th>B8</th>
-                    <td><input matInput [(ngModel)]="flight.sub9"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub9"></td>
                 </tr>
                 <tr>
                     <th>B9</th>
-                    <td><input matInput [(ngModel)]="flight.sub10"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub10"></td>
                 </tr>
                 <tr>
                     <th>B10</th>
-                    <td><input matInput [(ngModel)]="flight.sub11"></td>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub11"></td>
                 </tr>
 
             </table>
@@ -89,10 +89,10 @@
             <div class="input pt-1 ">
                 <mat-form-field class="d-flex flex-column form " color="warn">
                     <mat-label>{{'Penalty' | translate}}</mat-label>
-                    <input matInput color="warn" [(ngModel)]="flight.penalty">
+                    <input autocomplete="off" matInput color="warn" [(ngModel)]="flight.penalty">
                 </mat-form-field>
             </div>
-            <div class="buttons w-75">
+            <div class="buttons ">
                 <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
                 <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
                 <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
@@ -105,19 +105,22 @@
         </div>
     </div>
 </div>
+
+
+
 <ng-template #notEdit>
-    <div class="content px-1">
+    <div class="content">
         <div class="d-flex justify-content-between mb-3 pt-2">
-            <div class="d-flex align-items-center pr-3">
+            <div class="d-flex align-items-center">
                 <div class="number">
                     {{pilot.pilotBib}}
                 </div>
-                <h2>
-                    {{pilot.lastName | uppercase}}<br>{{pilot.firstName}}
-                </h2>
+                <div class="name">
+                    {{pilot.lastName | uppercase}} {{pilot.firstName}}
+                </div>
             </div>
             <div class="headerDivider"></div>
-            <div class="pl-3 flag">
+            <div class="flag">
                 <app-wind class="wind"></app-wind>
             </div>
         </div>
@@ -125,12 +128,12 @@
         <div>
             <mat-toolbar color="primary">
                 <mat-toolbar-row>
-                    <h1 class="text-center w-100">
+                    <div class="text-center w-100 title">
                         {{title | translate}}
-                    </h1>
+                    </div>
                 </mat-toolbar-row>
             </mat-toolbar>
-            <div class="display-1 text-center mb-3 font-weight-bolder">
+            <div class="text-center font-weight-bolder value">
                 {{value }}
             </div>
         </div>
@@ -213,10 +216,10 @@
                 <div class="input pt-1 ">
                     <mat-form-field class="d-flex flex-column form " color="warn">
                         <mat-label>{{'Penalty' | translate}}</mat-label>
-                        <input matInput color="warn" [(ngModel)]="flight.penalty">
+                        <input autocomplete="off" matInput color="warn" [(ngModel)]="flight.penalty">
                     </mat-form-field>
                 </div>
-                <div class="buttons w-75">
+                <div class="buttons">
                     <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish()">DNF</button>
                     <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish()">DNF</button>
                     <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>

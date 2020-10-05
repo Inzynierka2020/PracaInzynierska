@@ -58,11 +58,10 @@ export class PlayerComponent implements OnInit {
     this._subscription = this._clockService.getFrame()
       .subscribe(frame => {
         if (frame != 0)
-          console.log(frame);
+          console.log("INFO: "+ frame);
         this.parseFrame(frame);
       })
     this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
-      console.log(result);
       if (result != null) {
         this.bestFlight = result;
       }
@@ -91,7 +90,6 @@ export class PlayerComponent implements OnInit {
         this.value = values[1] + " s"
         if(values[1] == "30"){
           this.RCZS_timestamp = parseInt(values[2]);
-          console.log(this.RCZS_timestamp);
         }
         this.flight.sub1 = 30 - parseInt(values[1]);
         break;
@@ -105,7 +103,6 @@ export class PlayerComponent implements OnInit {
         switch (base) {
           case "0": {
             var timestamp = parseInt(values[6]);
-            console.log(timestamp);
             this.flight.sub1 = (timestamp - this.RCZS_timestamp) / 100.0; 
             this.started = true;
             break;

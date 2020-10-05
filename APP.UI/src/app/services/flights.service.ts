@@ -17,7 +17,6 @@ export class FlightsService {
   }
 
   getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
-    console.log(roundNumber, eventId);
     return this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId="+eventId);
   }
 
@@ -35,6 +34,10 @@ export class FlightsService {
       body: flight
     };
     return this._http.delete<Flight>(this._baseUrl + "flights/delete", options);
+  }
+
+  synchronizeFlight(eventId, pilotId, roundNum): Observable<any>{
+    return this._http.post<string>(this._baseUrl + "flights/vault"+ "?eventId="+eventId+"&pilotId="+pilotId+"&roundNum="+roundNum, null);
   }
 
   getFlightData(): Flight {

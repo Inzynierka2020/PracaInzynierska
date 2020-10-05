@@ -53,6 +53,7 @@ export class SettingsComponent implements OnInit {
   }
 
   save() {
+    this.themeService.setThemeForStorage();
     this._configService.updateConfig(this.settings).subscribe(result => {
       this.close();
     })

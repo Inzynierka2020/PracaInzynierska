@@ -42,15 +42,16 @@ export class AuthComponent implements OnInit {
     if (this.isLoginMode) {
 
       this.authService.login(username, password).subscribe(userData => {
-        console.log(userData);
+        console.log("INFO: " + userData);
         this.router.navigate(['../'])
       });
     } else {
-
-      this.authService.register(username, password, email).subscribe(token => console.log(token));
+      this.authService.register(username, password, email).subscribe(token => {
+        this.isLoginMode=true;
+        console.log("INFO" + token)
+      });
     }
 
     form.reset();
   }
-
 }

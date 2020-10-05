@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="!loading; else spinner" class="content">
-        <div class="display-4 w-100 text-center">
+        <div class="title w-100 text-center">
             {{'EventSettings' | translate}}
         </div>
         <app-connection-settings class="w-75 settingss my-4" [(settings)]="settings"></app-connection-settings>

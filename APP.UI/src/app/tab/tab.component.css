@@ -60,6 +60,10 @@
     background: var(--th-accent) !important;
 }
 
+.tablabel {
+    max-width: 1110px;
+}
+
 
 /*---- RESPONSIVE ----*/
 

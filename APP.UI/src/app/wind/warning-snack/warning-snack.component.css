@@ -20,3 +20,9 @@ p {
     height: 75%;
     font-size: 130%;
 }
+
+@media (max-width: 700px) {
+    p {
+        font-size: 80%;
+    }
+}

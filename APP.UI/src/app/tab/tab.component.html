@@ -10,7 +10,7 @@
     <mat-tab [disabled]="isBrowsing">
         <ng-template mat-tab-label class="d-flex justify-content-between">
             <i class="material-icons mr-2" [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(-1, matTabGroup)">
-               keyboard_arrow_left </i>
+                keyboard_arrow_left </i>
             <span [ngClass]="isBrowsing ? 'black' : ''">{{'Round' | translate}} {{roundNumber}}</span>
             <i class="material-icons ml-2 " [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(1, matTabGroup)">
                 keyboard_arrow_right</i>

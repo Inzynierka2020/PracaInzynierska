@@ -52,7 +52,7 @@ export class ClockService {
     usbAPI.requestDevice({ filters: this.filters })
       .then(usbDevice => {
         device = usbDevice;
-        console.log("Product name: " + usbDevice.productName);
+        console.log("INFO: Product name: " + usbDevice.productName);
         this.connected = true;
         return device.open()
       })
@@ -80,11 +80,6 @@ export class ClockService {
           let decoder = new TextDecoder();
           let byte = decoder.decode(result.data)
           msgBuffer += byte;
-          // if(byte == '\n'){
-          //   console.log(msgBuffer);
-          //   emit.emit(msgBuffer); 
-          //   msgBuffer = "";  
-          // }
           dataEmitter.emit(byte);
         })
         .catch(alert => {

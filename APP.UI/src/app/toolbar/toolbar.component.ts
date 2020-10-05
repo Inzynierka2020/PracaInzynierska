@@ -28,7 +28,7 @@ export class ToolbarComponent {
   openSettings() {
     const dialogRef = this.dialog.open(SettingsComponent, {
       width: '90%',
-      maxWidth: '1000px',
+      maxWidth: '700px',
       height: '90%',
       disableClose: true
     });

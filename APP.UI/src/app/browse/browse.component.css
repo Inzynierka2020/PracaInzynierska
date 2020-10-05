@@ -32,6 +32,7 @@ button {
     height: 60px;
     width: 125px;
     font-size: 30px;
+    min-width: 132px;
 }
 
 .content {
@@ -64,6 +65,10 @@ button {
     max-width: 800px;
 }
 
+.cancel-token {
+    font-size: 30px;
+}
+
 
 /*---- ANGULAR MATERIAL OVERRIDE ----*/
 
@@ -81,10 +86,14 @@ mat-checkbox {
     .container {
         margin: 10px;
     }
+    .cancel-token {
+        font-size: 20px;
+    }
     button {
         font-size: 20px;
         height: 40px;
         width: 10%;
+        min-width: 150px;
     }
     i {
         font-size: 32px;
@@ -93,11 +102,25 @@ mat-checkbox {
         font-size: 12px;
         margin-left: 5px;
     }
+    .title {
+        height: 50px;
+        width: 40%;
+        font-size: 24px;
+    }
 }
 
 @media (max-width: 400px) {
+    .title {
+        height: 30px;
+        width: 50%;
+        font-size: 15px;
+    }
     button {
         font-size: 18px;
         height: 35px;
+        min-width: 128px;
+    }
+    .cancel-token {
+        font-size: 18px;
     }
 }

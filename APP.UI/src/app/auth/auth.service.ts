@@ -32,7 +32,7 @@ export class AuthService {
       })
       .pipe(
         tap((user) => {
-          console.log(user.username + "registered!");
+          console.log("INFO: "+ user.username + "registered!");
         })
       );
   }
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-    // console.log(`Token expires in: ${expirationDuration/1000} s`);
+    // console.log(`INFO: Token expires in: ${expirationDuration/1000} s`);
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);

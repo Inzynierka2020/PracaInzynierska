@@ -29,9 +29,24 @@ export class ThemeService {
     this.setActiveTheme(first);
   }
 
+  setThemeFromStorage(){
+    var themeName = localStorage.getItem("theme");
+    if(themeName){
+      var theme = this.availableThemes.find(x=> x.name === themeName);
+      this.setActiveTheme(theme);  
+    }else{
+      this.setFirstTheme();
+    }
+
+  }
+
+  setThemeForStorage(){
+    localStorage.setItem("theme", this.active.name)
+  }
+  
   setActiveTheme(theme: Theme): void {
     this.active = theme;
-
+   
     Object.keys(this.active.properties).forEach(property => {
       document.documentElement.style.setProperty(
         property,
@@ -39,6 +54,6 @@ export class ThemeService {
       );
     });
   }
-  
+
 }
 
