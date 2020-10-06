@@ -12,7 +12,7 @@ export interface Theme {
         "--th-accent-dark": "rgb(40, 105, 165)",
         "--th-accent": "#4499E9",
         "--th-accent-light": "rgb(114, 184, 250)",
-        "--th-disabled": "#20222380",
+        "--th-disabled": "#b4b2b2",
         "--th-background": "linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed",
         "--text-primary": "white",
         "--text-accent": "white",

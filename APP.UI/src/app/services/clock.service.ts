@@ -42,11 +42,6 @@ export class ClockService {
     if (this.connected)
       return;
 
-    this.dataEmitter.subscribe(result => {
-      this.buffer += result;
-      this.parseFrame()
-    });
-
     var device;
     var usbAPI = window.navigator['usb'];
     usbAPI.requestDevice({ filters: this.filters })
@@ -54,6 +49,10 @@ export class ClockService {
         device = usbDevice;
         console.log("INFO: Product name: " + usbDevice.productName);
         this.connected = true;
+        this.dataEmitter.subscribe(result => {
+          this.buffer += result;
+          this.parseFrame()
+        });
         return device.open()
       })
       .then(() => device.selectConfiguration(1))

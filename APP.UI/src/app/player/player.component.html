@@ -26,11 +26,13 @@
             <input autocomplete="off" matInput [(ngModel)]="flight.seconds">
         </div>
     </div>
-    <div class="groups my-2" *ngIf="groupsCount>1">
+    <div *ngIf="groupsCount>1">
         <mat-divider></mat-divider>
-        <div class="data">
-            <div *ngFor="let group of groups | slice:0:groupsCount">
-                <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
+        <div class="groups" *ngIf="groupsCount>1">
+            <div class="data">
+                <div *ngFor="let group of groups | slice:0:groupsCount">
+                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -137,11 +139,13 @@
                 {{value }}
             </div>
         </div>
-        <div class="groups my-2" *ngIf="groupsCount>1">
+        <div *ngIf="groupsCount>1">
             <mat-divider></mat-divider>
-            <div class="data">
-                <div *ngFor="let group of groups | slice:0:groupsCount">
-                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group)">{{group}}</button>
+            <div class="groups" *ngIf="groupsCount>1">
+                <div class="data">
+                    <div *ngFor="let group of groups | slice:0:groupsCount">
+                        <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group)">{{group}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -220,14 +224,14 @@
                     </mat-form-field>
                 </div>
                 <div class="buttons">
-                    <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
-                    <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
                 </div>
                 <div class="buttons ">
                     <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
-                    <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+                    <button mat-raised-button [ngClass]="{'theme-accent' : finished, 'theme-disabled' : !finished}" [disabled]="!finished" (click)="saveFlight()" (press)="callPressAction()" cdkFocusInitial>{{'Save' | translate}}</button>
                 </div>
             </div>
         </div>

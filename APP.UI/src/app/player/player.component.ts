@@ -6,6 +6,7 @@ import { Pilot } from '../models/pilot';
 import { ClockService } from '../services/clock.service';
 import { FlightsService } from '../services/flights.service';
 import { EventService } from '../services/event.service';
+import { TranslateService } from '@ngx-translate/core';
 
 class PlayerDialogData {
   pilot: Pilot
@@ -22,7 +23,7 @@ class PlayerDialogData {
 export class PlayerComponent implements OnInit {
   @Input()
   returnDirectly = false;
-  
+
   editMode = false;
   pilot: Pilot;
   flight: Flight;
@@ -33,6 +34,7 @@ export class PlayerComponent implements OnInit {
 
   RCZS_timestamp: number;
   started = false;
+  finished = false;
 
   title = "New player"
   value: string;
@@ -42,7 +44,8 @@ export class PlayerComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private _data: PlayerDialogData,
     private _clockService: ClockService,
     private _flightService: FlightsService,
-    private _eventService: EventService
+    private _eventService: EventService,
+    private _translate: TranslateService
   ) {
     this.pilot = _data.pilot
     this.flight = _data.flight;
@@ -50,7 +53,7 @@ export class PlayerComponent implements OnInit {
     this.groupsCount = this._data.groupsCount;
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
-    this.bestFlight = this._flightService.getBlankData();
+    this.bestFlight = this._flightService.getBlankData(this.groupsCount);
   }
 
   private _subscription;
@@ -58,7 +61,7 @@ export class PlayerComponent implements OnInit {
     this._subscription = this._clockService.getFrame()
       .subscribe(frame => {
         if (frame != 0)
-          console.log("INFO: "+ frame);
+          console.log("INFO: PLAYER" + frame);
         this.parseFrame(frame);
       })
     this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
@@ -72,6 +75,9 @@ export class PlayerComponent implements OnInit {
     this._subscription.unsubscribe();
   }
 
+  timer = false;
+  winds=[];
+  dirs=[];
   parseFrame(frame: string) {
     if (frame == "0") return;
     var values = frame.split(';');
@@ -88,7 +94,7 @@ export class PlayerComponent implements OnInit {
       case "$RCZS": {
         this.title = "CZAS STARTOWY";
         this.value = values[1] + " s"
-        if(values[1] == "30"){
+        if (values[1] == "30") {
           this.RCZS_timestamp = parseInt(values[2]);
         }
         this.flight.sub1 = 30 - parseInt(values[1]);
@@ -96,51 +102,60 @@ export class PlayerComponent implements OnInit {
       }
       case "$RNTR": {
         this.title = "CAŁKOWITY CZAS"
-        this.value = "-";
+        this.value = "0";
         var base = values[2];
-        var time = parseFloat(values[3]) / 100.0;
-        
+        var time = this.round(parseFloat(values[3]) / 100.0);
+        if (!this.timer) {
+          this.timer = true;
+          setInterval(() => {
+            if (this.timer)
+              this.value = (parseFloat(this.value) + 0.1).toFixed(1).toString();
+          }, 100)
+        }
+        this.winds.push(values[4]);
+        this.dirs.push(values[5]);
         switch (base) {
           case "0": {
             var timestamp = parseInt(values[6]);
-            this.flight.sub1 = (timestamp - this.RCZS_timestamp) / 100.0; 
+            this.flight.sub1 = this.round((timestamp - this.RCZS_timestamp) / 100.0);
             this.started = true;
+            this.flight.dns = false;
             break;
           }
           case "1": {
-            this.flight.sub2 = time - this.flight.seconds;
+            this.flight.sub2 = this.round(time - this.flight.seconds);
             break;
           }
           case "2": {
-            this.flight.sub3 = time - this.flight.seconds;
+            this.flight.sub3 = this.round(time - this.flight.seconds);
             break;
           }
           case "3": {
-            this.flight.sub4 = time - this.flight.seconds;
+            this.flight.sub4 = this.round(time - this.flight.seconds);
             break;
           }
           case "4": {
-            this.flight.sub5 = time - this.flight.seconds;
+            this.flight.sub5 = this.round(time - this.flight.seconds);
             break;
           }
           case "5": {
-            this.flight.sub6 = time - this.flight.seconds;
+            this.flight.sub6 = this.round(time - this.flight.seconds);
             break;
           }
           case "6": {
-            this.flight.sub7 = time - this.flight.seconds;
+            this.flight.sub7 = this.round(time - this.flight.seconds);
             break;
           }
           case "7": {
-            this.flight.sub8 = time - this.flight.seconds;
+            this.flight.sub8 = this.round(time - this.flight.seconds);
             break;
           }
           case "8": {
-            this.flight.sub9 = time - this.flight.seconds;
+            this.flight.sub9 = this.round(time - this.flight.seconds);
             break;
           }
           case "9": {
-            this.flight.sub10 = time - this.flight.seconds;
+            this.flight.sub10 = this.round(time - this.flight.seconds);
             break;
           }
         }
@@ -149,11 +164,19 @@ export class PlayerComponent implements OnInit {
         break;
       }
       case "$REND": {
+        this.timer = false;
         this.title = "CAŁKOWITY CZAS"
-        var time = parseFloat(values[3]) / 100.0;
-        this.flight.sub11 = time - this.flight.seconds;
+        var time = this.round(parseFloat(values[3]) / 100.0);
+        this.flight.sub11 = this.round(time - this.flight.seconds);
         this.flight.seconds = time;
         this.value = time.toFixed(1).toString();
+        this.finished = true;
+
+        this.winds.push(values[4]);
+        this.dirs.push(values[5]);
+
+        this.flight.windAvg = this.winds.reduce((a, b) => a + b)/this.winds.length;
+        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b)/this.winds.length;
         break;
       }
     }
@@ -177,11 +200,16 @@ export class PlayerComponent implements OnInit {
     }
   }
   saveFlight() {
-    this.resolveConfirmationDialog().subscribe(confirmed => {
+    this.flight.pilotId = this.pilot.pilotId;
+    this.flight.eventId = this.pilot.eventId;
+    this.dialogRef.close(this.flight);
+
+  }
+  callPressAction() {
+    var msg = this._translate.instant("SaveRound");
+    this.resolveConfirmationDialog(msg).subscribe(confirmed => {
       if (confirmed) {
-        this.flight.pilotId = this.pilot.pilotId;
-        this.flight.eventId = this.pilot.eventId;
-        this.dialogRef.close(this.flight);
+        this.saveFlight();
       }
     })
   }
@@ -190,16 +218,25 @@ export class PlayerComponent implements OnInit {
     this.currentGroup = this.flight.group = group;
   }
 
+  private round(num: number) {
+    return Math.round(num * 10) / 10;
+  }
+
   /*---- DIALOG METHODS ----*/
-  resolveConfirmationDialog() {
+  resolveConfirmationDialog(data = null) {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '80%',
       maxWidth: '500px',
-      disableClose: true
+      disableClose: true,
+      data: data
     }).afterClosed();
   }
 
   closeThisDialog(result?) {
-    this.dialogRef.close(result)
+    this.resolveConfirmationDialog().subscribe(confirmed => {
+      if (confirmed) {
+        this.dialogRef.close(result)
+      }
+    })
   }
 }
