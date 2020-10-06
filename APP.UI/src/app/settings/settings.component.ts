@@ -4,7 +4,9 @@ import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ClockService } from '../services/clock.service';
 import { ConfigService } from '../services/config.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -13,11 +15,13 @@ import { ConfigService } from '../services/config.service';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>,
-    public themeService: ThemeService,
-    public _eventService: EventService,
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>, 
+    public themeService: ThemeService, 
+    public _eventService: EventService, 
+    public _clockService: ClockService, 
     private _configService: ConfigService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private _authService: AuthService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -40,11 +44,16 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  connect(){
+    this._clockService.connectDevice();
+  }
+
   close() {
     this.dialogRef.close();
   }
 
   save() {
+    this.themeService.setThemeForStorage();
     this._configService.updateConfig(this.settings).subscribe(result => {
       this.close();
     })
@@ -71,5 +80,11 @@ export class SettingsComponent implements OnInit {
 
   toggleLang(lang: string) {
     this.translate.use(lang);
+    localStorage.setItem("lang", lang);
+  }
+
+  signOut(){
+    this._authService.logout();
+    this.dialogRef.close();
   }
 }

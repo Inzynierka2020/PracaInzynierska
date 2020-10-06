@@ -21,15 +21,14 @@ export class RoundsService {
       responseType: 'text' as 'json'
     });
   }
-  startNewRound(roundNumber: number, eventId: number): Observable<Round> {
+  startNewRound(roundNumber: number, numberOfGroups: number, eventId: number): Observable<Round> {
     let round: Round = {
       cancelled: false,
       eventId: eventId,
       finished: false,
       roundNum: roundNumber,
       flights: null,
-      numberOfGroups: 1
-
+      numberOfGroups: numberOfGroups
     }
     return this._http.post<Round>(this._baseUrl + "rounds/new?eventId=" + eventId+"&numberOfGroups="+round.numberOfGroups+"&roundNum=" + round.roundNum,
      null, {

@@ -56,7 +56,9 @@ export class BrowseComponent {
       this.resolvePlayerDialog(pilot, pilot.flight).subscribe(flightResult => {
         if (flightResult)
           this._flightService.saveFlight(flightResult).subscribe(result => {
-            this.roundCanceled.emit(this.round.cancelled);
+            this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).subscribe(result=>{
+              this.roundCanceled.emit(this.round.cancelled);
+            })
           })
       })
   }

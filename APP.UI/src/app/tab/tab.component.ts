@@ -57,7 +57,7 @@ export class TabComponent {
           this.isRoundStarted = true;
           this.groupCount = newRoundResult.groupCount;
           this.newRoundNumber = newRoundResult.roundNumber;
-          this.startNewRound(this.newRoundNumber);
+          this.startNewRound(this.newRoundNumber, this.groupCount);
         } else {
           tab.selectedIndex = this.previousTabIndex;
           this.switch = !this.switch;
@@ -131,8 +131,8 @@ export class TabComponent {
 
   /*---- ROUND ----*/
 
-  startNewRound(roundNumber: number) {
-    this._roundsService.startNewRound(roundNumber, this.eventId).subscribe(result => { });
+  startNewRound(roundNumber: number, numberOfGroups:number) {
+    this._roundsService.startNewRound(roundNumber, numberOfGroups, this.eventId).subscribe(result => { });
   }
 
   finishRound(finished, tab: MatTabGroup) {

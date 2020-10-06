@@ -101,8 +101,9 @@ mat-label {
 }
 
 .wind {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
+    padding-left: 10%;
 }
 
 .data {
@@ -130,12 +131,133 @@ mat-label {
     align-content: center;
 }
 
+.value {
+    font-size: 90px;
+    margin-bottom: 0px;
+}
+
 .flag {
     border-left: 2px solid rgba(0, 0, 0, .12);
     width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5px;
 }
 
 .data {
     display: flex;
     justify-content: space-evenly;
+}
+
+.green {
+    background-color: greenyellow;
+    transition: 0.5s;
+}
+
+.name {
+    font-size: 40px;
+}
+
+@media (max-width: 700px) {
+    .name {
+        font-size: 23px;
+    }
+    .title {
+        font-size: 15px !important;
+    }
+    .value {
+        font-size: 50px;
+        margin-bottom: 0px;
+    }
+    .buttons {
+        height: 100px;
+        width: 80%;
+    }
+    button {
+        font-size: 110%;
+        min-height: 35px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .group-button {
+        font-size: 110%;
+        height: 30px;
+        width: 5px;
+        padding: 0px;
+    }
+    .penalty {
+        font-size: 15px;
+        min-height: 180px;
+        max-height: 180px;
+    }
+    .bar1 {
+        font-size: 11px;
+    }
+    .number {
+        display: none;
+    }
+    mat-form-field.mat-form-field {
+        font-size: 20px !important;
+    }
+    mat-toolbar.mat-toolbar {
+        min-height: 30px !important;
+        height: 10px;
+    }
+    .bar2 {
+        align-items: flex-end;
+    }
+}
+
+@media (max-width: 700px) {
+    .name {
+        font-size: 23px;
+    }
+    .title {
+        font-size: 15px !important;
+    }
+    .value {
+        font-size: 50px;
+        margin-bottom: 0px;
+    }
+    .buttons {
+        height: 100px;
+        width: 80%;
+    }
+    button {
+        font-size: 110%;
+        min-height: 35px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .group-button {
+        font-size: 110%;
+        height: 30px;
+        width: 5px;
+        padding: 0px;
+    }
+    .penalty {
+        font-size: 15px;
+        min-height: 180px;
+        max-height: 180px;
+    }
+    .bar1 {
+        font-size: 11px;
+    }
+    .number {
+        display: none;
+    }
+    mat-form-field.mat-form-field {
+        font-size: 20px !important;
+    }
+    mat-toolbar.mat-toolbar {
+        min-height: 30px !important;
+        height: 10px;
+    }
+    .bar2 {
+        align-items: flex-end;
+    }
+    .wind {
+        font-size: 16px;
+    }
 }

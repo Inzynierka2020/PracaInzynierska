@@ -27,3 +27,12 @@ button {
         font-size: 125%;
     }
 }
+
+@media (max-height: 700px) {
+    .title {
+        font-size: 200%;
+    }
+    button {
+        font-size: 125%;
+    }
+}

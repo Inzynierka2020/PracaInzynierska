@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth',
@@ -9,13 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  isLoginMode = false;
+  isLoginMode = true;
   isAuthenticated = false;
 
   constructor(private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private _translateService: TranslateService) { }
 
   ngOnInit() {
+    var lang = localStorage.getItem("lang");
+    if (lang)
+      this._translateService.use(lang);
+    else {
+      localStorage.setItem("lang", "en");
+      this._translateService.use("en");
+    }
   }
 
   onSwitchMode() {
@@ -33,15 +42,16 @@ export class AuthComponent implements OnInit {
     if (this.isLoginMode) {
 
       this.authService.login(username, password).subscribe(userData => {
-        console.log(userData);
+        console.log("INFO: " + userData);
         this.router.navigate(['../'])
       });
     } else {
-
-      this.authService.register(username, password, email).subscribe(token => console.log(token));
+      this.authService.register(username, password, email).subscribe(token => {
+        this.isLoginMode=true;
+        console.log("INFO" + token)
+      });
     }
 
     form.reset();
   }
-
 }

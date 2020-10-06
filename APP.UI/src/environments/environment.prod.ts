@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiPort: '9090',
+  apiUrl: ':50001/api/',
 };

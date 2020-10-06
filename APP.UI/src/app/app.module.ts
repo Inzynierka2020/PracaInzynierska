@@ -32,7 +32,7 @@ export function getBaseUrl() {
   var url = document
     .getElementsByTagName("base")[0]
     .href.replace(/:\d{1,}\/|\/$/, "");
-  url += ":" + environment.apiPort + "/";
+  url += environment.apiUrl;
   return url;
 }
 

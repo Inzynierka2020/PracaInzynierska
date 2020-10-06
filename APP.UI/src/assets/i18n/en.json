@@ -9,7 +9,7 @@
     "Round": "ROUND",
     "Yes": "YES",
     "No": "NO",
-    "EventSettings": "EVENT CONNECTION SETTINGS",
+    "EventSettings": "CONNECTION SETTINGS",
     "Connect": "CONNECT",
     "New round": "NEW ROUND",
     "Group count": "GROUP COUNT",
@@ -44,5 +44,13 @@
         "Reactivate": "Do you really want to reactivate this round?"
     },
     "Close": "CLOSE",
-    "Total seconds": "TOTAL TIME"
+    "Total seconds": "TOTAL TIME",
+    "Connect device": "CONNECT TO CLOCK",
+    "Sign In": "SIGN IN",
+    "Sign Up": "SIGN UP",
+    "Back": "BACK",
+    "Title": "AVIATION MODELLING DATABASE APP",
+    "Username": "USERNAME",
+    "E-Mail": "E-MAIL",
+    "Sign Out": "SIGN OUT"
 }

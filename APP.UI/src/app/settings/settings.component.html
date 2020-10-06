@@ -18,21 +18,25 @@
                 </div>
             </div>
             <div *ngIf="group.value=='center'">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column align-items-center">
+                    <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()">{{'Sign Out' | translate}}</button>
                 </div>
             </div>
             <div *ngIf="group.value=='right'">
-                <button mat-raised-button class="theme-accent w-50" (click)="toggleTheme()">{{'Switch theme' | translate}}</button>
-                <mat-form-field class="w-75 mt-4">
-                    <mat-label>{{'Select language' | translate}}</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let lang of languages" (click)="toggleLang(lang)" [value]="lang">
-                            {{lang | uppercase}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="d-flex flex-column align-items-center">
+                    <button mat-raised-button class="theme-accent w-75" (click)="toggleTheme()">{{'Switch theme' | translate}}</button>
+                    <mat-form-field class="w-75 mt-4">
+                        <mat-label>{{'Select language' | translate}}</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let lang of languages" (click)="toggleLang(lang)" [value]="lang">
+                                {{lang | uppercase}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
     </div>
