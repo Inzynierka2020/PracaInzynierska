@@ -41,7 +41,8 @@
     "General score": "GENERAL SCORE",
     "CancelMsg": {
         "Cancel": "Do you really want to cancel this round?",
-        "Reactivate": "Do you really want to reactivate this round?"
+        "Reactivate": "Do you really want to reactivate this round?",
+        "GroupCancel": "DO YOU WANT TO CANCEL GROUP "
     },
     "Close": "CLOSE",
     "Total seconds": "TOTAL TIME",
@@ -52,5 +53,7 @@
     "Title": "AVIATION MODELLING DATABASE APP",
     "Username": "USERNAME",
     "E-Mail": "E-MAIL",
-    "Sign Out": "SIGN OUT"
+    "Sign Out": "SIGN OUT",
+    "Reflight": "DO YOU WANT TO REFLIGHT PILOT: ",
+    "SaveRound": "ARE YOU SURE YOU WANT TO SAVE FLIGHT?"
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WarningSnackComponent } from './warning-snack/warning-snack.component';
+import { ClockService } from '../services/clock.service';
 
 @Component({
   selector: 'app-wind',
@@ -17,32 +18,35 @@ export class WindComponent implements OnInit {
   maxNotRegularTime = 5;
 
   durationInSeconds = 10;
-  constructor(private _snackBar: MatSnackBar) {
-    setInterval(() => {
-      this.wind = (Math.random() * (30 - 0));
-      this.dir = (Math.random() * (60 - 0));
 
-      this.regular = false;
-      this.notRegularTime += 1;
-      if (this.maxNotRegularTime <= this.notRegularTime) {
-        // this._snackBar.openFromComponent(WarningSnackComponent, {
-        //   duration: this.durationInSeconds * 1000,
-        // });
-        this.notRegularTime = 0;
-      }
-      if (this.wind > 3 && this.wind < 25)
-        if (this.dir > -45 && this.dir < 45) {
-          this.regular = true;
-          this.notRegularTime=0;
-        }
-    }, 1000);
-    
+  private _subscription;
+  constructor(private _snackBar: MatSnackBar, private _clockSerice: ClockService) {
+    this._subscription = this._clockSerice.getFrame()
+      .subscribe(frame => {
+        if (frame != 0)
+          console.log("INFO: WIND" + frame);
+        this.parseFrame(frame + '');
+      })
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 
   ngOnInit() {
   }
 
-  openSnack(){
+  parseFrame(frame: String) {
+    var values = frame.split(';');
+    switch (values[0]) {
+      case "$REND": {
+        this.openSnack();
+        break;
+      }
+    }
+  }
+
+  openSnack() {
     this._snackBar.openFromComponent(WarningSnackComponent, {
       duration: this.durationInSeconds * 1000,
     });

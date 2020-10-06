@@ -23,7 +23,7 @@
     <button mat-raised-button class="finish-button theme-accent" (click)="finishRound()" *ngIf="noMorePilotsLeft || canceled">{{'Finish' | translate}}</button>
 </div>
 <mat-menu #menu="matMenu">
-    <button class="option-button cancel-token" mat-menu-item (click)="cancelRound()">{{'Round' | translate}}</button>
+    <button class="option-button theme-accent cancel-token" mat-menu-item (click)="cancelRound()">{{'Round' | translate}}</button>
     <button class="option-button color-a" mat-menu-item (click)="cancelGroup('A')" *ngIf="groupCount>1">{{'Group' | translate}} A</button>
     <button class="option-button color-b" mat-menu-item (click)="cancelGroup('B')" *ngIf="groupCount>1">{{'Group' | translate}} B</button>
     <button class="option-button color-c" mat-menu-item (click)="cancelGroup('C')" *ngIf="groupCount>2">{{'Group' | translate}} C</button>

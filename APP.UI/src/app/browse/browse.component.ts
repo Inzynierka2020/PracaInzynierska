@@ -42,7 +42,7 @@ export class BrowseComponent {
         this.dataSource.forEach(pilot => {
           pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.pilotId);
           if (!pilot.flight)
-            pilot.flight = this._flightService.getBlankData();
+            pilot.flight = this._flightService.getBlankData(this.round.numberOfGroups);
         });
         this.isRoundCanceled = this.round.cancelled;
         this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
