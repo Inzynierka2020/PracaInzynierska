@@ -18,6 +18,7 @@ public class VaultFlightDTO {
     private Integer flight_penalty;
     public List<Sub> flight_subs;
     private Float flight_score;
+    private boolean is_synchronized;
 
     @Getter
     @Setter

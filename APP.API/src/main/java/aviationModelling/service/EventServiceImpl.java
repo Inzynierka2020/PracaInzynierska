@@ -132,6 +132,7 @@ public class EventServiceImpl implements EventService {
                 flights.forEach(tmpFlight -> {
                     Flight flight = VaultFlightMapper.MAPPER.toFlight(tmpFlight);
                     flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
+                    flight.setSynchronized(true);
                     flightRepository.save(flight);
                 });
             });
