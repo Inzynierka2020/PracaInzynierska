@@ -43,7 +43,8 @@ export class RoundComponent {
       this.pilotsLeft = result;
       this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(
         result => {
-          this._roundService.reactivateRound(this.roundNumber, this.eventId);
+          console.log(result);
+          this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
           result.forEach(flight => {
             this.finishFlight(flight);
           });
@@ -56,7 +57,7 @@ export class RoundComponent {
   }
 
   ngOnInit() {
-    this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
+    // this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
   }
 
   /*---- METHODS ----*/

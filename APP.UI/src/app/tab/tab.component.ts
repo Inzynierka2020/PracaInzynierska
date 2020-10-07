@@ -97,9 +97,9 @@ export class TabComponent {
   changeRound() {
     this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
     this.browsedRound = this.rounds[this.browsedRoundIndex];
-    
+
     if (!this.browsedRound.synchronized)
-      this.syncRound(this.roundNumber, this.eventId).subscribe(result=>{
+      this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
         this.browsedRound.synchronized = true;
       });
 
@@ -171,10 +171,12 @@ export class TabComponent {
   finishRound(finished, tab: MatTabGroup) {
     this.isRoundStarted = !finished;
     tab.selectedIndex = 0;
-    this.syncRound(this.roundNumber, this.eventId).subscribe(synced => {
-      if (synced)
-        console.log();
-    }).add(() => this.refreshRounds);
+    var s = this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
+        s.unsubscribe();
+    }, error => {
+    }).add(() => {
+      this.refreshRounds()
+    });
   }
 
   /*---- DIALOGS ----*/
