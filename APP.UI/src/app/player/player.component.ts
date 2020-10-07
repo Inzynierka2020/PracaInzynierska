@@ -200,6 +200,7 @@ export class PlayerComponent implements OnInit {
     }
   }
   saveFlight() {
+    this.flight.isSynchronized = false;
     this.flight.pilotId = this.pilot.pilotId;
     this.flight.eventId = this.pilot.eventId;
     this.dialogRef.close(this.flight);

@@ -79,7 +79,8 @@
                                 <div class="data-field ">
                                     <div class="semi-title ">{{'Status' | translate}}</div>
                                     <mat-divider></mat-divider>
-                                    <div class="score ">XXXXXXXXXXXXXXXX</div>
+                                    <!-- <div class="score ">{{pilot.flight.isSynchronized ? 'Synchronized' : 'NotSynchronized' }}</div> -->
+                                    <div class="score ">{{pilot.flight.isSynchronized}}</div>
                                 </div>
                             </div>
                         </ng-template>
