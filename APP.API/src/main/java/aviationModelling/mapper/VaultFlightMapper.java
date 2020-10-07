@@ -31,7 +31,7 @@ public interface VaultFlightMapper {
             @Mapping(target = "score", source = "flight_score", defaultValue = "0F"),
             @Mapping(target = "penalty", source = "flight_penalty", defaultValue = "0"),
             @Mapping(target = "order", source = "flight_order", defaultValue = "0"),
-            @Mapping(target = "seconds", source = "flight_seconds", defaultValue = "0F")
+            @Mapping(target = "seconds", source = "flight_seconds", defaultValue = "0F"),
     })
     Flight toFlight(VaultFlightDTO source);
 

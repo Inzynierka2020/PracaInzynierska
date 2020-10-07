@@ -39,6 +39,7 @@ public class FlightDTO {
     private Float sub11;
     private boolean dns;
     private boolean dnf;
+    private boolean isSynchronized;
     private Float score;
 
 }

@@ -51,6 +51,8 @@ public class Flight implements Serializable {
 
     private boolean dns;
     private boolean dnf;
+    @Column(name = "is_synchronized")
+    private boolean isSynchronized;
 
     private Float score;
 
