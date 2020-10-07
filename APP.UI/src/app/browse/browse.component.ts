@@ -32,7 +32,6 @@ export class BrowseComponent {
     let eventId = _eventService.getEventId();
     this._pilotService.getPilots(eventId).subscribe(pilotsResult => {
       this.dataSource = pilotsResult;
-      console.log(this.dataSource);
       this.ngOnChanges();
     });
   }
@@ -55,13 +54,16 @@ export class BrowseComponent {
   editFlight(pilot: Pilot) {
     if (!this.isRoundCanceled)
       this.resolvePlayerDialog(pilot, pilot.flight).subscribe(flightResult => {
-        if (flightResult)
+        if (flightResult){
+          if(flightResult.roundNum == 0)
+          flightResult.roundNum = this.round.roundNum;
           this._flightService.saveFlight(flightResult).subscribe(result => {
             this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).subscribe(
               result => console.log("INFO: FLIGHT SYNCHRONIZED"),
               error => console.log("ERROR: FLIGHT NOT SYNCHRONIZED", error),
-              () => this.roundCanceled.emit(this.round.cancelled))
-          })
+              ).add(() => this.roundCanceled.emit(this.round.cancelled));
+            });
+          }
       })
   }
 

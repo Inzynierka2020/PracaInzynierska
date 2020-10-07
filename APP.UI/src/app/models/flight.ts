@@ -25,5 +25,5 @@ export interface Flight {
     dns: boolean;
     dnf: boolean;
     score: number;
-    isSynchronized: boolean;
+    synchronized: boolean;
 }

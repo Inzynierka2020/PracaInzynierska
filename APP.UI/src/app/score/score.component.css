@@ -98,7 +98,8 @@
     font-size: 100%;
     font-weight: 500;
     margin-bottom: 4px;
-    width: fit-content;
+    width: 100%;
+    text-align: center;
 }
 
 .score {
@@ -110,6 +111,10 @@
     border-width: 8px;
 }
 
+.sync {
+    min-width: 200px;
+}
+
 @media (max-width: 720px) {
     .pilot-row {
         font-size: 14px !important;
@@ -117,11 +122,17 @@
     .number {
         font-size: 350% !important;
     }
+    .sync {
+        min-width: 170px;
+    }
 }
 
 @media (max-width: 600px) {
     .title {
         font-size: 200% !important;
+    }
+    .sync {
+        min-width: 170px;
     }
 }
 
@@ -130,6 +141,7 @@
         padding: 5px !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
+        font-size: 12px !important;
     }
     .data-field {
         margin-right: 5px !important;
@@ -143,6 +155,9 @@
         font-size: 300%;
         min-width: 55px;
     }
+    .sync {
+        min-width: 170px;
+    }
 }
 
 @media (max-width: 400px) {
@@ -152,5 +167,8 @@
     .group {
         font-size: 200%;
         min-width: 45px;
+    }
+    .sync {
+        min-width: 130px;
     }
 }
