@@ -44,7 +44,6 @@ export class RoundsService {
   }
 
   syncRound(roundNumber: number, eventId: number): Observable<any> {
-    console.log(roundNumber, eventId);
     return this._http.post<any>(this._baseUrl + "rounds/vault-update/" + roundNumber + "?eventId=" + eventId, null, {
       responseType: 'text' as 'json'
     });

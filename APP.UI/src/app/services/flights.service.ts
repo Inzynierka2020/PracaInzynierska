@@ -15,7 +15,6 @@ export class FlightsService {
   }
 
   getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
-    console.log(roundNumber, eventId);
     return this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId=" + eventId);
   }
 
