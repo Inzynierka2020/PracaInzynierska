@@ -31,8 +31,8 @@ public class EventRound {
     @Column(name = "is_finished")
     private boolean isFinished;
 
-//    @Column(name = "is_synchronized")
-//    private boolean isSynchronized;
+    @Column(name = "is_synchronized")
+    private boolean isSynchronized;
 
     @Column(name = "number_of_groups")
     private Integer numberOfGroups;

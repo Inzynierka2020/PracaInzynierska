@@ -23,7 +23,7 @@ public class RoundDTO {
     private Integer numberOfGroups;
     private boolean isCancelled;
     private boolean isFinished;
-//    private boolean isSynchronized;
+    private boolean isSynchronized;
 
     @JsonView(Views.Internal.class)
     private List<FlightDTO> flights;

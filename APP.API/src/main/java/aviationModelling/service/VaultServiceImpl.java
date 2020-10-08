@@ -15,12 +15,10 @@ public class VaultServiceImpl implements VaultService {
 
     private UrlWizard urlWizard;
     private RestTemplate restTemplate;
-    private RoundRepository roundRepository;
 
-    public VaultServiceImpl(UrlWizard urlWizard, RoundRepository roundRepository) {
+    public VaultServiceImpl(UrlWizard urlWizard) {
         this.urlWizard = urlWizard;
         this.restTemplate = new RestTemplate();
-        this.roundRepository = roundRepository;
     }
 
     public VaultEventDataDTO getEventInfoFull(int eventId) {
@@ -42,15 +40,13 @@ public class VaultServiceImpl implements VaultService {
         return response;
     }
 
-    public VaultResponseDTO updateEventRoundStatus(Integer roundNum, Integer eventId) {
-        final EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
-        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundNum, eventId, eventRound.isCancelled()), String.class);
+    public VaultResponseDTO updateEventRoundStatus(Integer roundNum, Integer eventId, boolean isCancelled) {
+        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundNum, eventId, isCancelled), String.class);
         VaultResponseDTO response = new Gson().fromJson(json, VaultResponseDTO.class);
         if (response.getResponse_code() == 0) {
             response.setMessage("Event round " + roundNum + " status update failed");
         } else {
-            response.setMessage("Event round " + roundNum + " status set to " + eventRound.isCancelled() +" on F3XVault");
-
+            response.setMessage("Event round " + roundNum + " status set to " + !isCancelled +" on F3XVault");
         }
         return response;
     }
