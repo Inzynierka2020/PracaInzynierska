@@ -35,7 +35,9 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
     List<Integer> getRoundNumbers(@Param("eventId") Integer eventId);
 
     @Query("SELECT fl FROM Flight fl " +
-            "WHERE fl.seconds = " +
+            "JOIN EventRound e ON fl.flightId.eventRoundId = e.eventRoundId " +
+            "WHERE e.roundNum = :roundNum " +
+            "AND fl.seconds = " +
             "(SELECT min(f.seconds) FROM EventRound er " +
             "JOIN Flight f ON er.eventRoundId  =  f.flightId.eventRoundId " +
             "WHERE er.roundNum = :roundNum " +
