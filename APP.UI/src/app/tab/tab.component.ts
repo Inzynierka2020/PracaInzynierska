@@ -100,7 +100,11 @@ export class TabComponent {
 
     if (!this.browsedRound.synchronized)
       this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-        this.browsedRound.synchronized = true;
+        if (result) {
+          this.browsedRound.synchronized = true;
+        } else {
+          this.browsedRound.synchronized = false;
+        }
       });
 
     var lastRound = this.rounds[this.rounds.length - 1];
@@ -172,7 +176,7 @@ export class TabComponent {
     this.isRoundStarted = !finished;
     tab.selectedIndex = 0;
     var s = this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-        s.unsubscribe();
+      s.unsubscribe();
     }, error => {
     }).add(() => {
       this.refreshRounds()
