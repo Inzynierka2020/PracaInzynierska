@@ -249,7 +249,8 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
-        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum, eventId));
+        final List<Flight> bestRoundFlight = roundRepository.findBestRoundFlight(roundNum, eventId);
+        return FlightMapper.MAPPER.toFlightDTO(bestRoundFlight.stream().findFirst().orElse(null));
     }
 
     @Override

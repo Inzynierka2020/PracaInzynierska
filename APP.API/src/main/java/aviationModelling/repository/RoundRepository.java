@@ -42,7 +42,8 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
             "AND er.eventId = :eventId " +
             "AND f.eventRound.isCancelled = false " +
             "AND f.seconds>0)")
-    Flight findBestRoundFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
+    List<Flight> findBestRoundFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
+//    Flight findBestRoundFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
 
     @Query("SELECT er.eventRoundId FROM EventRound er " +
             "WHERE er.eventId = :eventId " +
