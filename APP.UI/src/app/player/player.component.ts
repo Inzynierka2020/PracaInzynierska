@@ -65,6 +65,7 @@ export class PlayerComponent implements OnInit {
         this.parseFrame(frame);
       })
     this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
+      console.log(result);
       if (result != null) {
         this.bestFlight = result;
       }
@@ -200,6 +201,7 @@ export class PlayerComponent implements OnInit {
     }
   }
   saveFlight() {
+    this.flight.synchronized = false;
     this.flight.pilotId = this.pilot.pilotId;
     this.flight.eventId = this.pilot.eventId;
     this.dialogRef.close(this.flight);

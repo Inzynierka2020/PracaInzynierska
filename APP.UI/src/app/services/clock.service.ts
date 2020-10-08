@@ -67,7 +67,9 @@ export class ClockService {
       .then(() => {
         this.listenForData(device, this.dataEmitter);
       })
-      .catch(error => { console.log(error); });
+      .catch(error => { 
+        console.log("ERROR: " + error); 
+      });
 
   }
 

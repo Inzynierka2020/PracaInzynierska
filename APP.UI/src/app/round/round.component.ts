@@ -9,6 +9,7 @@ import { FlightsService } from '../services/flights.service';
 import { PilotService } from '../services/pilot.service';
 import { PlayerComponent } from '../player/player.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-round',
@@ -42,7 +43,8 @@ export class RoundComponent {
       this.pilotsLeft = result;
       this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(
         result => {
-          this._roundService.reactivateRound(this.roundNumber, this.eventId);
+          console.log(result);
+          this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
           result.forEach(flight => {
             this.finishFlight(flight);
           });
@@ -55,7 +57,7 @@ export class RoundComponent {
   }
 
   ngOnInit() {
-    this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
+    // this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
   }
 
   /*---- METHODS ----*/
@@ -70,12 +72,26 @@ export class RoundComponent {
     })
   }
 
+  saveFlight(flight: Flight, updateScore = true): Observable<boolean> {
+    var emitter = new Subject<boolean>();
+    this._flighsService.saveFlight(flight).subscribe(result => {
+      this._flighsService.synchronizeFlight(flight.eventId, flight.pilotId, flight.roundNum).subscribe(
+        result => console.log("INFO: FLIGHT SYNCHRONIZED"),
+        error => console.log("ERROR: FLIGHT NOT SYNCHRONIZED", error))
+        .add(() => {
+          if (updateScore)
+            this.updateScore()
+
+          emitter.next(true)
+        });
+    })
+    return emitter;
+  }
+
   editFlight(pilot: Pilot) {
     this.resolvePlayerDialog(pilot, pilot.flight, true).subscribe(flightResult => {
       if (flightResult)
-        this._flighsService.saveFlight(flightResult).subscribe(result => {
-          this.updateScore();
-        })
+        this.saveFlight(flightResult).subscribe();
     })
   }
 
@@ -91,13 +107,11 @@ export class RoundComponent {
     this.pilotsFinished.push(pilot);
     // this.pilotsFinished.sort((a, b) => a.flight.group.localeCompare(b.flight.group));
 
-    this._flighsService.saveFlight(flight).subscribe(result => {
-      this.updateScore();
-    })
-
-    if (this.pilotsLeft.length == 0) {
-      this.noMorePilotsLeft = true;
-    }
+    this.saveFlight(flight).subscribe(result => {
+      if (this.pilotsLeft.length == 0) {
+        this.noMorePilotsLeft = true;
+      }
+    });
   }
 
   reflight(pilot: Pilot) {
@@ -127,15 +141,24 @@ export class RoundComponent {
     })
   }
 
-  fillBlankFlights() {
+  fillBlankFlights(): Observable<boolean> {
+    var emitter = new Subject<boolean>();
     var count = this.pilotsLeft.length
+    var c = count;
     for (var _i = 0; _i < count; _i++) {
       var flight = this._flighsService.getBlankData(this.groupCount);
       flight.pilotId = this.pilotsLeft[_i].pilotId;
       flight.eventId = this.eventId;
       flight.roundNum = this.roundNumber;
-      this._flighsService.saveFlight(flight).subscribe();
+      this.saveFlight(flight, false).subscribe(result => {
+        c--;
+        emitter.next(c == 0);
+      });
     }
+    setTimeout(() => {
+      emitter.next(c == 0);
+    }, 500);
+    return emitter;
   }
 
   updateScore() {
@@ -165,11 +188,11 @@ export class RoundComponent {
 
   cancelRound() {
     var msg;
-    if (!this.canceled) {
+    if (!this.canceled)
       msg = this._translateService.instant("CancelMsg.Cancel");
-    } else {
+    else
       msg = this._translateService.instant("CancelMsg.Reactivate");
-    }
+
     this.resolveConfirmDialog(msg).subscribe(confirmResult => {
       if (confirmResult == true) {
         this.canceled = !this.canceled;
@@ -178,20 +201,19 @@ export class RoundComponent {
         } else {
           this._roundsService.reactivateRound(this.roundNumber, this.eventId).subscribe(result => { })
         }
-      } else {
       }
     });
   }
 
   finishRound() {
     this.resolveConfirmDialog().subscribe(confirmed => {
-      if (confirmed) {
-        if (this.pilotsLeft.length > 0) {
-          this.fillBlankFlights();
-        }
-        this.finished.emit(true);
-        this._roundsService.finishRound(this.roundNumber, this.eventId).subscribe(result => { });
-      }
+      if (confirmed)
+        this.fillBlankFlights().subscribe(result => {
+          if (result)
+            this._roundsService.finishRound(this.roundNumber, this.eventId).subscribe(result => {
+              this.finished.emit(true);
+            });
+        });
     });
   }
 

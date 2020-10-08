@@ -38,14 +38,14 @@
                             <div class="data-field " *ngIf="mode=='general' ">
                                 <div class="semi-title ">{{'Discard' | translate}} 1</div>
                                 <mat-divider></mat-divider>
-                                <div class="score " *ngIf="pilot.discarded1; else noValue ">
+                                <div class="score " *ngIf="pilot.discarded1 != null; else noValue ">
                                     {{pilot.discarded1.toFixed(2)}}
                                 </div>
                             </div>
                             <div class="data-field " *ngIf="mode=='general' ">
                                 <div class="semi-title ">{{'Discard' | translate}} 2</div>
                                 <mat-divider></mat-divider>
-                                <div class="score " *ngIf="pilot.discarded2; else noValue ">
+                                <div class="score " *ngIf="pilot.discarded2 != null; else noValue ">
                                     {{pilot.discarded2.toFixed(2)}}
                                 </div>
                             </div>
@@ -79,7 +79,9 @@
                                 <div class="data-field ">
                                     <div class="semi-title ">{{'Status' | translate}}</div>
                                     <mat-divider></mat-divider>
-                                    <div class="score ">XXXXXXXXXXXXXXXX</div>
+                                    <div class="score sync" [ngClass]="{'text-success' : pilot.flight.synchronized, 'text-danger' : !pilot.flight.synchronized}">
+                                        {{(pilot.flight.synchronized ? 'Synchronized' : 'NotSynchronized') | translate }}
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>

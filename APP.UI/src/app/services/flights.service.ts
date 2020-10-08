@@ -65,7 +65,8 @@ export class FlightsService {
       sub11: 0,
       dns: false,
       dnf: false,
-      score: 0
+      score: 0,
+      synchronized: false
     }
     if (groupCount > 1) {
       flight.group = "A";

@@ -7,4 +7,5 @@ export interface Round {
     cancelled: boolean;
     finished:boolean;
     flights: Flight[];
+    synchronized: boolean;
 }

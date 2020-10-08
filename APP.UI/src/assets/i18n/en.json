@@ -28,7 +28,8 @@
     "Discard": "DISCARD",
     "Time": "TIME",
     "Points": "POINTS",
-    "Status": "STATUS",
+    "Status": "VAULT STATUS",
+    "RoundStatus": "VAULT ROUND STATUS",
     "Login": "LOGIN",
     "Password": "PASSWORD",
     "ApiUrl": "API URL",
@@ -55,5 +56,7 @@
     "E-Mail": "E-MAIL",
     "Sign Out": "SIGN OUT",
     "Reflight": "DO YOU WANT TO REFLIGHT PILOT: ",
-    "SaveRound": "ARE YOU SURE YOU WANT TO SAVE FLIGHT?"
+    "SaveRound": "ARE YOU SURE YOU WANT TO SAVE FLIGHT?",
+    "Synchronized": "SYNCED",
+    "NotSynchronized": "NOT SYNCED"
 }
