@@ -9,5 +9,5 @@ public interface VaultService {
 
     VaultEventDataDTO getEventInfoFull(int eventId);
     VaultResponseDTO postScore(FlightDTO flightDTO);
-    VaultResponseDTO  updateEventRoundStatus(Integer roundNum, Integer eventId);
+    VaultResponseDTO  updateEventRoundStatus(Integer roundNum, Integer eventId, boolean isCancelled);
 }

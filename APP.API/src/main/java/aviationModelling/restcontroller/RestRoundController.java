@@ -5,6 +5,7 @@ import aviationModelling.dto.RoundDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.dto.Views;
 import aviationModelling.exception.CustomResponse;
+import aviationModelling.mapper.RoundMapper;
 import aviationModelling.service.RoundService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,7 @@ public class RestRoundController {
     @ApiOperation(value = "Return round")
     @GetMapping("/{roundNum}")
     public RoundDTO getRound(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
-        return roundService.findEventRound(roundNum,eventId);
+        return RoundMapper.MAPPER.toRoundDTO(roundService.findEventRound(roundNum,eventId));
     }
 
     @ApiOperation(value = "Return list of flights")

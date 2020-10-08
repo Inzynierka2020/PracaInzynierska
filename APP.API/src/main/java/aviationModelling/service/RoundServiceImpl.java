@@ -69,6 +69,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setRoundNum(roundNum);
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
+            eventRound.setSynchronized(true);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
@@ -90,6 +91,7 @@ public class RoundServiceImpl implements RoundService {
     public ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId) {
         EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
         eventRound.setCancelled(true);
+        eventRound.setSynchronized(false);
         eventRoundRepository.save(eventRound);
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Round " + roundNum + " cancelled."), HttpStatus.OK);
@@ -99,6 +101,7 @@ public class RoundServiceImpl implements RoundService {
     public ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId) {
         EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
         eventRound.setCancelled(false);
+        eventRound.setSynchronized(false);
         eventRoundRepository.save(eventRound);
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Round " + roundNum + " uncancelled."), HttpStatus.OK);
@@ -120,12 +123,24 @@ public class RoundServiceImpl implements RoundService {
 //    }
 //
     @Override
-    public RoundDTO findEventRound(Integer roundNum, Integer eventId) {
+    public EventRound findEventRound(Integer roundNum, Integer eventId) {
         EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
         if (eventRound == null) {
             throw new CustomNotFoundException("Round " + roundNum + " not found");
         }
-        return RoundMapper.MAPPER.toRoundDTO(eventRound);
+        return eventRound;
+    }
+
+    public void synchronizeEventRound(Integer roundNum, Integer eventId) {
+        final EventRound eventRound = findEventRound(roundNum, eventId);
+        eventRound.setSynchronized(true);
+        eventRoundRepository.save(eventRound);
+    }
+
+    public void desynchronizeEventRound(Integer roundNum, Integer eventId) {
+        final EventRound eventRound = findEventRound(roundNum, eventId);
+        eventRound.setSynchronized(false);
+        eventRoundRepository.save(eventRound);
     }
 //
 
@@ -249,14 +264,18 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId) {
-        return FlightMapper.MAPPER.toFlightDTO(roundRepository.findBestRoundFlight(roundNum, eventId));
+        final List<Flight> bestRoundFlight = roundRepository.findBestRoundFlight(roundNum, eventId);
+        return FlightMapper.MAPPER.toFlightDTO(bestRoundFlight.stream().findFirst().orElse(null));
     }
 
     @Override
     public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId) {
-        VaultResponseDTO response = vaultService.updateEventRoundStatus(roundNum, eventId);
+        final EventRound eventRound = findEventRound(roundNum, eventId);
+        VaultResponseDTO response = vaultService.updateEventRoundStatus(roundNum, eventId, eventRound.isCancelled());
         if (response.getResponse_code().equals(0)) {
             throw new RuntimeException(response.getError_string());
+        } else {
+            synchronizeEventRound(roundNum, eventId);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

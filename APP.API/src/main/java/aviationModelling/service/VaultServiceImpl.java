@@ -4,6 +4,8 @@ import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
 import aviationModelling.dto.VaultEventDataDTO;
 import aviationModelling.dto.VaultResponseDTO;
+import aviationModelling.entity.EventRound;
+import aviationModelling.repository.RoundRepository;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,13 +40,13 @@ public class VaultServiceImpl implements VaultService {
         return response;
     }
 
-    public VaultResponseDTO updateEventRoundStatus(Integer roundNum, Integer eventId) {
-        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundNum, eventId), String.class);
+    public VaultResponseDTO updateEventRoundStatus(Integer roundNum, Integer eventId, boolean isCancelled) {
+        String json = restTemplate.getForObject(urlWizard.updateEventRoundStatus(roundNum, eventId, isCancelled), String.class);
         VaultResponseDTO response = new Gson().fromJson(json, VaultResponseDTO.class);
         if (response.getResponse_code() == 0) {
             response.setMessage("Event round " + roundNum + " status update failed");
         } else {
-            response.setMessage("Event round " + roundNum + " status updated on F3XVault");
+            response.setMessage("Event round " + roundNum + " status set to " + !isCancelled +" on F3XVault");
         }
         return response;
     }
