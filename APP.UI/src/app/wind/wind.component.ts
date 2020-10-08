@@ -43,6 +43,11 @@ export class WindComponent implements OnInit {
         this.openSnack();
         break;
       }
+      case "$RWSD": {
+        this.wind = parseFloat(values[1])/10.0;
+        this.dir = parseFloat(values[2]);
+        break;
+      }
     }
   }
 
