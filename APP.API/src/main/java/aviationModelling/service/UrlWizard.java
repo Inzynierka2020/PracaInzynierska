@@ -64,21 +64,22 @@ public class UrlWizard {
         if (flightDTO.getOrder() != null) {
             params.put("order", flightDTO.getOrder().toString());
         }
-        if (flightDTO.isDns() == true ) {
+        if (flightDTO.isDns() == true) {
             params.put("dns", "true");
         }
-        if (flightDTO.isDnf() == true ) {
+        if (flightDTO.isDnf() == true) {
             params.put("dnf", "true");
         }
         return urlBuilder(params);
     }
 
-    public String updateEventRoundStatus(Integer roundNum, Integer eventId) {
+    public String updateEventRoundStatus(Integer roundNum, Integer eventId, boolean isCancelled) {
+        String eventRoundScoreStatus = isCancelled == true ? "0" : "1";
         Map<String, String> params = new HashMap<>();
         params.put("function", "updateEventRoundStatus");
         params.put("event_id", eventId.toString());
         params.put("round_number", roundNum.toString());
-        params.put("event_round_score_status", "1");
+        params.put("event_round_score_status", eventRoundScoreStatus);
         return urlBuilder(params);
     }
 

@@ -17,7 +17,7 @@ public interface RoundService {
 //    EventRound findEventRound(Integer roundNum, Integer eventId);
 
     //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
-    RoundDTO findEventRound(Integer roundNum, Integer eventId);
+    EventRound findEventRound(Integer roundNum, Integer eventId);
     ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups);
     ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO);
     ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
@@ -29,6 +29,8 @@ public interface RoundService {
     ResponseEntity<CustomResponse> updateAllRounds(Integer eventId);
     FlightDTO findBestRoundFlight(Integer roundNum, Integer eventId);
     ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId);
+    void synchronizeEventRound(Integer roundNum, Integer eventId);
+    void desynchronizeEventRound(Integer roundNum, Integer eventId);
 
 
 
