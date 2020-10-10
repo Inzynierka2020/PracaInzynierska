@@ -43,7 +43,6 @@ export class RoundComponent {
       this.pilotsLeft = result;
       this._flighsService.getFinishedFlights(this.roundNumber, this.eventId).subscribe(
         result => {
-          console.log(result);
           this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
           result.forEach(flight => {
             this.finishFlight(flight);

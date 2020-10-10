@@ -42,14 +42,17 @@ export class EventComponent {
       console.log("INFO: No EVENT ID provided");
       return;
     }
+    this.loading = true;
+    localStorage.setItem('eventId', this.settings.eventId.toString());
+
     this._configService.updateConfig(this.settings).subscribe(result => {
-      this.loading = true;
-      localStorage.setItem('eventId', this.settings.eventId.toString());
       this._eventService.initializeEvent(this.settings.eventId).subscribe(result => {
         this.getEvent();
       }, error => {
         this.getEvent();
       })
+    }, error => {
+      this.getEvent();
     });
   }
 

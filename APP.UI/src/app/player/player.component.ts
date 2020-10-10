@@ -65,7 +65,6 @@ export class PlayerComponent implements OnInit {
         this.parseFrame(frame);
       })
     this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
-      console.log(result);
       if (result != null) {
         this.bestFlight = result;
       }

@@ -37,6 +37,7 @@ types {
   application/octet-stream              eot;
   application/octet-stream              iso img;
   application/octet-stream              msi msp msm;
+  application/json                      json;
   audio/mpeg                            mp3;
   audio/x-realaudio                     ra;
   video/mpeg                            mpeg mpg;

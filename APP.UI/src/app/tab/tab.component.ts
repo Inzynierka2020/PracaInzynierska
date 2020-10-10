@@ -78,6 +78,12 @@ export class TabComponent {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
       });
+    }, error => {
+      this._pilotService.getPilots(this.eventId).subscribe(result => {
+        this.dataSource = result;
+        this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
+      }
+      )
     })
   }
 
@@ -143,6 +149,13 @@ export class TabComponent {
 
   refreshRounds() {
     this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
+      this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
+        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
+        this.rounds = roundsResult;
+        this.changeRound();
+        this.refreshScores();
+      });
+    }, error => {
       this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
         roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
         this.rounds = roundsResult;
