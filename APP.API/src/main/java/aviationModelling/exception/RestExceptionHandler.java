@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,18 +22,10 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<CustomResponse> handleException(InvalidRoundDataException ex) {
+    public ResponseEntity<CustomResponse> handleException(Exception ex) {
         CustomResponse error = new CustomResponse();
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
-//    @ExceptionHandler
-//    public ResponseEntity<CustomResponse> handleException(Exception ex) {
-//        CustomResponse error = new CustomResponse();
-//        error.setStatus(HttpStatus.BAD_REQUEST.value());
-//        error.setMessage(ex.getMessage());
-//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//    }
 }
