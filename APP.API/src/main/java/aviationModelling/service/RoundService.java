@@ -5,7 +5,6 @@ import aviationModelling.dto.RoundDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.EventRound;
 import aviationModelling.exception.CustomResponse;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface RoundService {
     //    ResponseEntity<RoundDTO> save(RoundDTO roundDTO);
     EventRound findEventRound(Integer roundNum, Integer eventId);
     ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups);
-    ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO);
+//    ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO);
     ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId);
     ResponseEntity<CustomResponse> uncancelRound(Integer roundNum, Integer eventId);
     ResponseEntity<CustomResponse> finishRound(Integer roundNum, Integer eventId);
@@ -32,6 +31,7 @@ public interface RoundService {
     void synchronizeEventRound(Integer roundNum, Integer eventId);
     void desynchronizeEventRound(Integer roundNum, Integer eventId);
 
+    ResponseEntity<?> synchronizeAfterOffline(List<RoundDTO> rounds);
 
-
+    List<RoundDTO> getDtos();
 }
