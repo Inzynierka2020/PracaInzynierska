@@ -4,6 +4,7 @@ import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.RoundDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.dto.Views;
+import aviationModelling.entity.EventRound;
 import aviationModelling.exception.CustomResponse;
 import aviationModelling.mapper.RoundMapper;
 import aviationModelling.service.RoundService;
@@ -118,5 +119,15 @@ public class RestRoundController {
     @PostMapping("/vault-update/{roundNum}")
     public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(@PathVariable Integer roundNum, @RequestParam Integer eventId) {
         return roundService.updateEventRoundStatus(roundNum, eventId);
+    }
+
+    @PutMapping("/synchronize-all")
+    public ResponseEntity<?> synchronizeAfterOffline(@RequestBody List<RoundDTO> rounds) {
+        return roundService.synchronizeAfterOffline(rounds);
+    }
+
+    @GetMapping("/mock")
+    public List<RoundDTO> getDtos() {
+        return roundService.getDtos();
     }
 }

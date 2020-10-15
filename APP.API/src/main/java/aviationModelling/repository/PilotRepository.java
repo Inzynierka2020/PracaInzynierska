@@ -31,6 +31,11 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer> {
             "AND ep.pilotId = :pilotId")
     Integer getEventPilotId(@Param("pilotId") Integer pilotId, @Param("eventId") Integer eventId);
 
+    @Query("SELECT ep FROM EventPilot ep " +
+            "WHERE ep.eventId = :eventId " +
+            "AND ep.pilotId = :pilotId")
+    EventPilot findEventPilot(@Param("eventId") Integer eventId, @Param("pilotId") Integer pilotId);
+
 
 //    List<Pilot> findAllByOrderByLastName();
 //    List<Pilot> findByEventIdOrderByLastName(Integer eventId);

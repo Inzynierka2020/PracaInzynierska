@@ -12,10 +12,7 @@ import aviationModelling.exception.CustomResponse;
 import aviationModelling.mapper.EventMapper;
 import aviationModelling.mapper.FlightMapper;
 import aviationModelling.mapper.RoundMapper;
-import aviationModelling.repository.EventRepository;
-import aviationModelling.repository.EventRoundRepository;
-import aviationModelling.repository.RoundRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import aviationModelling.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,8 +26,9 @@ public class RoundServiceImpl implements RoundService {
     private RoundRepository roundRepository;
     private EventRoundRepository eventRoundRepository;
     private VaultService vaultService;
-    @Autowired
     private EventRepository eventRepository;
+    private PilotRepository pilotRepository;
+    private FlightRepository flightRepository;
 
 //    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService) {
 //        this.roundRepository = roundRepository;
@@ -39,11 +37,13 @@ public class RoundServiceImpl implements RoundService {
 //    }
 
 
-    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService, EventRepository eventRepository) {
+    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService, EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository) {
         this.roundRepository = roundRepository;
         this.eventRoundRepository = eventRoundRepository;
         this.vaultService = vaultService;
         this.eventRepository = eventRepository;
+        this.pilotRepository = pilotRepository;
+        this.flightRepository = flightRepository;
     }
 
     @Override
@@ -74,18 +74,18 @@ public class RoundServiceImpl implements RoundService {
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
     }
-
-    @Override
-    public ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO) {
-        if (roundRepository.findByRoundNum(roundDTO.getRoundNum()) == null) {
-            Round round = new Round();
-            round.setRoundNum(roundDTO.getRoundNum());
-            roundRepository.save(round);
-        }
-        if (roundDTO.getNumberOfGroups() == null) roundDTO.setNumberOfGroups(1);
-        eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
-        return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
-    }
+//
+//    @Override
+//    public ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO) {
+//        if (roundRepository.findByRoundNum(roundDTO.getRoundNum()) == null) {
+//            Round round = new Round();
+//            round.setRoundNum(roundDTO.getRoundNum());
+//            roundRepository.save(round);
+//        }
+//        if (roundDTO.getNumberOfGroups() == null) roundDTO.setNumberOfGroups(1);
+//        eventRoundRepository.save(RoundMapper.MAPPER.toEventRound(roundDTO));
+//        return new ResponseEntity<>(roundDTO, HttpStatus.CREATED);
+//    }
 
     @Override
     public ResponseEntity<CustomResponse> cancelRound(Integer roundNum, Integer eventId) {
@@ -142,9 +142,8 @@ public class RoundServiceImpl implements RoundService {
         eventRound.setSynchronized(false);
         eventRoundRepository.save(eventRound);
     }
-//
 
-    //
+
     @Override
     public List<FlightDTO> getRoundFlights(Integer roundNum, Integer eventId) {
 //        check if event exists
@@ -278,5 +277,60 @@ public class RoundServiceImpl implements RoundService {
             synchronizeEventRound(roundNum, eventId);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> synchronizeAfterOffline(List<RoundDTO> dtos) {
+
+        final List<EventRound> eventRounds = RoundMapper.MAPPER.toEventRoundList(dtos);
+        createEventRoundsIfNotExist(eventRounds);
+        saveFlightsToDb(dtos);
+        finishFinishedRounds(eventRounds);
+
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
+                "Event updated."), HttpStatus.OK);
+    }
+
+    private void finishFinishedRounds(List<EventRound> eventRounds) {
+        eventRounds.stream().filter(eventRound -> eventRound.isFinished())
+                .forEach(eventRound -> finishRound(eventRound.getRoundNum(), eventRound.getEventId()));
+    }
+
+    private void saveFlightsToDb(List<RoundDTO> roundDTOS) {
+        roundDTOS.forEach(roundDTO -> {
+            roundDTO.getFlights().forEach(flightDTO -> saveFlight(flightDTO));
+        });
+    }
+
+    private void saveFlight(FlightDTO flightDTO) {
+        final Flight flight = createFlightEntity(flightDTO);
+        flightRepository.save(flight);
+    }
+
+    private Flight createFlightEntity(FlightDTO flightDTO) {
+        final Integer eventPilotId = pilotRepository.getEventPilotId(flightDTO.getPilotId(), flightDTO.getEventId());
+        final Integer eventRoundId = roundRepository.getEventRoundId(flightDTO.getRoundNum(), flightDTO.getEventId());
+        final Flight flight = FlightMapper.MAPPER.toFlight(flightDTO);
+        flight.setFlightId(new Flight.FlightId(eventPilotId, eventRoundId));
+        return flight;
+    }
+
+    private void createEventRoundsIfNotExist(List<EventRound> eventRounds) {
+        eventRounds.forEach(eventRound -> createEventRoundIfNotExists(eventRound));
+    }
+
+    private void createEventRoundIfNotExists(EventRound eventRound) {
+        final EventRound foundRound = roundRepository.findEventRound(eventRound.getRoundNum(), eventRound.getEventId());
+        if(foundRound == null) {
+            createRound(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.getNumberOfGroups());
+        }
+    }
+
+    @Override
+    public List<RoundDTO> getDtos() {
+        final EventRound eventRound1 = roundRepository.findEventRound(10, 1834);
+        final EventRound eventRound2 = roundRepository.findEventRound(11, 1834);
+        final List<EventRound> eventRoundsMock = new ArrayList<>(Arrays.asList(eventRound1, eventRound2));
+        return RoundMapper.MAPPER.toRoundDTOList(eventRoundsMock);
     }
 }
