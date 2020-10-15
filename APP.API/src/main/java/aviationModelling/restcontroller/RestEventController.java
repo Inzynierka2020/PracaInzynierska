@@ -2,12 +2,15 @@ package aviationModelling.restcontroller;
 
 import aviationModelling.dto.EventDTO;
 import aviationModelling.dto.Views;
+import aviationModelling.entity.EventRound;
 import aviationModelling.exception.CustomResponse;
 import aviationModelling.service.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")

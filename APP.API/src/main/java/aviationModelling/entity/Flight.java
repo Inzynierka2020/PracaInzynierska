@@ -9,7 +9,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter @Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "flight")
 public class Flight implements Serializable {
 
