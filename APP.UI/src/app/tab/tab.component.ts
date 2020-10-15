@@ -7,7 +7,8 @@ import { PilotService } from '../services/pilot.service';
 import { Pilot } from '../models/pilot';
 import { Round } from '../models/round';
 import { EventService } from '../services/event.service';
-import { Observable, Subject, noop } from 'rxjs';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 enum TAB {
   GENERAL = 0,
@@ -39,7 +40,12 @@ export class TabComponent {
   groupCount: number;
   newRoundNumber = 0;
 
-  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
+  constructor(
+    public dialog: MatDialog,
+    private _pilotService: PilotService,
+    private _eventService: EventService,
+    private _roundsService: RoundsService
+  ) {
     this.eventId = this._eventService.getEventId()
     this.refreshRounds();
   }
@@ -73,7 +79,7 @@ export class TabComponent {
   /*---- SCORE ----*/
 
   refreshScores() {
-    this._eventService.updateGeneralScore(this.eventId).subscribe(result => {
+    this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
       this._pilotService.getPilots(this.eventId).subscribe(result => {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
@@ -125,40 +131,31 @@ export class TabComponent {
   cancelRound(toCancel: boolean) {
     this.browsedRound.synchronized = false;
     if (toCancel) {
-      this._roundsService.cancelRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
-        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).subscribe(
+      this._roundsService.cancelRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(result => {
+        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(
           result => {
-            console.log("INFO: ROUND SYNCED");
           },
           error => {
-            console.log("INFO: ROUND NOT SYNCED");
           }).add(() => this.refreshRounds())
       })
     } else {
-      this._roundsService.reactivateRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
-        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).subscribe(
+      this._roundsService.reactivateRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(result => {
+        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(
           result => {
-            console.log("INFO: ROUND SYNCED");
           },
           error => {
-            console.log("INFO: ROUND NOT SYNCED");
           }).add(() => this.refreshRounds())
       })
     }
   }
 
   refreshRounds() {
-    this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
-      this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
-        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
+    this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
+      console.log(updateResult);
+      this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
+        console.log("RUNDY", roundsResult);
         this.rounds = roundsResult;
-        this.changeRound();
-        this.refreshScores();
-      });
-    }, error => {
-      this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
-        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
-        this.rounds = roundsResult;
+        this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
         this.changeRound();
         this.refreshScores();
       });
@@ -172,26 +169,22 @@ export class TabComponent {
   }
 
   syncRound(roundNumber: number, eventId: number): Observable<boolean> {
-    var emitter = new Subject<boolean>();
-    this._roundsService.syncRound(roundNumber, eventId).subscribe(
-      result => {
-        console.log("INFO: ROUND SYNCED")
-        emitter.next(true);
-      },
-      error => {
-        console.log("INFO: ROUND NOT SYNCED", error)
-        emitter.next(false);
-      });
-    return emitter;
+    return new Observable<boolean>(observer => {
+      this._roundsService.syncRound(roundNumber, eventId).pipe(take(1)).subscribe(
+        result => {
+          console.log("INFO: ROUND SYNC", result)
+          observer.next(result);
+        }
+      );
+    });
   }
 
   finishRound(finished, tab: MatTabGroup) {
-    this.isRoundStarted = !finished;
-    tab.selectedIndex = 0;
-    var s = this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-      s.unsubscribe();
-    }, error => {
-    }).add(() => {
+    console.log("FINISZUJĘ, ALE NIE DOKONCA")
+    this.syncRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
+      this.isRoundStarted = !finished;
+      tab.selectedIndex = 0;
+      console.log("GIT LECI REFRESH");
       this.refreshRounds()
     });
   }

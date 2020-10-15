@@ -39,7 +39,7 @@ public class RestEventController {
     }
 
     @ApiOperation(value = "Delete event")
-    @DeleteMapping("/{eventId}")
+    @DeleteMapping("/finish/{eventId}")
     public ResponseEntity<CustomResponse> deleteEvent(@PathVariable int eventId) {
         return eventService.delete(eventId);
     }

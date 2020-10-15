@@ -3,6 +3,7 @@ import { EventService } from '../services/event.service';
 import { Event } from '../models/event';
 import { Settings } from '../models/settings';
 import { ConfigService } from '../services/config.service';
+import { SnackService } from '../services/snack.service';
 
 @Component({
   selector: 'app-event',
@@ -22,15 +23,17 @@ export class EventComponent {
     apiUrl: "http://www.f3xvault.com/api.php?",
     login: "piotrek.adamczykk@gmail.com",
     password: "ascroft",
-    eventId: null
+    eventId: 1834
   }
 
   constructor(private _eventService: EventService,
-    private _configService: ConfigService) {
+    private _configService: ConfigService,
+    private _snackService: SnackService) {
+
     this.loading = true;
     let eventId = localStorage.getItem('eventId');
     if (eventId) {
-      this.settings.eventId = Number(eventId);
+      this.settings.eventId = parseInt(eventId);
       this.getEvent();
     } else {
       this.loading = false;
@@ -39,9 +42,12 @@ export class EventComponent {
 
   startEvent() {
     if (!this.settings.eventId) {
-      console.log("INFO: No EVENT ID provided");
+      this._snackService.open("NO EVENT ID PROVIDED.");
       return;
     }
+    
+    this.settings.eventId = parseInt(this.settings.eventId.toString());
+    
     this.loading = true;
     localStorage.setItem('eventId', this.settings.eventId.toString());
 
@@ -52,6 +58,7 @@ export class EventComponent {
         this.getEvent();
       })
     }, error => {
+      this._snackService.open("CONNECTION LOST. CACHING PREVIOUS USER CONFIG");
       this.getEvent();
     });
   }

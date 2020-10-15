@@ -54,6 +54,7 @@ export class WindComponent implements OnInit {
   openSnack() {
     this._snackBar.openFromComponent(WarningSnackComponent, {
       duration: this.durationInSeconds * 1000,
+      data: 'BadWeather'
     });
   }
 }

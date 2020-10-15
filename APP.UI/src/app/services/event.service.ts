@@ -2,13 +2,14 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Event } from '../models/event';
+import { IndexedDbService } from './indexed-db.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
+  constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl, private _dbService: IndexedDbService) { }
 
   private eventId: number;
 
@@ -23,16 +24,34 @@ export class EventService {
     return this._http.get<Event>(this._baseUrl + "events/" + eventId);
   }
 
-  deleteEvent(eventId: number): Observable<any> {
-    this.eventId = null;
-    return this._http.delete(this._baseUrl + "events/" + eventId);
+  deleteEvent(eventId: number): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      this._http.delete(this._baseUrl + "events/finish/" + eventId).subscribe(
+        result => {
+          this.eventId = null;
+          observer.next(true);
+        },
+        error => observer.error(false))
+    });
   }
 
   getEventId() {
     return this.eventId;
   }
 
-  updateGeneralScore(eventId: number): Observable<any> {
-    return this._http.put(this._baseUrl + "events/total-score/" + eventId, null);
+  updateGeneralScore(eventId: number): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      this._http.put(this._baseUrl + "events/total-score/" + eventId, null).subscribe(
+        result => {
+          //PUT ALL -> 
+          //RETRY
+          observer.next(true);
+        },
+        error => {
+          this._dbService.setPriority(true);
+          observer.next(false);
+        }
+      )
+    })
   }
 }

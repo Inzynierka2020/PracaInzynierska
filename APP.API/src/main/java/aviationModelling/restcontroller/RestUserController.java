@@ -28,4 +28,8 @@ public class RestUserController {
     public ResponseEntity<?> getVaultConfig() {
         return ResponseEntity.ok(userDetailsService.getVaultConfig());
     }
+	
+	@GetMapping("/ping")
+    public void ping() {
+    }
 }

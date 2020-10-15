@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { parse } from 'querystring';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +16,10 @@ export class ClockService {
   private buffer = "";
   private dataEmitter = new EventEmitter();
 
-
   public getFrame() {
     return this.frameEmitter.asObservable();
   }
+  
   private parseFrame() {
     if (this.buffer[0] != '$')
       return;
@@ -29,7 +28,7 @@ export class ClockService {
     this.buffer = "";
     frames.forEach(frame => {
       frame = '$' + frame;
-      if (frame.endsWith('\n')){
+      if (frame.endsWith('\n')) {
         this.frameEmitter.next(frame);
         this.frameEmitter.next(0);
       }
@@ -67,8 +66,8 @@ export class ClockService {
       .then(() => {
         this.listenForData(device, this.dataEmitter);
       })
-      .catch(error => { 
-        console.log("ERROR: " + error); 
+      .catch(error => {
+        console.log("ERROR: " + error);
       });
 
   }
@@ -85,10 +84,6 @@ export class ClockService {
         })
         .catch(alert => {
         })
-      // .then(function () {
-      //    listen(device, msgBuffer);
-      // });
     }, 50);
   };
-
 }

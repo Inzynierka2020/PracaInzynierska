@@ -19,6 +19,7 @@ export class ConnectionSettingsComponent implements OnInit {
   constructor(private _configService: ConfigService) { }
 
   disabled = false;
+
   ngOnInit() {
     let eventId = localStorage.getItem('eventId');
     if (eventId) {

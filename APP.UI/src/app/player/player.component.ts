@@ -7,6 +7,7 @@ import { ClockService } from '../services/clock.service';
 import { FlightsService } from '../services/flights.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
+import { take } from 'rxjs/operators';
 
 class PlayerDialogData {
   pilot: Pilot
@@ -53,18 +54,16 @@ export class PlayerComponent implements OnInit {
     this.groupsCount = this._data.groupsCount;
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
-    this.bestFlight = this._flightService.getBlankData(this.groupsCount);
+    this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
   }
 
   private _subscription;
   ngOnInit() {
     this._subscription = this._clockService.getFrame()
       .subscribe(frame => {
-        if (frame != 0)
-          console.log("INFO: PLAYER" + frame);
         this.parseFrame(frame);
       })
-    this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).subscribe(result => {
+    this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).pipe(take(1)).subscribe(result => {
       if (result != null) {
         this.bestFlight = result;
       }

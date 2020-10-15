@@ -20,9 +20,10 @@
             <div *ngIf="group.value=='center'">
                 <div class="d-flex flex-column align-items-center">
                     <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
-                    <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
-                    <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()">{{'Sign Out' | translate}}</button>
+                    <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()" *ngIf="!noLogout">{{'Sign Out' | translate}}</button>
+                    <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4" (click)="signOut()" *ngIf="noLogout" disabled>{{'Sign Out' | translate}}</button>
                 </div>
             </div>
             <div *ngIf="group.value=='right'">
@@ -37,6 +38,9 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+            </div>
+            <div class="progress-bar">
+                <mat-progress-bar mode="indeterminate" *ngIf="progressing"></mat-progress-bar>
             </div>
         </div>
     </div>

@@ -1,11 +1,12 @@
 {
     "index": "/index.html",
     "dataGroups": [{
-        "name": "api-performance",
+        "name": "api-freshness",
         "urls": [
-            "/api/**",
             "/api/users/vault-config",
-            "/api/events/**"
+            "/api/pilots?**",
+            "/api/events/**",
+            "/api/rounds/with-flights?**"
         ],
         "cacheConfig": {
             "strategy": "freshness",
@@ -38,6 +39,7 @@
         }
     }],
     "navigationUrls": [
-        "/**"
+        "/**",
+        "!/api/**"
     ]
 }

@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { tap } from "rxjs/operators";
 import { Token } from "./token.model";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { Router } from '@angular/router';
 
 export interface UserResponse {
@@ -32,7 +32,7 @@ export class AuthService {
       })
       .pipe(
         tap((user) => {
-          console.log("INFO: "+ user.username + "registered!");
+          console.log("INFO: " + user.username + "registered!");
         })
       );
   }
@@ -48,6 +48,11 @@ export class AuthService {
           this.handleAuthentication(response.jwttoken, response.expirationDate);
         })
       );
+  }
+
+  ping() {
+    return this.http
+      .get(this._baseUrl + "users/ping");
   }
 
   private handleAuthentication(token: string, expDate: string) {
@@ -68,14 +73,21 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  logout() {
-    this.token.next(null);
-    localStorage.removeItem("tokenData");
-    this.router.navigate(["/auth"]);
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-    }
-    this.tokenExpirationTimer = null;
+  logout() : Observable<Boolean>  {
+    return new Observable(observer =>{
+      this.ping().subscribe(result => {
+        this.token.next(null);
+        localStorage.removeItem("tokenData");
+        this.router.navigate(["/auth"]);
+        if (this.tokenExpirationTimer) {
+          clearTimeout(this.tokenExpirationTimer);
+        }
+        this.tokenExpirationTimer = null;
+        observer.next(true);
+      }, error => {
+        observer.next(false);
+      })
+    })
   }
 
   autoLogin() {
