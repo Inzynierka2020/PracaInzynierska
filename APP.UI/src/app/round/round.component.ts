@@ -102,9 +102,7 @@ export class RoundComponent {
     // this.pilotsFinished.sort((a, b) => a.flight.group.localeCompare(b.flight.group));
 
     this.saveFlight(flight).pipe(take(1)).subscribe(result => {
-      console.log("NO NIE MA PILOTÓW?", result)
       if (this.pilotsLeft.length == 0) {
-        console.log("NO NIE MA PILOTÓW")
         this.noMorePilotsLeft = true;
       }
     });
@@ -206,9 +204,7 @@ export class RoundComponent {
       if (confirmed)
         this.fillBlankFlights().subscribe(result => {
           if (result) {
-            console.log("CZY ZAFINISZUJE?");
             this._roundsService.finishRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
-              console.log("TAK");
               this.finished.emit(true);
             });
           }

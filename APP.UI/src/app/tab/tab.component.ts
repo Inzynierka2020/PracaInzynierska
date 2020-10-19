@@ -151,9 +151,7 @@ export class TabComponent {
 
   refreshRounds() {
     this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
-      console.log(updateResult);
       this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
-        console.log("RUNDY", roundsResult);
         this.rounds = roundsResult;
         this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
         this.changeRound();
@@ -172,7 +170,6 @@ export class TabComponent {
     return new Observable<boolean>(observer => {
       this._roundsService.syncRound(roundNumber, eventId).pipe(take(1)).subscribe(
         result => {
-          console.log("INFO: ROUND SYNC", result)
           observer.next(result);
         }
       );
@@ -180,11 +177,9 @@ export class TabComponent {
   }
 
   finishRound(finished, tab: MatTabGroup) {
-    console.log("FINISZUJĘ, ALE NIE DOKONCA")
     this.syncRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
       this.isRoundStarted = !finished;
       tab.selectedIndex = 0;
-      console.log("GIT LECI REFRESH");
       this.refreshRounds()
     });
   }
