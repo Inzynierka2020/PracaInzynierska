@@ -74,9 +74,19 @@ export class EventService {
   updateAllRoundsFromDB(eventId: number): Observable<boolean> {
     return new Observable<boolean>(observer => {
       this._dbService.readAllRounds(eventId).pipe(take(1)).subscribe(result => {
-        this._http.put(this._baseUrl + "rounds/synchronize-all/", result).pipe(take(1)).subscribe(
+        this._http.put(this._baseUrl + "rounds/synchronize-all/", result).subscribe(
           result => {
-            observer.next(true);
+            this._http.put<any>(this._baseUrl + "rounds/update?eventId=" + eventId, {
+              responseType: 'text' as 'json'
+            }).subscribe(
+              result => {
+                observer.next(true);
+              },
+              error => {
+                this._dbService.setPriority(true);
+                observer.next(false);
+              }
+            );
           },
           error => {
             this._dbService.setPriority(true);

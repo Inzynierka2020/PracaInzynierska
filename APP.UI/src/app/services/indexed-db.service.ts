@@ -31,11 +31,14 @@ export class IndexedDbService {
           rounds.forEach(round => {
             this.createRound(round).pipe(take(1)).subscribe(result => {
               round.flights.forEach(flight => {
-                this.createFlight(flight, false);
+                this.createFlight(flight, false).pipe(take(1)).subscribe(
+                  result => {
+                  }
+                  );
+                });
               });
             });
-          });
-          observer.next(true);
+            observer.next(true);
         });
       });
     })
@@ -44,18 +47,25 @@ export class IndexedDbService {
   //--- FLIGHTS ---//
 
   createFlight(flight: Flight, updateRound = true) {
-    this.db.flights.put(flight, { pilotId: flight.pilotId, roundNum: flight.roundNum, eventId: flight.eventId }).then(
-      () => {
-        if (updateRound) {
-          this.readFlightsFromRound(flight.roundNum, flight.eventId).pipe(take(1)).subscribe(flights => {
-            this.readRound(flight.roundNum, flight.eventId).pipe(take(1)).subscribe(round => {
-              round.flights = flights;
-              this.createRound(round);
+    return new Observable(observer => {
+      this.db.flights.put(flight, { pilotId: flight.pilotId, roundNum: flight.roundNum, eventId: flight.eventId }).then(
+        () => {
+          if (updateRound) {
+            this.readFlightsFromRound(flight.roundNum, flight.eventId).pipe(take(1)).subscribe(flights => {
+              this.readRound(flight.roundNum, flight.eventId).pipe(take(1)).subscribe(round => {
+                round.flights = flights;
+                this.createRound(round).pipe(take(1)).subscribe(
+                  result => {
+                    observer.next(true);
+                  }
+                );
+              })
             })
-          })
+          } else
+            observer.next(true);
         }
-      }
-    );
+      );
+    });
   }
 
   readBestFlight(roundNum: number, eventId: number): Observable<Flight> {
@@ -114,18 +124,22 @@ export class IndexedDbService {
   }
 
   countRoundScore(roundNum: number, eventId: number) {
-
+    return new Observable(observer => {
+      this.db.rounds.where(["roundNum+eventId"]).equals([roundNum, eventId]).toArray().then(round => {
+        observer.next(round[0]);
+      });
+    })
   }
 
   countAllRoundsScore(eventId: number) {
 
   }
 
-  finishRound(roundNum: number, eventId: number) : Observable<boolean> {
+  finishRound(roundNum: number, eventId: number): Observable<boolean> {
     return new Observable(observer => {
       this.readRound(roundNum, eventId).subscribe(result => {
         result.finished = true;
-        this.createRound(result).pipe(take(1)).subscribe(result=>{
+        this.createRound(result).pipe(take(1)).subscribe(result => {
           observer.next(true);
         })
       });
@@ -163,11 +177,16 @@ export class IndexedDbService {
   //--- MISC ---///
 
   hasPriority(): boolean {
-    return this.priority;
+    var priority = window.localStorage.getItem("dbPriority");
+    if (priority != null)
+      return (priority == 'true');
+    else
+      return this.priority;
   }
 
   setPriority(bool: boolean) {
     this.priority = bool;
+    window.localStorage.setItem("dbPriority", bool.toString());
   }
 }
 

@@ -3,6 +3,7 @@ import { Flight } from '../models/flight';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { IndexedDbService } from './indexed-db.service';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -58,24 +59,25 @@ export class FlightsService {
   }
 
   saveFlight(flight: Flight): Observable<boolean> {
-    if (!this._dbService.hasPriority())
-      return new Observable<boolean>(observer => {
+    return new Observable<boolean>(observer => {
+      if (!this._dbService.hasPriority())
         this._http.post<string>(this._baseUrl + "flights/", flight, {
           responseType: 'text' as 'json'
         }).subscribe(
           result => {
-            observer.next(true);
           }, error => {
-            observer.next(false);
             this._dbService.setPriority(true);
           }).add(() => {
-            this._dbService.createFlight(flight);
+            this._dbService.createFlight(flight).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            });
           });
-      })
-    else {
-      this._dbService.createFlight(flight);
-      return of(false);
-    }
+      else {
+        this._dbService.createFlight(flight).pipe(take(1)).subscribe(result => {
+          observer.next(false);
+        });
+      }
+    })
   }
 
   deleteFlight(flight: Flight): Observable<Boolean> {

@@ -4,6 +4,9 @@
             {{'General score' | translate }}
         </ng-template>
         <div class="tab-content">
+            <div *ngIf="outOfService">
+                OOS
+            </div>
             <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
         </div>
     </mat-tab>

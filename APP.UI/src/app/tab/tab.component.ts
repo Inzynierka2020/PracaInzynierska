@@ -47,7 +47,7 @@ export class TabComponent {
     private _roundsService: RoundsService
   ) {
     this.eventId = this._eventService.getEventId()
-    this.refreshRounds();
+    this.refreshScores();
   }
 
   isBrowsing = false;
@@ -71,26 +71,25 @@ export class TabComponent {
         }
       })
     } else {
-      this.refreshScores(); // ???
+      this.refreshScores(); // GENERAL SCORES
       this.previousTabIndex = tabChangeEvent.index;
     }
   }
 
   /*---- SCORE ----*/
 
+  outOfService = false;
+
   refreshScores() {
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
+      this.outOfService = !result;
       this._pilotService.getPilots(this.eventId).subscribe(result => {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
       });
-    }, error => {
-      this._pilotService.getPilots(this.eventId).subscribe(result => {
-        this.dataSource = result;
-        this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
-      }
-      )
-    })
+      this.refreshRounds().pipe(take(1)).subscribe();
+    });
+    
   }
 
   /*---- BROWSING ----*/
@@ -136,7 +135,7 @@ export class TabComponent {
           result => {
           },
           error => {
-          }).add(() => this.refreshRounds())
+          }).add(() => this.refreshRounds().pipe(take(1)).subscribe())
       })
     } else {
       this._roundsService.reactivateRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(result => {
@@ -144,20 +143,22 @@ export class TabComponent {
           result => {
           },
           error => {
-          }).add(() => this.refreshRounds())
+          }).add(() => this.refreshRounds().pipe(take(1)).subscribe())
       })
     }
   }
 
-  refreshRounds() {
-    this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
-      this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
-        this.rounds = roundsResult;
-        this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
-        this.changeRound();
-        this.refreshScores();
+  refreshRounds(): Observable<any> {
+    return new Observable(observer => {
+      this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
+        this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
+          this.rounds = roundsResult;
+          this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
+          this.changeRound();
+          observer.next(true);
+        });
       });
-    });
+    })
   }
 
   /*---- ROUND ----*/
@@ -180,7 +181,7 @@ export class TabComponent {
     this.syncRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
       this.isRoundStarted = !finished;
       tab.selectedIndex = 0;
-      this.refreshRounds()
+      this.refreshRounds().pipe(take(1)).subscribe();
     });
   }
 
