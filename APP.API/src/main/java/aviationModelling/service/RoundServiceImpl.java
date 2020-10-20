@@ -69,7 +69,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setRoundNum(roundNum);
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
-            eventRound.setSynchronized(true);
+            eventRound.setSynchronized(false);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
@@ -286,9 +286,22 @@ public class RoundServiceImpl implements RoundService {
         createEventRoundsIfNotExist(eventRounds);
         saveFlightsToDb(dtos);
         finishFinishedRounds(eventRounds);
+        cancelCancelledRounds(eventRounds);
+
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Event updated."), HttpStatus.OK);
+    }
+
+    private void cancelCancelledRounds(List<EventRound> eventRounds) {
+        eventRounds.stream().filter(eventRound -> eventRound.isCancelled())
+                .forEach(eventRound -> setCancelledFlag(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.isCancelled()));
+    }
+
+    private void setCancelledFlag(Integer roundNum, Integer eventId, boolean isCancelled) {
+        EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
+        eventRound.setCancelled(isCancelled);
+        eventRoundRepository.save(eventRound);
     }
 
     private void finishFinishedRounds(List<EventRound> eventRounds) {

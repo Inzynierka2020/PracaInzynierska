@@ -38,7 +38,9 @@ public interface FlightMapper {
 //            @Mapping(source = "eventRoundId", target = "flightId.eventRoundId"),
             @Mapping(source = "group", target = "group", defaultValue = ""),
             @Mapping(source = "penalty", target = "penalty", defaultValue = "0"),
-            @Mapping(source = "score", target = "score", defaultValue = "0F")
+            @Mapping(source = "score", target = "score", defaultValue = "0F"),
+            @Mapping(source = "synchronized", target = "isSynchronized")
+
     })
     Flight toFlight(FlightDTO source);
 
