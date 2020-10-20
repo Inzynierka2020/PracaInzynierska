@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Flight } from '../models/flight'
 import { Round } from '../models/round';
+import { RoundsService } from './rounds.service';
 
 @Injectable({
   providedIn: 'root'
@@ -126,12 +127,65 @@ export class IndexedDbService {
     });
   }
 
-  countRoundScore(roundNum: number, eventId: number): Observable<Round> {
+  countRoundScore(roundNum: number, eventId: number): Observable<boolean> {
     return new Observable(observer => {
-      this.db.rounds.where(["roundNum+eventId"]).equals([roundNum, eventId]).toArray().then(round => {
-        observer.next(round[0]);
+      this.db.rounds.where(["roundNum+eventId"]).equals([roundNum, eventId]).toArray().then(roundResult => {
+        var round: Round = roundResult[0];
+        if (round.flights.length != 0) {
+          var groups = this.getGroupNames(round.flights);
+
+          if (round.numberOfGroups == 1 && groups.size != 1) {
+            round.numberOfGroups = groups.size;
+          }
+
+          groups.forEach(group => {
+            var bestTime = this.findBestTime(round.flights, group);
+
+            round.flights.filter(f => f.group === group).forEach(flight => {
+              if (flight.seconds <= 0) {
+                flight.seconds = 0;
+                flight.score = 0;
+              } else {
+                flight.score = bestTime / flight.seconds * 1000.0
+              }
+            });
+          })
+
+          this.createRound(round).pipe(take(1)).subscribe(
+            result => {
+              new Observable(observer2 => {
+                round.flights.forEach(flight => {
+                  this.createFlight(flight, false).pipe(take(1)).subscribe(
+                    result => observer2.next(true)
+                  )
+                });
+              }).pipe(take(round.flights.length)).subscribe()
+                .add(() => {
+                  observer.next(true)
+                })
+            });
+        } else {
+          observer.next(false);
+        }
       });
     })
+  }
+
+  private getGroupNames(flights: Flight[]): Set<string> {
+    var groups = new Set<string>();
+    flights.forEach(flight => {
+      groups.add(flight.group)
+    });
+    return groups;
+  }
+
+  private findBestTime(flights: Flight[], group: string): number {
+    var bestFlight = Number.MAX_SAFE_INTEGER;
+    flights.filter(f => f.group === group).forEach(flight => {
+      if (flight.seconds > 0 && flight.seconds < bestFlight)
+        bestFlight = flight.seconds
+    })
+    return bestFlight;
   }
 
   countAllRoundsScore(eventId: number) {

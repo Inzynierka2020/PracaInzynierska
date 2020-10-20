@@ -4,10 +4,12 @@
             {{'General score' | translate }}
         </ng-template>
         <div class="tab-content">
-            <div *ngIf="outOfService">
-                <h2>NO INTERNET CONNECTION. SCORES NOT COUNTED</h2>
+            <div *ngIf="!spinning; else loading" [ngClass]="{'theme-disabled' : outOfService}">
+                <div class="oosTitle" *ngIf="outOfService">
+                    {{ 'NoCount' | translate }}
+                </div>
+                <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
             </div>
-            <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
         </div>
     </mat-tab>
     <mat-tab [disabled]="isBrowsing">
@@ -19,7 +21,9 @@
                 keyboard_arrow_right</i>
         </ng-template>
         <div class="tab-content">
-            <app-browse [round]="browsedRound" (roundCanceled)="cancelRound($event)"></app-browse>
+            <div *ngIf="!spinning; else loading">
+                <app-browse [round]="browsedRound" (roundCanceled)="cancelRound($event)"></app-browse>
+            </div>
         </div>
     </mat-tab>
     <mat-tab *ngIf="isRoundStarted ">
@@ -45,3 +49,9 @@
         </div>
     </mat-tab>
 </mat-tab-group>
+
+<ng-template #loading>
+    <div class="spinner">
+        <mat-spinner [diameter]="200"></mat-spinner>
+    </div>
+</ng-template>

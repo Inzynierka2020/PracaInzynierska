@@ -58,5 +58,6 @@
     "Reflight": "DO YOU WANT TO REFLIGHT PILOT: ",
     "SaveRound": "ARE YOU SURE YOU WANT TO SAVE FLIGHT?",
     "Synchronized": "SYNCED",
-    "NotSynchronized": "NOT SYNCED"
+    "NotSynchronized": "NOT SYNCED",
+    "NoCount": "NO SERVER CONNECTION. GENERAL SCORES NOT COUNTED"
 }

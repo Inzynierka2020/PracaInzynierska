@@ -45,9 +45,9 @@ export class EventComponent {
       this._snackService.open("NO EVENT ID PROVIDED.");
       return;
     }
-    
+
     this.settings.eventId = parseInt(this.settings.eventId.toString());
-    
+
     this.loading = true;
     localStorage.setItem('eventId', this.settings.eventId.toString());
 
@@ -65,8 +65,8 @@ export class EventComponent {
 
   getEvent() {
     this._eventService.getEvent(this.settings.eventId).subscribe(eventResult => {
-      this.eventChange.emit(eventResult);
-      this.loading = false;
+        this.eventChange.emit(eventResult);
+        this.loading = false;
     }, error => {
       localStorage.removeItem('eventId');
       window.location.reload();

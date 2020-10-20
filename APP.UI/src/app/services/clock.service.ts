@@ -46,7 +46,7 @@ export class ClockService {
     usbAPI.requestDevice({ filters: this.filters })
       .then(usbDevice => {
         device = usbDevice;
-        console.log("INFO: Product name: " + usbDevice.productName);
+        console.log("Product name: " + usbDevice.productName);
         this.connected = true;
         this.dataEmitter.subscribe(result => {
           this.buffer += result;
@@ -67,7 +67,7 @@ export class ClockService {
         this.listenForData(device, this.dataEmitter);
       })
       .catch(error => {
-        console.log("ERROR: " + error);
+        console.log(error);
       });
 
   }

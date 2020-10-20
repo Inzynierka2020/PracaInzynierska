@@ -55,14 +55,16 @@ export class BrowseComponent {
   editFlight(pilot: Pilot) {
     if (!this.isRoundCanceled)
       this.resolvePlayerDialog(pilot, pilot.flight).subscribe(flightResult => {
-        if (flightResult){
-          if(flightResult.roundNum == 0)
-          flightResult.roundNum = this.round.roundNum;
+        if (flightResult) {
+          if (flightResult.roundNum == 0)
+            flightResult.roundNum = this.round.roundNum;
           this._flightService.saveFlight(flightResult).pipe(take(1)).subscribe(result => {
-            this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).pipe(take(1)).subscribe(
+            this._roundsService.updateRound(flightResult.roundNum, flightResult.eventId).pipe(take(1)).subscribe(result => {
+              this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).pipe(take(1)).subscribe(
               ).add(() => this.roundCanceled.emit(this.round.cancelled));
             });
-          }
+          })
+        }
       })
   }
 

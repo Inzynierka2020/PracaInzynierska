@@ -19,15 +19,27 @@ export class RoundsService {
           responseType: 'text' as 'json'
         }).subscribe(
           result => {
-            observer.next(true);
+            this._dbService.countRoundScore(roundNumber, eventId).pipe(take(1)).subscribe(
+              result => observer.next(true)
+            )
           },
           error => {
-            this._dbService.setPriority(true);
-            observer.next(false);
+            this._dbService.countRoundScore(roundNumber, eventId).pipe(take(1)).subscribe(
+              result => {
+                this._dbService.setPriority(true);
+                observer.next(false);
+              }
+            )
           }
         );
       })
-    else return of(false);
+    else return new Observable<boolean>(observer => {
+      this._dbService.countRoundScore(roundNumber, eventId).pipe(take(1)).subscribe(
+        result => {
+          observer.next(false);
+        }
+      )
+    })
   }
 
   updateAllRounds(eventId: number): Observable<any> {

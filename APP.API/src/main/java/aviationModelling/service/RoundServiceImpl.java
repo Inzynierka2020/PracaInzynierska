@@ -294,7 +294,7 @@ public class RoundServiceImpl implements RoundService {
     }
 
     private void cancelCancelledRounds(List<EventRound> eventRounds) {
-        eventRounds.stream().filter(eventRound -> eventRound.isCancelled())
+        eventRounds.stream()
                 .forEach(eventRound -> setCancelledFlag(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.isCancelled()));
     }
 
