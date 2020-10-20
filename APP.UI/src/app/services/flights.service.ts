@@ -1,44 +1,131 @@
 import { Injectable, Inject } from '@angular/core';
 import { Flight } from '../models/flight';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { IndexedDbService } from './indexed-db.service';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlightsService {
 
-  constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl) { }
+  constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl, private _dbService: IndexedDbService) { }
 
   getFinishedFlights(roundNumber, eventId): Observable<Flight[]> {
-    return this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights?eventId=" + eventId);
+    if (!this._dbService.hasPriority())
+      return new Observable<Flight[]>(observer => {
+        this._http.get<Flight[]>(this._baseUrl + "rounds/" + roundNumber + "/flights?eventId=" + eventId).subscribe(
+          result => {
+            observer.next(result);
+          },
+          error => {
+            this._dbService.setPriority(true);
+            this._dbService.readFlightsFromRound(roundNumber, eventId).subscribe(flightsFromRounds => {
+              observer.next(flightsFromRounds);
+            });
+          }
+        )
+      });
+    else
+      return new Observable<Flight[]>(observer => {
+        this._dbService.readFlightsFromRound(roundNumber, eventId).subscribe(flightsFromRounds => {
+          observer.next(flightsFromRounds);
+        });
+      })
   }
 
   getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
-    return this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId=" + eventId);
+    if (!this._dbService.hasPriority())
+      return new Observable<Flight>(observer => {
+        this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId=" + eventId).subscribe(
+          result => {
+            observer.next(result);
+          },
+          error => {
+            this._dbService.setPriority(true);
+            this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
+              observer.next(bestFlight);
+            });
+          }
+        )
+      })
+    else
+      return new Observable<Flight>(observer => {
+        this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
+          observer.next(bestFlight);
+        });
+      });
   }
 
-  saveFlight(flight: Flight): Observable<any> {
-    return this._http.post<string>(this._baseUrl + "flights/", flight, {
-      responseType: 'text' as 'json'
-    });
+  saveFlight(flight: Flight): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      if (!this._dbService.hasPriority())
+        this._http.post<string>(this._baseUrl + "flights/", flight, {
+          responseType: 'text' as 'json'
+        }).subscribe(
+          result => {
+          }, error => {
+            this._dbService.setPriority(true);
+          }).add(() => {
+            this._dbService.createFlight(flight).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            });
+          });
+      else {
+        this._dbService.createFlight(flight).pipe(take(1)).subscribe(result => {
+          observer.next(false);
+        });
+      }
+    })
   }
 
-  deleteFlight(flight: Flight): Observable<any> {
+  deleteFlight(flight: Flight): Observable<Boolean> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       body: flight
     };
-    return this._http.delete<Flight>(this._baseUrl + "flights/delete", options);
+
+    if (!this._dbService.hasPriority())
+      return new Observable<boolean>(observer => {
+        this._http.delete<Flight>(this._baseUrl + "flights/delete", options).subscribe(
+          result => {
+            this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            })
+          }, error => {
+            this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+              this._dbService.setPriority(true);
+              observer.next(false);
+            })
+          });
+      })
+    else {
+      this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+        return of(false);
+      })
+    }
   }
 
-  synchronizeFlight(eventId, pilotId, roundNum): Observable<any> {
-    return this._http.post<string>(this._baseUrl + "flights/vault" + "?eventId=" + eventId + "&pilotId=" + pilotId + "&roundNum=" + roundNum, null);
+  synchronizeFlight(eventId, pilotId, roundNum): Observable<boolean> {
+    if (!this._dbService.hasPriority())
+      return new Observable<boolean>(observer => {
+        this._http.post<string>(this._baseUrl + "flights/vault" + "?eventId=" + eventId + "&pilotId=" + pilotId + "&roundNum=" + roundNum, null).subscribe(
+          result => {
+            observer.next(true);
+          },
+          error => {
+            this._dbService.setPriority(false);
+            observer.next(false);
+          }
+        );
+      })
+    else return of(false);
   }
 
-  getBlankData(groupCount: number): Flight {
+  getBlankFlight(groupCount: number): Flight {
     var flight = <Flight>{
       eventPilotId: 0,
       eventRoundId: 0,

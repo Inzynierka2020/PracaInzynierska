@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ClockService } from '../services/clock.service';
 import { ConfigService } from '../services/config.service';
 import { AuthService } from '../auth/auth.service';
+import { SnackService } from '../services/snack.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,13 +16,14 @@ import { AuthService } from '../auth/auth.service';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>, 
-    public themeService: ThemeService, 
-    public _eventService: EventService, 
-    public _clockService: ClockService, 
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>,
+    public themeService: ThemeService,
+    public _eventService: EventService,
+    public _clockService: ClockService,
     private _configService: ConfigService,
     public translate: TranslateService,
-    private _authService: AuthService) {
+    private _authService: AuthService,
+    private _snackService: SnackService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -37,14 +39,17 @@ export class SettingsComponent implements OnInit {
     eventId: 1834
   }
 
+  progressing = false;
+
   noEvent = true;
+  noLogout = false;
   language: 'en';
 
   ngOnInit() {
 
   }
 
-  connect(){
+  connect() {
     this._clockService.connectDevice();
   }
 
@@ -60,14 +65,15 @@ export class SettingsComponent implements OnInit {
   }
 
   finishEvent() {
+    this.progressing = true;
     let eventId = localStorage.getItem('eventId');
-    localStorage.removeItem('eventId');
     this._eventService.deleteEvent(Number(eventId)).subscribe(result => {
+      localStorage.removeItem('eventId');
       window.location.reload();
     }, error => {
-      window.location.reload();
-      console.log("INFO: Deleting event failed. There is no such event in the database !");
-    });
+      this._snackService.open("NO SERVER CONNECTION. CANNOT FINISH EVENT.")
+      this.noEvent = true;
+    }).add(() => this.progressing = false);
   }
 
   toggleTheme() {
@@ -83,8 +89,18 @@ export class SettingsComponent implements OnInit {
     localStorage.setItem("lang", lang);
   }
 
-  signOut(){
-    this._authService.logout();
-    this.dialogRef.close();
+  signOut() {
+    this.progressing = true;
+    var sub = this._authService.logout().subscribe(result => {
+      if (result) {
+        this.dialogRef.close();
+      } else {
+        this._snackService.open("NO SERVER CONNECTION. CANNOT SIGN OUT.")
+        this.noLogout = true;
+      }
+      sub.unsubscribe();
+    }).add(() => {
+      this.progressing = false;
+    });
   }
 }

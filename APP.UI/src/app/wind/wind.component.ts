@@ -24,7 +24,7 @@ export class WindComponent implements OnInit {
     this._subscription = this._clockSerice.getFrame()
       .subscribe(frame => {
         if (frame != 0)
-          console.log("INFO: WIND" + frame);
+          console.log(frame);
         this.parseFrame(frame + '');
       })
   }
@@ -54,6 +54,7 @@ export class WindComponent implements OnInit {
   openSnack() {
     this._snackBar.openFromComponent(WarningSnackComponent, {
       duration: this.durationInSeconds * 1000,
+      data: 'BadWeather'
     });
   }
 }

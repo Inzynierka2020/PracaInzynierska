@@ -25,12 +25,12 @@ services:
   ui:
     container_name: ui
     build: 
-      context: ./APP.UI/
+      context: ./
+      dockerfile: ./APP.UI/Dockerfile
     ports: 
       - "80:80"
+      - "443:443"
       - "9090:9090"
-    volumes:
-      - ./nginx:/etc/nginx
     depends_on: 
       - api
       

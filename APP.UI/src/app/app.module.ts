@@ -27,6 +27,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { WrapperComponent } from './wrapper/wrapper.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from "../environments/environment";
+import { ServiceWorkerModule } from '@angular/service-worker';
+
 
 export function getBaseUrl() {
   var url = document
@@ -69,6 +71,7 @@ export function getBaseUrl() {
         deps: [HttpClient],
       },
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: "BASE_URL", useFactory: getBaseUrl, deps: [] },

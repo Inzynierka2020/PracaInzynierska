@@ -1,5 +1,7 @@
-p {
+.msg {
     font-size: 130%;
+    text-align: center;
+    padding-right: 5px;
 }
 
 .mat-snack-bar-container {
@@ -22,7 +24,7 @@ p {
 }
 
 @media (max-width: 700px) {
-    p {
+    .msg {
         font-size: 80%;
     }
 }

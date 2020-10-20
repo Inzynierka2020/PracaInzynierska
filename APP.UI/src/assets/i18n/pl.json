@@ -58,5 +58,6 @@
     "Reflight": "CZY CHCESZ ABY PILOT POLECIAŁ JESZCZE RAZ: ",
     "SaveRound": "JESTEŚ PEWIEN CZY ZAPISAĆ PRZELOT?",
     "Synchronized": "ZSYNCHRONIZOWANO",
-    "NotSynchronized": "NIEZSYNCHRONIZOWANO"
+    "NotSynchronized": "NIEZSYNCHRONIZOWANO",
+    "NoCount": "BRAK ŁĄCZNOŚCI Z SERWEREM. PUNKTACJA NIE PRZELICZONA"
 }

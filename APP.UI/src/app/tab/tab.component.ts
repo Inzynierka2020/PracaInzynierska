@@ -7,7 +7,8 @@ import { PilotService } from '../services/pilot.service';
 import { Pilot } from '../models/pilot';
 import { Round } from '../models/round';
 import { EventService } from '../services/event.service';
-import { Observable, Subject, noop } from 'rxjs';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 enum TAB {
   GENERAL = 0,
@@ -39,9 +40,14 @@ export class TabComponent {
   groupCount: number;
   newRoundNumber = 0;
 
-  constructor(public dialog: MatDialog, private _roundsService: RoundsService, private _pilotService: PilotService, private _eventService: EventService) {
+  constructor(
+    public dialog: MatDialog,
+    private _pilotService: PilotService,
+    private _eventService: EventService,
+    private _roundsService: RoundsService
+  ) {
     this.eventId = this._eventService.getEventId()
-    this.refreshRounds();
+    this.refreshScores();
   }
 
   isBrowsing = false;
@@ -65,20 +71,29 @@ export class TabComponent {
         }
       })
     } else {
-      this.refreshScores(); // ???
+      this.refreshScores(); // GENERAL SCORES
       this.previousTabIndex = tabChangeEvent.index;
     }
   }
 
   /*---- SCORE ----*/
 
+  outOfService = false;
+  spinning = false;
+
   refreshScores() {
-    this._eventService.updateGeneralScore(this.eventId).subscribe(result => {
+    this.spinning = true;
+
+    this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
+      this.outOfService = !result;
       this._pilotService.getPilots(this.eventId).subscribe(result => {
         this.dataSource = result;
         this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
+        this.spinning = false;
       });
-    })
+      this.refreshRounds().pipe(take(1)).subscribe();
+    });
+
   }
 
   /*---- BROWSING ----*/
@@ -100,11 +115,7 @@ export class TabComponent {
 
     if (!this.browsedRound.synchronized)
       this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-        if (result) {
-          this.browsedRound.synchronized = true;
-        } else {
-          this.browsedRound.synchronized = false;
-        }
+        this.browsedRound.synchronized = result;
       });
 
     var lastRound = this.rounds[this.rounds.length - 1];
@@ -117,39 +128,41 @@ export class TabComponent {
   }
 
   cancelRound(toCancel: boolean) {
+    this.spinning = true;
     this.browsedRound.synchronized = false;
     if (toCancel) {
-      this._roundsService.cancelRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
-        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).subscribe(
+      this._roundsService.cancelRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(result => {
+        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(
           result => {
-            console.log("INFO: ROUND SYNCED");
+            //this.browsedRound.synchronized = result;
           },
           error => {
-            console.log("INFO: ROUND NOT SYNCED");
-          }).add(() => this.refreshRounds())
+          }).add(() => this.refreshRounds().pipe(take(1)).subscribe(result => this.spinning = false))
       })
     } else {
-      this._roundsService.reactivateRound(this.browsedRound.roundNum, this.eventId).subscribe(result => {
-        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).subscribe(
+      this._roundsService.reactivateRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(result => {
+        this._roundsService.syncRound(this.browsedRound.roundNum, this.eventId).pipe(take(1)).subscribe(
           result => {
-            console.log("INFO: ROUND SYNCED");
+            //this.browsedRound.synchronized = result;
           },
           error => {
-            console.log("INFO: ROUND NOT SYNCED");
-          }).add(() => this.refreshRounds())
+          }).add(() => this.refreshRounds().pipe(take(1)).subscribe(result => this.spinning = false))
       })
     }
   }
 
-  refreshRounds() {
-    this._roundsService.updateAllRounds(this.eventId).subscribe(updateResult => {
-      this._roundsService.getRounds(this.eventId).subscribe(roundsResult => {
-        roundsResult.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
-        this.rounds = roundsResult;
-        this.changeRound();
-        this.refreshScores();
+  refreshRounds(): Observable<any> {
+    return new Observable(observer => {
+      this.spinning = true;
+      this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
+        this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
+          this.rounds = roundsResult;
+          this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
+          this.changeRound();
+          observer.next(true);
+        });
       });
-    });
+    })
   }
 
   /*---- ROUND ----*/
@@ -159,27 +172,20 @@ export class TabComponent {
   }
 
   syncRound(roundNumber: number, eventId: number): Observable<boolean> {
-    var emitter = new Subject<boolean>();
-    this._roundsService.syncRound(roundNumber, eventId).subscribe(
-      result => {
-        console.log("INFO: ROUND SYNCED")
-        emitter.next(true);
-      },
-      error => {
-        console.log("INFO: ROUND NOT SYNCED", error)
-        emitter.next(false);
-      });
-    return emitter;
+    return new Observable<boolean>(observer => {
+      this._roundsService.syncRound(roundNumber, eventId).pipe(take(1)).subscribe(
+        result => {
+          observer.next(result);
+        }
+      );
+    });
   }
 
   finishRound(finished, tab: MatTabGroup) {
-    this.isRoundStarted = !finished;
-    tab.selectedIndex = 0;
-    var s = this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-      s.unsubscribe();
-    }, error => {
-    }).add(() => {
-      this.refreshRounds()
+    this.syncRound(this.newRoundNumber, this.eventId).pipe(take(1)).subscribe(result => {
+      this.isRoundStarted = !finished;
+      tab.selectedIndex = 0;
+      this.refreshRounds().pipe(take(1)).subscribe(result => this.spinning = false);
     });
   }
 

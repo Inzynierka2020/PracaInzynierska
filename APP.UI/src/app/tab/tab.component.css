@@ -23,6 +23,27 @@
     color: black;
 }
 
+.oosTitle {
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+    font-size: 40px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: black;
+    margin: auto;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.spinner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
 
 /*---- ANGULAR MATERIAL OVERRIDE ----*/
 
@@ -87,12 +108,22 @@
     .mat-tab-header {
         top: 112px;
     }
+    .oosTitle {
+        font-size: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
 }
 
 @media screen and (max-width: 585px) {
     .mat-tab-label {
         font-size: 15px;
         padding: 12px !important;
+    }
+    .oosTitle {
+        font-size: 25px;
     }
 }
 
@@ -105,5 +136,12 @@
 @media screen and (max-width: 400px) {
     .mat-tab-label {
         font-size: 12px;
+    }
+    .oosTitle {
+        font-size: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 }

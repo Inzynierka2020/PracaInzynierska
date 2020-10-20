@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { viewAttached } from '@angular/core/src/render3/instructions';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-warning-snack',
@@ -10,12 +10,16 @@ import { MatSnackBarRef } from '@angular/material/snack-bar';
 })
 export class WarningSnackComponent implements OnInit {
 
-  constructor(private barref: MatSnackBarRef<WarningSnackComponent>) { }
+  public msg: string;
+
+  constructor(private barref: MatSnackBarRef<WarningSnackComponent>, @Inject(MAT_SNACK_BAR_DATA) public data: string, private translate: TranslateService) {
+    this.msg = this.translate.instant(data);
+  }
 
   ngOnInit() {
   }
 
-  dismiss(){
+  dismiss() {
     this.barref.dismiss();
   }
 }

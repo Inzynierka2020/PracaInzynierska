@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EventService } from '../services/event.service';
 import { PlayerComponent } from '../player/player.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-browse',
@@ -42,7 +43,7 @@ export class BrowseComponent {
         this.dataSource.forEach(pilot => {
           pilot.flight = this.round.flights.find(flight => flight.pilotId == pilot.pilotId);
           if (!pilot.flight)
-            pilot.flight = this._flightService.getBlankData(this.round.numberOfGroups);
+            pilot.flight = this._flightService.getBlankFlight(this.round.numberOfGroups);
         });
         this.isRoundCanceled = this.round.cancelled;
         this.dataSource.sort((a, b) => a.flight.score < b.flight.score ? 1 : -1);
@@ -54,16 +55,16 @@ export class BrowseComponent {
   editFlight(pilot: Pilot) {
     if (!this.isRoundCanceled)
       this.resolvePlayerDialog(pilot, pilot.flight).subscribe(flightResult => {
-        if (flightResult){
-          if(flightResult.roundNum == 0)
-          flightResult.roundNum = this.round.roundNum;
-          this._flightService.saveFlight(flightResult).subscribe(result => {
-            this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).subscribe(
-              result => console.log("INFO: FLIGHT SYNCHRONIZED"),
-              error => console.log("ERROR: FLIGHT NOT SYNCHRONIZED", error),
+        if (flightResult) {
+          if (flightResult.roundNum == 0)
+            flightResult.roundNum = this.round.roundNum;
+          this._flightService.saveFlight(flightResult).pipe(take(1)).subscribe(result => {
+            this._roundsService.updateRound(flightResult.roundNum, flightResult.eventId).pipe(take(1)).subscribe(result => {
+              this._flightService.synchronizeFlight(flightResult.eventId, flightResult.pilotId, flightResult.roundNum).pipe(take(1)).subscribe(
               ).add(() => this.roundCanceled.emit(this.round.cancelled));
             });
-          }
+          })
+        }
       })
   }
 
