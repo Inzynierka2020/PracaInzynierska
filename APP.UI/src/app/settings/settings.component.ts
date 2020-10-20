@@ -71,12 +71,8 @@ export class SettingsComponent implements OnInit {
       localStorage.removeItem('eventId');
       window.location.reload();
     }, error => {
-      if (error.status == 0) {
-        this._snackService.open("NO SERVER CONNECTION. CANNOT FINISH EVENT.")
-        this.noEvent = true;
-      } else {
-        window.location.reload();
-      }
+      this._snackService.open("NO SERVER CONNECTION. CANNOT FINISH EVENT.")
+      this.noEvent = true;
     }).add(() => this.progressing = false);
   }
 

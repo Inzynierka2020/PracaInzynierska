@@ -113,14 +113,26 @@ export class RoundsService {
         this._http.post<any>(this._baseUrl + "rounds/vault-update/" + roundNumber + "?eventId=" + eventId, null, {
           responseType: 'text' as 'json'
         }).subscribe(
-          result => observer.next(true),
+          result => {
+            this._dbService.setRoundSync(roundNumber, eventId, true).subscribe(result => {
+              observer.next(true);
+            });
+          },
           error => {
-            observer.next(false)
-            this._dbService.setPriority(true);
+            this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
+              this._dbService.setPriority(true);
+              observer.next(false)
+            });
           }
-        );
+        )
       })
-    else return of(false);
+    else
+      return new Observable(observer => {
+        this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
+          this._dbService.setPriority(true);
+          observer.next(false)
+        });
+      });
   }
 
   cancelRound(roundNumber: number, eventId: number): Observable<boolean> {
@@ -129,18 +141,25 @@ export class RoundsService {
         this._http.put<any>(this._baseUrl + "rounds/cancel/" + roundNumber + "?eventId=" + eventId, {
           responseType: 'text' as 'json'
         }).subscribe(
-          result => observer.next(true),
+          result => {
+            this._dbService.cancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            });
+          },
           error => {
-            this._dbService.setPriority(true);
-            observer.next(false)
+            this._dbService.cancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+              this._dbService.setPriority(true);
+              observer.next(false)
+            });
           }
-        ).add(() => {
-          this._dbService.cancelRound(roundNumber, eventId);
-        });
+        )
       });
     else {
-      this._dbService.cancelRound(roundNumber, eventId);
-      return of(false);
+      return new Observable(observer => {
+        this._dbService.cancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+          observer.next(false);
+        });;
+      });
     }
   }
 
@@ -151,17 +170,24 @@ export class RoundsService {
           responseType: 'text' as 'json'
         }).subscribe(
           result => {
-            observer.next(true);
+            this._dbService.uncancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            });
           },
           error => {
-            this._dbService.setPriority(true);
-            observer.next(false);
+            this._dbService.uncancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+              this._dbService.setPriority(true);
+              observer.next(false);
+            });;
           }
-        ).add(() => this._dbService.uncancelRound(roundNumber, eventId));
+        )
       });
     else {
-      this._dbService.uncancelRound(roundNumber, eventId);
-      return of(false);
+      return new Observable(observer => {
+        this._dbService.uncancelRound(roundNumber, eventId).pipe(take(1)).subscribe(result => {
+          observer.next(false);
+        });;
+      });
     }
   }
 

@@ -5,7 +5,7 @@
         </ng-template>
         <div class="tab-content">
             <div *ngIf="outOfService">
-                OOS
+                <h2>NO INTERNET CONNECTION. SCORES NOT COUNTED</h2>
             </div>
             <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
         </div>

@@ -34,11 +34,11 @@ export class IndexedDbService {
                 this.createFlight(flight, false).pipe(take(1)).subscribe(
                   result => {
                   }
-                  );
-                });
+                );
               });
             });
-            observer.next(true);
+          });
+          observer.next(true);
         });
       });
     })
@@ -46,7 +46,7 @@ export class IndexedDbService {
 
   //--- FLIGHTS ---//
 
-  createFlight(flight: Flight, updateRound = true) {
+  createFlight(flight: Flight, updateRound = true): Observable<boolean> {
     return new Observable(observer => {
       this.db.flights.put(flight, { pilotId: flight.pilotId, roundNum: flight.roundNum, eventId: flight.eventId }).then(
         () => {
@@ -93,8 +93,11 @@ export class IndexedDbService {
     })
   }
 
-  deleteFlight(flight: Flight) {
-    this.db.flights.delete([flight.pilotId, flight.roundNum, flight.eventId])
+  deleteFlight(flight: Flight): Observable<boolean> {
+    return new Observable(observer => {
+      this.db.flights.delete([flight.pilotId, flight.roundNum, flight.eventId])
+        .then(() => observer.next(true));
+    })
   }
 
   //--- ROUNDS ---//
@@ -123,7 +126,7 @@ export class IndexedDbService {
     });
   }
 
-  countRoundScore(roundNum: number, eventId: number) {
+  countRoundScore(roundNum: number, eventId: number): Observable<Round> {
     return new Observable(observer => {
       this.db.rounds.where(["roundNum+eventId"]).equals([roundNum, eventId]).toArray().then(round => {
         observer.next(round[0]);
@@ -146,26 +149,50 @@ export class IndexedDbService {
     });
   }
 
-  cancelRound(roundNum: number, eventId: number) {
-    this.readRound(roundNum, eventId).subscribe(result => {
-      result.cancelled = true;
-      this.createRound(result).subscribe().unsubscribe();;
-    });
+  cancelRound(roundNum: number, eventId: number): Observable<boolean> {
+    return new Observable(observer => {
+      this.readRound(roundNum, eventId).subscribe(result => {
+        result.cancelled = true;
+        this.createRound(result).pipe(take(1)).subscribe(result => {
+          observer.next(true);
+        });;
+      });
+    })
   }
 
-  uncancelRound(roundNum: number, eventId: number) {
-    this.readRound(roundNum, eventId).subscribe(result => {
-      result.cancelled = false;
-      this.createRound(result).subscribe().unsubscribe();;
-    });
+  uncancelRound(roundNum: number, eventId: number): Observable<boolean> {
+    return new Observable(observer => {
+      this.readRound(roundNum, eventId).pipe(take(1)).subscribe(result => {
+        result.cancelled = false;
+        this.createRound(result).pipe(take(1)).subscribe(result => {
+          observer.next(true);
+        });
+      });
+    })
   }
 
-  deleteRound(roundNum: number, eventId: number) {
-    this.db.rounds.delete([roundNum, eventId]);
-    this.db.flights
-      .where(["pilotId+roundNum+eventId"])
-      .between([Dexie.minKey, roundNum, eventId], [Dexie.maxKey, roundNum, eventId])
-      .delete();
+  deleteRound(roundNum: number, eventId: number): Observable<boolean> {
+    return new Observable(observer => {
+      this.db.rounds.delete([roundNum, eventId]);
+      this.db.flights
+        .where(["pilotId+roundNum+eventId"])
+        .between([Dexie.minKey, roundNum, eventId], [Dexie.maxKey, roundNum, eventId])
+        .delete()
+        .then(() => observer.next(true));
+    })
+  }
+
+  setRoundSync(roundNum: number, eventId: number, status: boolean): Observable<boolean> {
+    return new Observable(observer => {
+      this.readRound(roundNum, eventId).pipe(take(1)).subscribe(round => {
+        round.synchronized = status;
+        this.createRound(round).pipe(take(1)).subscribe(
+          result => {
+            observer.next(true);
+          }
+        );
+      })
+    })
   }
 
   //--- EVENT ---//

@@ -92,15 +92,20 @@ export class FlightsService {
       return new Observable<boolean>(observer => {
         this._http.delete<Flight>(this._baseUrl + "flights/delete", options).subscribe(
           result => {
-            observer.next(true);
+            this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+              observer.next(true);
+            })
           }, error => {
-            observer.next(false);
-            this._dbService.setPriority(true);
-          }).add(() => this._dbService.deleteFlight(flight));
+            this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+              this._dbService.setPriority(true);
+              observer.next(false);
+            })
+          });
       })
     else {
-      this._dbService.deleteFlight(flight)
-      return of(false);
+      this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+        return of(false);
+      })
     }
   }
 

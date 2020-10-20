@@ -191,7 +191,7 @@ export class RoundComponent {
       if (confirmResult == true) {
         this.canceled = !this.canceled;
         if (this.canceled) {
-          this._roundsService.cancelRound(this.roundNumber, this.eventId).subscribe(result => { })
+          this._roundsService.cancelRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => { })
         } else {
           this._roundsService.reactivateRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => { })
         }
