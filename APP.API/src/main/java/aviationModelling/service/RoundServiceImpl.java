@@ -287,10 +287,16 @@ public class RoundServiceImpl implements RoundService {
         saveFlightsToDb(dtos);
         finishFinishedRounds(eventRounds);
         cancelCancelledRounds(eventRounds);
+		updateNotUpdatedRounds(eventRounds);
 
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Event updated."), HttpStatus.OK);
+    }
+
+	private void updateNotUpdatedRounds(List<EventRound> eventRounds) {
+        eventRounds.stream().filter(eventRound -> !eventRound.isSynchronized())
+                .forEach(eventRound -> updateEventRoundStatus(eventRound.getRoundNum(), eventRound.getEventId()));
     }
 
     private void cancelCancelledRounds(List<EventRound> eventRounds) {
