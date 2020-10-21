@@ -121,13 +121,18 @@ public class RestRoundController {
         return roundService.updateEventRoundStatus(roundNum, eventId);
     }
 
-    @PutMapping("/synchronize-all")
+    @PutMapping("/synchronize-localdb")
     public ResponseEntity<?> synchronizeAfterOffline(@RequestBody List<RoundDTO> rounds) {
         return roundService.synchronizeAfterOffline(rounds);
     }
 
-    @GetMapping("/mock")
-    public List<RoundDTO> getDtos() {
-        return roundService.getDtos();
+    @PutMapping("/synchronize-vault")
+    public ResponseEntity<?> sendFlightsToVaultAfterOffline(@RequestBody List<RoundDTO> rounds) {
+        return roundService.sendFlightsToVaultAfterOffline(rounds);
     }
+
+//    @GetMapping("/mock")
+//    public List<RoundDTO> getDtos() {
+//        return roundService.getDtos();
+//    }
 }
