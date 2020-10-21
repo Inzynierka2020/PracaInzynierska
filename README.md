@@ -18,7 +18,37 @@ W celu uruchomienia lokalnie projektu angularowego należy:
 
 ### Spring
 Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../swagger-ui.html**
-## Docker
+
+## Deployment with Docker-Compose 
+
+### Locally
+
+Visit [this page](https://docs.docker.com/docker-for-windows/install/) in order to install *Docker for Windows*.
+
+To deploy this server locally, use compose commands listed below - execute them in a folder with **.yml** files in it:
+
+- firstly, to build service(s):
+
+`$ docker-compose build`
+
+- secondly, to deploy:
+
+`$ docker-compose -f docker-compose.yml up`
+
+Then, you can access *https//localhost/api/swagger-ui.html* to see API specification.
+
+In order to TLS work properly, and therefore whole PWA application work properly, a CA Certificate needs to be provided for Nginx (https server), e.g. Self-Signed Certificate. Check **nginx/localhost** for further instructions on how to generate such one. 
+
+Then, Client App must trust this certificate; for Windows/Chrome **double click .pfx* -> *Install certificate* and insert it in *Trusted Root Certification Authorities storage*. For more instructions how to trust certificates on certain OSs, check [this page](http://wiki.cacert.org/FAQ/ImportRootCert).
+
+### Remotely
+
+Same procedure as locally, but with a twist. Remote server needs to have it's own domain for PWA to work and it need to be trusted by Chrome. [Let's Encrypt](https://letsencrypt.org/) certificate can be provided for Nginx for such use. This certificate is trusted by many OS by default. To do so, another .yml file need to be created, e.g. **docker-compose.server.yml** that specifies: 
+TODO
+
+Having those, just deploy server with command:
+
+`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up`
 
 ## Linki
 - [dokumentacja Angulara](https://angular.io/docs)
