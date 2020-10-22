@@ -103,9 +103,11 @@ export class FlightsService {
           });
       })
     else {
-      this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
-        return of(false);
-      })
+      return new Observable<boolean>(observer => {
+        this._dbService.deleteFlight(flight).pipe(take(1)).subscribe(result => {
+          return of(false);
+        })
+      });
     }
   }
 

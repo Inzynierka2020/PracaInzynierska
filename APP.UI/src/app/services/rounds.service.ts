@@ -141,7 +141,6 @@ export class RoundsService {
     else
       return new Observable(observer => {
         this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
-          this._dbService.setPriority(true);
           observer.next(false)
         });
       });

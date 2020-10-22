@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RoundServiceImpl implements RoundService {
@@ -29,6 +30,7 @@ public class RoundServiceImpl implements RoundService {
     private EventRepository eventRepository;
     private PilotRepository pilotRepository;
     private FlightRepository flightRepository;
+    private FlightService flightService;
 
 //    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService) {
 //        this.roundRepository = roundRepository;
@@ -37,13 +39,14 @@ public class RoundServiceImpl implements RoundService {
 //    }
 
 
-    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService, EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository) {
+    public RoundServiceImpl(RoundRepository roundRepository, EventRoundRepository eventRoundRepository, VaultService vaultService, EventRepository eventRepository, PilotRepository pilotRepository, FlightRepository flightRepository, FlightService flightService) {
         this.roundRepository = roundRepository;
         this.eventRoundRepository = eventRoundRepository;
         this.vaultService = vaultService;
         this.eventRepository = eventRepository;
         this.pilotRepository = pilotRepository;
         this.flightRepository = flightRepository;
+        this.flightService = flightService;
     }
 
     @Override
@@ -287,6 +290,11 @@ public class RoundServiceImpl implements RoundService {
         saveFlightsToDb(dtos);
         finishFinishedRounds(eventRounds);
         cancelCancelledRounds(eventRounds);
+
+        sendFlightsToVaultAfterOffline(dtos);
+
+
+
 		updateNotUpdatedRounds(eventRounds);
 
 
@@ -294,7 +302,29 @@ public class RoundServiceImpl implements RoundService {
                 "Event updated."), HttpStatus.OK);
     }
 
-	private void updateNotUpdatedRounds(List<EventRound> eventRounds) {
+    private void sendFlightsToVaultAfterOffline(List<RoundDTO> dtos) {
+//        jesli runda niezsynchronizowana
+        final Stream<RoundDTO> unsynchronizedRounds = dtos.stream().filter(roundDTO -> !roundDTO.isSynchronized());
+
+
+        final List<List<FlightDTO>> listOfListOfUnsynchronizedFlights = unsynchronizedRounds.map(roundDTO -> changeRoundDTOIntoListOfUnsynchronizedFlights(roundDTO))
+                .collect(Collectors.toList());
+
+        final List<FlightDTO> listOfUnsynchronizedFlights = listOfListOfUnsynchronizedFlights.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        listOfUnsynchronizedFlights.forEach(dto -> flightService.postScore(dto.getRoundNum(), dto.getPilotId(), dto.getEventId()));
+
+    }
+
+    private List<FlightDTO> changeRoundDTOIntoListOfUnsynchronizedFlights(RoundDTO roundDTO) {
+        final List<FlightDTO> flights = roundDTO.getFlights();
+        return flights.stream().filter(flightDTO -> !flightDTO.isSynchronized()).collect(Collectors.toList());
+
+    }
+
+    private void updateNotUpdatedRounds(List<EventRound> eventRounds) {
         eventRounds.stream().filter(eventRound -> !eventRound.isSynchronized())
                 .forEach(eventRound -> updateEventRoundStatus(eventRound.getRoundNum(), eventRound.getEventId()));
     }
