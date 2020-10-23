@@ -127,8 +127,8 @@ public class RestRoundController {
     }
 
     @PutMapping("/synchronize-vault")
-    public ResponseEntity<?> sendFlightsToVaultAfterOffline(@RequestBody List<RoundDTO> rounds) {
-        return roundService.sendFlightsToVaultAfterOffline(rounds);
+    public ResponseEntity<?> sendFlightsToVaultAfterOffline(@RequestParam Integer eventId) {
+        return roundService.sendFlightsToVaultAfterOffline(eventId);
     }
 
 //    @GetMapping("/mock")

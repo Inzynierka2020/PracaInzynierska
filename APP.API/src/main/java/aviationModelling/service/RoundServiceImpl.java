@@ -299,7 +299,11 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public ResponseEntity<?> sendFlightsToVaultAfterOffline(List<RoundDTO> dtos) {
+    public ResponseEntity<?> sendFlightsToVaultAfterOffline(Integer eventId) {
+        final List<EventRound> eventRounds = roundRepository.findAll(eventId);
+        final List<RoundDTO> dtos = RoundMapper.MAPPER.toRoundDTOList(eventRounds);
+
+
         final Stream<RoundDTO> unsynchronizedRounds = dtos.stream().filter(roundDTO -> !roundDTO.isSynchronized());
 
 
@@ -312,14 +316,10 @@ public class RoundServiceImpl implements RoundService {
 
         listOfUnsynchronizedFlights.forEach(dto -> flightService.postScore(dto.getRoundNum(), dto.getPilotId(), dto.getEventId()));
 
-//
         updateNotUpdatedRounds(dtos);
-
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Event synchronized on Vault"), HttpStatus.OK);
-
-
     };
 
 
