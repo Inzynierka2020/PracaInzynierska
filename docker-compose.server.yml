@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  ui:
+    build: 
+      context: ./
+      dockerfile: ./APP.UI/server.Dockerfile
