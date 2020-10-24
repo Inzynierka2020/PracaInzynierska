@@ -17,7 +17,12 @@ W celu uruchomienia lokalnie projektu angularowego należy:
 - od teraz do uruchomienia projektu służy polecenie `ng serve`
 
 ### Spring
-Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../swagger-ui.html**
+W celu uruchomienia lokalnie API aplikacji należy:
+- pobrać repozytorium
+- posiadać zainstalowanego [Mavena](https://maven.apache.org/download.cgi) oraz [JDK](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)
+- przejść do katalogu APP.API i poleceniem `mvn clean install` skompilować program
+- przejść do utworzonego katalogu target i poleceniem `java -jar nazwa-utworzonego-pliku-jar.jar` uruchomić API
+Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../api/swagger-ui.html**
 
 ## Deployment with Docker-Compose 
 
@@ -49,6 +54,7 @@ TODO
 Having those, just deploy server with command:
 
 `$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up`
+
 
 ## Linki
 - [dokumentacja Angulara](https://angular.io/docs)

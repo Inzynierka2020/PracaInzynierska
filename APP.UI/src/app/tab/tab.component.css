@@ -1,0 +1,147 @@
+.material-icons {
+    font-size: 350%;
+}
+
+.tab-content {
+    margin-top: 150px;
+}
+
+.gold {
+    color: var(--th-accent) !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .87) !important;
+    transition: 0.1s ease-in-out;
+    user-select: none;
+    cursor: pointer;
+}
+
+.gold:active {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.black {
+    color: black;
+}
+
+.oosTitle {
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+    font-size: 40px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: black;
+    margin: auto;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.spinner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+
+/*---- ANGULAR MATERIAL OVERRIDE ----*/
+
+.mat-tab-label {
+    font-size: 20px;
+    font-weight: bolder;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    width: 100%;
+}
+
+.mat-tab-header {
+    position: sticky !important;
+    justify-content: center;
+    background-color: white;
+    top: 150px;
+    z-index: 1000;
+}
+
+.mat-tab-list {
+    max-width: 1200px;
+}
+
+.mat-tab-label-container {
+    justify-content: center;
+}
+
+.mat-tab-labels {
+    display: flex;
+    justify-content: space-around !important;
+    align-items: stretch !important;
+}
+
+.mat-ink-bar {
+    background: var(--th-accent) !important;
+}
+
+.tablabel {
+    max-width: 1110px;
+}
+
+
+/*---- RESPONSIVE ----*/
+
+@media screen and (max-width: 700px) {
+    .material-icons {
+        margin: 0px !important;
+        font-size: 300%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .material-icons {
+        font-size: 220%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .tab-content {
+        margin-top: 112px;
+    }
+    .mat-tab-header {
+        top: 112px;
+    }
+    .oosTitle {
+        font-size: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}
+
+@media screen and (max-width: 585px) {
+    .mat-tab-label {
+        font-size: 15px;
+        padding: 12px !important;
+    }
+    .oosTitle {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .mat-tab-label {
+        padding: 0 !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .mat-tab-label {
+        font-size: 12px;
+    }
+    .oosTitle {
+        font-size: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}

@@ -1,0 +1,54 @@
+.container {
+    margin-top: 150px
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+    width: 100%;
+}
+
+button {
+    width: 40%;
+    height: 80px;
+    font-size: 48px;
+}
+
+mat-form-field {
+    text-align: center;
+    font-size: 300% !important;
+    width: 50%;
+}
+
+.settingss {
+    font-size: x-large;
+}
+
+.title {
+    font-size: 400%;
+}
+
+@media (max-width: 767px) {
+    button {
+        font-size: 30px;
+    }
+    .container {
+        margin-top: 150px
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        margin-top: 110px
+    }
+    .title {
+        font-size: 250%;
+    }
+    button {
+        width: 50%;
+        height: 50px;
+        font-size: 20px;
+    }
+}

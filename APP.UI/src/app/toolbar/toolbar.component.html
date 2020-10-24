@@ -1,0 +1,27 @@
+<mat-toolbar class="theme-primary">
+    <mat-toolbar-row class="theme-primary">
+        <div class="content" [ngClass]="!event ? 'justify-content-center' : ''">
+            <div class="title" *ngIf="event"><i>'{{event.eventName}}'</i></div>
+            <div class="wind">
+                <div class="date">
+                    <div>
+                        {{ now | date:'dd.MM.yyyy'}}
+                    </div>
+                    <div style="font-size:150%">
+                        {{ now | date:'HH:mm:ss'}}
+                    </div>
+                </div>
+                <div class="w-25">
+                    <app-wind></app-wind>
+                </div>
+                <button mat-raised-button class="theme-accent-reversed cog align-items-center">
+                    <div (click)="openSettings()" class="d-flex">
+                        <i class="material-icons">
+                            settings
+                        </i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>

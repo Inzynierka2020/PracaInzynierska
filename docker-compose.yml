@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: mssql_db
+    build:
+      context: ./mssql/
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: Password@123
+      ACCEPT_EULA: "Y"
+    volumes:
+      - mssql-data:/var/opt/mssql/data
+
+  api:
+    container_name: api
+    build:
+      context: ./APP.API/
+    expose:
+      - "8080"
+    depends_on: 
+      - db
+
+  ui:
+    container_name: ui
+    build: 
+      context: ./
+      dockerfile: ./APP.UI/Dockerfile
+    ports: 
+      - "80:80"
+      - "443:443"
+      - "9090:9090"
+    depends_on: 
+      - api
+      
+      
+volumes:
+    mssql-data: 
+        driver: local

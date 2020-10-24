@@ -1,0 +1,20 @@
+.mat-form-field-ripple {
+    background-color: var(--th-accent) !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: var(--th-accent) !important;
+}
+
+@media(max-width: 500px),
+(max-height: 700px) {
+    .settings {
+        font-size: medium;
+    }
+}
+
+@media(max-width: 360px) {
+    .settings {
+        font-size: small;
+    }
+}

@@ -1,0 +1,38 @@
+button {
+    width: 40%;
+    height: 50%;
+    font-size: 150%;
+    min-height: 50px;
+}
+
+.title {
+    font-size: 300%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 15%;
+}
+
+
+/*---- RESPONSIVE ----*/
+
+@media (max-height: 900px) and (max-width: 450px) {
+    .title {
+        font-size: 250%;
+    }
+    button {
+        font-size: 125%;
+    }
+}
+
+@media (max-height: 700px) {
+    .title {
+        font-size: 200%;
+    }
+    button {
+        font-size: 125%;
+    }
+}

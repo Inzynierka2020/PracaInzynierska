@@ -1,0 +1,30 @@
+.msg {
+    font-size: 130%;
+    text-align: center;
+    padding-right: 5px;
+}
+
+.mat-snack-bar-container {
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    width: 75%;
+    max-width: 800px;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+}
+
+.dismiss-button {
+    width: 25%;
+    height: 75%;
+    font-size: 130%;
+}
+
+@media (max-width: 700px) {
+    .msg {
+        font-size: 80%;
+    }
+}

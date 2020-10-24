@@ -1,0 +1,239 @@
+<div class="content px-1" *ngIf="editMode; else notEdit">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center pr-3">
+            <div class="number">
+                {{pilot.pilotBib}}
+            </div>
+            <div class="name">
+                {{pilot.lastName | uppercase}} {{pilot.firstName}}
+            </div>
+        </div>
+        <div class="headerDivider"></div>
+        <div class="flag">
+            <app-wind class="wind"></app-wind>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <div class="text-center w-100 title">
+                    {{'Total seconds' | translate}}
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="text-center font-weight-bolder value">
+            <input autocomplete="off" matInput [(ngModel)]="flight.seconds">
+        </div>
+    </div>
+    <div *ngIf="groupsCount>1">
+        <mat-divider></mat-divider>
+        <div class="groups" *ngIf="groupsCount>1">
+            <div class="data">
+                <div *ngFor="let group of groups | slice:0:groupsCount">
+                    <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group) " *ngIf="editMode ">{{group}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="second-div ">
+        <div class="bar1 ">
+            <table>
+                <tr>
+                    <th>CT</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub1"></td>
+                </tr>
+                <tr>
+                    <th>B1</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub2"></td>
+                </tr>
+                <tr>
+                    <th>B2</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub3"></td>
+                </tr>
+                <tr>
+                    <th>B3</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub4"></td>
+                </tr>
+                <tr>
+                    <th>B4</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub5"></td>
+                </tr>
+                <tr>
+                    <th>B5</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub6"></td>
+                </tr>
+                <tr>
+                    <th>B6</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub7"></td>
+                </tr>
+                <tr>
+                    <th>B7</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub8"></td>
+                </tr>
+                <tr>
+                    <th>B8</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub9"></td>
+                </tr>
+                <tr>
+                    <th>B9</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub10"></td>
+                </tr>
+                <tr>
+                    <th>B10</th>
+                    <td><input autocomplete="off" matInput [(ngModel)]="flight.sub11"></td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="bar2 ">
+            <div class="input pt-1 ">
+                <mat-form-field class="d-flex flex-column form " color="warn">
+                    <mat-label>{{'Penalty' | translate}}</mat-label>
+                    <input autocomplete="off" matInput color="warn" [(ngModel)]="flight.penalty">
+                </mat-form-field>
+            </div>
+            <div class="buttons ">
+                <button mat-raised-button *ngIf="flight.dnf " class="theme-primary " (click)="didNotFinish() ">DNF</button>
+                <button mat-raised-button *ngIf="!flight.dnf " class="theme-primary-light " (click)="didNotFinish() ">DNF</button>
+                <button mat-raised-button *ngIf="flight.dns " class="theme-primary " (click)="didNotStart() ">DNS</button>
+                <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
+            </div>
+            <div class="buttons ">
+                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #notEdit>
+    <div class="content">
+        <div class="d-flex justify-content-between mb-3 pt-2">
+            <div class="d-flex align-items-center">
+                <div class="number">
+                    {{pilot.pilotBib}}
+                </div>
+                <div class="name">
+                    {{pilot.lastName | uppercase}} {{pilot.firstName}}
+                </div>
+            </div>
+            <div class="headerDivider"></div>
+            <div class="flag">
+                <app-wind class="wind"></app-wind>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+            <mat-toolbar color="primary">
+                <mat-toolbar-row>
+                    <div class="text-center w-100 title">
+                        {{title | translate}}
+                    </div>
+                </mat-toolbar-row>
+            </mat-toolbar>
+            <div class="text-center font-weight-bolder value">
+                {{value }}
+            </div>
+        </div>
+        <div *ngIf="groupsCount>1">
+            <mat-divider></mat-divider>
+            <div class="groups" *ngIf="groupsCount>1">
+                <div class="data">
+                    <div *ngFor="let group of groups | slice:0:groupsCount">
+                        <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group)">{{group}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="second-div ">
+            <div class="bar1 ">
+                <table>
+                    <tr>
+                        <th style="opacity: 0; border-left-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); ">
+                        </th>
+                        <td>{{'Best' | translate}}</td>
+                    </tr>
+                    <tr>
+                        <th>CT</th>
+                        <td>{{bestFlight.sub1 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub1 > 0}">{{flight.sub1 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B1</th>
+                        <td>{{bestFlight.sub2 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub2 > 0}">{{flight.sub2 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B2</th>
+                        <td>{{bestFlight.sub3 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub3 > 0}">{{flight.sub3 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B3</th>
+                        <td>{{bestFlight.sub4 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub4 > 0}">{{flight.sub4 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B4</th>
+                        <td>{{bestFlight.sub5 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub5 > 0}">{{flight.sub5 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B5</th>
+                        <td>{{bestFlight.sub6 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub6 > 0}">{{flight.sub6 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B6</th>
+                        <td>{{bestFlight.sub7 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub7 > 0}">{{flight.sub7 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B7</th>
+                        <td>{{bestFlight.sub8 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub8 > 0}">{{flight.sub8 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B8</th>
+                        <td>{{bestFlight.sub9 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub9 > 0}">{{flight.sub9 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B9</th>
+                        <td>{{bestFlight.sub10 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub10 > 0}">{{flight.sub10 | number : '1.1-1'}}</td>
+                    </tr>
+                    <tr>
+                        <th>B10</th>
+                        <td>{{bestFlight.sub11 | number : '1.1-1'}}</td>
+                        <td [ngClass]="{'green' : flight.sub11 > 0}">{{flight.sub11 | number : '1.1-1'}}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="bar2 ">
+                <div class="input pt-1 ">
+                    <mat-form-field class="d-flex flex-column form " color="warn">
+                        <mat-label>{{'Penalty' | translate}}</mat-label>
+                        <input autocomplete="off" matInput color="warn" [(ngModel)]="flight.penalty">
+                    </mat-form-field>
+                </div>
+                <div class="buttons">
+                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
+                </div>
+                <div class="buttons ">
+                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                    <button mat-raised-button [ngClass]="{'theme-accent' : finished, 'theme-disabled' : !finished}" [disabled]="!finished" (click)="saveFlight()" (press)="callPressAction()" cdkFocusInitial>{{'Save' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

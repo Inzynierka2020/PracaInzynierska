@@ -1,0 +1,32 @@
+<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'theme-disabled' : canceled}">
+    <div class="container">
+        <div class="cancel-title" *ngIf="canceled">
+            {{'ROUND CANCELED' | translate }}
+        </div>
+        <span></span>
+        <button mat-raised-button class="theme-accent cancel-button" [matMenuTriggerFor]="menu">{{(canceled ? 'Reactivate' : 'Cancel') | translate}}</button>
+    </div>
+    <div class="content w-100">
+        <div class="w-100">
+            <app-score [dataSource]="pilotsFinished" (rowClickAction)="editFlight($event)" (rowPressAction)="reflight($event)">
+            </app-score>
+        </div>
+        <mat-toolbar color="primary" *ngIf="!noMorePilotsLeft">
+            <mat-toolbar-row class="to-start">
+                <div class="title">{{'YetToStart' | translate}}</div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="to-start-score w-100">
+            <app-score [mode]="'yetToStart'" class="w-100" (rowClickAction)="createFlight($event)" [dataSource]="pilotsLeft"></app-score>
+        </div>
+    </div>
+    <button mat-raised-button class="finish-button theme-accent" (click)="finishRound()" *ngIf="noMorePilotsLeft || canceled">{{'Finish' | translate}}</button>
+</div>
+<mat-menu #menu="matMenu">
+    <button class="option-button theme-accent cancel-token" mat-menu-item (click)="cancelRound()">{{'Round' | translate}}</button>
+    <button class="option-button color-a" mat-menu-item (click)="cancelGroup('A')" *ngIf="groupCount>1">{{'Group' | translate}} A</button>
+    <button class="option-button color-b" mat-menu-item (click)="cancelGroup('B')" *ngIf="groupCount>1">{{'Group' | translate}} B</button>
+    <button class="option-button color-c" mat-menu-item (click)="cancelGroup('C')" *ngIf="groupCount>2">{{'Group' | translate}} C</button>
+    <button class="option-button color-d" mat-menu-item (click)="cancelGroup('D')" *ngIf="groupCount>3">{{'Group' | translate}} D</button>
+    <button class="option-button color-e" mat-menu-item (click)="cancelGroup('E')" *ngIf="groupCount>4">{{'Group' | translate}} E</button>
+</mat-menu>

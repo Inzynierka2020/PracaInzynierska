@@ -1,0 +1,30 @@
+<div class="d-flex flex-column align-items-center w-100" [ngClass]="{'theme-disabled' : isRoundCanceled}">
+    <div class="title-2 text-center w-100" *ngIf="round" [ngClass]="{'text-success' : round.synchronized, 'text-danger' : !round.synchronized}">
+        {{'RoundStatus' | translate}}: {{(round.synchronized ? 'Synchronized' : 'NotSynchronized') | translate }}
+    </div>
+    <div class="container">
+        <div class="title" *ngIf="isRoundCanceled">
+            {{'ROUND CANCELED' | translate}}
+        </div>
+        <span></span>
+        <button mat-raised-button class=" theme-accent cancel-button" (click)="cancelRound()">
+            <div *ngIf="isRoundCanceled">
+                {{'Reactivate' | translate}}
+            </div>
+            <div *ngIf="!isRoundCanceled">
+                {{'Cancel' | translate}}
+            </div>
+        </button>
+    </div>
+    <div ngClass="!browse ? 'content' : ''" class="w-100">
+        <app-score [mode]="'browse'" [dataSource]="dataSource" (rowClickAction)="editFlight($event)"></app-score>
+    </div>
+</div>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item class="cancel-token">{{'Round' | translate}}</button>
+    <!-- <button mat-menu-item>GROUP A</button>
+            <button mat-menu-item>GROUP B</button>
+            <button mat-menu-item>GROUP C</button>
+            <button mat-menu-item>GROUP D</button>
+            <button mat-menu-item>GROUP E</button> -->
+</mat-menu>

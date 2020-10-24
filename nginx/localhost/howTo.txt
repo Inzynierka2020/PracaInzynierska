@@ -1,0 +1,8 @@
+﻿Generated .crt and .key file need to be provided for Nginx and trusted by Client App
+
+$ openssl req -x509 -nodes -days 365 -newkey rsa:2048  -keyout localhost.key -out localhost.crt -subj "/C=US/ST=CA/L=Irvine/O=Acme Inc./CN=localhost" -reqexts v3_req -reqexts SAN -extensions SAN -config localhost.conf
+$ openssl pkcs12 -export -out localhost.pfx -inkey localhost.key -in localhost.crt
+
+PASS: pasek123
+
+To trust: for Windows/Chrome *double click .pfx -> Install certificate and insert it in Trusted Root Certification Authorities storage.

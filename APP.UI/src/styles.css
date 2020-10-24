@@ -1,1 +1,145 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+    background: var(--th-background) !important;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 16px;
+}
+
+.container {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+mat-dialog-container {
+    background: var(--th-background) !important;
+    border-radius: 20px !important;
+}
+
+.mat-input-element {
+    caret-color: var(--th-accent);
+}
+
+.mat-progress-bar-buffer {
+    background-color: var(--th-accent-light) !important;
+}
+
+.mat-progress-bar-fill::after {
+    background-color: var(--th-accent-dark) !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: var(--th-accent);
+}
+
+button {
+    border-radius: 20px !important;
+}
+
+button:focus {
+    outline: none !important;
+}
+
+.mat-toolbar-row {
+    background: var(--th-primary) !important;
+    color: var(--text-primary);
+}
+
+
+/* ----- THEMES ----- */
+
+:root {
+    --th-primary-dark: #000000;
+    --th-primary: #202122;
+    --th-primary-light: #6d6d6d;
+    --th-accent-dark: rgb(5, 64, 119);
+    --th-accent: #4499E9;
+    --th-accent-light: rgb(114, 184, 250);
+    --th-disabled: #b4b2b2;
+    --th-background: linear-gradient(to bottom, #FFFFFF 192px, #ECE9E6) fixed;
+    --text-primary: white;
+    --text-accent: white;
+    --group-a: #9CBFFF;
+    --group-b: #FFB5A8;
+    --group-c: #8FF2FF;
+    --group-d: #FFD375;
+    --group-e: #82FFC8;
+}
+
+.color-bg {
+    background: var(--background) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-primary-dark {
+    background: var(--th-primary-dark) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-primary {
+    background: var(--th-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-primary-light {
+    background: var(--th-primary-light) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-accent-dark {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-accent {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-accent-reversed {
+    color: var(--th-accent) !important;
+    background: var(--text-accent) !important;
+}
+
+.theme-accent-light {
+    background: var(--th-accent) !important;
+    color: var(--text-accent) !important;
+}
+
+.theme-disabled {
+    background: var(--th-disabled) !important;
+    color: rgb(129, 126, 126) !important
+}
+
+.color-a {
+    background: var(--group-a);
+}
+
+.color-b {
+    background: var(--group-b);
+}
+
+.color-c {
+    background: var(--group-c);
+}
+
+.color-d {
+    background: var(--group-d);
+}
+
+.color-e {
+    background: var(--group-e);
+}

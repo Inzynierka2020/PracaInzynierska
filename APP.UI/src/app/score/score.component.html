@@ -1,0 +1,114 @@
+<div class="d-flex align-items-center flex-column w-100 ">
+    <div class="rows">
+        <mat-divider class="bar"></mat-divider>
+    </div>
+    <div *ngFor="let pilot of dataSource; index as index " class="rows " matRipple (click)="callRowAction(pilot)" (press)="callPressAction(pilot)">
+        <div class="d-flex">
+            <div class="pilot-row ">
+                <div class="number " *ngIf="mode !='yetToStart' ; else pilotBib ">
+                    {{index+1}}
+                </div>
+                <ng-template #pilotBib>
+                    <div class="number ">
+                        {{pilot.pilotBib}}
+                    </div>
+                </ng-template>
+                <div class="d-flex flex-column w-100 ">
+                    <div class="title ">{{mode != 'yetToStart' ? pilot.pilotBib : ''}} {{pilot.lastName | uppercase}} {{pilot.firstName}}
+                    </div>
+                    <div class="data " *ngIf="mode !='yetToStart' ">
+                        <div class="d-flex w-100 justify-content-between " *ngIf="!pilot.flight; else browseRow ">
+                            <div class="data-field ">
+                                <div class="semi-title ">{{'Total' | translate}}</div>
+                                <mat-divider></mat-divider>
+                                <div class="score ">{{pilot.score.toFixed(2)}}</div>
+                            </div>
+                            <div class="data-field ">
+                                <div class="semi-title ">{{'Result' | translate}}</div>
+                                <mat-divider></mat-divider>
+                                <div class="score " *ngIf="pilot.score; else noValue ">
+                                    {{pilot.score.toFixed(2)}}</div>
+                            </div>
+                            <div class="data-field ">
+                                <div class="semi-title ">{{'Penalty' | translate}}</div>
+                                <mat-divider></mat-divider>
+                                <div class="score " *ngIf="pilot.penalty; else noValue ">{{pilot.penalty}}</div>
+                            </div>
+
+                            <div class="data-field " *ngIf="mode=='general' ">
+                                <div class="semi-title ">{{'Discard' | translate}} 1</div>
+                                <mat-divider></mat-divider>
+                                <div class="score " *ngIf="pilot.discarded1 != null; else noValue ">
+                                    {{pilot.discarded1.toFixed(2)}}
+                                </div>
+                            </div>
+                            <div class="data-field " *ngIf="mode=='general' ">
+                                <div class="semi-title ">{{'Discard' | translate}} 2</div>
+                                <mat-divider></mat-divider>
+                                <div class="score " *ngIf="pilot.discarded2 != null; else noValue ">
+                                    {{pilot.discarded2.toFixed(2)}}
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #browseRow>
+                            <div class="d-flex w-100 justify-content-between ">
+                                <div class="data-field ">
+                                    <div class="semi-title ">{{'Time' | translate}}</div>
+                                    <mat-divider></mat-divider>
+                                    <div class="score " *ngIf="pilot.flight.seconds>=0; else noValue ">
+                                        <div *ngIf="pilot.flight.dnf">DNF</div>
+                                        <div *ngIf="pilot.flight.dns">DNS</div>
+                                        <div *ngIf="!pilot.flight.dns && !pilot.flight.dnf">
+                                            {{pilot.flight.seconds}}</div>
+                                    </div>
+                                </div>
+                                <div class="data-field ">
+                                    <div class="semi-title ">{{'Points' | translate}}</div>
+                                    <mat-divider></mat-divider>
+                                    <div class="score " *ngIf="pilot.flight.score; else noValue ">
+                                        {{pilot.flight.score.toFixed(2)}}
+                                    </div>
+                                </div>
+                                <div class="data-field ">
+                                    <div class="semi-title ">{{'Penalty' | translate}}</div>
+                                    <mat-divider></mat-divider>
+                                    <div class="score " *ngIf="pilot.flight.penalty; else noValue ">
+                                        {{pilot.flight.penalty}}
+                                    </div>
+                                </div>
+                                <div class="data-field ">
+                                    <div class="semi-title ">{{'Status' | translate}}</div>
+                                    <mat-divider></mat-divider>
+                                    <div class="score sync" [ngClass]="{'text-success' : pilot.flight.synchronized, 'text-danger' : !pilot.flight.synchronized}">
+                                        {{(pilot.flight.synchronized ? 'Synchronized' : 'NotSynchronized') | translate }}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #noValue>
+                            <div class="score ">---</div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="mode !='general' && mode !='yetToStart' && pilot.flight">
+                <div class="group color-a" *ngIf="pilot.flight.group=='A'">
+                    <div>{{pilot.flight.group}}</div>
+                </div>
+                <div class="group color-b" *ngIf="pilot.flight.group=='B'">
+                    {{pilot.flight.group}}
+                </div>
+                <div class="group color-c" *ngIf="pilot.flight.group=='C'">
+                    {{pilot.flight.group}}
+                </div>
+                <div class="group color-d" *ngIf="pilot.flight.group=='D'">
+                    {{pilot.flight.group}}
+                </div>
+                <div class="group color-e" *ngIf="pilot.flight.group=='E'">
+                    {{pilot.flight.group}}
+                </div>
+            </div>
+        </div>
+        <mat-divider class="bar "></mat-divider>
+    </div>
+</div>

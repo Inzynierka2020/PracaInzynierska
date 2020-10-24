@@ -1,0 +1,78 @@
+button {
+    width: 40%;
+    height: 50%;
+    font-size: 175%;
+    min-height: 75px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 15%;
+    margin-top: 10px;
+}
+
+.number {
+    font-weight: 500;
+    font-size: 600%;
+}
+
+i {
+    font-size: 400%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.title {
+    font-size: 350%;
+}
+
+.subtitle {
+    font-size: 250%;
+    margin-bottom: 15px;
+}
+
+
+/*---- ANGULAR MATERIAL OVERRIDE ----*/
+
+.mat-dialog-content {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: baseline;
+}
+
+
+/*---- RESPONSIVE ----*/
+
+@media (max-height: 900px) {
+    .title {
+        font-size: 200%;
+    }
+    .subtitle {
+        font-size: 100%;
+        margin-bottom: 0px;
+    }
+    i {
+        font-size: 300%;
+    }
+    .number {
+        font-size: 400%;
+    }
+    button {
+        min-height: 50px;
+        font-size: 100%;
+    }
+    .buttons {
+        margin-top: 10px !important;
+    }
+    .mat-dialog-title {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 330px) {
+    .title {
+        font-size: 180%;
+    }
+}

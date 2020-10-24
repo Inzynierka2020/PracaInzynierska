@@ -1,0 +1,57 @@
+<mat-tab-group mat-align-tabs="center" (selectedTabChange)="onChangeTab($event, matTabGroup)" animationDuration="0" #matTabGroup>
+    <mat-tab>
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            {{'General score' | translate }}
+        </ng-template>
+        <div class="tab-content">
+            <div *ngIf="!spinning; else loading" [ngClass]="{'theme-disabled' : outOfService}">
+                <div class="oosTitle" *ngIf="outOfService">
+                    {{ 'NoCount' | translate }}
+                </div>
+                <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab [disabled]="isBrowsing">
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            <i class="material-icons mr-2" [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(-1, matTabGroup)">
+                keyboard_arrow_left </i>
+            <span [ngClass]="isBrowsing ? 'black' : ''">{{'Round' | translate}} {{roundNumber}}</span>
+            <i class="material-icons ml-2 " [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(1, matTabGroup)">
+                keyboard_arrow_right</i>
+        </ng-template>
+        <div class="tab-content">
+            <div *ngIf="!spinning; else loading">
+                <app-browse [round]="browsedRound" (roundCanceled)="cancelRound($event)"></app-browse>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="isRoundStarted ">
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            {{'Round' | translate}} {{newRoundNumber}}
+        </ng-template>
+        <div class="tab-content ">
+            <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount"></app-round>
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="!isRoundStarted && switch ">
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            {{'New round' | translate }}
+        </ng-template>
+        <div class="tab-content ">
+        </div>
+    </mat-tab>
+    <mat-tab *ngIf="!isRoundStarted && !switch ">
+        <ng-template mat-tab-label class="d-flex justify-content-between">
+            {{'New round' | translate }}
+        </ng-template>
+        <div class="tab-content ">
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
+<ng-template #loading>
+    <div class="spinner">
+        <mat-spinner [diameter]="200"></mat-spinner>
+    </div>
+</ng-template>
