@@ -30,6 +30,7 @@ public interface RoundService {
     ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId);
     void synchronizeEventRound(Integer roundNum, Integer eventId);
     void desynchronizeEventRound(Integer roundNum, Integer eventId);
+    ResponseEntity<?> sendFlightsToVaultAfterOffline(Integer dtos);
 
     ResponseEntity<?> synchronizeAfterOffline(List<RoundDTO> rounds);
 

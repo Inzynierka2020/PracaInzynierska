@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Entity
 @Getter @Setter
@@ -20,6 +21,7 @@ public class EventRound {
 
     @Column(name = "round_num")
     private Integer roundNum;
+
 
     @Column(name = "event_id")
     private Integer eventId;
@@ -46,6 +48,5 @@ public class EventRound {
     @ManyToOne
     @JoinColumn(name = "event_id", insertable=false, updatable=false)
     private Event event;
-
 
 }

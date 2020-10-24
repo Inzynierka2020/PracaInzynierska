@@ -9,6 +9,7 @@ import { Round } from '../models/round';
 import { EventService } from '../services/event.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { SnackService } from '../services/snack.service';
 
 enum TAB {
   GENERAL = 0,
@@ -44,7 +45,8 @@ export class TabComponent {
     public dialog: MatDialog,
     private _pilotService: PilotService,
     private _eventService: EventService,
-    private _roundsService: RoundsService
+    private _roundsService: RoundsService,
+    private _snackService : SnackService
   ) {
     this.eventId = this._eventService.getEventId()
     this.refreshScores();
@@ -85,13 +87,18 @@ export class TabComponent {
     this.spinning = true;
 
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
-      this.outOfService = !result;
-      this._pilotService.getPilots(this.eventId).subscribe(result => {
-        this.dataSource = result;
-        this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
-        this.spinning = false;
+      this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result =>{
+        this.outOfService = !result;
+        if (result) this._snackService.open("VAULT SYNCHRONIZED")
+        else this._snackService.open("VAULT NOT SYNCRONIZED"); 
+
+        this._pilotService.getPilots(this.eventId).subscribe(result => {
+          this.dataSource = result;
+          this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
+          this.spinning = false;
+        });
+        this.refreshRounds().pipe(take(1)).subscribe();
       });
-      this.refreshRounds().pipe(take(1)).subscribe();
     });
 
   }
