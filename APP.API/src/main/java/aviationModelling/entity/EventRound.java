@@ -21,6 +21,7 @@ public class EventRound {
     @Column(name = "round_num")
     private Integer roundNum;
 
+
     @Column(name = "event_id")
     private Integer eventId;
 

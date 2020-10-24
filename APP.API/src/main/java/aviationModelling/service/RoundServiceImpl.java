@@ -291,19 +291,19 @@ public class RoundServiceImpl implements RoundService {
         finishFinishedRounds(eventRounds);
         cancelCancelledRounds(eventRounds);
 
-        sendFlightsToVaultAfterOffline(dtos);
-
-
-
-		updateNotUpdatedRounds(eventRounds);
+//
 
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
-                "Event updated."), HttpStatus.OK);
+                "Event synchronized in local db."), HttpStatus.OK);
     }
 
-    private void sendFlightsToVaultAfterOffline(List<RoundDTO> dtos) {
-//        jesli runda niezsynchronizowana
+    @Override
+    public ResponseEntity<?> sendFlightsToVaultAfterOffline(Integer eventId) {
+        final List<EventRound> eventRounds = roundRepository.findAll(eventId);
+        final List<RoundDTO> dtos = RoundMapper.MAPPER.toRoundDTOList(eventRounds);
+
+
         final Stream<RoundDTO> unsynchronizedRounds = dtos.stream().filter(roundDTO -> !roundDTO.isSynchronized());
 
 
@@ -316,7 +316,12 @@ public class RoundServiceImpl implements RoundService {
 
         listOfUnsynchronizedFlights.forEach(dto -> flightService.postScore(dto.getRoundNum(), dto.getPilotId(), dto.getEventId()));
 
-    }
+        updateNotUpdatedRounds(dtos);
+
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
+                "Event synchronized on Vault"), HttpStatus.OK);
+    };
+
 
     private List<FlightDTO> changeRoundDTOIntoListOfUnsynchronizedFlights(RoundDTO roundDTO) {
         final List<FlightDTO> flights = roundDTO.getFlights();
@@ -324,8 +329,8 @@ public class RoundServiceImpl implements RoundService {
 
     }
 
-    private void updateNotUpdatedRounds(List<EventRound> eventRounds) {
-        eventRounds.stream().filter(eventRound -> !eventRound.isSynchronized())
+    private void updateNotUpdatedRounds(List<RoundDTO> dtos) {
+        dtos.stream().filter(eventRound -> !eventRound.isSynchronized())
                 .forEach(eventRound -> updateEventRoundStatus(eventRound.getRoundNum(), eventRound.getEventId()));
     }
 
@@ -346,9 +351,11 @@ public class RoundServiceImpl implements RoundService {
     }
 
     private void saveFlightsToDb(List<RoundDTO> roundDTOS) {
-        roundDTOS.forEach(roundDTO -> {
-            roundDTO.getFlights().forEach(flightDTO -> saveFlight(flightDTO));
-        });
+
+        final Stream<List<FlightDTO>> listStream = roundDTOS.stream().map(roundDTO -> roundDTO.getFlights());
+        final Stream<FlightDTO> flightDTOStream = listStream.flatMap(Collection::stream);
+        final List<FlightDTO> unsynchronizedFlights = flightDTOStream.filter(flightDTO -> !flightDTO.isSynchronized()).collect(Collectors.toList());
+        unsynchronizedFlights.forEach(flightDTO -> saveFlight(flightDTO));
     }
 
     private void saveFlight(FlightDTO flightDTO) {
