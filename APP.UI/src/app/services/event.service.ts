@@ -74,7 +74,7 @@ export class EventService {
   updateAllRoundsFromDB(eventId: number): Observable<boolean> {
     return new Observable<boolean>(observer => {
       this._dbService.readAllRounds(eventId).pipe(take(1)).subscribe(result => {
-        this._http.put(this._baseUrl + "rounds/synchronize-all/", result).subscribe(
+        this._http.put(this._baseUrl + "rounds/synchronize-localdb/", result).subscribe(
           result => {
             this._http.put<any>(this._baseUrl + "rounds/update?eventId=" + eventId, {
               responseType: 'text' as 'json'
@@ -95,5 +95,22 @@ export class EventService {
         )
       })
     });
+  }
+
+  synchronizeWithVault(eventId: number): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      if (!this._dbService.hasPriority())
+        this._http.put(this._baseUrl + "rounds/synchronize-vault?eventId=" + eventId, null).subscribe(
+          result => {
+            observer.next(true);
+          },
+          error => {
+            this._dbService.setPriority(true);
+            observer.next(false)
+          }
+        )
+      else
+        observer.next(false);
+    })
   }
 }
