@@ -288,15 +288,38 @@ public class RoundServiceImpl implements RoundService {
         final List<EventRound> eventRounds = RoundMapper.MAPPER.toEventRoundList(dtos);
         createEventRoundsIfNotExist(eventRounds);
         saveFlightsToDb(dtos);
-        finishFinishedRounds(eventRounds);
-        cancelCancelledRounds(eventRounds);
-
-//
-
+//        setFinishedFlag(eventRounds);
+//        setCancelledFlag(eventRounds);
+//        setSynchronizedFlag(eventRounds);
+        updateRoundsFlags(eventRounds);
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Event synchronized in local db."), HttpStatus.OK);
     }
+
+    private void updateRoundsFlags(List<EventRound> eventRounds) {
+        eventRounds.forEach(round -> updateRound(round));
+    }
+
+    private void updateRound(EventRound round) {
+        final EventRound entity = roundRepository.findEventRound(round.getRoundNum(), round.getEventId());
+        entity.setCancelled(round.isCancelled());
+        entity.setFinished(round.isFinished());
+        entity.setSynchronized(round.isSynchronized());
+        eventRoundRepository.save(entity);
+    }
+
+//
+//    private void setCancelledFlag(List<EventRound> eventRounds) {
+//        eventRounds.stream()
+//                .forEach(eventRound -> setCancelledFlag(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.isCancelled()));
+//    }
+
+
+//    private void setFinishedFlag(List<EventRound> eventRounds) {
+//        eventRounds.stream().filter(eventRound -> eventRound.isFinished())
+//                .forEach(eventRound -> finishRound(eventRound.getRoundNum(), eventRound.getEventId()));
+//    }
 
     @Override
     public ResponseEntity<?> sendFlightsToVaultAfterOffline(Integer eventId) {
@@ -332,22 +355,6 @@ public class RoundServiceImpl implements RoundService {
     private void updateNotUpdatedRounds(List<RoundDTO> dtos) {
         dtos.stream().filter(eventRound -> !eventRound.isSynchronized())
                 .forEach(eventRound -> updateEventRoundStatus(eventRound.getRoundNum(), eventRound.getEventId()));
-    }
-
-    private void cancelCancelledRounds(List<EventRound> eventRounds) {
-        eventRounds.stream()
-                .forEach(eventRound -> setCancelledFlag(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.isCancelled()));
-    }
-
-    private void setCancelledFlag(Integer roundNum, Integer eventId, boolean isCancelled) {
-        EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
-        eventRound.setCancelled(isCancelled);
-        eventRoundRepository.save(eventRound);
-    }
-
-    private void finishFinishedRounds(List<EventRound> eventRounds) {
-        eventRounds.stream().filter(eventRound -> eventRound.isFinished())
-                .forEach(eventRound -> finishRound(eventRound.getRoundNum(), eventRound.getEventId()));
     }
 
     private void saveFlightsToDb(List<RoundDTO> roundDTOS) {
