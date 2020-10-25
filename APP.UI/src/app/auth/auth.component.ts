@@ -45,15 +45,14 @@ export class AuthComponent implements OnInit {
       this.authService.login(username, password).subscribe(userData => {
         this.router.navigate(['../'])
       }, error => {
-          this._snackService.open("CONNECTION LOST. YOU CAN'T LOG IN AT THE MOMENT");
+          this._snackService.open("LOGIN FAILED");
       });
     } else {
       this.authService.register(username, password, email).subscribe(token => {
         this.isLoginMode=true;
+        this._snackService.open("REGISTERED SUCCESSFULLY");
       }, error => {
-        if(error.status == 0){
-          this._snackService.open("CONNECTION LOST. YOU CAN'T REGISTER APPLICATION AT THE MOMENT");
-        }
+          this._snackService.open("REGISTER FAILED");
       });
     }
 
