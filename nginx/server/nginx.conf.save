@@ -1,3 +1,4 @@
+
 worker_processes  1;
 
 events {
@@ -75,7 +76,7 @@ http {
 
 
         listen 80;
-        server_name walltedo.com www.walltedo.com;
+        server_name walltedo.com;
     return 404; # managed by Certbot
 
 
