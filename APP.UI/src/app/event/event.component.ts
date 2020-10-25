@@ -68,11 +68,12 @@ export class EventComponent {
 
   getEvent() {
     this._eventService.getEvent(this.settings.eventId).subscribe(eventResult => {
-        this.eventChange.emit(eventResult);
-        this.loading = false;
+      this.eventChange.emit(eventResult);
+      this.loading = false;
     }, error => {
       localStorage.removeItem('eventId');
-      window.location.reload();
+      this.loading = false;
+      this._snackService.open("WRONG API SETTINGS OR NO CONNECTION");
     })
   }
 }
