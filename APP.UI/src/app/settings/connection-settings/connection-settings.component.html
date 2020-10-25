@@ -5,15 +5,15 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>{{'Password' | translate}}</mat-label>
-        <input autocomplete="off" matInput placeholder="" [(ngModel)]="settings.password" type="password">
+        <input autocomplete="new-password" matInput placeholder=" " [(ngModel)]="settings.password " type="password">
     </mat-form-field>
     <mat-form-field>
         <mat-label>{{'ApiUrl' | translate}}</mat-label>
-        <input autocomplete="off" matInput placeholder="" [(ngModel)]="settings.apiUrl">
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.apiUrl ">
     </mat-form-field>
     <mat-form-field>
         <mat-label>{{'Event ID' | translate}}</mat-label>
-        <input autocomplete="off" matInput placeholder="" [(ngModel)]="settings.eventId" *ngIf="disabled" disabled>
-        <input autocomplete="off" matInput placeholder="" [(ngModel)]="settings.eventId" *ngIf="!disabled">
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " *ngIf="disabled " disabled>
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " *ngIf="!disabled ">
     </mat-form-field>
 </div>
