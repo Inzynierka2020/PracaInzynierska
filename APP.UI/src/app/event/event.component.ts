@@ -4,6 +4,8 @@ import { Event } from '../models/event';
 import { Settings } from '../models/settings';
 import { ConfigService } from '../services/config.service';
 import { SnackService } from '../services/snack.service';
+import { SwUpdate } from '@angular/service-worker';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-event',
@@ -31,7 +33,9 @@ export class EventComponent {
 
   constructor(private _eventService: EventService,
     private _configService: ConfigService,
-    private _snackService: SnackService) {
+    private _snackService: SnackService,
+    private swUpdate: SwUpdate,
+    private snackbar: MatSnackBar) {
 
     this.loading = true;
     let eventId = localStorage.getItem('eventId');
@@ -41,6 +45,20 @@ export class EventComponent {
     } else {
       this.loading = false;
     }
+
+    this.swUpdate.available.subscribe(evt => {
+      console.log("AVAILABLEEE");
+      const snack = this.snackbar.open('Update Available', 'Reload');
+      snack
+        .onAction()
+        .subscribe(() => {
+          window.location.reload();
+        });
+
+      setTimeout(() => {
+        snack.dismiss();
+      }, 15000);
+    });
   }
 
   startEvent() {
@@ -61,7 +79,7 @@ export class EventComponent {
         this.getEvent();
       })
     }, error => {
-      this._snackService.open("CONNECTION LOST. CACHING PREVIOUS USER CONFIG");
+      this._snackService.open("CONNECTION LOST.");
       this.getEvent();
     });
   }
