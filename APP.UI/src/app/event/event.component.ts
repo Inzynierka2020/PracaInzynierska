@@ -47,17 +47,7 @@ export class EventComponent {
     }
 
     this.swUpdate.available.subscribe(evt => {
-      console.log("AVAILABLEEE");
-      const snack = this.snackbar.open('Update Available', 'Reload');
-      snack
-        .onAction()
-        .subscribe(() => {
-          window.location.reload();
-        });
-
-      setTimeout(() => {
-        snack.dismiss();
-      }, 15000);
+      this._snackService.openForAction("NEW VERSION OF THE APP AVAILABLE. PRESS OK TO RELOAD.")
     });
   }
 
