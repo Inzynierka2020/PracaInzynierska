@@ -255,6 +255,10 @@ export class IndexedDbService {
 
   }
 
+  deleteEvent(eventId: number) {
+    this.db.rounds.clear();
+    this.db.flights.clear();
+  }
   //--- MISC ---///
 
   hasPriority(): boolean {
