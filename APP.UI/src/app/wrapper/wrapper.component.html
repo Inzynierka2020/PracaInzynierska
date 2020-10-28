@@ -1,6 +1,6 @@
-
-  <app-toolbar [event]="event"></app-toolbar>
-  <app-event *ngIf="!eventStarted; else tab" [(event)]="event" (eventChange)="start()"></app-event>
-  <ng-template #tab>
-      <app-tab></app-tab>
-  </ng-template>
+<app-toolbar [event]="event">
+</app-toolbar>
+<app-event *ngIf="!eventStarted; else tab" [(event)]="event" (eventChange)="start()"></app-event>
+<ng-template #tab>
+    <app-tab></app-tab>
+</ng-template>
