@@ -89,12 +89,8 @@ public class EventServiceImpl implements EventService {
 
         int defaultNumberOfGroups = 1;
         for (int i=1; i<=totalRounds; i++) {
-            roundService.createRound(i, eventId, defaultNumberOfGroups);
+            roundService.createRound(i, eventId, defaultNumberOfGroups, isVaultRoundCancelled(i, eventData));
             roundService.finishRound(i, eventId);
-<<<<<<< HEAD
-            if(isVaultRoundCancelled(i, eventData)) {
-                roundService.cancelRound(i, eventId);
-            }
         }
     }
 
@@ -104,8 +100,6 @@ public class EventServiceImpl implements EventService {
             return vaultRoundsDTO.getRound_score_status().equals(1.0F) ? false : true;
         } catch (Exception e) {
             return false;
-=======
->>>>>>> 5965d247a040f5edfc6cf7cd523468e4d0e23527
         }
     }
 
