@@ -34,8 +34,10 @@ export class SettingsComponent implements OnInit {
 
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
-    login: "piotrek.adamczykk@gmail.com",
-    password: "ascroft",
+    // login: "piotrek.adamczykk@gmail.com",
+    login: "",
+    // password: "ascroft",
+    password: "",
     eventId: 1834
   }
 

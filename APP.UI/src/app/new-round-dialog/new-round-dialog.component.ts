@@ -30,14 +30,17 @@ export class NewRoundDialogComponent implements OnInit {
     this.roundNumber++;
   }
   decrement() {
-    this.roundNumber--;
+    if (this.roundNumber > 1)
+      this.roundNumber--;
   }
 
   incrementGroups() {
-    this.groupsNumber++;
+    if (this.groupsNumber < 5)
+      this.groupsNumber++;
   }
   decrementGroups() {
-    this.groupsNumber--;
+    if (this.groupsNumber > 1)
+      this.groupsNumber--;
   }
 
 }

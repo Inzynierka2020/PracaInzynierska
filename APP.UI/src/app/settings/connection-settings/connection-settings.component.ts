@@ -28,9 +28,12 @@ export class ConnectionSettingsComponent implements OnInit {
       this.disabled = false;
     }
     this._configService.getConfig().subscribe(userConfig => {
-      this.settings.apiUrl = userConfig.vaultUrl;
-      this.settings.login = userConfig.vaultLogin;
-      this.settings.password = userConfig.vaultPassword;
+      if (userConfig.vaultUrl)
+        this.settings.apiUrl = userConfig.vaultUrl;
+      if (userConfig.vaultLogin)
+        this.settings.login = userConfig.vaultLogin;
+      if (userConfig.vaultPassword)
+        this.settings.password = userConfig.vaultPassword;
     })
   }
   ngOnChange() {
