@@ -14,5 +14,6 @@ import java.util.List;
 public class VaultRoundsDTO {
     private Integer round_number;
     private Float round_score;
+    private Float round_score_status;
     private List<VaultFlightDTO> flights;
 }
