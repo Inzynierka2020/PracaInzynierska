@@ -23,7 +23,7 @@ export class SnackService {
     });
       snack
         .onAction()
-        .subscribe(() => {
+        .subscribe(result => {
           window.location.reload();
         });
 
