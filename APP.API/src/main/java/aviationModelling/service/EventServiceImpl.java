@@ -12,6 +12,7 @@ import aviationModelling.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,6 +52,7 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
+    @Transactional
     public ResponseEntity<CustomResponse> initializeDbWithDataFromVault(int eventId) {
 
         VaultEventDataDTO eventData = vaultService.getEventInfoFull(eventId);
@@ -60,6 +62,7 @@ public class EventServiceImpl implements EventService {
         saveEventToDb(eventId, eventData);
         createRoundsInDb(eventData, eventId);
         savePilotsToDb(eventData);
+
         saveEventPilots(eventData, eventId);
         saveFlightsToDb(eventData, eventId);
 
@@ -89,6 +92,18 @@ public class EventServiceImpl implements EventService {
         for (int i=1; i<=totalRounds; i++) {
             roundService.createRound(i, eventId, defaultNumberOfGroups);
             roundService.finishRound(i, eventId);
+            if(isVaultRoundCancelled(i, eventData)) {
+                roundService.cancelRound(i, eventId);
+            }
+        }
+    }
+
+    private boolean isVaultRoundCancelled(Integer roundNum, VaultEventDataDTO eventData) {
+        try {
+            final VaultRoundsDTO vaultRoundsDTO = eventData.getEvent().getPrelim_standings().getStandings().get(0).getRounds().get(roundNum-1);
+            return vaultRoundsDTO.getRound_score_status().equals(1.0F) ? false : true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
