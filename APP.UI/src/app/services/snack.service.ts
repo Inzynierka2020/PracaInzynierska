@@ -16,4 +16,19 @@ export class SnackService {
       data: msg
     });
   }
+
+  openForAction(msg:String){
+    const snack = this._snackBar.openFromComponent(WarningSnackComponent, {
+      data: msg
+    });
+      snack
+        .onAction()
+        .subscribe(() => {
+          window.location.reload();
+        });
+
+      setTimeout(() => {
+        snack.dismiss();
+      }, 15000);
+  }
 }

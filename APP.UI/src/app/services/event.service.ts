@@ -31,6 +31,7 @@ export class EventService {
       this._http.delete(this._baseUrl + "events/finish/" + eventId).subscribe(
         result => {
           this.eventId = null;
+          this._dbService.deleteEvent(Number(eventId));
           observer.next(true);
         },
         error => observer.error(false))

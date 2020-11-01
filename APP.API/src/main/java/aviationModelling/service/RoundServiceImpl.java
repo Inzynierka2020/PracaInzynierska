@@ -72,7 +72,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setRoundNum(roundNum);
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
-            eventRound.setSynchronized(false);
+            eventRound.setSynchronized(true);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
