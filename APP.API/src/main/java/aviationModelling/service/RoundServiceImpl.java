@@ -77,6 +77,26 @@ public class RoundServiceImpl implements RoundService {
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups, boolean isCancelled) {
+        if (roundRepository.findByRoundNum(roundNum) == null) {
+            Round round = new Round();
+            round.setRoundNum(roundNum);
+            roundRepository.save(round);
+        }
+        EventRound eventRound = eventRoundRepository.findByRoundNumAndEventId(roundNum, eventId);
+        if (eventRound == null) {
+            eventRound = new EventRound();
+            eventRound.setRoundNum(roundNum);
+            eventRound.setEventId(eventId);
+            eventRound.setNumberOfGroups(numberOfGroups);
+            eventRound.setCancelled(isCancelled);
+            eventRound.setSynchronized(true);
+            eventRoundRepository.save(eventRound);
+        }
+        return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
+    }
 //
 //    @Override
 //    public ResponseEntity<RoundDTO> createRound(RoundDTO roundDTO) {
