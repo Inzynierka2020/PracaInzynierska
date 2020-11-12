@@ -195,7 +195,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private void resetPilotPenalty(EventPilot eventPilot) {
-        if (eventPilot.getTotalPenalty() > 0) {
+        if (eventPilot.getTotalPenalty() != null && eventPilot.getTotalPenalty() > 0) {
             eventPilot.setTotalPenalty(0);
         }
     }
