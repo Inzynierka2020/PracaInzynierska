@@ -53,7 +53,7 @@ public class RoundServiceImpl implements RoundService {
     public List<RoundDTO> findAll(Integer eventId) {
         List<EventRound> roundList = roundRepository.findAll(eventId);
         if (roundList.size() == 0) {
-            throw new CustomNotFoundException("Rounds not found");
+            return new ArrayList<>();
         }
         return RoundMapper.MAPPER.toRoundDTOList(roundList);
     }
