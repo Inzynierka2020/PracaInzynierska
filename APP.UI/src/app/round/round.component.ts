@@ -11,6 +11,7 @@ import { PlayerComponent } from '../player/player.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { IndexedDbService } from '../services/indexed-db.service';
 
 @Component({
   selector: 'app-round',
@@ -23,6 +24,9 @@ export class RoundComponent {
   roundNumber: number;
   @Input()
   groupCount: number;
+
+  @Input()
+  changeObserver: Observable<any>;
 
   @Output()
   finished = new EventEmitter<boolean>();
@@ -38,7 +42,7 @@ export class RoundComponent {
 
   constructor(public dialog: MatDialog, private _roundsService: RoundsService,
     private _eventService: EventService, private _flighsService: FlightsService, private _pilotsService: PilotService, private _roundService: RoundsService,
-    private _translateService: TranslateService) {
+    private _translateService: TranslateService, private _dbService: IndexedDbService) {
     this.eventId = _eventService.getEventId();
     this._pilotsService.getPilots(this.eventId).subscribe(result => {
       this.pilotsLeft = result;
@@ -51,15 +55,22 @@ export class RoundComponent {
         },
       )
     });
+
+    
   }
 
   ngOnInit() {
     // this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
+    this.changeObserver.subscribe(result=>{
+      console.log("nomam");
+      this.updateScore();
+    });
   }
 
   /*---- METHODS ----*/
 
   createFlight(pilot: Pilot) {
+    this.desyncRound()
     var flight = this._flighsService.getBlankFlight(this.groupCount);
     flight.roundNum = this.roundNumber;
 
@@ -70,19 +81,21 @@ export class RoundComponent {
   }
 
   saveFlight(flight: Flight, updateScore = true): Observable<boolean> {
+    this.desyncRound()
     return new Observable<boolean>(observer => {
       this._flighsService.saveFlight(flight).pipe(take(1)).subscribe(result => {
         this._flighsService.synchronizeFlight(flight.eventId, flight.pilotId, flight.roundNum).pipe(take(1)).subscribe(
-          ).add(() => {
-            if (updateScore)
-              this.updateScore()
-            observer.next(true)
-          });
+        ).add(() => {
+          if (updateScore)
+            this.updateScore()
+          observer.next(true)
+        });
       })
     });
   }
 
   editFlight(pilot: Pilot) {
+    this.desyncRound()
     this.resolvePlayerDialog(pilot, pilot.flight, true).subscribe(flightResult => {
       if (flightResult)
         this.saveFlight(flightResult).subscribe();
@@ -90,6 +103,7 @@ export class RoundComponent {
   }
 
   finishFlight(flight: Flight) {
+    this.desyncRound()
     flight.order = this.order++;
     this.flights.push(flight);
 
@@ -109,6 +123,7 @@ export class RoundComponent {
   }
 
   reflight(pilot: Pilot) {
+    this.desyncRound()
     var msg = this._translateService.instant("Reflight");
     this.resolveConfirmDialog(`${msg} ${pilot.lastName.toUpperCase()} ${pilot.firstName}?`).subscribe(confirmResult => {
       if (confirmResult == true) {
@@ -118,6 +133,7 @@ export class RoundComponent {
   }
 
   private reflightPilot(pilot: Pilot) {
+    this.desyncRound()
     var index = this.pilotsFinished.findIndex(pilotToFind => pilotToFind.pilotId == pilot.pilotId);
     var pilotToReflight = this.pilotsFinished[index];
     pilotToReflight.flight = this._flighsService.getBlankFlight(this.groupCount);
@@ -136,6 +152,7 @@ export class RoundComponent {
   }
 
   fillBlankFlights(): Observable<boolean> {
+    this.desyncRound()
     return new Observable(observer => {
       var count = this.pilotsLeft.length
       var c = count;
@@ -168,6 +185,7 @@ export class RoundComponent {
   }
 
   cancelGroup(group: string) {
+    this.desyncRound()
     var msg = this._translateService.instant("CancelMsg.GroupCancel");
     this.resolveConfirmDialog(msg + group + " ?").subscribe(confirmResult => {
       if (confirmResult == true) {
@@ -181,6 +199,7 @@ export class RoundComponent {
   }
 
   cancelRound() {
+    this.desyncRound()
     var msg;
     if (!this.canceled)
       msg = this._translateService.instant("CancelMsg.Cancel");
@@ -200,6 +219,7 @@ export class RoundComponent {
   }
 
   finishRound() {
+    this.desyncRound()
     this.resolveConfirmDialog().subscribe(confirmed => {
       if (confirmed)
         this.fillBlankFlights().subscribe(result => {
@@ -210,6 +230,10 @@ export class RoundComponent {
           }
         });
     });
+  }
+
+  private desyncRound(){
+    this._dbService.setRoundSync(this.roundNumber, this.eventId, false);
   }
 
   /*---- DIALOGS ----*/

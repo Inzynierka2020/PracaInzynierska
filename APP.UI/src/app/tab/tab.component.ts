@@ -41,6 +41,8 @@ export class TabComponent {
   groupCount: number;
   newRoundNumber = 0;
 
+  browsedRoundChange = new EventEmitter();
+  $browsedRoundChange: Observable<any>;
   constructor(
     public dialog: MatDialog,
     private _pilotService: PilotService,
@@ -50,6 +52,7 @@ export class TabComponent {
   ) {
     this.eventId = this._eventService.getEventId()
     this.refreshScores();
+    this.$browsedRoundChange = this.browsedRoundChange.asObservable();
   }
 
   isBrowsing = false;
@@ -73,7 +76,7 @@ export class TabComponent {
         }
       })
     } else {
-      this.refreshScores(); // GENERAL SCORES
+      this.refreshScores(tabChangeEvent.index == TAB.GENERAL); // GENERAL SCORES
       this.previousTabIndex = tabChangeEvent.index;
     }
   }
@@ -83,13 +86,13 @@ export class TabComponent {
   outOfService = false;
   spinning = false;
 
-  refreshScores() {
+  refreshScores(general = false) {
     this.spinning = true;
 
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
       this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result => {
         this.outOfService = !result;
-        if (result) this._snackService.open("VAULT SYNCHRONIZED")
+        if (result && general) this._snackService.open("VAULT SYNCHRONIZED")
         else this._snackService.open("VAULT NOT SYNCRONIZED");
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
@@ -116,6 +119,7 @@ export class TabComponent {
     this.changeRound();
   }
 
+
   changeRound() {
     var lastRound = this.rounds[this.rounds.length - 1];
     if (lastRound && !lastRound.finished) {
@@ -123,9 +127,9 @@ export class TabComponent {
       this.newRoundNumber = lastRound.roundNum;
       this.groupCount = lastRound.numberOfGroups;
       this.rounds.pop();
+      this.browsedRoundChange.emit(true);
     }
 
-    console.log(this.rounds)
     if (this.rounds.length == 0) {
       this.browsedRound = null;
       this.roundNumber = -1;
@@ -139,7 +143,6 @@ export class TabComponent {
       this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
       this.browsedRound = this.rounds[this.browsedRoundIndex];
 
-      console.log(this.browsedRound);
       if (!this.browsedRound.synchronized)
         this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
           this.browsedRound.synchronized = result;

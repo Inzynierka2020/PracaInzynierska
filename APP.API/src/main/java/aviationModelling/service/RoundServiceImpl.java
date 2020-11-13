@@ -72,7 +72,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setRoundNum(roundNum);
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
-            eventRound.setSynchronized(true);
+            eventRound.setSynchronized(false);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
@@ -92,7 +92,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
             eventRound.setCancelled(isCancelled);
-            eventRound.setSynchronized(true);
+            eventRound.setSynchronized(false);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);

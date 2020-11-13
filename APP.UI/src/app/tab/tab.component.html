@@ -31,7 +31,7 @@
             {{'Round' | translate}} {{newRoundNumber}}
         </ng-template>
         <div class="tab-content ">
-            <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount"></app-round>
+            <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount" [changeObserver]="$browsedRoundChange"></app-round>
         </div>
     </mat-tab>
     <mat-tab *ngIf="!isRoundStarted && switch ">

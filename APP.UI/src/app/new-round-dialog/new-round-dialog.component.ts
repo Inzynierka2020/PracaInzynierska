@@ -20,7 +20,6 @@ export class NewRoundDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>, @Inject(MAT_DIALOG_DATA) private _data: NewRoundDialogData) {
     this.roundNumber = _data.roundNumber;
     this.takenNumbers = _data.takenNumbers;
-    console.log(this.takenNumbers);
   }
 
   ngOnInit() {
@@ -34,7 +33,6 @@ export class NewRoundDialogComponent implements OnInit {
     var number = this.roundNumber + 1;
     while (this.takenNumbers.includes(number)) {
       number += 1;
-      console.log( Math.max(...this.takenNumbers))
       if (number > Math.max(...this.takenNumbers)) {
         this.roundNumber = number;
         return;
