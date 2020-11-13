@@ -233,7 +233,7 @@ export class RoundComponent {
   }
 
   private desyncRound(){
-    this._dbService.setRoundSync(this.roundNumber, this.eventId, false);
+    this._dbService.setRoundSync(this.roundNumber, this.eventId, false).pipe(take(1)).subscribe();
   }
 
   /*---- DIALOGS ----*/

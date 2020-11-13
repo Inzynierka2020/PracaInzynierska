@@ -92,7 +92,10 @@ export class TabComponent {
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
       this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result => {
         this.outOfService = !result;
-        if (result && general) this._snackService.open("VAULT SYNCHRONIZED")
+        if (result) {
+          if (general)
+            this._snackService.open("VAULT SYNCHRONIZED")
+        }
         else this._snackService.open("VAULT NOT SYNCRONIZED");
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
