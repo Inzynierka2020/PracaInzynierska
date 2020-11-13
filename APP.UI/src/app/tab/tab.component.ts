@@ -182,6 +182,7 @@ export class TabComponent {
       this.spinning = true;
       this._roundsService.updateAllRounds(this.eventId).pipe(take(1)).subscribe(updateResult => {
         this._roundsService.getRounds(this.eventId).pipe(take(1)).subscribe(roundsResult => {
+          console.log(roundsResult)
           this.rounds = roundsResult;
           this.rounds = this.rounds.sort((a, b) => a.roundNum > b.roundNum ? 1 : -1);
           this.changeRound();

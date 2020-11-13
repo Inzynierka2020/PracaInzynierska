@@ -119,8 +119,12 @@ export class FlightsService {
             observer.next(true);
           },
           error => {
-            this._dbService.setPriority(false);
-            observer.next(false);
+            if (error.error_string == "1000") {
+              observer.next(true)
+            } else {
+              this._dbService.setPriority(false);
+              observer.next(false);
+            }
           }
         );
       })
