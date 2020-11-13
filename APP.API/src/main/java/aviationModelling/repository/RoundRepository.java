@@ -32,7 +32,13 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
     @Query("SELECT er.roundNum FROM EventRound er " +
             "WHERE er.isCancelled = false " +
             "AND er.eventId = :eventId")
-    List<Integer> getRoundNumbers(@Param("eventId") Integer eventId);
+    List<Integer> getValidRoundNumbers(@Param("eventId") Integer eventId);
+
+    @Query("SELECT er.roundNum FROM EventRound er " +
+            "WHERE er.eventId = :eventId " +
+            "AND er.isSynchronized = true " +
+            "AND er.isFinished = true")
+    List<Integer> getAllSynchronizedRoundNumbers(@Param("eventId") Integer eventId);
 
     @Query("SELECT fl FROM Flight fl " +
             "JOIN EventRound e ON fl.flightId.eventRoundId = e.eventRoundId " +
@@ -51,5 +57,9 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
             "WHERE er.eventId = :eventId " +
             "AND er.roundNum = :roundNum")
     Integer getEventRoundId(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
+
+    @Query("SELECT count(r) FROM EventRound r " +
+            "WHERE r.eventId = :eventId")
+    Integer getRoundsNumber(@Param("eventId") Integer eventId);
 
 }

@@ -281,7 +281,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public List<Integer> getRoundNumbers(Integer eventId) {
-        return roundRepository.getRoundNumbers(eventId);
+        return roundRepository.getValidRoundNumbers(eventId);
     }
 
     @Override
@@ -416,4 +416,6 @@ public class RoundServiceImpl implements RoundService {
         final List<EventRound> eventRoundsMock = new ArrayList<>(Arrays.asList(eventRound1, eventRound2));
         return RoundMapper.MAPPER.toRoundDTOList(eventRoundsMock);
     }
+
+
 }
