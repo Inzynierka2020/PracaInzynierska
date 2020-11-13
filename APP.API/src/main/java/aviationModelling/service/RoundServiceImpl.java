@@ -61,6 +61,10 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups) {
+        final Integer numberOfRounds = roundRepository.getRoundsNumber(eventId);
+        if (roundNum > (numberOfRounds+1)) {
+            throw new RuntimeException("Cannot create a round that's more than one ahead of the last.");
+        }
         if (roundRepository.findByRoundNum(roundNum) == null) {
             Round round = new Round();
             round.setRoundNum(roundNum);

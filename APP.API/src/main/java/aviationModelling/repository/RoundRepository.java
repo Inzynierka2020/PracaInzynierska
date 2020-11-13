@@ -52,4 +52,8 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
             "AND er.roundNum = :roundNum")
     Integer getEventRoundId(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId);
 
+    @Query("SELECT count(r) FROM EventRound r " +
+            "WHERE r.eventId = :eventId")
+    Integer getRoundsNumber(@Param("eventId") Integer eventId);
+
 }
