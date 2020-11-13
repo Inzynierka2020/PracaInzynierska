@@ -59,5 +59,6 @@
     "SaveRound": "ARE YOU SURE YOU WANT TO SAVE FLIGHT?",
     "Synchronized": "SYNCED",
     "NotSynchronized": "NOT SYNCED",
-    "NoCount": "NO SERVER CONNECTION. GENERAL SCORES NOT COUNTED"
+    "NoCount": "NO SERVER CONNECTION. GENERAL SCORES NOT COUNTED",
+    "NoRound": "NO ROUNDS YET"
 }

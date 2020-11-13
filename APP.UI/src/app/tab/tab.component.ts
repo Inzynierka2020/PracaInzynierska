@@ -46,7 +46,7 @@ export class TabComponent {
     private _pilotService: PilotService,
     private _eventService: EventService,
     private _roundsService: RoundsService,
-    private _snackService : SnackService
+    private _snackService: SnackService
   ) {
     this.eventId = this._eventService.getEventId()
     this.refreshScores();
@@ -87,10 +87,10 @@ export class TabComponent {
     this.spinning = true;
 
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
-      this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result =>{
+      this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result => {
         this.outOfService = !result;
         if (result) this._snackService.open("VAULT SYNCHRONIZED")
-        else this._snackService.open("VAULT NOT SYNCRONIZED"); 
+        else this._snackService.open("VAULT NOT SYNCRONIZED");
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
           this.dataSource = result;
@@ -117,20 +117,33 @@ export class TabComponent {
   }
 
   changeRound() {
-    this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
-    this.browsedRound = this.rounds[this.browsedRoundIndex];
-
-    if (!this.browsedRound.synchronized)
-      this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-        this.browsedRound.synchronized = result;
-      });
-
     var lastRound = this.rounds[this.rounds.length - 1];
-    if (!lastRound.finished) {
+    if (lastRound && !lastRound.finished) {
       this.isRoundStarted = true;
       this.newRoundNumber = lastRound.roundNum;
       this.groupCount = lastRound.numberOfGroups;
       this.rounds.pop();
+    }
+
+    console.log(this.rounds)
+    if (this.rounds.length == 0) {
+      this.browsedRound = null;
+      this.roundNumber = -1;
+    } else if (lastRound == null) {
+      // this.newRoundNumber = 1;
+      this.isRoundStarted = false;
+      // this.groupCount = 1;
+    }
+
+    if (this.rounds.length > 0) {
+      this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
+      this.browsedRound = this.rounds[this.browsedRoundIndex];
+
+      console.log(this.browsedRound);
+      if (!this.browsedRound.synchronized)
+        this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
+          this.browsedRound.synchronized = result;
+        });
     }
   }
 
@@ -200,12 +213,16 @@ export class TabComponent {
 
   resolveNewRoundDialogComponent() {
     let recentRoundNumber = Math.max.apply(Math, this.rounds.map(function (o) { return o.roundNum; }))
+    if (this.rounds.length == 0)
+      recentRoundNumber = 0;
+
     return this.dialog.open(NewRoundDialogComponent, {
       width: '80%',
       maxWidth: '800px',
       height: 'fitcontent',
       disableClose: true,
       data: {
+        takenNumbers: this.rounds.map(function (o) { return o.roundNum; }),
         roundNumber: recentRoundNumber + 1
       }
     });
