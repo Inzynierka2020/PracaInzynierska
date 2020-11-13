@@ -61,10 +61,6 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public ResponseEntity<RoundDTO> createRound(Integer roundNum, Integer eventId, Integer numberOfGroups) {
-        final Integer numberOfRounds = roundRepository.getRoundsNumber(eventId);
-        if (roundNum > (numberOfRounds+1)) {
-            throw new RuntimeException("Cannot create a round that's more than one ahead of the last.");
-        }
         if (roundRepository.findByRoundNum(roundNum) == null) {
             Round round = new Round();
             round.setRoundNum(roundNum);
@@ -76,7 +72,7 @@ public class RoundServiceImpl implements RoundService {
             eventRound.setRoundNum(roundNum);
             eventRound.setEventId(eventId);
             eventRound.setNumberOfGroups(numberOfGroups);
-            eventRound.setSynchronized(true);
+            eventRound.setSynchronized(false);
             eventRoundRepository.save(eventRound);
         }
         return new ResponseEntity<>(RoundMapper.MAPPER.toRoundDTO(eventRound), HttpStatus.CREATED);
@@ -285,7 +281,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public List<Integer> getRoundNumbers(Integer eventId) {
-        return roundRepository.getRoundNumbers(eventId);
+        return roundRepository.getValidRoundNumbers(eventId);
     }
 
     @Override
@@ -420,4 +416,6 @@ public class RoundServiceImpl implements RoundService {
         final List<EventRound> eventRoundsMock = new ArrayList<>(Arrays.asList(eventRound1, eventRound2));
         return RoundMapper.MAPPER.toRoundDTOList(eventRoundsMock);
     }
+
+
 }
