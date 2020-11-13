@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -58,7 +59,7 @@ public class FlightServiceImpl implements FlightService {
     public ResponseEntity<VaultResponseDTO> postScore(Integer roundNum, Integer pilotId, Integer eventId) {
         final Integer highestValidRoundNumber = findHighestValidRoundNumber(eventId);
         if(roundNum > (highestValidRoundNumber + 1)) {
-            return new ResponseEntity<>(new VaultResponseDTO(400, null, "Cannot create a round that's more than one ahead of the last."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new VaultResponseDTO(400, "1000", "Cannot create a round that's more than one ahead of the last."), HttpStatus.BAD_REQUEST);
         }
         Flight flight = findFlight(roundNum, pilotId, eventId);
         VaultResponseDTO response = vaultService.postScore(FlightMapper.MAPPER.toFlightDTO(flight));
@@ -79,6 +80,7 @@ public class FlightServiceImpl implements FlightService {
 
     private Integer findHighestValidRoundNumber(Integer eventId) {
         final List<Integer> roundNumbers = roundRepository.getAllSynchronizedRoundNumbers(eventId);
+        Collections.sort(roundNumbers);
         if (roundNumbers.size()>0) {
             Integer highestRound = 0;
             for (Integer roundNumber : roundNumbers) {
