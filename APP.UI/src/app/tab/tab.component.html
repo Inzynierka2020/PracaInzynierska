@@ -8,7 +8,7 @@
                 <div class="oosTitle" *ngIf="outOfService">
                     {{ 'NoCount' | translate }}
                 </div>
-                <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
+                <app-score [mode]="'general'" [dataSource]="dataSource" (handlePan)="handlePan($event)"></app-score>
             </div>
         </div>
     </mat-tab>

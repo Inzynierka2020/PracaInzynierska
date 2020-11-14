@@ -50,9 +50,9 @@ export class AuthComponent implements OnInit {
     } else {
       this.authService.register(username, password, email).subscribe(token => {
         this.isLoginMode=true;
-        this._snackService.open('RegisteredOk');
+        this._snackService.open('Auth.RegisteredOk');
       }, error => {
-          this._snackService.open('RegisteredFailed');
+          this._snackService.open('Auth.RegisteredFailed');
       });
     }
 

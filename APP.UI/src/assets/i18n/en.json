@@ -64,7 +64,7 @@
     "NoConnection": {
         "Finish": "NO SERVER CONNECTION. CANNOT FINISH EVENT.",
         "Logout": "NO SERVER CONNECTION. CANNOT SIGN OUT.",
-        "Score": "NO SERVER CONNECTION. CANNOT FINISH EVENT.",
+        "Score": "NO SERVER CONNECTION. SCORE NOT COUNTED.",
         "Lost": "CONNECTION LOST."
     },
     "VaultSynced": "VAULT SYNCHRONIZED",

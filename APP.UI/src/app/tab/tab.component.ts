@@ -216,6 +216,11 @@ export class TabComponent {
     });
   }
 
+  /*---- MISC ----*/
+  handlePan(event) {
+    window.scroll(0, event.deltaY);
+  }
+
   /*---- DIALOGS ----*/
 
   resolveNewRoundDialogComponent() {
