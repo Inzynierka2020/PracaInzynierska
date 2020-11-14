@@ -60,5 +60,21 @@
     "Synchronized": "SYNCED",
     "NotSynchronized": "NOT SYNCED",
     "NoCount": "NO SERVER CONNECTION. GENERAL SCORES NOT COUNTED",
-    "NoRound": "NO ROUNDS YET"
+    "NoRound": "NO ROUNDS YET",
+    "NoConnection": {
+        "Finish": "NO SERVER CONNECTION. CANNOT FINISH EVENT.",
+        "Logout": "NO SERVER CONNECTION. CANNOT SIGN OUT.",
+        "Score": "NO SERVER CONNECTION. CANNOT FINISH EVENT.",
+        "Lost": "CONNECTION LOST."
+    },
+    "VaultSynced": "VAULT SYNCHRONIZED",
+    "VaultNotSynced": "VAULT NOT SYNCRONIZED",
+    "NoId": "NO EVENT ID PROVIDED.",
+    "WrongSettings": "WRONG API SETTINGS OR NO CONNECTION",
+    "NewVersion": "NEW VERSION OF THE APP AVAILABLE. PRESS OK TO RELOAD.",
+    "Auth": {
+        "LoginFailed": "LOGIN FAILED",
+        "RegisteredOk": "REGISTERED SUCCESSFULLY",
+        "RegisteredFailed": "REGISTER FAILED"
+    }
 }

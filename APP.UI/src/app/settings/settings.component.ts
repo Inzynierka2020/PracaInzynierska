@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit {
       localStorage.removeItem('eventId');
       window.location.reload();
     }, error => {
-      this._snackService.open("NO SERVER CONNECTION. CANNOT FINISH EVENT.")
+      this._snackService.open('NoConnection.Finish')
       this.noEvent = true;
     }).add(() => this.progressing = false);
   }
@@ -95,7 +95,7 @@ export class SettingsComponent implements OnInit {
       if (result) {
         this.dialogRef.close();
       } else {
-        this._snackService.open("NO SERVER CONNECTION. CANNOT SIGN OUT.")
+        this._snackService.open('NoConnection.Logout')
         this.noLogout = true;
       }
       sub.unsubscribe();

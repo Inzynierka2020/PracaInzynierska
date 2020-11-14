@@ -94,9 +94,9 @@ export class TabComponent {
         this.outOfService = !result;
         if (result) {
           if (general)
-            this._snackService.open("VAULT SYNCHRONIZED")
+            this._snackService.open('VaultSynced')
         }
-        else this._snackService.open("VAULT NOT SYNCRONIZED");
+        else this._snackService.open('VaultNotSynced');
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
           this.dataSource = result;
