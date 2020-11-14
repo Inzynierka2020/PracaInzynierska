@@ -218,7 +218,7 @@ export class TabComponent {
 
   /*---- MISC ----*/
   handlePan(event) {
-    window.scroll(0, event.deltaY);
+    window.scroll(0, window.scrollY + event.velocityY * event.deltaTime * 0.1);
   }
 
   /*---- DIALOGS ----*/
