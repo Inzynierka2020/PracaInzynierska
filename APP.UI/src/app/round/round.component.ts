@@ -225,6 +225,7 @@ export class RoundComponent {
         this.fillBlankFlights().subscribe(result => {
           if (result) {
             this._roundsService.finishRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
+              console.log("dupa5" + result)
               this.finished.emit(true);
             });
           }

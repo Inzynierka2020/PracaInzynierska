@@ -119,7 +119,8 @@ export class FlightsService {
             observer.next(true);
           },
           error => {
-            if (error.error_string == "1000") {
+            console.log(error);
+            if (error.error_string === "1000") {
               observer.next(true)
             } else {
               this._dbService.setPriority(false);

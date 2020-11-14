@@ -131,10 +131,16 @@ export class RoundsService {
             });
           },
           error => {
-            this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
-              this._dbService.setPriority(true);
-              observer.next(false)
-            });
+            var e = JSON.parse(error.error);
+            if (e.error_string === "1000")
+              this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
+                observer.next(false)
+              });
+            else
+              this._dbService.setRoundSync(roundNumber, eventId, false).subscribe(result => {
+                this._dbService.setPriority(true);
+                observer.next(false)
+              });
           }
         )
       })
