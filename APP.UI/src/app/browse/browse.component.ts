@@ -106,6 +106,10 @@ export class BrowseComponent {
     this.editMode = !this.editMode;
   }
 
+  handlePan(event) {
+    window.scroll(0, window.scrollY - (event.velocityY * 10));
+  }
+
   /**** DIALOGS ****/
 
   private resolveConfirmDialog(msg = null) {

@@ -237,6 +237,10 @@ export class RoundComponent {
     this._dbService.setRoundSync(this.roundNumber, this.eventId, false).pipe(take(1)).subscribe();
   }
 
+  handlePan(event) {
+    window.scroll(0, window.scrollY - (event.velocityY * 10));
+  }
+
   /*---- DIALOGS ----*/
 
   private resolvePlayerDialog(pilot: Pilot, flight: Flight, editMode: boolean) {

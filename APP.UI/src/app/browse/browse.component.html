@@ -18,7 +18,7 @@
             </button>
         </div>
         <div ngClass="!browse ? 'content' : ''" class="w-100">
-            <app-score [mode]="'browse'" [dataSource]="dataSource" (rowClickAction)="editFlight($event)"></app-score>
+            <app-score [mode]="'browse'" [dataSource]="dataSource" (rowClickAction)="editFlight($event)" (handlePan)="handlePan($event)"></app-score>
         </div>
     </div>
 </div>
