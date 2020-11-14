@@ -78,7 +78,7 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findFlight(eventRoundId, eventPilotId, eventId);
     }
 
-    private Integer findHighestValidRoundNumber(Integer eventId) {
+    public Integer findHighestValidRoundNumber(Integer eventId) {
         final List<Integer> roundNumbers = roundRepository.getAllSynchronizedRoundNumbers(eventId);
         Collections.sort(roundNumbers);
         if (roundNumbers.size()>0) {
