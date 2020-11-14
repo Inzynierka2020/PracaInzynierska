@@ -34,11 +34,9 @@ export class SettingsComponent implements OnInit {
 
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
-    // login: "piotrek.adamczykk@gmail.com",
     login: "",
-    // password: "ascroft",
     password: "",
-    eventId: 1834
+    eventId: null
   }
 
   progressing = false;
@@ -48,7 +46,7 @@ export class SettingsComponent implements OnInit {
   language: 'en';
 
   ngOnInit() {
-
+    this.settings.eventId = this._eventService.getEventId();
   }
 
   connect() {

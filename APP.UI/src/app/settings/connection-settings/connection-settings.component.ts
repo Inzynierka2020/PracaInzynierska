@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { Settings } from '../../models/settings';
 import { ConfigService } from '../../services/config.service';
 
@@ -8,8 +8,7 @@ import { ConfigService } from '../../services/config.service';
   styleUrls: ['./connection-settings.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ConnectionSettingsComponent implements OnInit {
-
+export class ConnectionSettingsComponent implements OnInit, OnChanges {
 
   @Input()
   settings: Settings;
@@ -34,11 +33,12 @@ export class ConnectionSettingsComponent implements OnInit {
         this.settings.login = userConfig.vaultLogin;
       if (userConfig.vaultPassword)
         this.settings.password = userConfig.vaultPassword;
+
+      this.settingsChange.emit(this.settings);
     })
   }
-  ngOnChange() {
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.settingsChange.emit(this.settings);
   }
-
-
 }
