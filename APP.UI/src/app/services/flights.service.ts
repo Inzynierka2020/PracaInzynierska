@@ -39,23 +39,23 @@ export class FlightsService {
   getBestFlights(roundNumber, eventId): Observable<BestFlights> {
     if (!this._dbService.hasPriority())
       return new Observable<BestFlights>(observer => {
-        this._http.get<BestFlights>(this._baseUrl + "flights/best" + "?eventId=" + eventId + "&roundNum=" + roundNumber).subscribe(
+        this._http.get<any>(this._baseUrl + "flights/best" + "?eventId=" + eventId + "&roundNum=" + roundNumber).subscribe(
           result => {
             observer.next(result);
           },
           error => {
             this._dbService.setPriority(true);
-            // this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
-            //   observer.next(bestFlight);
-            // });
+            this._dbService.readBestFlights(roundNumber, eventId).subscribe(bestFlight => {
+              observer.next(bestFlight);
+            });
           }
         )
       })
     else
       return new Observable<BestFlights>(observer => {
-        // this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
-        //   observer.next(bestFlight);
-        // });
+        this._dbService.readBestFlights(roundNumber, eventId).subscribe(bestFlight => {
+          observer.next(bestFlight);
+        });
       });
   }
 

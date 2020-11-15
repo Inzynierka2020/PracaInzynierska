@@ -68,7 +68,7 @@ export class PlayerComponent implements OnInit {
     this.reloadBestFlight();
   }
 
-  reloadBestFlight(){
+  reloadBestFlight() {
     this._flightService.getBestFlights(this.flight.roundNum, this._eventService.getEventId()).pipe(take(1)).subscribe(result => {
       if (result != null) {
         var rules = this._rulesService.getRules();
@@ -78,7 +78,7 @@ export class PlayerComponent implements OnInit {
             break
           }
           case BestFlightType.Group: {
-            this.bestFlight = result.bestFromGroups.find(flight => flight.group === this.flight.group)
+            this.bestFlight = result.bestFromGroups.filter(x=>x!=null).find(flight => flight.group == this.flight.group)
             break;
           }
           case BestFlightType.Round: {
@@ -86,7 +86,7 @@ export class PlayerComponent implements OnInit {
             break;
           }
         }
-        if(!this.bestFlight){
+        if (!this.bestFlight) {
           this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
         }
       }
