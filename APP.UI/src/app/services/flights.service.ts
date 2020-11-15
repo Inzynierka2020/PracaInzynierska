@@ -35,10 +35,10 @@ export class FlightsService {
       })
   }
 
-  getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
+  getBestFlights(roundNumber, eventId): Observable<any> {
     if (!this._dbService.hasPriority())
-      return new Observable<Flight>(observer => {
-        this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId=" + eventId).subscribe(
+      return new Observable<any>(observer => {
+        this._http.get<any>(this._baseUrl + "flights/best" + "?eventId=" + eventId + "&roundNum=" + roundNumber).subscribe(
           result => {
             observer.next(result);
           },
@@ -51,7 +51,7 @@ export class FlightsService {
         )
       })
     else
-      return new Observable<Flight>(observer => {
+      return new Observable<any>(observer => {
         this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
           observer.next(bestFlight);
         });
