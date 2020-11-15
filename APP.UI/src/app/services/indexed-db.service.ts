@@ -84,13 +84,17 @@ export class IndexedDbService {
         .filter(x => x.seconds > 0)
         .sortBy("seconds").then(result => {
           x.bestFromRound = result[0];
+          var groups = ["A", "B", "C", "D", "E"];
+          groups.forEach(group => {
+            var flight = result.find(f => f.group === group)
+            x.bestFromGroups.push(flight);
+          });
           this.db.flights
             .where(["pilotId+roundNum+eventId"])
             .between([Dexie.minKey, roundNum, eventId], [Dexie.maxKey, roundNum, eventId])
             .filter(x => x.seconds > 0)
             .sortBy("seconds").then(result => {
               x.bestFromEvent = result[0];
-              // TODO: FROM GROUPS
               observer.next(x);
             });
         });
