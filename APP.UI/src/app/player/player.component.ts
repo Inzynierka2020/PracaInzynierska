@@ -87,7 +87,8 @@ export class PlayerComponent implements OnInit {
         break;
       }
       case "$RTMO": {
-        this.value = "PRZEKROCZONO";
+        this.title = "PRZEKROCZONO CZAS PRZYGOTOWAWCZY"
+        this.value = "---";
         break;
       }
       case "$RCZS": {
