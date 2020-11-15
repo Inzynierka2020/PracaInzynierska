@@ -25,8 +25,8 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
             "AND f.eventRound.isCancelled = false " +
             "AND f.seconds = (SELECT min(fl.seconds) " +
             "                   FROM Flight fl " +
-            "                   WHERE fl.seconds > 0)" + 
-			"					AND fl.eventRound.eventId = :eventId)")
+            "                   WHERE fl.seconds > 0 " + 
+	    "			AND fl.eventRound.eventId = :eventId)")
     List<Flight> findBestFromEvent(@Param("eventId") Integer eventId);
 
     @Query("SELECT f FROM Flight f " +
