@@ -76,8 +76,6 @@ export class SettingsComponent implements OnInit {
   }
 
   close() {
-    console.log(this.rules)
-    console.log(this.rules.bestFlightType === BestFlightType.Event);
     this.dialogRef.close();
   }
 

@@ -106,7 +106,6 @@ export class EventService {
             observer.next(true);
           },
           error => {
-            console.log("SET");
             this._dbService.setPriority(true);
             observer.next(false)
           }

@@ -120,7 +120,6 @@ export class FlightsService {
             observer.next(true);
           },
           error => {
-            console.log(error);
             if (error.error_string === "1000") {
               observer.next(true)
             } else {

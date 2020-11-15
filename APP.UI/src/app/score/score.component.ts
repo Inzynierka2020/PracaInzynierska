@@ -32,7 +32,6 @@ export class ScoreComponent {
   }
 
   call(event) {
-    console.log(event);
     this.handlePan.emit(event)
   }
 }

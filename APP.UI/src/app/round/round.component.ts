@@ -62,7 +62,6 @@ export class RoundComponent {
   ngOnInit() {
     // this._roundService.reactivateRound(this.roundNumber, this.eventId).subscribe();
     this.changeObserver.subscribe(result=>{
-      console.log("nomam");
       this.updateScore();
     });
   }
@@ -225,7 +224,6 @@ export class RoundComponent {
         this.fillBlankFlights().subscribe(result => {
           if (result) {
             this._roundsService.finishRound(this.roundNumber, this.eventId).pipe(take(1)).subscribe(result => {
-              console.log("dupa5" + result)
               this.finished.emit(true);
             });
           }

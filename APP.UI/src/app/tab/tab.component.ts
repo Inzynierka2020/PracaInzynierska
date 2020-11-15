@@ -126,7 +126,6 @@ export class TabComponent {
 
   changeRound() {
     var lastRound = this.rounds[this.rounds.length - 1];
-    console.log(lastRound);
     if (lastRound && !lastRound.finished) {
       this.isRoundStarted = true;
       this.newRoundNumber = lastRound.roundNum;
