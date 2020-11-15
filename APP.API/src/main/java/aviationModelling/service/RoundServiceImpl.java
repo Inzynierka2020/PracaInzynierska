@@ -199,7 +199,7 @@ public class RoundServiceImpl implements RoundService {
     public ResponseEntity<CustomResponse> updateLocalScore(Integer roundNum, Integer eventId) {
         EventRound eventRound = roundRepository.findEventRound(roundNum, eventId);
         if (eventRound.getFlights() == null) {
-            throw new CustomNotFoundException("Round " + roundNum + " has no flights!");
+            return new ResponseEntity<>(new CustomResponse(200, "ok"), HttpStatus.OK);
         }
 
         List<Flight> validFlights = getValidFlights(eventRound);
@@ -222,7 +222,7 @@ public class RoundServiceImpl implements RoundService {
 
 
         } else {
-            throw new RuntimeException("Round " + roundNum + " not updated");
+            return new ResponseEntity<>(new CustomResponse(200, "ok"), HttpStatus.OK);
         }
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Scores in round " + roundNum + " updated."), HttpStatus.OK);
@@ -266,12 +266,7 @@ public class RoundServiceImpl implements RoundService {
         List<Integer> roundNumbers = getRoundNumbers(eventId);
         List<Integer> cancelled = new ArrayList<>();
         for (Integer number : roundNumbers) {
-            try {
-                updateLocalScore(number, eventId);
-            } catch (Exception ex) {
-                cancelRound(number, eventId);
-                cancelled.add(number);
-            }
+            updateLocalScore(number, eventId);
         }
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 roundNumbers.size() - cancelled.size() +
@@ -293,11 +288,11 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId) {
         final EventRound eventRound = findEventRound(roundNum, eventId);
-        if (eventRound.getFlights().size()==0) {
+        if (eventRound.getFlights().size() == 0) {
             return new ResponseEntity<>(new VaultResponseDTO(400, "1000", "This round has no flights"), HttpStatus.BAD_REQUEST);
         }
         final Integer highestValidRoundNumber = flightService.findHighestValidRoundNumber(eventId);
-        if(roundNum > (highestValidRoundNumber + 1)) {
+        if (roundNum > (highestValidRoundNumber + 1)) {
             return new ResponseEntity<>(new VaultResponseDTO(400, "1000", "Cannot update a round that's more than one ahead of the last."), HttpStatus.BAD_REQUEST);
         }
         VaultResponseDTO response = vaultService.updateEventRoundStatus(roundNum, eventId, eventRound.isCancelled());
@@ -370,7 +365,9 @@ public class RoundServiceImpl implements RoundService {
 
         return new ResponseEntity<>(new CustomResponse(HttpStatus.OK.value(),
                 "Event synchronized on Vault"), HttpStatus.OK);
-    };
+    }
+
+    ;
 
 
     private List<FlightDTO> changeRoundDTOIntoListOfUnsynchronizedFlights(RoundDTO roundDTO) {
@@ -411,7 +408,7 @@ public class RoundServiceImpl implements RoundService {
 
     private void createEventRoundIfNotExists(EventRound eventRound) {
         final EventRound foundRound = roundRepository.findEventRound(eventRound.getRoundNum(), eventRound.getEventId());
-        if(foundRound == null) {
+        if (foundRound == null) {
             createRound(eventRound.getRoundNum(), eventRound.getEventId(), eventRound.getNumberOfGroups());
         }
     }
