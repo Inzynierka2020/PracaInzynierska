@@ -76,5 +76,7 @@
         "LoginFailed": "LOGIN FAILED",
         "RegisteredOk": "REGISTERED SUCCESSFULLY",
         "RegisteredFailed": "REGISTER FAILED"
-    }
+    },
+    "RequestNewVersion": "REQUEST NEW VERSION",
+    "AddToHomeScreen": "ADD TO HOME SCREEN"
 }

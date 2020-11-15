@@ -76,5 +76,7 @@
         "LoginFailed": "BŁĄD LOGOWANIA",
         "RegisteredOk": "REJESTRACJA POMYŚLNA",
         "RegisteredFailed": "BŁĄD REJESTRACJI"
-    }
+    },
+    "RequestNewVersion": "ZARZĄDAJ NOWEJ WERSJI",
+    "AddToHomeScreen": "DODAJ DO EKRANU GŁÓWNEGO"
 }

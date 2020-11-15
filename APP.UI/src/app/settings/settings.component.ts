@@ -8,6 +8,7 @@ import { ClockService } from '../services/clock.service';
 import { ConfigService } from '../services/config.service';
 import { AuthService } from '../auth/auth.service';
 import { SnackService } from '../services/snack.service';
+import { PwaService } from '../services/pwa.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,7 +24,8 @@ export class SettingsComponent implements OnInit {
     private _configService: ConfigService,
     public translate: TranslateService,
     private _authService: AuthService,
-    private _snackService: SnackService) {
+    private _snackService: SnackService,
+    private _pwaService: PwaService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
@@ -102,5 +104,13 @@ export class SettingsComponent implements OnInit {
     }).add(() => {
       this.progressing = false;
     });
+  }
+
+  requestNewVersion(){
+    this._pwaService.requestNewVersion();
+  }
+
+  addToScreen(){
+    this._pwaService.addToHomeScreen();
   }
 }

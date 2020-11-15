@@ -17,13 +17,17 @@
                     <app-connection-settings [(settings)]="settings"></app-connection-settings>
                 </div>
             </div>
-            <div *ngIf="group.value=='center'">
+            <div *ngIf="group.value=='center'" class="h-100 d-flex flex-column justify-content-between">
                 <div class="d-flex flex-column align-items-center">
                     <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()" *ngIf="!noLogout">{{'Sign Out' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4" (click)="signOut()" *ngIf="noLogout" disabled>{{'Sign Out' | translate}}</button>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <button mat-raised-button class="theme-accent w-100 mb-4" (click)="requestNewVersion()">{{'RequestNewVersion' | translate }}</button>
+                    <button mat-raised-button class="theme-accent w-100" (click)="addToScreen()">{{'AddToHomeScreen' | translate}}</button>
                 </div>
             </div>
             <div *ngIf="group.value=='right'">
@@ -39,7 +43,7 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="progress-bar">
+            <div class="progress-bar mt-3">
                 <mat-progress-bar mode="indeterminate" *ngIf="progressing"></mat-progress-bar>
             </div>
         </div>
