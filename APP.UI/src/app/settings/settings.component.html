@@ -26,8 +26,8 @@
                     <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4" (click)="signOut()" *ngIf="noLogout" disabled>{{'Sign Out' | translate}}</button>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button mat-raised-button class="theme-accent w-100 mb-4" (click)="requestNewVersion()">{{'RequestNewVersion' | translate }}</button>
-                    <button mat-raised-button class="theme-accent w-100" (click)="addToScreen()">{{'AddToHomeScreen' | translate}}</button>
+                    <button *ngIf="_pwaService.showButton" mat-raised-button class="theme-accent w-100 mb-4" (click)="addToScreen()">{{'AddToHomeScreen' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-100" (click)="requestNewVersion()">{{'RequestNewVersion' | translate }}</button>
                 </div>
             </div>
             <div *ngIf="group.value=='right'">
