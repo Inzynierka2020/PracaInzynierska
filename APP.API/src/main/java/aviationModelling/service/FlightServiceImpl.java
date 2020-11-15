@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.BestScoresDto;
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.Flight;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,5 +97,33 @@ public class FlightServiceImpl implements FlightService {
             return highestRound;
         }
         return 0;
+    }
+
+    @Override
+    public BestScoresDto findBestScores(Integer roundNum, Integer eventId) {
+        final List<Flight> bestFromEvent = flightRepository.findBestFromEvent(eventId);
+        final FlightDTO bestFromEventDto = FlightMapper.MAPPER.toFlightDTO(bestFromEvent.stream().findFirst().orElse(null));
+
+        final List<Flight> bestRoundFlight = roundRepository.findBestRoundFlight(roundNum, eventId);
+        final FlightDTO bestFromRoundDto = FlightMapper.MAPPER.toFlightDTO(bestRoundFlight.stream().findFirst().orElse(null));
+
+        final List<Flight> bestGroupFlights = findBestGroupFlights(eventId, roundNum);
+        final List<FlightDTO> bestFromAllGroups = FlightMapper.MAPPER.toFlightDTOList(bestGroupFlights);
+
+        return BestScoresDto.builder()
+                .bestFromEvent(bestFromEventDto)
+                .bestFromRound(bestFromRoundDto)
+                .bestFromGroups(bestFromAllGroups)
+                .build();
+    }
+
+    private List<Flight> findBestGroupFlights(Integer eventId, Integer roundNum) {
+        List<Flight> bestGroupFlights = new ArrayList<>();
+        final List<String> groupNames = Arrays.asList("A", "B", "C", "D", "E");
+        for (String group : groupNames) {
+            final List<Flight> bestRoundGroupFlights = flightRepository.findBestRoundGroupsFlight(roundNum, eventId, group);
+            bestGroupFlights.add(bestRoundGroupFlights.stream().findFirst().orElse(null));
+        }
+        return bestGroupFlights;
     }
 }

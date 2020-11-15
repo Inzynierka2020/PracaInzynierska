@@ -1,5 +1,6 @@
 package aviationModelling.restcontroller;
 
+import aviationModelling.dto.BestScoresDto;
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.service.FlightService;
@@ -42,6 +43,12 @@ public class RestFlightController {
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFlight(@RequestBody FlightDTO flightDTO) {
         return flightService.delete(flightDTO);
+    }
+
+    @ApiOperation(value = "Return best scores")
+    @GetMapping("/best")
+    public ResponseEntity<BestScoresDto> getBestScores(@RequestParam Integer roundNum, @RequestParam Integer eventId) {
+        return ResponseEntity.ok(flightService.findBestScores(roundNum, eventId));
     }
 
 
