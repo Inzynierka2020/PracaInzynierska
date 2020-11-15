@@ -39,7 +39,7 @@ export class WindComponent implements OnInit {
   parseFrame(frame: String) {
     var values = frame.split(';');
     switch (values[0]) {
-      case "$REND": {
+      case "$RWRB": {
         this.openSnack();
         break;
       }
