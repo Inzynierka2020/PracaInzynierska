@@ -1,5 +1,6 @@
 package aviationModelling.service;
 
+import aviationModelling.dto.BestScoresDto;
 import aviationModelling.dto.FlightDTO;
 import aviationModelling.dto.VaultResponseDTO;
 import aviationModelling.entity.Flight;
@@ -14,4 +15,5 @@ public interface FlightService {
     Flight findFlight(Integer roundNum, Integer pilotId, Integer eventId);
     Integer findHighestValidRoundNumber(Integer eventId);
 
+    BestScoresDto findBestScores(Integer roundNum, Integer eventId);
 }
