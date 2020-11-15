@@ -10,6 +10,9 @@
             <mat-button-toggle value="right">
                 <p>{{'Visuals' | translate}}</p>
             </mat-button-toggle>
+            <mat-button-toggle value="event">
+                <p>{{'Event' | translate}}</p>
+            </mat-button-toggle>
         </mat-button-toggle-group>
         <div class="settings-text">
             <div *ngIf="group.value=='left'">
@@ -41,6 +44,24 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="group.value=='event'">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex flex-column settings w-100">
+                        <mat-form-field>
+                            <mat-label>{{'MinPilots' | translate}}</mat-label>
+                            <input matInput autocomplete="off" [(ngModel)]="rules.pilotInGroupCount">
+                        </mat-form-field>
+                        <mat-form-field class="w-75">
+                            <mat-label>{{'BestType' | translate}}</mat-label>
+                            <mat-select [(ngModel)]="rules.bestFlightType">
+                                <mat-option *ngFor="let key of keys" [value]="key">
+                                    {{types[key] | uppercase | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
             <div class="progress-bar mt-3">

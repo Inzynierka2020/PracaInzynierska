@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
@@ -9,6 +9,7 @@ import { ConfigService } from '../services/config.service';
 import { AuthService } from '../auth/auth.service';
 import { SnackService } from '../services/snack.service';
 import { PwaService } from '../services/pwa.service';
+import { BestFlightType, EventRules, RulesService } from '../services/rules.service';
 
 @Component({
   selector: 'app-settings',
@@ -25,20 +26,32 @@ export class SettingsComponent implements OnInit {
     public translate: TranslateService,
     private _authService: AuthService,
     private _snackService: SnackService,
-    private _pwaService: PwaService) {
+    private _pwaService: PwaService,
+    private _rulesService: RulesService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
       this.noEvent = true;
+
+    this.keys = Object.keys(this.types).filter(f => !isNaN(Number(f)))
+      .map(k => parseInt(k));
   }
 
   languages = ['en', 'pl'];
+
+  keys: any[]
+  types = BestFlightType;
 
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
     login: "",
     password: "",
     eventId: null
+  }
+
+  rules: EventRules = {
+    pilotInGroupCount: 10,
+    bestFlightType: BestFlightType.Round
   }
 
   progressing = false;
@@ -49,6 +62,18 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.settings.eventId = this._eventService.getEventId();
+    this.getRules();
+  }
+
+  getRules() {
+    var rules = this._rulesService.getRules();
+    if (rules)
+      this.rules = rules;
+  }
+
+  setRules() {
+    this.rules.pilotInGroupCount = parseInt(this.rules.pilotInGroupCount.toString());
+    this._rulesService.setRules(this.rules);
   }
 
   connect() {
@@ -56,11 +81,14 @@ export class SettingsComponent implements OnInit {
   }
 
   close() {
+    console.log(this.rules)
+    console.log(this.rules.bestFlightType === BestFlightType.Event);
     this.dialogRef.close();
   }
 
   save() {
     this.themeService.setThemeForStorage();
+    this.setRules();
     this._configService.updateConfig(this.settings).subscribe(result => {
       this.close();
     })
@@ -106,11 +134,11 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  requestNewVersion(){
+  requestNewVersion() {
     this._pwaService.requestNewVersion();
   }
 
-  addToScreen(){
+  addToScreen() {
     this._pwaService.addToHomeScreen();
   }
 }

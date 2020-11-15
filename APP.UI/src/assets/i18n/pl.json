@@ -80,5 +80,11 @@
     "RequestNewVersion": "ZARZĄDAJ NOWEJ WERSJI",
     "AddToHomeScreen": "DODAJ DO EKRANU GŁÓWNEGO",
     "ConfirmDNS": "USTAWIĆ DNS I ZAKOŃCZYĆ LOT?",
-    "ConfirmDNF": "USTAWIĆ DNF I ZAKOŃCZYĆ LOT?"
+    "ConfirmDNF": "USTAWIĆ DNF I ZAKOŃCZYĆ LOT?",
+    "Event": "ZASADY",
+    "MinPilots": "MINIMALNA ILOŚĆ PILOTÓW W GRUPIE",
+    "BestType": "POKAZUJ NAJLEPSZY CZAS Z:",
+    "EVENT": "ZAWODÓW",
+    "ROUND": "RUNDY",
+    "GROUP": "GRUPY"
 }

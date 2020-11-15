@@ -80,5 +80,11 @@
     "RequestNewVersion": "REQUEST NEW VERSION",
     "AddToHomeScreen": "ADD TO HOME SCREEN",
     "ConfirmDNS": "SET DNS AND FINISH FLIGHT?",
-    "ConfirmDNF": "SET DNF AND FINISH FLIGHT?"
+    "ConfirmDNF": "SET DNF AND FINISH FLIGHT?",
+    "Event": "RULES",
+    "MinPilots": "MIN PILOT COUNT IN SINGLE GROUP",
+    "BestType": "SHOW BEST FLIGHT FROM:",
+    "EVENT": "EVENT",
+    "ROUND": "ROUND",
+    "GROUP": "GROUP"
 }

@@ -100,6 +100,7 @@ export class TabComponent {
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
           this.dataSource = result;
+          this._pilotService.pilotCount = this.dataSource.length;
           this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
           this.spinning = false;
         });

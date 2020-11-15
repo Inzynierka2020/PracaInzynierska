@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PilotService } from '../services/pilot.service';
+import { RulesService } from '../services/rules.service';
 
 class NewRoundDialogData {
   takenNumbers: number[];
@@ -16,10 +18,13 @@ export class NewRoundDialogComponent implements OnInit {
   roundNumber: number;
   takenNumbers: number[];
   groupsNumber = 1;
+  groupsThreshold = 1;
 
-  constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>, @Inject(MAT_DIALOG_DATA) private _data: NewRoundDialogData) {
+  constructor(public dialogRef: MatDialogRef<NewRoundDialogComponent>, @Inject(MAT_DIALOG_DATA) private _data: NewRoundDialogData,
+    private _rulesService: RulesService, private _pilotService: PilotService) {
     this.roundNumber = _data.roundNumber;
     this.takenNumbers = _data.takenNumbers;
+    this.groupsThreshold = Math.floor(this._pilotService.pilotCount / _rulesService.getRules().pilotInGroupCount);
   }
 
   ngOnInit() {
@@ -30,30 +35,36 @@ export class NewRoundDialogComponent implements OnInit {
   }
 
   increment() {
-    var number = this.roundNumber + 1;
-    while (this.takenNumbers.includes(number)) {
-      number += 1;
-      if (number > Math.max(...this.takenNumbers)) {
-        this.roundNumber = number;
-        return;
+    if (this.canIncrement())
+      while (this.takenNumbers.includes(++this.roundNumber)) {
       }
-    }
-    this.roundNumber = number;
+  }
+
+  canIncrement() {
+    return true;
   }
 
   decrement() {
+    if (this.canDecrement()) {
+      while (this.takenNumbers.includes(--this.roundNumber)) {
+        return false;
+      }
+    }
+  }
+
+  canDecrement(): boolean {
     var number = this.roundNumber - 1;
     while (this.takenNumbers.includes(number)) {
       number -= 1;
       if (number == 0) {
-        return;
+        return false;
       }
     }
-    this.roundNumber = number;
+    return true;
   }
 
   incrementGroups() {
-    if (this.groupsNumber < 5)
+    if (this.groupsNumber < this.groupsThreshold)
       this.groupsNumber++;
   }
   decrementGroups() {
