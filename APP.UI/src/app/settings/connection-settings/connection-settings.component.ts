@@ -8,7 +8,7 @@ import { ConfigService } from '../../services/config.service';
   styleUrls: ['./connection-settings.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ConnectionSettingsComponent implements OnInit, OnChanges {
+export class ConnectionSettingsComponent implements OnInit {
 
   @Input()
   settings: Settings;
@@ -38,7 +38,7 @@ export class ConnectionSettingsComponent implements OnInit, OnChanges {
     })
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  onChange(event) {
     this.settingsChange.emit(this.settings);
   }
 }

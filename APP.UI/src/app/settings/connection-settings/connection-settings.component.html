@@ -1,19 +1,19 @@
 <div class="d-flex flex-column settings">
     <mat-form-field>
         <mat-label>API {{'Login' | translate}}</mat-label>
-        <input autocomplete="off" matInput placeholder="example@mail.com" [(ngModel)]="settings.login">
+        <input autocomplete="off" matInput placeholder="example@mail.com" [(ngModel)]="settings.login" (ngModelChange)="onChange($event)">
     </mat-form-field>
     <mat-form-field>
         <mat-label>API {{'Password' | translate}}</mat-label>
-        <input autocomplete="new-password" matInput placeholder=" " [(ngModel)]="settings.password " type="password">
+        <input autocomplete="new-password" matInput placeholder=" " [(ngModel)]="settings.password " (ngModelChange)="onChange($event)" type="password">
     </mat-form-field>
     <mat-form-field>
         <mat-label>{{'ApiUrl' | translate}}</mat-label>
-        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.apiUrl ">
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.apiUrl " (ngModelChange)="onChange($event)">
     </mat-form-field>
     <mat-form-field>
         <mat-label>{{'Event ID' | translate}}</mat-label>
-        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " *ngIf="disabled " disabled>
-        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " *ngIf="!disabled ">
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " (ngModelChange)="onChange($event)" *ngIf="disabled " disabled>
+        <input autocomplete="off " matInput placeholder=" " [(ngModel)]="settings.eventId " (ngModelChange)="onChange($event)" *ngIf="!disabled ">
     </mat-form-field>
 </div>

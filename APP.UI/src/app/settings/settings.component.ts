@@ -49,10 +49,7 @@ export class SettingsComponent implements OnInit {
     eventId: null
   }
 
-  rules: EventRules = {
-    pilotInGroupCount: 10,
-    bestFlightType: BestFlightType.Round
-  }
+  rules: EventRules;
 
   progressing = false;
 
@@ -66,9 +63,7 @@ export class SettingsComponent implements OnInit {
   }
 
   getRules() {
-    var rules = this._rulesService.getRules();
-    if (rules)
-      this.rules = rules;
+    this.rules = this._rulesService.getRules();
   }
 
   setRules() {

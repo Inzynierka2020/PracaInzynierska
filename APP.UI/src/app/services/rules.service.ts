@@ -18,11 +18,16 @@ export class RulesService {
 
   constructor() { }
 
+  rules: EventRules = {
+    pilotInGroupCount: 10,
+    bestFlightType: BestFlightType.Round
+  }
+
   getRules(): EventRules {
     var result = window.localStorage.getItem("rules");
-    if (result)
-      return JSON.parse(result);
-    return null;
+    if (result === null)
+      return this.rules;  
+    return JSON.parse(result);
   }
 
   setRules(rules: EventRules) {

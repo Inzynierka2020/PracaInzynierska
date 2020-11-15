@@ -8,6 +8,7 @@ import { FlightsService } from '../services/flights.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
+import { BestFlightType, RulesService } from '../services/rules.service';
 
 class PlayerDialogData {
   pilot: Pilot
@@ -46,7 +47,8 @@ export class PlayerComponent implements OnInit {
     private _clockService: ClockService,
     private _flightService: FlightsService,
     private _eventService: EventService,
-    private _translate: TranslateService
+    private _translate: TranslateService,
+    private _rulesService: RulesService
   ) {
     this.pilot = _data.pilot
     this.flight = _data.flight;
@@ -63,10 +65,30 @@ export class PlayerComponent implements OnInit {
       .subscribe(frame => {
         this.parseFrame(frame);
       })
+    this.reloadBestFlight();
+  }
+
+  reloadBestFlight(){
     this._flightService.getBestFlights(this.flight.roundNum, this._eventService.getEventId()).pipe(take(1)).subscribe(result => {
-      console.log(result);
       if (result != null) {
-        // this.bestFlight = result;
+        var rules = this._rulesService.getRules();
+        switch (rules.bestFlightType) {
+          case BestFlightType.Event: {
+            this.bestFlight = result.bestFromEvent;
+            break
+          }
+          case BestFlightType.Group: {
+            this.bestFlight = result.bestFromGroups.find(flight => flight.group === this.flight.group)
+            break;
+          }
+          case BestFlightType.Round: {
+            this.bestFlight = result.bestFromRound;
+            break;
+          }
+        }
+        if(!this.bestFlight){
+          this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
+        }
       }
     })
   }
@@ -247,6 +269,7 @@ export class PlayerComponent implements OnInit {
 
   changeGroup(group: string) {
     this.currentGroup = this.flight.group = group;
+    this.reloadBestFlight();
   }
 
   private round(num: number) {
