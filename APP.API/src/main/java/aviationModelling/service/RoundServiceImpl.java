@@ -293,6 +293,9 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public ResponseEntity<VaultResponseDTO> updateEventRoundStatus(Integer roundNum, Integer eventId) {
         final EventRound eventRound = findEventRound(roundNum, eventId);
+        if (eventRound.getFlights().size()==0) {
+            return new ResponseEntity<>(new VaultResponseDTO(400, "1000", "This round has no flights"), HttpStatus.BAD_REQUEST);
+        }
         final Integer highestValidRoundNumber = flightService.findHighestValidRoundNumber(eventId);
         if(roundNum > (highestValidRoundNumber + 1)) {
             return new ResponseEntity<>(new VaultResponseDTO(400, "1000", "Cannot update a round that's more than one ahead of the last."), HttpStatus.BAD_REQUEST);
