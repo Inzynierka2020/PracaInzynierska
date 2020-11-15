@@ -78,5 +78,7 @@
         "RegisteredFailed": "BŁĄD REJESTRACJI"
     },
     "RequestNewVersion": "ZARZĄDAJ NOWEJ WERSJI",
-    "AddToHomeScreen": "DODAJ DO EKRANU GŁÓWNEGO"
+    "AddToHomeScreen": "DODAJ DO EKRANU GŁÓWNEGO",
+    "ConfirmDNS": "USTAWIĆ DNS I ZAKOŃCZYĆ LOT?",
+    "ConfirmDNF": "USTAWIĆ DNF I ZAKOŃCZYĆ LOT?"
 }

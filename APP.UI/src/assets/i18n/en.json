@@ -78,5 +78,7 @@
         "RegisteredFailed": "REGISTER FAILED"
     },
     "RequestNewVersion": "REQUEST NEW VERSION",
-    "AddToHomeScreen": "ADD TO HOME SCREEN"
+    "AddToHomeScreen": "ADD TO HOME SCREEN",
+    "ConfirmDNS": "SET DNS AND FINISH FLIGHT?",
+    "ConfirmDNF": "SET DNF AND FINISH FLIGHT?"
 }

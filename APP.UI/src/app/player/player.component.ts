@@ -75,8 +75,8 @@ export class PlayerComponent implements OnInit {
   }
 
   timer = false;
-  winds=[];
-  dirs=[];
+  winds = [];
+  dirs = [];
   parseFrame(frame: string) {
     if (frame == "0") return;
     var values = frame.split(';');
@@ -175,30 +175,59 @@ export class PlayerComponent implements OnInit {
         this.winds.push(values[4]);
         this.dirs.push(values[5]);
 
-        this.flight.windAvg = this.winds.reduce((a, b) => a + b)/this.winds.length;
-        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b)/this.winds.length;
+        this.flight.windAvg = this.winds.reduce((a, b) => a + b) / this.winds.length;
+        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b) / this.winds.length;
         break;
       }
     }
   }
 
   didNotFinish() {
+    var msg = this._translate.instant("ConfirmDNF");
     if (this.flight.dnf) {
       this.flight.dnf = false;
     } else {
       this.flight.dnf = true;
       this.flight.dns = false;
     }
+    if (!this.editMode)
+      this.resolveConfirmationDialog(msg).subscribe(confirmed => {
+        if (confirmed) {
+          this.saveFlight();
+        } else {
+          if (this.flight.dnf) {
+            this.flight.dnf = false;
+          } else {
+            this.flight.dnf = true;
+            this.flight.dns = false;
+          }
+        }
+      })
   }
 
   didNotStart() {
+    var msg = this._translate.instant("ConfirmDNS");
     if (this.flight.dns) {
       this.flight.dns = false;
     } else {
       this.flight.dns = true;
       this.flight.dnf = false;
     }
+    if (!this.editMode)
+      this.resolveConfirmationDialog(msg).subscribe(confirmed => {
+        if (confirmed) {
+          this.saveFlight();
+        } else {
+          if (this.flight.dns) {
+            this.flight.dns = false;
+          } else {
+            this.flight.dns = true;
+            this.flight.dnf = false;
+          }
+        }
+      })
   }
+
   saveFlight() {
     this.flight.synchronized = false;
     this.flight.pilotId = this.pilot.pilotId;
