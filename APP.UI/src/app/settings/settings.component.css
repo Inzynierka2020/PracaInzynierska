@@ -144,3 +144,16 @@ button {
         font-size: x-small;
     }
 }
+
+@media(max-width: 500px),
+(max-height: 700px) {
+    .settings-2 {
+        font-size: medium;
+    }
+}
+
+@media(max-width: 360px) {
+    .settings-2 {
+        font-size: small;
+    }
+}
