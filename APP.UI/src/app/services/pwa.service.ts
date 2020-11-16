@@ -9,6 +9,7 @@ export class PwaService {
 
   deferredPrompt: any;
   showButton = false;
+  number: number;
 
   addToHomeScreen() {
     // hide our user interface that shows our A2HS button
