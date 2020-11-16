@@ -8,7 +8,7 @@
                 <div class="oosTitle" *ngIf="outOfService">
                     {{ 'NoCount' | translate }}
                 </div>
-                <app-score [mode]="'general'" [dataSource]="dataSource"></app-score>
+                <app-score [mode]="'general'" [dataSource]="dataSource" (handlePan)="handlePan($event)"></app-score>
             </div>
         </div>
     </mat-tab>
@@ -16,7 +16,7 @@
         <ng-template mat-tab-label class="d-flex justify-content-between">
             <i class="material-icons mr-2" [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(-1, matTabGroup)">
                 keyboard_arrow_left </i>
-            <span [ngClass]="isBrowsing ? 'black' : ''">{{'Round' | translate}} {{roundNumber}}</span>
+            <span [ngClass]="isBrowsing ? 'black' : ''">{{'Round' | translate}} {{ roundNumber == -1 ? '∅' : roundNumber}}</span>
             <i class="material-icons ml-2 " [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(1, matTabGroup)">
                 keyboard_arrow_right</i>
         </ng-template>
@@ -31,7 +31,7 @@
             {{'Round' | translate}} {{newRoundNumber}}
         </ng-template>
         <div class="tab-content ">
-            <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount"></app-round>
+            <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount" [changeObserver]="$browsedRoundChange"></app-round>
         </div>
     </mat-tab>
     <mat-tab *ngIf="!isRoundStarted && switch ">

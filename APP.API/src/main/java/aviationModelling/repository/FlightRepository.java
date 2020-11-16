@@ -25,7 +25,8 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
             "AND f.eventRound.isCancelled = false " +
             "AND f.seconds = (SELECT min(fl.seconds) " +
             "                   FROM Flight fl " +
-            "                   WHERE fl.seconds > 0)")
+            "                   WHERE fl.seconds > 0 " + 
+	    "			AND fl.eventRound.eventId = :eventId)")
     List<Flight> findBestFromEvent(@Param("eventId") Integer eventId);
 
     @Query("SELECT f FROM Flight f " +
@@ -36,7 +37,7 @@ public interface FlightRepository extends JpaRepository<Flight, Flight.FlightId>
             "AND f.seconds = (SELECT min(fl.seconds) " +
             "                   FROM Flight fl " +
             "                   WHERE fl.seconds > 0 " +
-            "                   AND f.eventRound.roundNum = :roundNum" +
+            "                   AND fl.eventRound.roundNum = :roundNum" +
             "                   AND fl.group = :group)")
     List<Flight> findBestRoundGroupsFlight(@Param("roundNum") Integer roundNum, @Param("eventId") Integer eventId, @Param("group") String group);
 }

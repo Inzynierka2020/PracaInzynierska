@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Settings } from '../models/settings';
 import { ThemeService } from '../services/theme.service';
@@ -8,6 +8,8 @@ import { ClockService } from '../services/clock.service';
 import { ConfigService } from '../services/config.service';
 import { AuthService } from '../auth/auth.service';
 import { SnackService } from '../services/snack.service';
+import { PwaService } from '../services/pwa.service';
+import { BestFlightType, EventRules, RulesService } from '../services/rules.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,23 +25,31 @@ export class SettingsComponent implements OnInit {
     private _configService: ConfigService,
     public translate: TranslateService,
     private _authService: AuthService,
-    private _snackService: SnackService) {
+    private _snackService: SnackService,
+    private _pwaService: PwaService,
+    private _rulesService: RulesService) {
     if (this._eventService.getEventId())
       this.noEvent = false
     else
       this.noEvent = true;
+
+    this.keys = Object.keys(this.types).filter(f => !isNaN(Number(f)))
+      .map(k => parseInt(k));
   }
 
   languages = ['en', 'pl'];
 
+  keys: any[]
+  types = BestFlightType;
+
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
-    // login: "piotrek.adamczykk@gmail.com",
     login: "",
-    // password: "ascroft",
     password: "",
-    eventId: 1834
+    eventId: null
   }
+
+  rules: EventRules;
 
   progressing = false;
 
@@ -48,7 +58,17 @@ export class SettingsComponent implements OnInit {
   language: 'en';
 
   ngOnInit() {
+    this.settings.eventId = this._eventService.getEventId();
+    this.getRules();
+  }
 
+  getRules() {
+    this.rules = this._rulesService.getRules();
+  }
+
+  setRules() {
+    this.rules.pilotInGroupCount = parseInt(this.rules.pilotInGroupCount.toString());
+    this._rulesService.setRules(this.rules);
   }
 
   connect() {
@@ -61,6 +81,7 @@ export class SettingsComponent implements OnInit {
 
   save() {
     this.themeService.setThemeForStorage();
+    this.setRules();
     this._configService.updateConfig(this.settings).subscribe(result => {
       this.close();
     })
@@ -73,7 +94,7 @@ export class SettingsComponent implements OnInit {
       localStorage.removeItem('eventId');
       window.location.reload();
     }, error => {
-      this._snackService.open("NO SERVER CONNECTION. CANNOT FINISH EVENT.")
+      this._snackService.open('NoConnection.Finish')
       this.noEvent = true;
     }).add(() => this.progressing = false);
   }
@@ -97,12 +118,20 @@ export class SettingsComponent implements OnInit {
       if (result) {
         this.dialogRef.close();
       } else {
-        this._snackService.open("NO SERVER CONNECTION. CANNOT SIGN OUT.")
+        this._snackService.open('NoConnection.Logout')
         this.noLogout = true;
       }
       sub.unsubscribe();
     }).add(() => {
       this.progressing = false;
     });
+  }
+
+  requestNewVersion() {
+    this._pwaService.requestNewVersion();
+  }
+
+  addToScreen() {
+    this._pwaService.addToHomeScreen();
   }
 }

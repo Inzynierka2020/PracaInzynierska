@@ -2,7 +2,7 @@
     <div class="rows">
         <mat-divider class="bar"></mat-divider>
     </div>
-    <div *ngFor="let pilot of dataSource; index as index " class="rows " matRipple (click)="callRowAction(pilot)" (press)="callPressAction(pilot)">
+    <div *ngFor="let pilot of dataSource; index as index " class="rows " matRipple (click)="callRowAction(pilot)" (press)="callPressAction(pilot)" (pan)="call($event)">
         <div class="d-flex">
             <div class="pilot-row ">
                 <div class="number " *ngIf="mode !='yetToStart' ; else pilotBib ">

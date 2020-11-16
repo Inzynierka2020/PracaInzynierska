@@ -35,9 +35,10 @@ public interface RoundRepository extends JpaRepository<Round, Integer> {
     List<Integer> getValidRoundNumbers(@Param("eventId") Integer eventId);
 
     @Query("SELECT er.roundNum FROM EventRound er " +
-            "WHERE er.eventId = :eventId " +
-            "AND er.isSynchronized = true " +
-            "AND er.isFinished = true")
+            "WHERE er.eventId = :eventId " )
+			//+
+            //"AND er.isSynchronized = true " +
+            //"AND er.isFinished = true")
     List<Integer> getAllSynchronizedRoundNumbers(@Param("eventId") Integer eventId);
 
     @Query("SELECT fl FROM Flight fl " +

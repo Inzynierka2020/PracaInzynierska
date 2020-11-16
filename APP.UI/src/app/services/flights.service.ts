@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { IndexedDbService } from './indexed-db.service';
 import { take } from 'rxjs/operators';
+import { BestFlights } from '../models/bestFlights';
 
 @Injectable({
   providedIn: 'root'
@@ -35,24 +36,24 @@ export class FlightsService {
       })
   }
 
-  getBestFlightFromRound(roundNumber, eventId): Observable<Flight> {
+  getBestFlights(roundNumber, eventId): Observable<BestFlights> {
     if (!this._dbService.hasPriority())
-      return new Observable<Flight>(observer => {
-        this._http.get<Flight>(this._baseUrl + "rounds/best/" + roundNumber + "?eventId=" + eventId).subscribe(
+      return new Observable<BestFlights>(observer => {
+        this._http.get<any>(this._baseUrl + "flights/best" + "?eventId=" + eventId + "&roundNum=" + roundNumber).subscribe(
           result => {
             observer.next(result);
           },
           error => {
             this._dbService.setPriority(true);
-            this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
+            this._dbService.readBestFlights(roundNumber, eventId).subscribe(bestFlight => {
               observer.next(bestFlight);
             });
           }
         )
       })
     else
-      return new Observable<Flight>(observer => {
-        this._dbService.readBestFlight(roundNumber, eventId).subscribe(bestFlight => {
+      return new Observable<BestFlights>(observer => {
+        this._dbService.readBestFlights(roundNumber, eventId).subscribe(bestFlight => {
           observer.next(bestFlight);
         });
       });
@@ -119,8 +120,12 @@ export class FlightsService {
             observer.next(true);
           },
           error => {
-            this._dbService.setPriority(false);
-            observer.next(false);
+            if (error.error_string === "1000") {
+              observer.next(true)
+            } else {
+              this._dbService.setPriority(false);
+              observer.next(false);
+            }
           }
         );
       })

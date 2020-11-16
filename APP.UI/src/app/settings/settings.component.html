@@ -10,6 +10,9 @@
             <mat-button-toggle value="right">
                 <p>{{'Visuals' | translate}}</p>
             </mat-button-toggle>
+            <mat-button-toggle value="event">
+                <p>{{'Event' | translate}}</p>
+            </mat-button-toggle>
         </mat-button-toggle-group>
         <div class="settings-text">
             <div *ngIf="group.value=='left'">
@@ -17,13 +20,17 @@
                     <app-connection-settings [(settings)]="settings"></app-connection-settings>
                 </div>
             </div>
-            <div *ngIf="group.value=='center'">
+            <div *ngIf="group.value=='center'" class="h-100 d-flex flex-column justify-content-between">
                 <div class="d-flex flex-column align-items-center">
                     <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()" *ngIf="!noLogout">{{'Sign Out' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4" (click)="signOut()" *ngIf="noLogout" disabled>{{'Sign Out' | translate}}</button>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <button *ngIf="_pwaService.showButton" mat-raised-button class="theme-accent w-100 mb-4" (click)="addToScreen()">{{'AddToHomeScreen' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-100" (click)="requestNewVersion()">{{'RequestNewVersion' | translate }}</button>
                 </div>
             </div>
             <div *ngIf="group.value=='right'">
@@ -39,7 +46,25 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="progress-bar">
+            <div *ngIf="group.value=='event'">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex flex-column settings-2 w-100">
+                        <mat-form-field>
+                            <mat-label>{{'MinPilots' | translate}}</mat-label>
+                            <input matInput autocomplete="off" [(ngModel)]="rules.pilotInGroupCount">
+                        </mat-form-field>
+                        <mat-form-field class="w-75">
+                            <mat-label>{{'BestType' | translate}}</mat-label>
+                            <mat-select [(ngModel)]="rules.bestFlightType">
+                                <mat-option *ngFor="let key of keys" [value]="key">
+                                    {{types[key] | uppercase | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar mt-3">
                 <mat-progress-bar mode="indeterminate" *ngIf="progressing"></mat-progress-bar>
             </div>
         </div>

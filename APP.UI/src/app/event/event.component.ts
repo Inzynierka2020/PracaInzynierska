@@ -47,13 +47,13 @@ export class EventComponent {
     }
 
     this.swUpdate.available.subscribe(evt => {
-      this._snackService.openForAction("NEW VERSION OF THE APP AVAILABLE. PRESS OK TO RELOAD.")
+      this._snackService.openForAction('NewVersion')
     });
   }
 
   startEvent() {
     if (!this.settings.eventId) {
-      this._snackService.open("NO EVENT ID PROVIDED.");
+      this._snackService.open('NoId');
       return;
     }
 
@@ -69,7 +69,7 @@ export class EventComponent {
         this.getEvent();
       })
     }, error => {
-      this._snackService.open("CONNECTION LOST.");
+      this._snackService.open('NoConnection.Lost');
       this.getEvent();
     });
   }
@@ -81,7 +81,7 @@ export class EventComponent {
     }, error => {
       localStorage.removeItem('eventId');
       this.loading = false;
-      this._snackService.open("WRONG API SETTINGS OR NO CONNECTION");
+      this._snackService.open('WrongSettings');
     })
   }
 }

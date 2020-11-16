@@ -4,20 +4,22 @@
 <div class="text-center subtitle">{{ 'GroupCountMsg' | translate}}</div>
 <div mat-dialog-content class="px-0">
     <i (click)="decrementGroups()" class="material-icons">
-        remove
+        {{ groupsNumber == 1 ? 'block' : 'remove'}}
     </i>
     <div class="number">{{groupsNumber}}</div>
-    <i (click)="incrementGroups()" class="material-icons "> add
+    <i (click)="incrementGroups()" class="material-icons ">
+        {{ groupsNumber >= groupsThreshold ? 'block' : 'add'}}
     </i>
 </div>
 <mat-divider></mat-divider>
 <div class="text-center title">{{'Round number' | translate}}</div>
 <div mat-dialog-content class="px-0">
     <i (click)="decrement()" class="material-icons">
-        remove
+        {{ !canDecrement() ? 'block' : 'remove'}}
     </i>
     <div class="number">{{roundNumber}}</div>
-    <i (click)="increment()" class="material-icons "> add
+    <i (click)="increment()" class="material-icons "> 
+        {{ !canIncrement() ? 'block' : 'add'}}
     </i>
 </div>
 <div class="buttons mt-4">

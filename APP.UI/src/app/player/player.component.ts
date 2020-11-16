@@ -8,6 +8,7 @@ import { FlightsService } from '../services/flights.service';
 import { EventService } from '../services/event.service';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
+import { BestFlightType, RulesService } from '../services/rules.service';
 
 class PlayerDialogData {
   pilot: Pilot
@@ -46,7 +47,8 @@ export class PlayerComponent implements OnInit {
     private _clockService: ClockService,
     private _flightService: FlightsService,
     private _eventService: EventService,
-    private _translate: TranslateService
+    private _translate: TranslateService,
+    private _rulesService: RulesService
   ) {
     this.pilot = _data.pilot
     this.flight = _data.flight;
@@ -63,9 +65,30 @@ export class PlayerComponent implements OnInit {
       .subscribe(frame => {
         this.parseFrame(frame);
       })
-    this._flightService.getBestFlightFromRound(this.flight.roundNum, this._eventService.getEventId()).pipe(take(1)).subscribe(result => {
+    this.reloadBestFlight();
+  }
+
+  reloadBestFlight() {
+    this._flightService.getBestFlights(this.flight.roundNum, this._eventService.getEventId()).pipe(take(1)).subscribe(result => {
       if (result != null) {
-        this.bestFlight = result;
+        var rules = this._rulesService.getRules();
+        switch (rules.bestFlightType) {
+          case BestFlightType.Event: {
+            this.bestFlight = result.bestFromEvent;
+            break
+          }
+          case BestFlightType.Group: {
+            this.bestFlight = result.bestFromGroups.filter(x=>x!=null).find(flight => flight.group == this.flight.group)
+            break;
+          }
+          case BestFlightType.Round: {
+            this.bestFlight = result.bestFromRound;
+            break;
+          }
+        }
+        if (!this.bestFlight) {
+          this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
+        }
       }
     })
   }
@@ -75,8 +98,8 @@ export class PlayerComponent implements OnInit {
   }
 
   timer = false;
-  winds=[];
-  dirs=[];
+  winds = [];
+  dirs = [];
   parseFrame(frame: string) {
     if (frame == "0") return;
     var values = frame.split(';');
@@ -87,7 +110,8 @@ export class PlayerComponent implements OnInit {
         break;
       }
       case "$RTMO": {
-        this.value = "PRZEKROCZONO";
+        this.title = "PRZEKROCZONO CZAS PRZYGOTOWAWCZY"
+        this.value = "---";
         break;
       }
       case "$RCZS": {
@@ -174,30 +198,59 @@ export class PlayerComponent implements OnInit {
         this.winds.push(values[4]);
         this.dirs.push(values[5]);
 
-        this.flight.windAvg = this.winds.reduce((a, b) => a + b)/this.winds.length;
-        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b)/this.winds.length;
+        this.flight.windAvg = this.winds.reduce((a, b) => a + b) / this.winds.length;
+        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b) / this.winds.length;
         break;
       }
     }
   }
 
   didNotFinish() {
+    var msg = this._translate.instant("ConfirmDNF");
     if (this.flight.dnf) {
       this.flight.dnf = false;
     } else {
       this.flight.dnf = true;
       this.flight.dns = false;
     }
+    if (!this.editMode)
+      this.resolveConfirmationDialog(msg).subscribe(confirmed => {
+        if (confirmed) {
+          this.saveFlight();
+        } else {
+          if (this.flight.dnf) {
+            this.flight.dnf = false;
+          } else {
+            this.flight.dnf = true;
+            this.flight.dns = false;
+          }
+        }
+      })
   }
 
   didNotStart() {
+    var msg = this._translate.instant("ConfirmDNS");
     if (this.flight.dns) {
       this.flight.dns = false;
     } else {
       this.flight.dns = true;
       this.flight.dnf = false;
     }
+    if (!this.editMode)
+      this.resolveConfirmationDialog(msg).subscribe(confirmed => {
+        if (confirmed) {
+          this.saveFlight();
+        } else {
+          if (this.flight.dns) {
+            this.flight.dns = false;
+          } else {
+            this.flight.dns = true;
+            this.flight.dnf = false;
+          }
+        }
+      })
   }
+
   saveFlight() {
     this.flight.synchronized = false;
     this.flight.pilotId = this.pilot.pilotId;
@@ -216,6 +269,7 @@ export class PlayerComponent implements OnInit {
 
   changeGroup(group: string) {
     this.currentGroup = this.flight.group = group;
+    this.reloadBestFlight();
   }
 
   private round(num: number) {

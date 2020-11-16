@@ -10,25 +10,25 @@ export class SnackService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  open(msg: String){
+  open(msg: String) {
     this._snackBar.openFromComponent(WarningSnackComponent, {
       duration: 3000,
       data: msg
     });
   }
-
-  openForAction(msg:String){
+  
+  openForAction(msg: String) {
     const snack = this._snackBar.openFromComponent(WarningSnackComponent, {
       data: msg
     });
-      snack
-        .onAction()
-        .subscribe(result => {
-          window.location.reload();
-        });
+    snack
+      .onAction()
+      .subscribe(() => {
+        window.location.reload();
+      });
 
-      setTimeout(() => {
-        snack.dismiss();
-      }, 15000);
+    setTimeout(() => {
+      snack.dismiss();
+    }, 15000);
   }
 }

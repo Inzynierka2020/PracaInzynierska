@@ -20,6 +20,6 @@ export class WarningSnackComponent implements OnInit {
   }
 
   dismiss() {
-    this.barref.dismiss();
+    this.barref.dismissWithAction();
   }
 }

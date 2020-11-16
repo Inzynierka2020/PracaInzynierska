@@ -59,5 +59,32 @@
     "SaveRound": "JESTEŚ PEWIEN CZY ZAPISAĆ PRZELOT?",
     "Synchronized": "ZSYNCHRONIZOWANO",
     "NotSynchronized": "NIEZSYNCHRONIZOWANO",
-    "NoCount": "BRAK ŁĄCZNOŚCI Z SERWEREM. PUNKTACJA NIE PRZELICZONA"
+    "NoCount": "BRAK ŁĄCZNOŚCI Z SERWEREM. PUNKTACJA NIE PRZELICZONA",
+    "NoRound": "BRAK RUND W TYCH ZAWODACH",
+    "NoConnection": {
+        "Finish": "BRAK POŁĄCZENIA. BRAK MOŻLIWOŚCI ZAKOŃCZENIA WYDARZENIA.",
+        "Logout": "BRAK POŁĄCZENIA. BRAK MOŻLIWOŚCI WYLOGOWANIA.",
+        "Score": "BRAK POŁĄCZENIA. KLASYFIKACJA NIE PRZELICZONA.",
+        "Lost": "BRAK POŁĄCZENIA."
+    },
+    "VaultSynced": "VAULT ZSYNCHRONIZOWANY",
+    "VaultNotSynced": "VAULT NIE ZSYNCHRONIZOWANY",
+    "NoId": "BRAK ID WYDARZENIA",
+    "WrongSettings": "ZŁE USTAWIENIA BĄDŹ BRAK POŁACZENIA",
+    "NewVersion": "NOWA WERSJA APLIKACJI. WCIŚNIJ OK, BY PRZEŁADOWAĆ",
+    "Auth": {
+        "LoginFailed": "BŁĄD LOGOWANIA",
+        "RegisteredOk": "REJESTRACJA POMYŚLNA",
+        "RegisteredFailed": "BŁĄD REJESTRACJI"
+    },
+    "RequestNewVersion": "ZAŻĄDAJ NOWEJ WERSJI",
+    "AddToHomeScreen": "DODAJ DO EKRANU GŁÓWNEGO",
+    "ConfirmDNS": "USTAWIĆ DNS I ZAKOŃCZYĆ LOT?",
+    "ConfirmDNF": "USTAWIĆ DNF I ZAKOŃCZYĆ LOT?",
+    "Event": "ZASADY",
+    "MinPilots": "MINIMALNA ILOŚĆ PILOTÓW W GRUPIE",
+    "BestType": "POKAZUJ NAJLEPSZY CZAS Z:",
+    "EVENT": "ZAWODÓW",
+    "ROUND": "RUNDY",
+    "GROUP": "GRUPY"
 }

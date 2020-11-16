@@ -3,6 +3,7 @@ import Dexie from 'dexie';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Flight } from '../models/flight'
+import { BestFlights } from '../models/bestFlights'
 import { Round } from '../models/round';
 import { RoundsService } from './rounds.service';
 
@@ -69,15 +70,33 @@ export class IndexedDbService {
     });
   }
 
-  readBestFlight(roundNum: number, eventId: number): Observable<Flight> {
+  readBestFlights(roundNum: number, eventId: number): Observable<BestFlights> {
     return new Observable(observer => {
+      let x: BestFlights = {
+        bestFromEvent: null,
+        bestFromGroups: [],
+        bestFromRound: null
+      }
       this.db.flights
         .where(["pilotId+roundNum+eventId"])
         .between([Dexie.minKey, roundNum, eventId], [Dexie.maxKey, roundNum, eventId])
         .filter(f => f.roundNum == roundNum)
         .filter(x => x.seconds > 0)
         .sortBy("seconds").then(result => {
-          observer.next(result[0]);
+          x.bestFromRound = result[0];
+          var groups = ["A", "B", "C", "D", "E"];
+          groups.forEach(group => {
+            var flight = result.find(f => f.group === group)
+            x.bestFromGroups.push(flight);
+          });
+          this.db.flights
+            .where(["pilotId+roundNum+eventId"])
+            .between([Dexie.minKey, roundNum, eventId], [Dexie.maxKey, roundNum, eventId])
+            .filter(x => x.seconds > 0)
+            .sortBy("seconds").then(result => {
+              x.bestFromEvent = result[0];
+              observer.next(x);
+            });
         });
     })
   }

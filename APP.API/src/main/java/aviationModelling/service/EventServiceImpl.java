@@ -91,6 +91,8 @@ public class EventServiceImpl implements EventService {
         for (int i=1; i<=totalRounds; i++) {
             roundService.createRound(i, eventId, defaultNumberOfGroups, isVaultRoundCancelled(i, eventData));
             roundService.finishRound(i, eventId);
+			roundService.synchronizeEventRound(i, eventId);
+			
         }
     }
 

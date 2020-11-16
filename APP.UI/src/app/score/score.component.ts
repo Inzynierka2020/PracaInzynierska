@@ -15,6 +15,9 @@ export class ScoreComponent {
   mode = "";
 
   @Output()
+  handlePan = new EventEmitter<any>();
+
+  @Output()
   rowClickAction: EventEmitter<Pilot> = new EventEmitter<Pilot>();
 
   @Output()
@@ -26,5 +29,9 @@ export class ScoreComponent {
 
   callPressAction(pilot: Pilot) {
     this.rowPressAction.emit(pilot);
+  }
+
+  call(event) {
+    this.handlePan.emit(event)
   }
 }

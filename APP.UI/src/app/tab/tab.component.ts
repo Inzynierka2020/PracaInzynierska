@@ -41,15 +41,18 @@ export class TabComponent {
   groupCount: number;
   newRoundNumber = 0;
 
+  browsedRoundChange = new EventEmitter();
+  $browsedRoundChange: Observable<any>;
   constructor(
     public dialog: MatDialog,
     private _pilotService: PilotService,
     private _eventService: EventService,
     private _roundsService: RoundsService,
-    private _snackService : SnackService
+    private _snackService: SnackService
   ) {
     this.eventId = this._eventService.getEventId()
     this.refreshScores();
+    this.$browsedRoundChange = this.browsedRoundChange.asObservable();
   }
 
   isBrowsing = false;
@@ -73,7 +76,7 @@ export class TabComponent {
         }
       })
     } else {
-      this.refreshScores(); // GENERAL SCORES
+      this.refreshScores(tabChangeEvent.index == TAB.GENERAL); // GENERAL SCORES
       this.previousTabIndex = tabChangeEvent.index;
     }
   }
@@ -83,17 +86,21 @@ export class TabComponent {
   outOfService = false;
   spinning = false;
 
-  refreshScores() {
+  refreshScores(general = false) {
     this.spinning = true;
 
     this._eventService.updateGeneralScore(this.eventId).pipe(take(1)).subscribe(result => {
-      this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result =>{
+      this._eventService.synchronizeWithVault(this.eventId).pipe(take(1)).subscribe(result => {
         this.outOfService = !result;
-        if (result) this._snackService.open("VAULT SYNCHRONIZED")
-        else this._snackService.open("VAULT NOT SYNCRONIZED"); 
+        if (result) {
+          if (general)
+            this._snackService.open('VaultSynced')
+        }
+        else this._snackService.open('VaultNotSynced');
 
         this._pilotService.getPilots(this.eventId).subscribe(result => {
           this.dataSource = result;
+          this._pilotService.pilotCount = this.dataSource.length;
           this.dataSource.sort((a, b) => a.score > b.score ? -1 : 1);
           this.spinning = false;
         });
@@ -116,21 +123,34 @@ export class TabComponent {
     this.changeRound();
   }
 
+
   changeRound() {
-    this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
-    this.browsedRound = this.rounds[this.browsedRoundIndex];
-
-    if (!this.browsedRound.synchronized)
-      this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
-        this.browsedRound.synchronized = result;
-      });
-
     var lastRound = this.rounds[this.rounds.length - 1];
-    if (!lastRound.finished) {
+    if (lastRound && !lastRound.finished) {
       this.isRoundStarted = true;
       this.newRoundNumber = lastRound.roundNum;
       this.groupCount = lastRound.numberOfGroups;
       this.rounds.pop();
+      this.browsedRoundChange.emit(true);
+    }
+
+    if (this.rounds.length == 0) {
+      this.browsedRound = null;
+      this.roundNumber = -1;
+    } else if (lastRound == null) {
+      // this.newRoundNumber = 1;
+      this.isRoundStarted = false;
+      // this.groupCount = 1;
+    }
+
+    if (this.rounds.length > 0) {
+      this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
+      this.browsedRound = this.rounds[this.browsedRoundIndex];
+
+      if (!this.browsedRound.synchronized)
+        this.syncRound(this.roundNumber, this.eventId).subscribe(result => {
+          this.browsedRound.synchronized = result;
+        });
     }
   }
 
@@ -196,16 +216,25 @@ export class TabComponent {
     });
   }
 
+  /*---- MISC ----*/
+  handlePan(event) {
+    window.scroll(0, window.scrollY - (event.velocityY * 10));
+  }
+
   /*---- DIALOGS ----*/
 
   resolveNewRoundDialogComponent() {
     let recentRoundNumber = Math.max.apply(Math, this.rounds.map(function (o) { return o.roundNum; }))
+    if (this.rounds.length == 0)
+      recentRoundNumber = 0;
+
     return this.dialog.open(NewRoundDialogComponent, {
       width: '80%',
       maxWidth: '800px',
       height: 'fitcontent',
       disableClose: true,
       data: {
+        takenNumbers: this.rounds.map(function (o) { return o.roundNum; }),
         roundNumber: recentRoundNumber + 1
       }
     });
