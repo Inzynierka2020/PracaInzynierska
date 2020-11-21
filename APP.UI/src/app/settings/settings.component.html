@@ -23,7 +23,7 @@
             <div *ngIf="group.value=='center'" class="h-100 d-flex flex-column justify-content-between">
                 <div class="d-flex flex-column align-items-center">
                     <button *ngIf="!_clockService.isConnected()" mat-raised-button class=" theme-accent w-75 mb-4 " (click)="connect() ">{{'Connect device' | translate}}</button>
-                    <button *ngIf="_clockService.isConnected()" mat-raised-button class="theme-accent theme-disabled w-75 mb-4 ">{{'DEVICE CONNECTED' | translate}}</button>
+                    <button *ngIf="_clockService.isConnected()" mat-raised-button class="theme-accent theme-disabled w-75 mb-4 ">{{'Device connected' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75 " (click)="finishEvent() " *ngIf="!noEvent ">{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent theme-disabled w-75 " (click)="finishEvent() " *ngIf="noEvent " disabled>{{'Finish event' | translate}}</button>
                     <button mat-raised-button class="theme-accent w-75 mt-4 " (click)="signOut() " *ngIf="!noLogout ">{{'Sign Out' | translate}}</button>

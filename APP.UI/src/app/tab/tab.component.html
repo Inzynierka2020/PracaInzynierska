@@ -12,11 +12,12 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab [disabled]="isBrowsing">
+    <mat-tab [disabled]="isBrowsing || rounds == null">
         <ng-template mat-tab-label class="d-flex justify-content-between">
             <i class="material-icons mr-2" [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(-1, matTabGroup)">
                 keyboard_arrow_left </i>
-            <span [ngClass]="isBrowsing ? 'black' : ''">{{'Round' | translate}} {{ roundNumber == -1 ? '∅' : roundNumber}}</span>
+            <span [ngClass]="isBrowsing ? 'black' : ''"> {{(rounds ? 'Round' : '---') | translate }}
+                {{ roundNumber == -1 ? '∅' : roundNumber}}</span>
             <i class="material-icons ml-2 " [ngClass]="!isBrowsing ? 'grey' : 'gold'" (click)="nextRound(1, matTabGroup)">
                 keyboard_arrow_right</i>
         </ng-template>
@@ -28,22 +29,22 @@
     </mat-tab>
     <mat-tab *ngIf="isRoundStarted ">
         <ng-template mat-tab-label class="d-flex justify-content-between">
-            {{'Round' | translate}} {{newRoundNumber}}
+            {{(rounds ? 'Round' : '---') | translate }}
         </ng-template>
         <div class="tab-content ">
             <app-round (finished)="finishRound($event, matTabGroup) " [roundNumber]="newRoundNumber" [groupCount]="groupCount" [changeObserver]="$browsedRoundChange"></app-round>
         </div>
     </mat-tab>
-    <mat-tab *ngIf="!isRoundStarted && switch ">
+    <mat-tab *ngIf="!isRoundStarted && switch " [disabled]="rounds == null">
         <ng-template mat-tab-label class="d-flex justify-content-between">
-            {{'New round' | translate }}
+            {{(rounds ? 'New round' : '---') | translate }}
         </ng-template>
         <div class="tab-content ">
         </div>
     </mat-tab>
-    <mat-tab *ngIf="!isRoundStarted && !switch ">
+    <mat-tab *ngIf="!isRoundStarted && !switch " [disabled]="rounds == null">
         <ng-template mat-tab-label class="d-flex justify-content-between">
-            {{'New round' | translate }}
+            {{(rounds ? 'New round' : '---') | translate }}
         </ng-template>
         <div class="tab-content ">
         </div>

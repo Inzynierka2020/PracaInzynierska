@@ -47,7 +47,7 @@
     },
     "Close": "CLOSE",
     "Total seconds": "TOTAL TIME",
-    "Connect device": "CONNECT TO CLOCK",
+    "Connect device": "CONNECT WITH CLOCK",
     "Sign In": "SIGN IN",
     "Sign Up": "SIGN UP",
     "Back": "BACK",
@@ -86,5 +86,8 @@
     "BestType": "SHOW BEST FLIGHT FROM:",
     "EVENT": "EVENT",
     "ROUND": "ROUND",
-    "GROUP": "GROUP"
+    "GROUP": "GROUP",
+    "Device connected": "CONNECTED",
+    "DeviceDisconnected": "USB DEVICE DISCONNECTED",
+    "DeviceReconnected": "USB DEVICE IS VISIBLE AGAIN. CLICK OK TO CONNECT AGAIN"
 }

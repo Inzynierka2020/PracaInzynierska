@@ -80,11 +80,11 @@ export class ClockService {
     usbAPI.addEventListener('disconnect', event => {
       this.connected = false;
       this.connectedBefore = true;
-      this._snackService.open('USB DEVICE DISCONNECTED')
+      this._snackService.open('DeviceDisconnected')
     });
 
     usbAPI.addEventListener('connect', event => {
-      this._snackService.openForAction('USB DEVICE IS VISIBLE AGAIN. CLICK OK TO CONNECT AGAIN', this)
+      this._snackService.openForAction('DeviceReconnected', this)
     });
   }
 

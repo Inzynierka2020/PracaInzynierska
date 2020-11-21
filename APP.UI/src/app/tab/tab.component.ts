@@ -63,7 +63,7 @@ export class TabComponent {
     if (tabChangeEvent.index == TAB.BROWSE) {
       this.isBrowsing = true;
       this.previousTabIndex = tabChangeEvent.index;
-    } else if (tabChangeEvent.index == TAB.ROUND && !this.isRoundStarted) {
+    } else if (tabChangeEvent.index == TAB.ROUND && !this.isRoundStarted && this.rounds) {
       this.resolveNewRoundDialogComponent().afterClosed().subscribe(newRoundResult => {
         if (newRoundResult.started) {
           this.isRoundStarted = true;
