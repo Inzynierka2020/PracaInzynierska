@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsComponent } from '../settings/settings.component';
 import { Event } from '../models/event';
+import { ClockService } from '../services/clock.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,7 +17,7 @@ export class ToolbarComponent {
   now: number;
   wind: string;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public _clock: ClockService) {
     setInterval(() => {
       this.now = Date.now();
     }, 1000);
@@ -35,5 +36,12 @@ export class ToolbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  isConnectedColor() {
+    if (this._clock.isConnected())
+      return 'green';
+    else
+      return 'darkred';
   }
 }

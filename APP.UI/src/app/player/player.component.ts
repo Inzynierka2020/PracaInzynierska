@@ -60,6 +60,7 @@ export class PlayerComponent implements OnInit {
   }
 
   private _subscription;
+  
   ngOnInit() {
     this._subscription = this._clockService.getFrame()
       .subscribe(frame => {
@@ -292,5 +293,12 @@ export class PlayerComponent implements OnInit {
         this.dialogRef.close(result)
       }
     })
+  }
+
+  isConnectedColor() {
+    if (this._clockService.isConnected())
+      return 'green';
+    else
+      return 'darkred';
   }
 }

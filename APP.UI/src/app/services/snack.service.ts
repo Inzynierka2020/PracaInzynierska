@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { WarningSnackComponent } from '../wind/warning-snack/warning-snack.component';
+import { ClockService } from './clock.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +17,18 @@ export class SnackService {
       data: msg
     });
   }
-  
-  openForAction(msg: String) {
+
+  openForAction(msg: String, eventToBecalled?: ClockService) {
     const snack = this._snackBar.openFromComponent(WarningSnackComponent, {
       data: msg
     });
     snack
       .onAction()
       .subscribe(() => {
-        window.location.reload();
+        if (eventToBecalled)
+          eventToBecalled.connectDevice();
+        else
+          window.location.reload();
       });
 
     setTimeout(() => {

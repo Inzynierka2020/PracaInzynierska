@@ -135,8 +135,18 @@
                     </div>
                 </mat-toolbar-row>
             </mat-toolbar>
-            <div class="text-center font-weight-bolder value">
-                {{value }}
+            <div class="d-flex flex-row justify-content-between">
+                <div class="d-flex flex-column justify-content-center clock-icon w-25">
+                    <i class="material-icons w-25" [ngStyle]="{'color' : isConnectedColor()}">
+                        {{_clockService.isConnected() ? 'alarm_on' : 'alarm_off'}}
+                    </i>
+                </div>
+                <div class="text-center font-weight-bolder value w-50">
+                    {{value }}
+                </div>
+                <div class="w-25">
+
+                </div>
             </div>
         </div>
         <div *ngIf="groupsCount>1">

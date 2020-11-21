@@ -14,6 +14,11 @@
                 <div class="w-25">
                     <app-wind></app-wind>
                 </div>
+                <div class="w-25 text-center">
+                    <i class="material-icons" [ngStyle]="{'color' : isConnectedColor()}">
+                        {{_clock.isConnected() ? 'alarm_on' : 'alarm_off'}}
+                    </i>
+                </div>
                 <button mat-raised-button class="theme-accent-reversed cog align-items-center">
                     <div (click)="openSettings()" class="d-flex">
                         <i class="material-icons">

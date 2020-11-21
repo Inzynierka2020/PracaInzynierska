@@ -23,10 +23,8 @@ export class EventComponent {
 
   settings: Settings = {
     apiUrl: "http://www.f3xvault.com/api.php?",
-    // login: "piotrek.adamczykk@gmail.com",
-    login: "",
-    // password: "ascroft",
-    password: "",
+    login: null,
+    password: null,
     eventId: null
   }
 
