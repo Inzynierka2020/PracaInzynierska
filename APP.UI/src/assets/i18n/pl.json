@@ -89,5 +89,9 @@
     "GROUP": "GRUPY",
     "Device connected": "POŁĄCZONO",
     "DeviceDisconnected": "MODUŁ USB ODŁĄCZONY",
-    "DeviceReconnected": "MODUŁ USB JEST WIDOCZNY. WCIŚNIJ OK W CELU PONOWNEGO POŁĄCZENIA"
+    "DeviceReconnected": "MODUŁ USB JEST WIDOCZNY. WCIŚNIJ OK W CELU PONOWNEGO POŁĄCZENIA",
+    "Starting time": "CZAS STARTOWY",
+    "PrepTime": "CZAS PRZYGOTOWAWCZY",
+    "PrepTimeOver": "PRZEKROCZONO CZAS PRZYGOTOWAWCZY",
+    "NewPlayer": "NOWY ZAWODNIK"
 }

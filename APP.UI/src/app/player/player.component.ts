@@ -38,7 +38,7 @@ export class PlayerComponent implements OnInit {
   started = false;
   finished = false;
 
-  title = "New player"
+  title: string;
   value: string;
 
   constructor(public dialog: MatDialog,
@@ -57,6 +57,7 @@ export class PlayerComponent implements OnInit {
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
     this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
+    this.title = this._translate.instant("NewPlayer");
   }
 
   private _subscription;
@@ -106,17 +107,17 @@ export class PlayerComponent implements OnInit {
     var values = frame.split(';');
     switch (values[0]) {
       case "$RCZP": {
-        this.title = "CZAS PRZYGOTOWAWCZY";
+        this.title = this._translate.instant("PrepTime");
         this.value = values[1] + " s";
         break;
       }
       case "$RTMO": {
-        this.title = "PRZEKROCZONO CZAS PRZYGOTOWAWCZY"
+        this.title = this._translate.instant("PrepTimeOver");
         this.value = "---";
         break;
       }
       case "$RCZS": {
-        this.title = "CZAS STARTOWY";
+        this.title = this._translate.instant("Starting time");
         this.value = values[1] + " s"
         if (values[1] == "30") {
           this.RCZS_timestamp = parseInt(values[2]);
@@ -125,7 +126,7 @@ export class PlayerComponent implements OnInit {
         break;
       }
       case "$RNTR": {
-        this.title = "CAŁKOWITY CZAS"
+        this.title = this._translate.instant("Total seconds");
         this.value = "0";
         var base = values[2];
         var time = this.round(parseFloat(values[3]) / 100.0);
@@ -189,7 +190,7 @@ export class PlayerComponent implements OnInit {
       }
       case "$REND": {
         this.timer = false;
-        this.title = "CAŁKOWITY CZAS"
+        this.title = this._translate.instant("Total seconds");
         var time = this.round(parseFloat(values[3]) / 100.0);
         this.flight.sub11 = this.round(time - this.flight.seconds);
         this.flight.seconds = time;

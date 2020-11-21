@@ -89,5 +89,9 @@
     "GROUP": "GROUP",
     "Device connected": "CONNECTED",
     "DeviceDisconnected": "USB DEVICE DISCONNECTED",
-    "DeviceReconnected": "USB DEVICE IS VISIBLE AGAIN. CLICK OK TO CONNECT AGAIN"
+    "DeviceReconnected": "USB DEVICE IS VISIBLE AGAIN. CLICK OK TO CONNECT AGAIN",
+    "Starting time": "STARTING TIME",
+    "PrepTime": "PREPARING TIME",
+    "PrepTimeOver": "PREPARING TIME EXCEEDED",
+    "NewPlayer": "NEW PLAYER"
 }
