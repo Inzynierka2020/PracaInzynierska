@@ -21,7 +21,7 @@ export class WindComponent implements OnInit {
 
   private _subscription;
   constructor(private _snackBar: MatSnackBar, private _clockSerice: ClockService) {
-    this._subscription = this._clockSerice.getFrame()
+    this._subscription = this._clockSerice.getBehaviourFrameEmitter()
       .subscribe(frame => {
         if (frame != 0)
           console.log(frame);

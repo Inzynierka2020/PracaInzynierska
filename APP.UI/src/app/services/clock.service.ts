@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { SnackService } from './snack.service';
 
 @Injectable({
@@ -10,18 +10,28 @@ export class ClockService {
   constructor(private _snackService: SnackService) { }
 
   public frameEmitter = new BehaviorSubject<any>(0);
+  private dataEmitter = new EventEmitter();
+
+  private replayEmitter = new ReplaySubject<any>(1000);
 
   private baudRate = Uint32Array.from([57600]);
   private filters = [{vendorId: 4292, productId: 60000}];
   private connected = false;
   private buffer = "";
-  private dataEmitter = new EventEmitter();
 
   isConnected(): boolean {
     return this.connected;
   }
 
-  public getFrame() {
+  public switchReplayFrameEmitter(){
+    this.replayEmitter = new ReplaySubject<any>(1000);
+  }
+
+  public getReplayFrameEmitter(){
+    return this.replayEmitter.asObservable();
+  }
+
+  public getBehaviourFrameEmitter() {
     return this.frameEmitter.asObservable();
   }
 
@@ -36,11 +46,14 @@ export class ClockService {
       if (frame.endsWith('\n')) {
         this.frameEmitter.next(frame);
         this.frameEmitter.next(0);
+        this.replayEmitter.next(frame);
+        this.replayEmitter.next(0);
       }
       else
         this.buffer += frame;
     });
   }
+
   connectedBefore = false;
   public connectDevice() {
     if (this.connected)

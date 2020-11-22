@@ -63,7 +63,7 @@ export class PlayerComponent implements OnInit {
   private _subscription;
   
   ngOnInit() {
-    this._subscription = this._clockService.getFrame()
+    this._subscription = this._clockService.getReplayFrameEmitter()
       .subscribe(frame => {
         this.parseFrame(frame);
       })
@@ -228,6 +228,15 @@ export class PlayerComponent implements OnInit {
           }
         }
       })
+  }
+
+  switchEmitter(){
+    this._subscription.unsubscribe();
+    
+    this._subscription = this._clockService.getReplayFrameEmitter()
+    .subscribe(frame => {
+      this.parseFrame(frame);
+    })
   }
 
   didNotStart() {
