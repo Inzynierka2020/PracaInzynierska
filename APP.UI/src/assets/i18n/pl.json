@@ -47,7 +47,7 @@
     },
     "Close": "ZAMKNIJ",
     "Total seconds": "CAŁKOWITY CZAS [s]",
-    "Connect device": "PODŁĄCZ DO ZEGARA",
+    "Connect device": "POŁĄCZ Z ZEGAREM",
     "Sign In": "ZALOGUJ",
     "Sign Up": "ZAREJESTRUJ",
     "Back": "WSTECZ",
@@ -86,5 +86,12 @@
     "BestType": "POKAZUJ NAJLEPSZY CZAS Z:",
     "EVENT": "ZAWODÓW",
     "ROUND": "RUNDY",
-    "GROUP": "GRUPY"
+    "GROUP": "GRUPY",
+    "Device connected": "POŁĄCZONO",
+    "DeviceDisconnected": "MODUŁ USB ODŁĄCZONY",
+    "DeviceReconnected": "MODUŁ USB JEST WIDOCZNY. WCIŚNIJ OK W CELU PONOWNEGO POŁĄCZENIA",
+    "Starting time": "CZAS STARTOWY",
+    "PrepTime": "CZAS PRZYGOTOWAWCZY",
+    "PrepTimeOver": "PRZEKROCZONO CZAS PRZYGOTOWAWCZY",
+    "NewPlayer": "NOWY ZAWODNIK"
 }

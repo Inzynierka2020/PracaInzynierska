@@ -22,41 +22,42 @@
             </div>
             <div *ngIf="group.value=='center'" class="h-100 d-flex flex-column justify-content-between">
                 <div class="d-flex flex-column align-items-center">
-                    <button mat-raised-button class="theme-accent w-75 mb-4" (click)="connect()">{{'Connect device' | translate}}</button>
-                    <button mat-raised-button class="theme-accent w-75" (click)="finishEvent()" *ngIf="!noEvent">{{'Finish event' | translate}}</button>
-                    <button mat-raised-button class="theme-accent theme-disabled w-75" (click)="finishEvent()" *ngIf="noEvent" disabled>{{'Finish event' | translate}}</button>
-                    <button mat-raised-button class="theme-accent w-75 mt-4" (click)="signOut()" *ngIf="!noLogout">{{'Sign Out' | translate}}</button>
-                    <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4" (click)="signOut()" *ngIf="noLogout" disabled>{{'Sign Out' | translate}}</button>
+                    <button *ngIf="!_clockService.isConnected()" mat-raised-button class=" theme-accent w-75 mb-4 " (click)="connect() ">{{'Connect device' | translate}}</button>
+                    <button *ngIf="_clockService.isConnected()" mat-raised-button class="theme-accent theme-disabled w-75 mb-4 ">{{'Device connected' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-75 " (click)="finishEvent() " *ngIf="!noEvent ">{{'Finish event' | translate}}</button>
+                    <button mat-raised-button class="theme-accent theme-disabled w-75 " (click)="finishEvent() " *ngIf="noEvent " disabled>{{'Finish event' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-75 mt-4 " (click)="signOut() " *ngIf="!noLogout ">{{'Sign Out' | translate}}</button>
+                    <button mat-raised-button class="theme-accent theme-disabled w-75 mt-4 " (click)="signOut() " *ngIf="noLogout " disabled>{{'Sign Out' | translate}}</button>
                 </div>
-                <div class="d-flex flex-column align-items-center">
-                    <button *ngIf="_pwaService.showButton" mat-raised-button class="theme-accent w-100 mb-4" (click)="addToScreen()">{{'AddToHomeScreen' | translate}}</button>
-                    <button mat-raised-button class="theme-accent w-100" (click)="requestNewVersion()">{{'RequestNewVersion' | translate }}</button>
+                <div class="d-flex flex-column align-items-center ">
+                    <button *ngIf="_pwaService.showButton " mat-raised-button class="theme-accent w-100 mb-4 " (click)="addToScreen() ">{{'AddToHomeScreen' | translate}}</button>
+                    <button mat-raised-button class="theme-accent w-100 " (click)="requestNewVersion() ">{{'RequestNewVersion' | translate }}</button>
                 </div>
             </div>
-            <div *ngIf="group.value=='right'">
-                <div class="d-flex flex-column align-items-center">
-                    <button mat-raised-button class="theme-accent w-75" (click)="toggleTheme()">{{'Switch theme' | translate}}</button>
-                    <mat-form-field class="w-75 mt-4">
+            <div *ngIf="group.value=='right' ">
+                <div class="d-flex flex-column align-items-center ">
+                    <button mat-raised-button class="theme-accent w-75 " (click)="toggleTheme() ">{{'Switch theme' | translate}}</button>
+                    <mat-form-field class="w-75 mt-4 ">
                         <mat-label>{{'Select language' | translate}}</mat-label>
                         <mat-select>
-                            <mat-option *ngFor="let lang of languages" (click)="toggleLang(lang)" [value]="lang">
+                            <mat-option *ngFor="let lang of languages " (click)="toggleLang(lang) " [value]="lang ">
                                 {{lang | uppercase}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-            <div *ngIf="group.value=='event'">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="d-flex flex-column settings-2 w-100">
+            <div *ngIf="group.value=='event' ">
+                <div class="d-flex flex-column align-items-center ">
+                    <div class="d-flex flex-column settings-2 w-100 ">
                         <mat-form-field>
                             <mat-label>{{'MinPilots' | translate}}</mat-label>
-                            <input matInput autocomplete="off" [(ngModel)]="rules.pilotInGroupCount">
+                            <input matInput autocomplete="off " [(ngModel)]="rules.pilotInGroupCount ">
                         </mat-form-field>
-                        <mat-form-field class="w-75">
+                        <mat-form-field class="w-75 ">
                             <mat-label>{{'BestType' | translate}}</mat-label>
-                            <mat-select [(ngModel)]="rules.bestFlightType">
-                                <mat-option *ngFor="let key of keys" [value]="key">
+                            <mat-select [(ngModel)]="rules.bestFlightType ">
+                                <mat-option *ngFor="let key of keys " [value]="key ">
                                     {{types[key] | uppercase | translate}}
                                 </mat-option>
                             </mat-select>
@@ -64,14 +65,14 @@
                     </div>
                 </div>
             </div>
-            <div class="progress-bar mt-3">
-                <mat-progress-bar mode="indeterminate" *ngIf="progressing"></mat-progress-bar>
+            <div class="progress-bar mt-3 ">
+                <mat-progress-bar mode="indeterminate " *ngIf="progressing "></mat-progress-bar>
             </div>
         </div>
     </div>
     <mat-divider></mat-divider>
-    <div class="buttons mt-4">
-        <button mat-raised-button class="theme-accent" (click)="save()">{{'Save' | translate}}</button>
-        <button mat-raised-button class="theme-primary-light" (click)="close()">{{'Close' | translate}}</button>
+    <div class="buttons mt-4 ">
+        <button mat-raised-button class="theme-accent " (click)="save() ">{{'Save' | translate}}</button>
+        <button mat-raised-button class="theme-primary-light " (click)="close() ">{{'Close' | translate}}</button>
     </div>
 </div>
