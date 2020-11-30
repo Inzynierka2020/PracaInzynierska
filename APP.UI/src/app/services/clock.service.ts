@@ -15,7 +15,7 @@ export class ClockService {
   private replayEmitter = new ReplaySubject<any>(1000);
 
   private baudRate = Uint32Array.from([57600]);
-  private filters = [{vendorId: 4292, productId: 60000}];
+  private filters = [{ vendorId: 4292, productId: 60000 }];
   private connected = false;
   private buffer = "";
 
@@ -23,11 +23,11 @@ export class ClockService {
     return this.connected;
   }
 
-  public switchReplayFrameEmitter(){
-    this.replayEmitter = new ReplaySubject<any>(1000);
+  public switchReplayFrameEmitter() {
+    this.replayEmitter = new ReplaySubject<any>();
   }
 
-  public getReplayFrameEmitter(){
+  public getReplayFrameEmitter() {
     return this.replayEmitter.asObservable();
   }
 
@@ -115,4 +115,21 @@ export class ClockService {
         })
     }, 50);
   };
+
+  restoreFrame(frame: string): string {
+    if (frame === "$RNEW" || frame === "$NEW" || frame === "$EW" || frame === "$W")
+      return "$RNEW"
+    else if (frame === "$RCZP" || frame === "$CZP" || frame === "$ZP" || frame === "$P")
+      return "$RCZP"
+    else if (frame === "$RTMO" || frame === "$TMO" || frame === "$MO" || frame === "$O")
+      return "$RTMO"
+    else if (frame === "$RCZS" || frame === "$CZS" || frame === "$ZS" || frame === "$S")
+      return "$RCZS"
+    else if (frame === "$RBAI" || frame === "$BAI" || frame === "$AI" || frame === "$I")
+      return "$RBAI"
+    else if (frame === "$RNTR" || frame === "$NTR" || frame === "$TR" || frame === "$R")
+      return "$RNTR"
+    else if (frame === "$REND" || frame === "$END" || frame === "$ND" || frame === "$D")
+      return "$REND"
+  }
 }
