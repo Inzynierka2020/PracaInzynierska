@@ -211,12 +211,13 @@ export class PlayerComponent implements OnInit {
           this.climbingTime = true;
           this.climbCounter = setInterval(() => {
             if (this.climbingTime)
-              this.flight.sub1 = parseFloat((this.flight.sub1 + 0.1).toFixed(1));
+            this.flight.sub1 = parseFloat((this.flight.sub1 + 0.1).toFixed(1));
           }, 100)
         }
-
+        
         //flight
         if (values[1] == "30") {
+          this.flight.sub1 = 0;
           this.RCZS_timestamp = parseInt(values[2]);
         }
         break;
