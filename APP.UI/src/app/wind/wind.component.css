@@ -28,6 +28,6 @@ mat-divider {
 
 @media (max-width: 500px) {
     .flag {
-        display: none;
+        width: 2.2em;
     }
 }

@@ -1,4 +1,4 @@
-<div class="d-flex" (click)="openSnack()">
+<div class="d-flex justify-content-center" (click)="openSnack()">
     <img src="assets/flag.svg" class="flag" [ngClass]="{'green': regular, 'red': !regular}">
     <div class="ml-3 d-flex flex-column justify-content-center">
         <div class="text">{{wind.toFixed(1)}} m/s</div>

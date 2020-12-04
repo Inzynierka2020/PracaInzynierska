@@ -79,11 +79,16 @@ export class SettingsComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  noSave = false;
   save() {
     this.themeService.setThemeForStorage();
     this.setRules();
     this._configService.updateConfig(this.settings).subscribe(result => {
       this.close();
+    },
+    error=>{
+      this.noSave = true;
+      this._snackService.open('NoConnection.Save')
     })
   }
 
