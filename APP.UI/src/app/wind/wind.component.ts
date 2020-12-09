@@ -45,8 +45,8 @@ export class WindComponent implements OnInit {
         break;
       }
       case "$RWSD": {
-        this.wind = parseFloat(values[1]) / 10.0;
-        this.dir = parseFloat(values[2]);
+        this.wind = parseFloat(values[3]) / 10.0;
+        this.dir = parseFloat(values[4]);
 
         var rules = this._rulesService.getRules();
         this.regular = !(this.wind > rules.maxWind || this.wind < rules.minWind || this.dir < rules.minDir || this.dir > rules.maxDir)

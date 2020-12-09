@@ -334,8 +334,8 @@ export class PlayerComponent implements OnInit {
         break;
       }
       case "$RWSD": {
-        let wind = parseFloat(values[1]) / 10.0;
-        let dir = parseFloat(values[2]);
+        let wind = parseFloat(values[3]) / 10.0;
+        let dir = parseFloat(values[4]);
 
         this.winds.push(wind);
         this.dirs.push(dir);
