@@ -251,8 +251,6 @@ export class PlayerComponent implements OnInit {
 
         var base = values[2];
         var time = this.round(parseFloat(values[3]) / 100.0);
-        this.winds.push(values[4]);
-        this.dirs.push(values[5]);
 
         switch (base) {
           case "0": {
@@ -340,8 +338,19 @@ export class PlayerComponent implements OnInit {
         this.winds.push(wind);
         this.dirs.push(dir);
 
-        this.flight.windAvg = Math.round(this.winds.reduce((a, b) => a + b) / this.winds.length * 10.0) / 10.0;
-        this.flight.dirAvg = Math.round(this.dirs.reduce((a, b) => a + b) / this.dirs.length * 10.0) / 10.0;
+        var total = 0;
+        for (var i = 0; i < this.winds.length; i++) {
+          total += this.winds[i];
+        }
+        this.flight.windAvg = total / this.winds.length;
+
+        total = 0;
+        for (var i = 0; i < this.dirs.length; i++) {
+          total += this.dirs[i];
+        }
+        this.flight.dirAvg = total / this.dirs.length;
+
+        break;
       }
     }
   }
