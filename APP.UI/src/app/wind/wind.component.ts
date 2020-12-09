@@ -14,7 +14,7 @@ export class WindComponent implements OnInit {
   wind = 0.0;
   dir = 0.0;
 
-  regular = true;
+  regular = false;
   notRegularTime = 50;
   maxNotRegularTime = 5;
 
