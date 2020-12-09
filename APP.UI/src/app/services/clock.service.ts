@@ -131,5 +131,7 @@ export class ClockService {
       return "$RNTR"
     else if (frame === "$REND" || frame === "$END" || frame === "$ND" || frame === "$D")
       return "$REND"
+    else if (frame === "$RWSD" || frame === "$WSD" || frame === "$SD")
+      return "$RWSD"
   }
 }

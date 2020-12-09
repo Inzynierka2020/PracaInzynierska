@@ -343,15 +343,12 @@ export class PlayerComponent implements OnInit {
           total += this.winds[i];
         }
         this.flight.windAvg = total / this.winds.length;
-        this.flight.windAvg = 5;
-        
+
         total = 0;
         for (var i = 0; i < this.dirs.length; i++) {
           total += this.dirs[i];
         }
         this.flight.dirAvg = total / this.dirs.length;
-        this.flight.dirAvg = 2;
-
         break;
       }
     }
