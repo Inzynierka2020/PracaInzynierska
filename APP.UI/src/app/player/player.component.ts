@@ -136,7 +136,7 @@ export class PlayerComponent implements OnInit {
     this.flight.pilotId = this.pilot.pilotId;
     this.flight.eventId = this.pilot.eventId;
 
-    if (!this.finished && !this.editMode && (this.flight.dns || this.flight.dnf))
+    if (!this.finished && !this.editMode)
       this._clockService.switchReplayFrameEmitter();
 
     this.dialogRef.close(this.flight);
@@ -343,12 +343,14 @@ export class PlayerComponent implements OnInit {
           total += this.winds[i];
         }
         this.flight.windAvg = total / this.winds.length;
-
+        this.flight.windAvg = wind;
+        
         total = 0;
         for (var i = 0; i < this.dirs.length; i++) {
           total += this.dirs[i];
         }
         this.flight.dirAvg = total / this.dirs.length;
+        this.flight.dirAvg = dir;
 
         break;
       }
