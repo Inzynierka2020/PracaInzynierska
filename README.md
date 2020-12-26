@@ -76,7 +76,8 @@ W celu uzyskania plików *Let's Encrypt*, wymaganych jest kilka kroków.
 
 - pobranie zawartości zmienonego przez Certbota pliku **nginx.conf** w kontenerze i podmiana na nią w pliku **nginx.conf** w folderze **nginx/server** hosta, np. komendą *cat* w kontenerze; *exit* aby opuścić shell kontenera
 `$ cat /etc/nginx/nginx.conf`
-\
+
+
 Od teraz wszystkie wygenerowane pliki z certyfikatami znajdują się w wolumenie hosta, a plik **nginx.conf** daje do nich odpowiednie ścieżki.
 
 Ogólne wdrożenie aplikacji wykonuje się komendą:
