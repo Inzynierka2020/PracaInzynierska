@@ -24,38 +24,68 @@ W celu uruchomienia lokalnie API aplikacji należy:
 - przejść do utworzonego katalogu target i poleceniem `java -jar nazwa-utworzonego-pliku-jar.jar` uruchomić API
 Dokumentacja api jest dostępna bezpośrednio w aplikacji pod adresem **.../api/swagger-ui.html**
 
-## Deployment with Docker-Compose 
+## Wdrożenie Docker-Compose 
 
-### Locally
+W celu instalacji Dockera należy odwiedzić te strony: [dla Windows](https://docs.docker.com/docker-for-windows/install/) oraz [dla Linuksa](https://docs.docker.com/engine/install/ubuntu/). W przypadku dystrybucji linuksowej, należy poczynić pewnie kroki (np. dodanie użytkownika do grupy *docker*) opisane [tutaj](https://docs.docker.com/engine/install/linux-postinstall/).
 
-Visit [this page](https://docs.docker.com/docker-for-windows/install/) in order to install *Docker for Windows*.
+Następnie należy doinstalować mechanizm orchiestracji kontenerów [Docker-Compose](https://docs.docker.com/compose/install/).
 
-To deploy this server locally, use compose commands listed below - execute them in a folder with **.yml** files in it:
+### Lokalnie
+W celu wdrożenia aplikacji lokalnie, należy użyć podanych poniżej komend dla *compose* - uruchomić je w folderze z obecnym plikiem **.yml** :
 
-- firstly, to build service(s):
+- po pierwsze, zbududować serwisy i kontenery:
 
 `$ docker-compose build`
 
-- secondly, to deploy:
+- po drugie, wdrożyć:
 
 `$ docker-compose -f docker-compose.yml up`
 
-Then, you can access *https//localhost/api/swagger-ui.html* to see API specification.
+Aplikacja dostępna jest pod adresem *https//localhost*, a pod *https//localhost/api/swagger-ui.html* dostępna jest specyfikacja API.
 
-In order to TLS work properly, and therefore whole PWA application work properly, a CA Certificate needs to be provided for Nginx (https server), e.g. Self-Signed Certificate. Check **nginx/localhost** for further instructions on how to generate such one. 
+### TSL
 
-Then, Client App must trust this certificate; for Windows/Chrome **double click .pfx* -> *Install certificate* and insert it in *Trusted Root Certification Authorities storage*. For more instructions how to trust certificates on certain OSs, check [this page](http://wiki.cacert.org/FAQ/ImportRootCert).
+Aplikacja w celu poprawnego działania musi udostępniać szyfrowane połączenie przy pomocy protokołu TSL. Umożliwia to uruchomienie jej za *reverse-proxy* przy wykorzystaniu *Nginxa*. 
 
-### Remotely
+Działanie szyfrowania zapewnia Certifikat CA dostarczony Nginxowi (działającemu jako server http), np. Self-Signed Certificate. Instrukcja jak wygenerować certyfikaty self-signed  znajduje się w pliku **nginx/localhost/howTo.txt**. 
 
-Same procedure as locally, but with a twist. Remote server needs to have it's own domain for PWA to work and it need to be trusted by Chrome. [Let's Encrypt](https://letsencrypt.org/) certificate can be provided for Nginx for such use. This certificate is trusted by many OS by default. To do so, another .yml file need to be created, e.g. **docker-compose.server.yml** that specifies: 
-TODO
+Następnie, aplikacja kliencka musi zaufać temu certfikatowi. Dla systemu Windows i klienta Chrome, **podwójne kliknięcie na .pfx* -> *Install certificate*, a następnie umieścić go w magazynie *Trusted Root Certification Authorities storage*. Więcej instrukcji w zależności od różnych systemów operacyjnych znaleźć można [tutaj](http://wiki.cacert.org/FAQ/ImportRootCert).
 
-Having those, just deploy server with command:
+### Zdalnie w chmurze
 
-`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up`
+Procedura wygląda podobnie jak przy wdrażaniu lokalnym. Aplikacja wymaga domeny (wymóg HTTPS) i dostarczenia certyfikatów zaufanych przez Chrome. Certyfikaty [Let's Encrypt](https://letsencrypt.org/), jako że zaufane są domyślnie przez wiele systemów, mogą być dostarczone dla Nginxa w takim właśnie celu. Aby to zrobić, należy wykorzystać stworzony na tę potrzebę kolejny plik *.yml*, **docker-compose.server.yml**, którego zadaniem jest wyspecyfikowanie zmiennych środowiskowych zależnych od konkretnej chmury. W tym przypadku, będzie on nadpisywać plick Dockerowy (linia 7. pliku **docker-compose.server.yml**), na którego podstawie którego tworzony będzie kontener z Nginxem podczas *docker-compose*. Ważna również jest tutaj linia 9., która to tworzy wolumen łączący hosta i kontener - tam zachowane będą wszystkie pliki certyfikatów i to stamtąd kontener będzie je pobierał. 
 
+Owy plik **server.Dockerfile** również został już stworzony i umieszczony w folderze **./APP.UI/**.  Jego celem jest dostarczenie odpowiednich plików konfiguracyjnych z systemu hosta i wybudowanie obrazu. Procedury *COPY* w liniach 19. i 20. kopiują pliki hosta (ścieżka po lewej) do kontenera (ścieżka po prawej). W folderze **nginx** stworzono nowy folder z plikami, **server**,w którym powinny znaleźć się specyficzne już dla chmury pliki. Są to kolejno **nginx.conf** i **mime.types**.  
+
+W celu uzyskania plików *Let's Encrypt*, wymaganych jest kilka kroków. 
+
+- nadpisanie nazwy domeny w linijce z *server_name* w pliku **nginx/server/nginx.conf**
+- wybudowanie i uruchomienie kontenerów komendą
+`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build -d`
+
+- wylistowanie dostępnych kontenerów komedną
+`$ docker container ls`
+
+- wydobycie ID kontenera o nazwie obrazu *pracainzynierska_ui*, np. *40a595e7d550*
+- uruchomienie shella kontenera komendą
+`$ docker exec -it 40a595e7d550 bash`
+
+- uruchomienie komendy Certbota, generującego certyfikaty i podążanie za instrukcjami
+`$ certbot --nginx`
+
+- pobranie zawartości pliku **nginx.conf** w kontenerze i podmiana na nią w pliku **nginx.conf** w folderze **nginx/server** hosta, np. komendą *cat* w kontenerze; *exit* aby opuścić shell kontenera
+`$ cat /etc/nginx/nginx.conf`
+
+- ponowne wybudowanie i uruchomienie kontenerów komendą
+`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build -d`
+
+Ogólne wdrożenie aplikacji wykonuje się komendą:
+
+`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build`
+
+Brak flagi *-d* umożliwia przejrzenie logów kontenerów.
 
 ## Linki
 - [dokumentacja Angulara](https://angular.io/docs)
 - [baza danych zawodów w modelarstwie lotniczym](https://www.f3xvault.com/) i jej [api](https://www.f3xvault.com/?action=api_docs)
+- [Docker](https://docs.docker.com/get-started/overview/)
