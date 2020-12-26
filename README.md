@@ -59,7 +59,8 @@ Owy plik **server.Dockerfile** również został już stworzony i umieszczony w 
 
 W celu uzyskania plików *Let's Encrypt*, wymaganych jest kilka kroków. 
 
-- nadpisanie nazwy domeny w linijce z *server_name* w pliku **nginx/server/nginx.conf**
+- podmiana nazwy domeny w linijce z *server_name* w pliku **nginx/server/nginx.conf**
+- podmiana nazwy domeny w linijce z *allowedOrigins* w pliku **APP.API/src/main/java/aviationModelling/config/CorsConfig.java** 
 - wybudowanie i uruchomienie kontenerów komendą
 `$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build -d`
 
@@ -70,18 +71,17 @@ W celu uzyskania plików *Let's Encrypt*, wymaganych jest kilka kroków.
 - uruchomienie shella kontenera komendą
 `$ docker exec -it 40a595e7d550 bash`
 
-- uruchomienie komendy Certbota, generującego certyfikaty i podążanie za instrukcjami
+- uruchomienie komendy Certbota, generującego certyfikaty i podążanie za instrukcjami (wybrać redirect)
 `$ certbot --nginx`
 
-- pobranie zawartości pliku **nginx.conf** w kontenerze i podmiana na nią w pliku **nginx.conf** w folderze **nginx/server** hosta, np. komendą *cat* w kontenerze; *exit* aby opuścić shell kontenera
+- pobranie zawartości zmienonego przez Certbota pliku **nginx.conf** w kontenerze i podmiana na nią w pliku **nginx.conf** w folderze **nginx/server** hosta, np. komendą *cat* w kontenerze; *exit* aby opuścić shell kontenera
 `$ cat /etc/nginx/nginx.conf`
-
-- ponowne wybudowanie i uruchomienie kontenerów komendą
-`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build -d`
+\
+Od teraz wszystkie wygenerowane pliki z certyfikatami znajdują się w wolumenie hosta, a plik **nginx.conf** daje do nich odpowiednie ścieżki.
 
 Ogólne wdrożenie aplikacji wykonuje się komendą:
 
-`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build`
+`$ docker-compose -f docker-compose.yml -f docker-compose.server.yml up --build -d`
 
 Brak flagi *-d* umożliwia przejrzenie logów kontenerów.
 
