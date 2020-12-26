@@ -9,6 +9,10 @@ export enum BestFlightType {
 export interface EventRules {
   pilotInGroupCount: number;
   bestFlightType: BestFlightType;
+  minWind: number;
+  maxWind: number;
+  minDir: number;
+  maxDir: number;
 }
 
 @Injectable({
@@ -20,7 +24,11 @@ export class RulesService {
 
   rules: EventRules = {
     pilotInGroupCount: 10,
-    bestFlightType: BestFlightType.Round
+    bestFlightType: BestFlightType.Round,
+    minWind: 3,
+    maxWind: 25,
+    minDir: -45,
+    maxDir: 45
   }
 
   getRules(): EventRules {

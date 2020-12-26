@@ -27,7 +27,9 @@ button {
     border-top: 0 !important;
 }
 
-.clock-icon {}
+.clock-icon {
+    font-size: 20px !important;
+}
 
 mat-form-field.mat-form-field {
     font-size: 32px;
@@ -104,9 +106,8 @@ mat-label {
 }
 
 .wind {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 600;
-    padding-left: 10%;
 }
 
 .data {
@@ -265,3 +266,5 @@ mat-label {
         font-size: 16px;
     }
 }
+
+@media (max-width: 420px) {}

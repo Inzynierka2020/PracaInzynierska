@@ -54,6 +54,7 @@ export class NewRoundDialogComponent implements OnInit {
 
   canDecrement(): boolean {
     var number = this.roundNumber - 1;
+    if (number == 0) return false;
     while (this.takenNumbers.includes(number)) {
       number -= 1;
       if (number == 0) {

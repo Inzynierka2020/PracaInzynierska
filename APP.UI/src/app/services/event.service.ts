@@ -14,11 +14,20 @@ export class EventService {
   constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl, private _dbService: IndexedDbService) { }
 
   private eventId: number;
+  private lastGroup = 'A';
 
   initializeEvent(eventId: number): Observable<string> {
     return this._http.post<string>(this._baseUrl + "events/event-data/" + eventId, null, {
       responseType: 'text' as 'json'
     });
+  }
+
+  getLastGroup() {
+    return this.lastGroup;
+  }
+
+  setLastGroup(group: string) {
+    this.lastGroup = group;
   }
 
   getEvent(eventId: number): Observable<Event> {

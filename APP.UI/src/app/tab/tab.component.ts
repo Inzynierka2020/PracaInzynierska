@@ -144,6 +144,9 @@ export class TabComponent {
     }
 
     if (this.rounds.length > 0) {
+      if (this.browsedRoundIndex >= this.rounds.length)
+        this.browsedRoundIndex = this.rounds.length - 1;
+
       this.roundNumber = this.rounds[this.browsedRoundIndex].roundNum;
       this.browsedRound = this.rounds[this.browsedRoundIndex];
 
@@ -211,6 +214,7 @@ export class TabComponent {
   finishRound(finished, tab: MatTabGroup) {
     this.syncRound(this.newRoundNumber, this.eventId).pipe(take(1)).subscribe(result => {
       this.isRoundStarted = !finished;
+      this.browsedRoundIndex = this.rounds.length;
       tab.selectedIndex = 0;
       this.refreshRounds().pipe(take(1)).subscribe(result => this.spinning = false);
     });

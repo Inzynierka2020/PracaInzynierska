@@ -65,7 +65,8 @@
         "Finish": "BRAK POŁĄCZENIA. BRAK MOŻLIWOŚCI ZAKOŃCZENIA WYDARZENIA.",
         "Logout": "BRAK POŁĄCZENIA. BRAK MOŻLIWOŚCI WYLOGOWANIA.",
         "Score": "BRAK POŁĄCZENIA. KLASYFIKACJA NIE PRZELICZONA.",
-        "Lost": "BRAK POŁĄCZENIA."
+        "Lost": "BRAK POŁĄCZENIA.",
+        "Save": "BRAK POŁĄCZENIA. NIE MOŻNA ZAPISAĆ USTAWIEŃ"
     },
     "VaultSynced": "VAULT ZSYNCHRONIZOWANY",
     "VaultNotSynced": "VAULT NIE ZSYNCHRONIZOWANY",
@@ -93,5 +94,11 @@
     "Starting time": "CZAS STARTOWY",
     "PrepTime": "CZAS PRZYGOTOWAWCZY",
     "PrepTimeOver": "PRZEKROCZONO CZAS PRZYGOTOWAWCZY",
-    "NewPlayer": "NOWY ZAWODNIK"
+    "NewPlayer": "NOWY ZAWODNIK",
+    "MinRegularWind": "MIN. PRZEP. PRĘD.",
+    "MaxRegularWind": "MAKS. PRZEP. PRĘD.",
+    "MinRegularDir": "MIN. PRZEP. KIER.",
+    "MaxRegularDir": "MAKS. PRZEP. KIER.",
+    "AvgSpd": "ŚREDNIA PRĘDKOŚĆ WIATRU: ",
+    "AvgDir": "ŚREDNI KIERUNEK WIATRU: "
 }

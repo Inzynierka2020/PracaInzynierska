@@ -38,6 +38,10 @@ export class PlayerComponent implements OnInit {
   RCZS_timestamp: number;
   started = false;
   finished = false;
+  dnsDnf = false;
+
+  windAvgField = '---';
+  dirAvgField = '---'
 
   title: string;
   value: string;
@@ -55,6 +59,9 @@ export class PlayerComponent implements OnInit {
     this.flight = _data.flight;
     this.currentGroup = this.flight.group;
     this.groupsCount = this._data.groupsCount;
+    if (this.groupsCount > 1)
+      this.changeGroup(this._eventService.getLastGroup());
+
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
     this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
@@ -73,8 +80,11 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (!this.editMode)
+    if (!this.editMode) {
       this._subscription.unsubscribe();
+    }
+    clearInterval(this.climbCounter);
+    clearInterval(this.totalCounter);
   }
 
   /*---- COMPONENT ----*/
@@ -131,6 +141,10 @@ export class PlayerComponent implements OnInit {
     this.flight.synchronized = false;
     this.flight.pilotId = this.pilot.pilotId;
     this.flight.eventId = this.pilot.eventId;
+
+    if (!this.finished && !this.editMode)
+      this._clockService.switchReplayFrameEmitter();
+
     this.dialogRef.close(this.flight);
 
   }
@@ -145,6 +159,7 @@ export class PlayerComponent implements OnInit {
 
   changeGroup(group: string) {
     this.currentGroup = this.flight.group = group;
+    this._eventService.setLastGroup(this.currentGroup);
     this.reloadBestFlight();
   }
 
@@ -173,7 +188,6 @@ export class PlayerComponent implements OnInit {
 
   /*---- LOGIC ----*/
 
-  timer = false;
   winds = [];
   dirs = [];
   climbCounter: any;
@@ -188,6 +202,12 @@ export class PlayerComponent implements OnInit {
         //component
         this.title = this._translate.instant("NewPlayer");
         this.value = this.flight.order.toString();
+
+        clearInterval(this.climbCounter);
+        clearInterval(this.totalCounter);
+        this.climbingTime = false;
+        this.winds = [];
+        this.dirs = [];
         break;
       }
       case "$RCZP": {
@@ -207,16 +227,22 @@ export class PlayerComponent implements OnInit {
         this.title = this._translate.instant("Starting time");
         this.value = values[1] + " s"
 
+        this.dnsDnf = true;
+
         if (!this.climbingTime) {
           this.climbingTime = true;
+          this.winds = [];
+          this.dirs = [];
           this.climbCounter = setInterval(() => {
-            if (this.climbingTime)
-              this.flight.sub1 = parseFloat((this.flight.sub1 + 0.1).toFixed(1));
+            if (this.climbingTime) {
+              this.flight.sub1 = parseFloat((this.flight.sub1 + 0.1).toFixed(2));
+            }
           }, 100)
         }
 
         //flight
         if (values[1] == "30") {
+          this.flight.sub1 = 0;
           this.RCZS_timestamp = parseInt(values[2]);
         }
         break;
@@ -236,8 +262,9 @@ export class PlayerComponent implements OnInit {
 
         var base = values[2];
         var time = this.round(parseFloat(values[3]) / 100.0);
-        this.winds.push(values[4]);
-        this.dirs.push(values[5]);
+
+        this.windAvgField = (parseFloat(values[4]) / 10.0).toFixed(1);
+        this.dirAvgField = values[5];
 
         switch (base) {
           case "0": {
@@ -304,7 +331,6 @@ export class PlayerComponent implements OnInit {
       case "$REND": {
         //component
         this.title = this._translate.instant("Total seconds");
-        this.timer = false;
         this.finished = true;
         clearInterval(this.totalCounter);
 
@@ -313,16 +339,33 @@ export class PlayerComponent implements OnInit {
         this.flight.sub11 = this.round(time - this.flight.seconds);
 
         this.flight.seconds = time;//this.round((timestamp - this.RCZS_timestamp) / 100.0);
-        this.value = this.flight.seconds.toFixed(1).toString();
-
-        this.winds.push(values[4]);
-        this.dirs.push(values[5]);
-
-        this.flight.windAvg = this.winds.reduce((a, b) => a + b) / this.winds.length;
-        this.flight.dirAvg = this.dirs.reduce((a, b) => a + b) / this.winds.length;
+        this.value = this.flight.seconds.toFixed(2).toString() + " s";
 
         //this._subscription.unsubscribe();
         this._clockService.switchReplayFrameEmitter();
+        
+        this.windAvgField = this.flight.windAvg.toFixed(1);
+        this.dirAvgField = this.flight.dirAvg.toFixed(0);
+        break;
+      }
+      case "$RWSD": {
+        let wind = parseFloat(values[3]) / 10.0;
+        let dir = parseFloat(values[4]);
+
+        this.winds.push(wind);
+        this.dirs.push(dir);
+
+        var total = 0;
+        for (var i = 0; i < this.winds.length; i++) {
+          total += this.winds[i];
+        }
+        this.flight.windAvg = total / this.winds.length;
+
+        total = 0;
+        for (var i = 0; i < this.dirs.length; i++) {
+          total += this.dirs[i];
+        }
+        this.flight.dirAvg = total / this.dirs.length;
         break;
       }
     }
@@ -338,7 +381,7 @@ export class PlayerComponent implements OnInit {
   }
 
   private round(num: number) {
-    return Math.round(num * 10) / 10;
+    return Math.round(num * 100) / 100;
   }
 
   private clearFlight(flight: Flight) {
@@ -371,6 +414,8 @@ export class PlayerComponent implements OnInit {
   closeThisDialog(result?) {
     this.resolveConfirmationDialog().subscribe(confirmed => {
       if (confirmed) {
+        if (!this.finished && !this.editMode && (this.flight.dns || this.flight.dnf))
+          this._clockService.switchReplayFrameEmitter();
         this.dialogRef.close(result)
       }
     })

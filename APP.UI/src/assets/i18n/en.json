@@ -65,7 +65,8 @@
         "Finish": "NO SERVER CONNECTION. CANNOT FINISH EVENT.",
         "Logout": "NO SERVER CONNECTION. CANNOT SIGN OUT.",
         "Score": "NO SERVER CONNECTION. SCORE NOT COUNTED.",
-        "Lost": "CONNECTION LOST."
+        "Lost": "CONNECTION LOST.",
+        "Save": "NO SERVER CONNECTION. CANNOT SAVE SETTINGS."
     },
     "VaultSynced": "VAULT SYNCHRONIZED",
     "VaultNotSynced": "VAULT NOT SYNCRONIZED",
@@ -93,5 +94,11 @@
     "Starting time": "STARTING TIME",
     "PrepTime": "PREPARING TIME",
     "PrepTimeOver": "PREPARING TIME EXCEEDED",
-    "NewPlayer": "NEW PLAYER"
+    "NewPlayer": "NEW PLAYER",
+    "MinRegularWind": "MIN. REG. SPD",
+    "MaxRegularWind": "MAX. REG. SPD.",
+    "MinRegularDir": "MIN. REG. DIR.",
+    "MaxRegularDir": "MAX. REG. DIR.",
+    "AvgSpd": "AVERAGE WIND SPEED: ",
+    "AvgDir": "AVERAGE WIND DIRECTION: "
 }

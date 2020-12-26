@@ -1,19 +1,21 @@
 <div class="content px-1" *ngIf="editMode; else notEdit">
-    <div class="d-flex justify-content-between">
-        <div class="d-flex align-items-center pr-3">
-            <div class="number">
-                {{pilot.pilotBib}}
-            </div>
+    <div class="d-flex justify-content-between flex-column">
+        <div class="d-flex align-items-center justify-content-center">
             <div class="name">
-                {{pilot.lastName | uppercase}} {{pilot.firstName}}
+                <strong>
+                    {{pilot.pilotBib}}
+                </strong> {{pilot.lastName | uppercase}} {{pilot.firstName | uppercase}}
             </div>
         </div>
-        <div class="headerDivider"></div>
-        <div class="flag">
-            <app-wind class="wind"></app-wind>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="py-1">
+        <div class="d-flex my-1 justify-content-around">
+            <div class="wind averages">
+                {{'AvgSpd' | translate}} <input class="w-25 text-right" autocomplete="off" matInput [(ngModel)]="flight.windAvg"> m/s <br> {{'AvgDir' | translate}} <input class="w-25 text-right" autocomplete="off" matInput [(ngModel)]="flight.dirAvg">°
+            </div>
         </div>
     </div>
-    <mat-divider></mat-divider>
     <div>
         <mat-toolbar color="primary">
             <mat-toolbar-row>
@@ -101,8 +103,10 @@
                 <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
             </div>
             <div class="buttons ">
-                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
-                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' |
+                    translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' |
+                    translate}}</button>
             </div>
         </div>
     </div>
@@ -112,21 +116,29 @@
 
 <ng-template #notEdit>
     <div class="content">
-        <div class="d-flex justify-content-between mb-3 pt-2">
-            <div class="d-flex align-items-center">
-                <div class="number">
-                    {{pilot.pilotBib}}
-                </div>
+        <div class="d-flex justify-content-between flex-column">
+            <div class="d-flex align-items-center justify-content-center">
                 <div class="name">
-                    {{pilot.lastName | uppercase}} {{pilot.firstName}}
+                    <strong>
+                        {{pilot.pilotBib}}
+                    </strong> {{pilot.lastName | uppercase}} {{pilot.firstName | uppercase}}
                 </div>
             </div>
-            <div class="headerDivider"></div>
-            <div class="flag">
-                <app-wind class="wind"></app-wind>
+            <mat-divider></mat-divider>
+        </div>
+        <div class="py-1">
+            <div class="d-flex my-1 justify-content-around">
+                <div class="d-flex flex-column justify-content-center  w-25 wind clock-icon">
+                    <i class="material-icons" [ngStyle]="{'color' : isConnectedColor()}">
+                        {{_clockService.isConnected() ? 'alarm_on' : 'alarm_off'}}
+                    </i>
+                </div>
+                <app-wind class="wind w-50"></app-wind>
+                <div class="w-25 wind averages">
+                    AVG: {{this.windAvgField}}{{this.windAvgField == '---' ? '' : ' m/s'}} <br> AVG: {{this.dirAvgField}}{{this.dirAvgField == '---' ? '' : '°'}}
+                </div>
             </div>
         </div>
-        <mat-divider></mat-divider>
         <div>
             <mat-toolbar color="primary">
                 <mat-toolbar-row>
@@ -136,30 +148,22 @@
                 </mat-toolbar-row>
             </mat-toolbar>
             <div class="d-flex flex-row justify-content-between">
-                <div class="d-flex flex-column justify-content-center clock-icon w-25">
-                    <i class="material-icons w-25" [ngStyle]="{'color' : isConnectedColor()}">
-                        {{_clockService.isConnected() ? 'alarm_on' : 'alarm_off'}}
-                    </i>
-                </div>
-                <div class="text-center font-weight-bolder value w-50">
+                <div class="text-center font-weight-bolder value w-100">
                     {{value }}
-                </div>
-                <div class="w-25">
-
                 </div>
             </div>
         </div>
         <div *ngIf="groupsCount>1">
             <mat-divider></mat-divider>
             <div class="groups" *ngIf="groupsCount>1">
-                <div class="data">
+                <div class="data h-100">
                     <div *ngFor="let group of groups | slice:0:groupsCount">
                         <button mat-raised-button class="group-button" [ngClass]="{'color-a' : group=='A','color-b' : group=='B','color-c' : group=='C','color-d' : group=='D','color-e' : group=='E', 'theme-primary' : currentGroup==group}" (click)="changeGroup(group)">{{group}}</button>
                     </div>
                 </div>
             </div>
+            <mat-divider></mat-divider>
         </div>
-        <mat-divider></mat-divider>
         <div class="second-div ">
             <div class="bar1 ">
                 <table>
@@ -234,13 +238,14 @@
                     </mat-form-field>
                 </div>
                 <div class="buttons">
-                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
-                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : dnsDnf, 'theme-disabled' : (!dnsDnf || finished)}" [disabled]="!dnsDnf || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : dnsDnf, 'theme-disabled' : (!dnsDnf || finished)}" [disabled]="!dnsDnf || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !dnsDnf, 'theme-disabled' : dnsDnf}" [disabled]="dnsDnf" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !dnsDnf, 'theme-disabled' : dnsDnf}" [disabled]="dnsDnf" (click)="didNotStart() ">DNS</button>
                 </div>
                 <div class="buttons ">
-                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' |
+                        translate}}</button>
                     <button mat-raised-button [ngClass]="{'theme-accent' : finished, 'theme-disabled' : !finished}" [disabled]="!finished" (click)="saveFlight()" (press)="callPressAction()" cdkFocusInitial>{{'Save' | translate}}</button>
                 </div>
             </div>
