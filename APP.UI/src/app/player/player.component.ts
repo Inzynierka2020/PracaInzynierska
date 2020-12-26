@@ -40,6 +40,9 @@ export class PlayerComponent implements OnInit {
   finished = false;
   dnsDnf = false;
 
+  windAvgField = '---';
+  dirAvgField = '---'
+
   title: string;
   value: string;
 
@@ -68,7 +71,6 @@ export class PlayerComponent implements OnInit {
   private _subscription;
 
   ngOnInit() {
-    console.log(this.flight);
     if (!this.editMode)
       this._subscription = this._clockService.getReplayFrameEmitter()
         .subscribe(frame => {
@@ -229,6 +231,8 @@ export class PlayerComponent implements OnInit {
 
         if (!this.climbingTime) {
           this.climbingTime = true;
+          this.winds = [];
+          this.dirs = [];
           this.climbCounter = setInterval(() => {
             if (this.climbingTime) {
               this.flight.sub1 = parseFloat((this.flight.sub1 + 0.1).toFixed(2));
@@ -258,6 +262,9 @@ export class PlayerComponent implements OnInit {
 
         var base = values[2];
         var time = this.round(parseFloat(values[3]) / 100.0);
+
+        this.windAvgField = (parseFloat(values[4]) / 10.0).toFixed(1);
+        this.dirAvgField = values[5];
 
         switch (base) {
           case "0": {
@@ -336,6 +343,9 @@ export class PlayerComponent implements OnInit {
 
         //this._subscription.unsubscribe();
         this._clockService.switchReplayFrameEmitter();
+        
+        this.windAvgField = this.flight.windAvg.toFixed(1);
+        this.dirAvgField = this.flight.dirAvg.toFixed(0);
         break;
       }
       case "$RWSD": {

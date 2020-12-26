@@ -103,8 +103,10 @@
                 <button mat-raised-button *ngIf="!flight.dns " class="theme-primary-light " (click)="didNotStart() ">DNS</button>
             </div>
             <div class="buttons ">
-                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
-                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' | translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' |
+                    translate}}</button>
+                <button mat-raised-button class="theme-accent" (click)="saveFlight() " cdkFocusInitial>{{'Save' |
+                    translate}}</button>
             </div>
         </div>
     </div>
@@ -133,8 +135,7 @@
                 </div>
                 <app-wind class="wind w-50"></app-wind>
                 <div class="w-25 wind averages">
-                    AVG: {{this.flight.windAvg}} m/s <br> AVG: {{this.flight.dirAvg}}°
-                    <br>TEST W {{this.winds[this.winds.length-1]}} D{{this.dirs[this.dirs.length-1]}}
+                    AVG: {{this.windAvgField}}{{this.windAvgField == '---' ? '' : ' m/s'}} <br> AVG: {{this.dirAvgField}}{{this.dirAvgField == '---' ? '' : '°'}}
                 </div>
             </div>
         </div>
@@ -243,7 +244,8 @@
                     <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !dnsDnf, 'theme-disabled' : dnsDnf}" [disabled]="dnsDnf" (click)="didNotStart() ">DNS</button>
                 </div>
                 <div class="buttons ">
-                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
+                    <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' |
+                        translate}}</button>
                     <button mat-raised-button [ngClass]="{'theme-accent' : finished, 'theme-disabled' : !finished}" [disabled]="!finished" (click)="saveFlight()" (press)="callPressAction()" cdkFocusInitial>{{'Save' | translate}}</button>
                 </div>
             </div>
