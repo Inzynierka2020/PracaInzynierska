@@ -38,6 +38,7 @@ export class PlayerComponent implements OnInit {
   RCZS_timestamp: number;
   started = false;
   finished = false;
+  dnsDnf = false;
 
   title: string;
   value: string;
@@ -55,6 +56,9 @@ export class PlayerComponent implements OnInit {
     this.flight = _data.flight;
     this.currentGroup = this.flight.group;
     this.groupsCount = this._data.groupsCount;
+    if (this.groupsCount > 1)
+      this.changeGroup(this._eventService.getLastGroup());
+
     this.editMode = _data.editMode;
     this.value = this.flight.order.toString();
     this.bestFlight = this._flightService.getBlankFlight(this.groupsCount);
@@ -153,6 +157,7 @@ export class PlayerComponent implements OnInit {
 
   changeGroup(group: string) {
     this.currentGroup = this.flight.group = group;
+    this._eventService.setLastGroup(this.currentGroup);
     this.reloadBestFlight();
   }
 
@@ -219,6 +224,8 @@ export class PlayerComponent implements OnInit {
         //component
         this.title = this._translate.instant("Starting time");
         this.value = values[1] + " s"
+
+        this.dnsDnf = true;
 
         if (!this.climbingTime) {
           this.climbingTime = true;
@@ -325,7 +332,7 @@ export class PlayerComponent implements OnInit {
         this.flight.sub11 = this.round(time - this.flight.seconds);
 
         this.flight.seconds = time;//this.round((timestamp - this.RCZS_timestamp) / 100.0);
-        this.value = this.flight.seconds.toFixed(1).toString();
+        this.value = this.flight.seconds.toFixed(2).toString() + " s";
 
         //this._subscription.unsubscribe();
         this._clockService.switchReplayFrameEmitter();

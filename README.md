@@ -71,14 +71,14 @@ W celu uzyskania plików *Let's Encrypt*, wymaganych jest kilka kroków.
 - uruchomienie shella kontenera komendą
 `$ docker exec -it 40a595e7d550 bash`
 
-- uruchomienie komendy Certbota, generującego certyfikaty i podążanie za instrukcjami (wybrać redirect)
+- uruchomienie już w kontenerze komendy Certbota, generująj certyfikaty i podążanie za instrukcjami (wybrać redirect)
 `$ certbot --nginx`
 
 - pobranie zawartości zmienonego przez Certbota pliku **nginx.conf** w kontenerze i podmiana na nią w pliku **nginx.conf** w folderze **nginx/server** hosta, np. komendą *cat* w kontenerze; *exit* aby opuścić shell kontenera
 `$ cat /etc/nginx/nginx.conf`
 
 
-Od teraz wszystkie wygenerowane pliki z certyfikatami znajdują się w wolumenie hosta, a plik **nginx.conf** daje do nich odpowiednie ścieżki.
+Od teraz wszystkie wygenerowane pliki z certyfikatami znajdują się w wolumenie hosta, a plik **nginx.conf** daje do nich odpowiednie ścieżki. Póki ten wolumen nie zostanie wyczyszczony, nie ma potrzeby ciągłego generowania certyfikatów. Należy to robić jedynie co trzy miesiące, gdyż tyle trwa okres przydatności wygenerowanych certyfikatów.
 
 Ogólne wdrożenie aplikacji wykonuje się komendą:
 

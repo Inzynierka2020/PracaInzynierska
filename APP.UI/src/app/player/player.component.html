@@ -237,10 +237,10 @@
                     </mat-form-field>
                 </div>
                 <div class="buttons">
-                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : started, 'theme-disabled' : (!started || finished)}" [disabled]="!started || finished" (click)="didNotFinish()">DNF</button>
-                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
-                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !started, 'theme-disabled' : started}" [disabled]="started" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="flight.dnf " [ngClass]="{'theme-primary' : dnsDnf, 'theme-disabled' : (!dnsDnf || finished)}" [disabled]="!dnsDnf || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="!flight.dnf " [ngClass]="{'theme-primary-light' : dnsDnf, 'theme-disabled' : (!dnsDnf || finished)}" [disabled]="!dnsDnf || finished" (click)="didNotFinish()">DNF</button>
+                    <button mat-raised-button *ngIf="flight.dns " [ngClass]="{'theme-primary' : !dnsDnf, 'theme-disabled' : dnsDnf}" [disabled]="dnsDnf" (click)="didNotStart() ">DNS</button>
+                    <button mat-raised-button *ngIf="!flight.dns " [ngClass]="{'theme-primary-light' : !dnsDnf, 'theme-disabled' : dnsDnf}" [disabled]="dnsDnf" (click)="didNotStart() ">DNS</button>
                 </div>
                 <div class="buttons ">
                     <button mat-raised-button class="theme-accent" (click)="closeThisDialog() ">{{'Cancel' | translate}}</button>
