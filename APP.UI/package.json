@@ -30,7 +30,7 @@
         "dexie": "^3.0.2",
         "hammerjs": "^2.0.8",
         "jquery": "^3.5.0",
-        "node-forge": ">=0.10.0",
+        "node-forge": ">=1.0.0",
         "node-sass": ">=4.13.1",
         "npm-registry-fetch": ">=4.0.5",
         "rxjs": "~6.3.3",
